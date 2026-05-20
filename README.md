@@ -1,0 +1,59 @@
+# CNT 薄膜纳米热声换能器 LBM 数值模拟
+
+基于格子 Boltzmann 方法（LBM）配合谱多弛豫时间（SMRT）碰撞模型，
+对 CNT/石墨烯薄膜热声换能器进行时域数值模拟。
+
+## 项目目标
+
+刻画电热驱动下 CNT 薄膜的热声效应：
+电功率输入 → 薄膜温度响应 → 固-流界面热交换 → 近场热声耦合 → 远场声压。
+
+## 技术路线
+
+- 几何：2D freestanding CNT 薄膜
+- 气体模型：完全可压缩 Navier–Stokes–Fourier
+- 速度集：D2Q21（Q=9，恢复完整热 NSF）
+- 平衡态：四阶 Hermite 展开
+- 碰撞模型：SMRT（τ₂、τ₃ 独立弛豫，可调 Pr）
+- 多原子闭合：f-g 双分布（空气 γ=1.4）
+- 网格策略：近场 LBM + Kirchhoff 远场外推，分频段自适应
+- 界面：固-流共轭热耦合
+
+## 目录结构
+
+| 目录 | 用途 |
+|---|---|
+| `core/` | LBM 核心：速度集、平衡态、碰撞、流步、多原子闭合 |
+| `boundary/` | 边界条件：等温壁、热流壁、特征开边界 |
+| `coupling/` | 固-流耦合：薄膜 ODE、热流提取、共轭耦合 |
+| `reference/` | 参考连续介质模型（1D NSF）+ 解析模型 |
+| `farfield/` | 远场外推：控制面采集、Kirchhoff 积分 |
+| `verification/` | 验证基准测试 |
+| `postproc/` | 后处理：频响分析、非线性分析、可视化 |
+| `configs/` | 算例配置文件（YAML） |
+| `data/` | 输入数据（不纳入版本控制） |
+| `results/` | 模拟结果（不纳入版本控制） |
+| `notebooks/` | Jupyter 探索性分析 |
+| `docs/` | 研究计划书、推导笔记、文献笔记 |
+| `tests/` | 单元测试 |
+
+## 环境
+
+Python 3.11+，主要依赖见 `requirements.txt`。
+
+安装：
+\`\`\`bash
+pip install -r requirements.txt
+\`\`\`
+
+## 开发阶段
+
+- [ ] Phase 0：物理冻结与无量纲化
+- [ ] Phase 1：参考连续介质模型（1D NSF）
+- [ ] Phase 2：气体侧热 LBM 核心 + 验证
+- [ ] Phase 3：固-流界面耦合
+- [ ] Phase 4：开边界与远场外推
+- [ ] Phase 5：物理结果生产
+- [ ] Phase 6：论文撰写
+
+详见 `docs/` 中的研究计划书。
