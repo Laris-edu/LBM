@@ -1,0 +1,18 @@
+case_name: phase1_CA_sweep_levelC
+forcing:
+  convention: Re[x_hat exp(i Omega t)]
+  f_Hz:
+    type: logspace
+    start: 1000.0
+    stop: 100000.0
+    count: 20
+  P_hat: 1000.0
+film:
+  C_A: [1.0e-5, 1.0e-4, 7.0e-4, 1.0e-3, 1.0e-2]
+  beta0: 0.0
+model:
+  level: C
+  solver: frequency
+outputs:
+  probes_y_over_deltaT: [0, 0.5, 1, 2, 5, 8, 10]
+

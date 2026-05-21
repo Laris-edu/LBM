@@ -1,0 +1,31 @@
+case_name: phase1_baseline_10k_levelC
+physics:
+  T0: 300.0
+  p0: 101325.0
+  rho0: 1.177
+  c0: 347.0
+  gamma: 1.4
+  cp: 1005.0
+  kg: 0.0263
+  nu0: 1.57e-5
+  mu_bulk: 0.0
+film:
+  C_A: 7.0e-4
+  beta0: 0.0
+  double_sided: true
+forcing:
+  convention: Re[x_hat exp(i Omega t)]
+  f_Hz: 10000.0
+  P_hat: 1000.0
+  P_bar: 0.0
+model:
+  level: C
+  solver: frequency
+  y_domain_mode: thermal_compact_outgoing_acoustic
+  Ly_over_deltaT: 15.0
+  dy_over_deltaT: 0.03333333333333333
+outputs:
+  probes_y_over_deltaT: [0, 0.5, 1, 2, 5, 8, 10]
+  save_complex: true
+  save_si_units: true
+
