@@ -21,9 +21,17 @@ if str(ROOT) not in sys.path:
 
 def main() -> None:
     failures: list[tuple[str, str, str]] = []
+    skipped: list[tuple[str, str]] = []
     for path in sorted((ROOT / "verification").glob("test_phase1_*.py")):
         module_name = f"verification.{path.stem}"
-        module = importlib.import_module(module_name)
+        try:
+            module = importlib.import_module(module_name)
+        except RuntimeError as exc:
+            if "PyYAML is required" in str(exc):
+                skipped.append((module_name, str(exc)))
+                print(f"SKIP {module_name}: {exc}")
+                continue
+            raise
         for name, func in inspect.getmembers(module, inspect.isfunction):
             if not name.startswith("test_"):
                 continue
@@ -41,9 +49,13 @@ def main() -> None:
             print(tb)
         raise SystemExit(1)
 
+    if skipped:
+        print("\nSKIPPED")
+        for module_name, reason in skipped:
+            print(f"{module_name}: {reason}")
+
     print("\nAll direct Phase_1 verification tests passed.")
 
 
 if __name__ == "__main__":
     main()
-

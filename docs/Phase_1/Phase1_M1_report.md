@@ -60,14 +60,14 @@
 
 ## 已生成参考数据
 
-| 文件 | 行数 | 用途 |
-|---|---:|---|
-| `results/phase1_reference/baseline_10k.csv` | 3 | Level A/B/C baseline。 |
-| `results/phase1_reference/frequency_sweep_levelC.csv` | 20 | Fig.1/Fig.2 频率参考。 |
-| `results/phase1_reference/CA_sweep_levelC.csv` | 100 | Fig.4 `C_A x f` 参考。 |
-| `results/phase1_reference/power_sweep_levelC.csv` | 10 | Fig.3 线性基准。 |
-| `results/phase1_reference/step_summary_levelC.csv` | 3 | Fig.5 阶跃摘要。 |
-| `results/phase1_reference/step_transient_CA_*.csv` | 每个 1000 行 | 三个 `C_A` 值的阶跃时间序列。 |
+| 文件                                                    |        行数 | 用途                    |
+| ----------------------------------------------------- | --------: | --------------------- |
+| `results/phase1_reference/baseline_10k.csv`           |         3 | Level A/B/C baseline。 |
+| `results/phase1_reference/frequency_sweep_levelC.csv` |        20 | Fig.1/Fig.2 频率参考。     |
+| `results/phase1_reference/CA_sweep_levelC.csv`        |       100 | Fig.4 `C_A x f` 参考。   |
+| `results/phase1_reference/power_sweep_levelC.csv`     |        10 | Fig.3 线性基准。           |
+| `results/phase1_reference/step_summary_levelC.csv`    |         3 | Fig.5 阶跃摘要。           |
+| `results/phase1_reference/step_transient_CA_*.csv`    | 每个 1000 行 | 三个 `C_A` 值的阶跃时间序列。    |
 
 ## 已知风险
 

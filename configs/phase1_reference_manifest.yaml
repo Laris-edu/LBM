@@ -1,0 +1,124 @@
+phase: Phase_1
+reference_version: phase1_reference_v1.0
+m1_status: passed
+decision: proceed_to_phase_2
+risk_status: GO-RISK
+
+manifest_format: yaml
+requires:
+  - PyYAML==6.0.3
+hash_policy: sha256_of_raw_file_bytes_no_newline_normalization
+path_policy: repository_relative_paths
+
+conventions:
+  time_harmonic: "x(t)=Re[x_hat exp(i Omega t)]"
+  amplitude: "peak=|x_hat|, rms=|x_hat|/sqrt(2)"
+  spl: "20*log10((|p_hat|/sqrt(2))/20e-6)"
+  single_side_heat_flux: "q_g''=-k_g*dT/dy|0+"
+  film_energy_balance: "C_A*dT_s/dt=P_hat-2*q_g''"
+  beta0_mainline: 0.0
+  p_input_type: "linear perturbation heat-power amplitude, not absolute Joule power"
+
+baseline_parameters:
+  T0_K: 300.0
+  p0_Pa: 101325.0
+  rho0_kg_m3: 1.177
+  c0_m_s: 347.0
+  gamma: 1.4
+  cp_J_kgK: 1005.0
+  kg_W_mK: 0.0263
+  nu0_m2_s: 1.57e-5
+  C_A_J_m2K: 7.0e-4
+  P_hat_W_m2: 1000.0
+  f_Hz_baseline: 10000.0
+  probe_primary: "y=8*delta_T"
+
+files:
+  - path: results/phase1_reference/baseline_10k.csv
+    rows: 3
+    columns: 92
+    sha256: a5b1b87ec1b477225c52f66b11cca068f7cb5269c4326c3d2f529e71fd217b5f
+    role: "Level A/B/C 10 kHz baseline"
+    use_for_m1: true
+    use_for_phase2: true
+
+  - path: results/phase1_reference/frequency_sweep_levelC.csv
+    rows: 20
+    columns: 92
+    sha256: 018de583244002e0990ab197ae5ed7dd2ee245d06d453ddc48a9a3ab40acf8b7
+    role: "Level C frequency response, 1-100 kHz"
+    use_for_m1: true
+    use_for_phase2: true
+
+  - path: results/phase1_reference/CA_sweep_levelC.csv
+    rows: 100
+    columns: 92
+    sha256: b141b12270d2ec14cbbb29ddef59c7cd4e70806fcd87480aa5c3b7a18d0831bd
+    role: "C_A x frequency landscape"
+    grid_type: baseline_inserted_grid
+    use_for_m1: true
+    use_for_phase2: true
+    note: "C_A grid uses log-range endpoints with inserted baseline C_A=7e-4; not a strict 5-point logspace."
+
+  - path: results/phase1_reference/power_sweep_levelC.csv
+    rows: 10
+    columns: 92
+    sha256: ee70dc7f6f780a59897fdaa2b60e49c16ac6ddc8105dc368fe69c83dea7bac5c
+    role: "linear proportionality reference, P_hat=100-10000 W/m^2"
+    use_for_m1: true
+    use_for_phase2: true
+    note: "linear reference only; not nonlinear finite-amplitude result."
+
+  - path: results/phase1_reference/step_summary_levelC.csv
+    rows: 3
+    columns: 9
+    sha256: eaf6675e3702ceec283032182cb68e0744df2cb5a91bd2bc1535581844b372a4
+    role: "step-transient summary for three C_A values"
+    use_for_m1: false
+    use_for_phase2: debug_only
+    proxy_type: first_order_effective_thermal_network
+    note: "first-order effective thermal-network proxy."
+
+  - path: results/phase1_reference/step_transient_CA_1e-05.csv
+    rows: 1000
+    columns: 10
+    sha256: ea933475e38d8a53778367be401b0ddad6f09b44cca6b17470b6a56d35d57eb8
+    role: "step transient, C_A=1e-5"
+    use_for_m1: false
+    use_for_phase2: debug_only
+    proxy_type: pressure_small_signal_derivative_proxy
+    note: "pressure is 10 kHz small-signal derivative proxy."
+
+  - path: results/phase1_reference/step_transient_CA_0.0007.csv
+    rows: 1000
+    columns: 10
+    sha256: 6131fac3db0502fd57f522dbfb4c77de3dbe4897636f6ff8f6d425110677b990
+    role: "step transient, C_A=7e-4 baseline"
+    use_for_m1: false
+    use_for_phase2: debug_only
+    proxy_type: pressure_small_signal_derivative_proxy
+    note: "pressure is 10 kHz small-signal derivative proxy."
+
+  - path: results/phase1_reference/step_transient_CA_0.01.csv
+    rows: 1000
+    columns: 10
+    sha256: 752398f956e9a899fe165a9064e49d8c20a53736d164a6e67c69acbcdd5d6bb3
+    role: "step transient, C_A=1e-2"
+    use_for_m1: false
+    use_for_phase2: debug_only
+    proxy_type: pressure_small_signal_derivative_proxy
+    note: "pressure is 10 kHz small-signal derivative proxy."
+
+valid_uses:
+  - "Phase_2/3 Level A/B/C thermal-boundary alignment"
+  - "frequency-response reference"
+  - "power-linearity baseline"
+  - "C_A sensitivity reference"
+  - "early transient debugging"
+
+invalid_uses:
+  - "full nonlinear finite-amplitude reference"
+  - "far-field Kirchhoff SPL reference"
+  - "complete literature-by-literature pressure reproduction"
+  - "final independent 1D NSF time-domain truth"
+
