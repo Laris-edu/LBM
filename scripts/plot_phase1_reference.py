@@ -136,17 +136,20 @@ def load_matplotlib():
         return None
 
 
-def savefig(fig, path: Path, *, png: bool = False) -> None:
-    with warnings.catch_warnings():
-        warnings.filterwarnings(
-            "ignore",
-            message=r"Tight layout not applied\..*",
-            category=UserWarning,
-        )
-        fig.tight_layout()
-    fig.savefig(path, bbox_inches="tight")
-    if png:
-        fig.savefig(path.with_suffix(".png"), dpi=200, bbox_inches="tight")
+def savefig(fig, path: Path, *, fixed_canvas: bool = False, apply_tight: bool = True) -> list[Path]:
+    if apply_tight:
+        with warnings.catch_warnings():
+            warnings.filterwarnings(
+                "ignore",
+                message=r"Tight layout not applied\..*",
+                category=UserWarning,
+            )
+            fig.tight_layout()
+    bbox_inches = None if fixed_canvas else "tight"
+    fig.savefig(path, bbox_inches=bbox_inches)
+    png_path = path.with_suffix(".png")
+    fig.savefig(png_path, dpi=200, bbox_inches=bbox_inches)
+    return [path, png_path]
 
 
 def load_data() -> dict[str, list[dict[str, str]]]:
@@ -206,29 +209,41 @@ def plot_with_matplotlib() -> list[Path]:
         dtype=float,
     )
 
-    fig, axes = plt.subplots(2, 2, figsize=(9, 7))
-    axes[0, 0].bar(labels, ts)
+    x = np.arange(len(labels))
+    fig, axes = plt.subplots(2, 2, figsize=(9.5, 6.2))
+    axes[0, 0].bar(x, ts)
+    axes[0, 0].set_xticks(x, labels)
     axes[0, 0].set_ylabel("|T_s_hat| [K]")
-    axes[0, 1].bar(labels, q)
+    axes[0, 1].bar(x, q)
+    axes[0, 1].set_xticks(x, labels)
     axes[0, 1].set_ylabel("|q_g_hat| [W/m^2]")
-    axes[1, 0].bar(labels, p8)
+    axes[1, 0].bar(x, p8)
+    axes[1, 0].set_xticks(x, labels)
     axes[1, 0].set_ylabel("|p_hat(y=8delta_T)| [Pa]")
-    axes[1, 1].semilogy(labels, safe_positive(residual), marker="o", linestyle="none")
+    c_index = labels.index("C")
+    axes[1, 1].semilogy([x[c_index]], [safe_positive(residual)[c_index]], marker="o", linestyle="none")
     for idx, label in enumerate(labels):
         if label != "C":
-            axes[1, 1].text(idx, 2e-16, "N/A", ha="center", va="bottom", fontsize=9)
+            axes[1, 1].text(x[idx], 1.2e-16, "N/A", ha="center", va="center", fontsize=9, clip_on=True)
+    axes[1, 1].set_xticks(x, labels)
+    axes[1, 1].set_xlim(-0.5, len(labels) - 0.5)
     axes[1, 1].set_ylim(5e-17, 5e-16)
     axes[1, 1].set_ylabel("energy_residual_rel")
     axes[1, 1].set_title("Level C ODE residual; Level A/B = N/A")
-    caption(
-        axes[1, 1],
-        "Energy residual is defined for the Level C coupled film ODE; Level A/B are prescribed-boundary references.",
+    axes[1, 1].text(
+        0.02,
+        0.04,
+        "Residual is defined only for Level C.",
+        transform=axes[1, 1].transAxes,
+        ha="left",
+        va="bottom",
+        fontsize=8,
     )
     fig.suptitle("Phase_1 10 kHz Level A/B/C baseline")
+    fig.subplots_adjust(left=0.09, right=0.98, bottom=0.10, top=0.90, wspace=0.30, hspace=0.42)
     path = FIGURES / "Fig_P1_01_baseline_10k_levels.pdf"
-    savefig(fig, path)
+    paths.extend(savefig(fig, path, fixed_canvas=True, apply_tight=False))
     plt.close(fig)
-    paths.append(path)
 
     f_hz = column(freq, "f_Hz")
     z_ts = zcol(freq, "T_s_hat")
@@ -252,9 +267,8 @@ def plot_with_matplotlib() -> list[Path]:
     caption(axes[1, 0], "Pressure uses the compact McDonald/Lim-like forced-wave proxy; probe = y=8 delta_T.")
     fig.suptitle("Phase_1 Level C frequency response")
     path = FIGURES / "Fig_P1_02_frequency_response_LevelC.pdf"
-    savefig(fig, path)
+    paths.extend(savefig(fig, path))
     plt.close(fig)
-    paths.append(path)
 
     fig, axes = plt.subplots(1, 2, figsize=(10, 4))
     axes[0].loglog(f_hz, column(freq, "delta_T") * 1e6, marker="o", label="delta_T")
@@ -271,9 +285,8 @@ def plot_with_matplotlib() -> list[Path]:
         ax.grid(True, which="both", alpha=0.25)
     fig.suptitle("Phase_1 boundary-layer and compactness scales")
     path = FIGURES / "Fig_P1_03_boundary_layer_scales.pdf"
-    savefig(fig, path)
+    paths.extend(savefig(fig, path))
     plt.close(fig)
-    paths.append(path)
 
     P = np.hypot(column(power, "P_hat_real"), column(power, "P_hat_imag"))
     zp_power = zcol(power, "p_hat_y_8")
@@ -291,9 +304,8 @@ def plot_with_matplotlib() -> list[Path]:
     caption(axes[0], "Linear reference only; not a finite-amplitude nonlinear result.")
     fig.suptitle("Phase_1 Level C power linearity")
     path = FIGURES / "Fig_P1_04_power_linearity_LevelC.pdf"
-    savefig(fig, path)
+    paths.extend(savefig(fig, path))
     plt.close(fig)
-    paths.append(path)
 
     ca_values, ca_freqs, amp_t, amp_p, phase_p = build_ca_landscape(ca)
     y_edges = np.arange(ca_values.size + 1)
@@ -320,10 +332,8 @@ def plot_with_matplotlib() -> list[Path]:
     )
     fig.suptitle("Phase_1 C_A x frequency landscape")
     path = FIGURES / "Fig_P1_05_CA_frequency_landscape.pdf"
-    savefig(fig, path, png=True)
+    paths.extend(savefig(fig, path))
     plt.close(fig)
-    paths.append(path)
-    paths.append(path.with_suffix(".png"))
 
     fig, axes = plt.subplots(3, 1, figsize=(10, 8), sharex=True)
     for rows in steps:
@@ -343,9 +353,8 @@ def plot_with_matplotlib() -> list[Path]:
     caption(axes[2], "Step pressure is a 10 kHz small-signal derivative proxy, not a full independent 1D NSF time-domain pressure solution.")
     fig.suptitle("Phase_1 Level C step-transient proxy")
     path = FIGURES / "Fig_P1_06_step_transient_LevelC.pdf"
-    savefig(fig, path)
+    paths.extend(savefig(fig, path))
     plt.close(fig)
-    paths.append(path)
 
     fig, axes = plt.subplots(3, 1, figsize=(10, 8), sharex=True)
     for rows in steps:
@@ -368,9 +377,8 @@ def plot_with_matplotlib() -> list[Path]:
     caption(axes[2], "Normalized time highlights the three C_A response scales; pressure remains a 10 kHz small-signal derivative proxy.")
     fig.suptitle("Phase_1 Level C normalized step-transient proxy")
     path = FIGURES / "Fig_P1_06b_step_transient_normalized_time.pdf"
-    savefig(fig, path)
+    paths.extend(savefig(fig, path))
     plt.close(fig)
-    paths.append(path)
 
     residual_names = [("baseline", baseline), ("frequency", freq), ("power", power), ("C_A", ca)]
     residual_max = [np.nanmax(np.abs(column(rows, "energy_residual_rel"))) for _, rows in residual_names]
@@ -384,9 +392,8 @@ def plot_with_matplotlib() -> list[Path]:
         ax.grid(True, which="both", alpha=0.25)
     fig.suptitle("Phase_1 M1 residuals and consistency")
     path = FIGURES / "Fig_P1_07_M1_residuals_and_consistency.pdf"
-    savefig(fig, path)
+    paths.extend(savefig(fig, path))
     plt.close(fig)
-    paths.append(path)
 
     level_c = next(row for row in baseline if row["level"] == "C")
     probe_tags = ["0", "0p5", "1", "2", "5", "8", "10"]
@@ -405,9 +412,8 @@ def plot_with_matplotlib() -> list[Path]:
     caption(axes[1], "Only seven probe points are available; this is a marker-line diagnostic profile.")
     fig.suptitle("Phase_1 10 kHz Level C probe profiles")
     path = FIGURES / "Fig_P1_08_10k_y_profiles_LevelC.pdf"
-    savefig(fig, path)
+    paths.extend(savefig(fig, path))
     plt.close(fig)
-    paths.append(path)
     return paths
 
 
@@ -459,6 +465,7 @@ def plot_with_reportlab_fallback() -> list[Path]:
     paths: list[Path] = []
     for name in names:
         path = FIGURES / name
+        png_path = path.with_suffix(".png")
         c = canvas.Canvas(str(path), pagesize=letter)
         width_pt, height_pt = letter
         c.setFont("Helvetica-Bold", 14)
@@ -472,8 +479,22 @@ def plot_with_reportlab_fallback() -> list[Path]:
             c.drawString(54, height_pt - 104, "Run tests/Test_phase1_plot.py in PyCharm for full matplotlib figures.")
         c.drawString(54, 72, "Pressure uses compact proxy; step pressure uses 10 kHz small-signal derivative proxy where applicable.")
         c.save()
+
+        if name != "Fig_P1_05_CA_frequency_landscape.pdf":
+            preview = Image.new("RGB", (1000, 560), "white")
+            preview_draw = ImageDraw.Draw(preview)
+            preview_draw.text((48, 48), name.removesuffix(".pdf"), fill="black")
+            preview_draw.text((48, 92), "Fallback PNG generated because matplotlib is unavailable in this shell.", fill="black")
+            preview_draw.text((48, 124), "Run tests/Test_phase1_plot.py in PyCharm for full matplotlib figures.", fill="black")
+            preview_draw.text(
+                (48, 492),
+                "Pressure uses compact proxy; step pressure uses 10 kHz small-signal derivative proxy where applicable.",
+                fill="black",
+            )
+            preview.save(png_path)
+
         paths.append(path)
-    paths.append(img_path)
+        paths.append(png_path)
     return paths
 
 
