@@ -1,0 +1,28 @@
+case:
+  name: verification_shear_wave
+  phase: Phase_2
+  purpose: P2-4 shear-wave viscosity
+
+include: gas_air_10k_physical_timestep.yaml
+
+initial_condition:
+  type: shear_wave
+  amplitude: 1.0e-5
+  wavenumber_mode: 1
+  direction: x
+
+p2_04_shear_wave:
+  nx: 64
+  ny: 64
+  steps: 120
+  sample_interval: 1
+  mode_index: 1
+  amplitude: 1.0e-5
+  fit_start: 10
+  fit_stop: null
+  directions:
+    - x
+    - y
+    - diagonal
+  relative_tolerance: 0.05
+  direction_tolerance: 0.05

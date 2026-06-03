@@ -1,0 +1,51 @@
+case:
+  name: gas_air_10k_physical_timestep
+  phase: Phase_2
+  purpose: M2 production mapping baseline
+
+physical:
+  T0_K: 300.0
+  p0_Pa: 101325.0
+  rho0_kg_m3: 1.177
+  c0_m_s: 347.0
+  gamma: 1.4
+  cp_J_kgK: 1005.0
+  kg_W_mK: 0.0263
+  nu0_m2_s: 1.57e-5
+  alpha0_m2_s: 2.2233775895e-5
+  Pr: 0.7061328707
+
+lattice:
+  velocity_set: D2Q21
+  D: 2
+  S: 3
+  dx_m: 4.0e-6
+  dt_s: 3.0e-9
+  theta_q_lu: 0.6666666666666666
+  theta_ref_policy: physical_sound_speed
+  theta_transport_policy: theta_ref_lu
+  rho_ref_lu: 1.0
+
+collision:
+  model: SMRT_central_Hermite_regularized_stress
+  bulk_viscosity_policy: diagnostic_zero
+  nu_b_lu: auto
+  high_order_relaxation: 1.0
+  use_binomial_transform: true
+  regularized_shear_xy_factor: 0.965
+  regularized_shear_normal_factor: 0.84
+  regularized_heat_flux_factor: -0.45
+  regularized_heat_flux_f_fraction: 0.5714285714285714
+  conductive_heat_flux_moment_factor: 0.05192359403391186
+
+numerics:
+  precision: float64
+  streaming: pull
+  boundary: periodic
+  nx: 64
+  ny: 4
+  steps: 16
+  output_interval: 1
+
+postprocess:
+  save_hdf5: true

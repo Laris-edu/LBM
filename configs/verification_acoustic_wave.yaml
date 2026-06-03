@@ -1,0 +1,12 @@
+case:
+  name: verification_acoustic_wave
+  phase: Phase_2
+  purpose: P2-6 acoustic wave
+
+include: gas_air_10k_physical_timestep.yaml
+
+initial_condition:
+  type: acoustic_eigenmode
+  amplitude: 1.0e-6
+  wavenumber_mode: 1
+  direction: x

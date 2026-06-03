@@ -1,0 +1,27 @@
+case:
+  name: verification_thermal_diffusion
+  phase: Phase_2
+  purpose: P2-5 isobaric thermal diffusion
+
+include: gas_air_10k_physical_timestep.yaml
+
+initial_condition:
+  type: isobaric_thermal_sine
+  amplitude: 1.0e-5
+  wavenumber_mode: 1
+  direction: x
+
+p2_05_thermal_diffusion:
+  nx: 64
+  ny: 64
+  steps: 160
+  sample_interval: 1
+  mode_index: 1
+  amplitude: 1.0e-5
+  fit_start: 10
+  fit_stop: null
+  directions:
+    - x
+    - y
+  relative_tolerance: 0.05
+  heat_flux_tolerance: 0.05
