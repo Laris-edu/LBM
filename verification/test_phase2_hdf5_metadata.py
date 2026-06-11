@@ -2,7 +2,7 @@ import h5py
 import numpy as np
 
 from core.solver import GasSolver2D
-from core.unit_mapping import physical_timestep_config
+from core.unit_mapping import d2q37_physical_timestep_config, physical_timestep_config
 
 
 def test_hdf5_metadata_minimum_schema(tmp_path):
@@ -46,11 +46,22 @@ def test_hdf5_metadata_minimum_schema(tmp_path):
         "tau21",
         "tau22",
         "tau32",
+        "central_moment_closure",
+        "dispersion_correction_enabled",
+        "dispersion_correction_low_laplacian",
+        "dispersion_correction_high_laplacian",
         "regularized_shear_xy_factor",
         "regularized_shear_normal_factor",
+        "regularized_shear_xy_dispersion_target",
+        "regularized_shear_normal_dispersion_target",
+        "regularized_heat_flux_factor_policy",
         "regularized_heat_flux_factor",
+        "regularized_heat_flux_dispersion_target",
         "regularized_heat_flux_f_fraction",
+        "conductive_heat_flux_moment_factor_policy",
         "conductive_heat_flux_moment_factor",
+        "conductive_heat_flux_dispersion_target",
+        "conductive_heat_flux_galilean_correction_factor",
         "high_order_relaxation",
         "energy_closure_definition",
     }
@@ -83,3 +94,23 @@ def test_hdf5_metadata_minimum_schema(tmp_path):
         assert required_results.issubset(status.keys())
         assert "fields/q_lu" in h5
         assert h5["fields/q_lu"].shape == (3, 4, 2)
+
+
+def test_hdf5_metadata_records_d2q37_lattice_family(tmp_path):
+    config = d2q37_physical_timestep_config()
+    config["case"] = {"name": "metadata_d2q37_test"}
+    config["numerics"] = {"nx": 4, "ny": 3}
+    solver = GasSolver2D(config)
+    solver.initialize_from_macro(1.0, np.zeros(2), solver.mapping.theta_ref_lu)
+    output = tmp_path / "phase2_d2q37.h5"
+    solver.save_hdf5(str(output))
+
+    with h5py.File(output, "r") as h5:
+        status = h5["metadata"]["verification_status"].attrs
+        lattice = h5["metadata"]["lattice"].attrs
+        assert status["velocity_set"] == "D2Q37"
+        assert status["Q"] == 37
+        assert lattice["velocity_set"] == "D2Q37"
+        assert lattice["Q"] == 37
+        assert h5["fields/f"].shape == (3, 4, 37)
+        assert h5["fields/g"].shape == (3, 4, 37)

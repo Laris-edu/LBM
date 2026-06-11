@@ -6,7 +6,8 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from core.lattice_d2q21 import LatticeD2Q21, make_d2q21
+from core.dispersion_correction import apply_periodic_spectral_correction
+from core.lattice import Lattice, make_lattice
 from core.unit_mapping import UnitMapping, heat_flux_lu_to_phys, pressure_lu_to_phys, temperature_lu_to_phys
 
 
@@ -31,8 +32,8 @@ def density(f: np.ndarray) -> np.ndarray:
     return np.sum(np.asarray(f, dtype=float), axis=-1)
 
 
-def velocity(f: np.ndarray, rho: np.ndarray | None = None, lattice: LatticeD2Q21 | None = None) -> np.ndarray:
-    lattice = lattice or make_d2q21()
+def velocity(f: np.ndarray, rho: np.ndarray | None = None, lattice: Lattice | None = None) -> np.ndarray:
+    lattice = lattice or make_lattice()
     f = np.asarray(f, dtype=float)
     rho = density(f) if rho is None else np.asarray(rho, dtype=float)
     momentum = np.einsum("...a,ai->...i", f, lattice.c)
@@ -42,15 +43,20 @@ def velocity(f: np.ndarray, rho: np.ndarray | None = None, lattice: LatticeD2Q21
 def translational_internal_energy(
     f: np.ndarray,
     u: np.ndarray,
-    lattice: LatticeD2Q21 | None = None,
+    lattice: Lattice | None = None,
 ) -> np.ndarray:
-    lattice = lattice or make_d2q21()
+    lattice = lattice or make_lattice()
     peculiar = lattice.c - np.asarray(u, dtype=float)[..., None, :]
     c2 = np.sum(peculiar**2, axis=-1)
     return 0.5 * np.sum(np.asarray(f, dtype=float) * c2, axis=-1)
 
 
-def internal_energy_scalar(f: np.ndarray, g: np.ndarray, u: np.ndarray, lattice: LatticeD2Q21 | None = None) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+def internal_energy_scalar(
+    f: np.ndarray,
+    g: np.ndarray,
+    u: np.ndarray,
+    lattice: Lattice | None = None,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     K_tr = translational_internal_energy(f, u, lattice)
     G_int = np.sum(np.asarray(g, dtype=float), axis=-1)
     return K_tr + G_int, K_tr, G_int
@@ -62,9 +68,9 @@ def recover_macro(
     *,
     D: int = 2,
     S: int = 3,
-    lattice: LatticeD2Q21 | None = None,
+    lattice: Lattice | None = None,
 ) -> MacroState:
-    lattice = lattice or make_d2q21()
+    lattice = lattice or make_lattice()
     rho = density(f)
     u = velocity(f, rho, lattice)
     internal, K_tr, G_int = internal_energy_scalar(f, g, u, lattice)
@@ -90,7 +96,7 @@ def recover_macro(
     )
 
 
-def total_energy(f: np.ndarray, g: np.ndarray, *, D: int = 2, S: int = 3, lattice: LatticeD2Q21 | None = None) -> np.ndarray:
+def total_energy(f: np.ndarray, g: np.ndarray, *, D: int = 2, S: int = 3, lattice: Lattice | None = None) -> np.ndarray:
     return recover_macro(f, g, D=D, S=S, lattice=lattice).E_tot
 
 
@@ -98,11 +104,11 @@ def central_energy_flux_lu(
     f: np.ndarray,
     g: np.ndarray,
     u: np.ndarray | None = None,
-    lattice: LatticeD2Q21 | None = None,
+    lattice: Lattice | None = None,
 ) -> np.ndarray:
     """Return raw central energy-flux moment with component order ``(q_x, q_y)``."""
 
-    lattice = lattice or make_d2q21()
+    lattice = lattice or make_lattice()
     f = np.asarray(f, dtype=float)
     g = np.asarray(g, dtype=float)
     if u is None:
@@ -119,7 +125,7 @@ def heat_flux_lu(
     f: np.ndarray,
     g: np.ndarray,
     u: np.ndarray | None = None,
-    lattice: LatticeD2Q21 | None = None,
+    lattice: Lattice | None = None,
     mapping: UnitMapping | None = None,
 ) -> np.ndarray:
     """Return conductive lattice heat flux with component order ``(q_x, q_y)``.
@@ -133,7 +139,20 @@ def heat_flux_lu(
     q_raw = central_energy_flux_lu(f, g, u=u, lattice=lattice)
     if mapping is None:
         return q_raw
-    return q_raw * mapping.collision.conductive_heat_flux_moment_factor
+    q_raw = apply_periodic_spectral_correction(
+        q_raw,
+        enabled=mapping.collision.dispersion_correction_enabled,
+        target=mapping.collision.conductive_heat_flux_dispersion_target,
+        low_laplacian=mapping.collision.dispersion_correction_low_laplacian,
+        high_laplacian=mapping.collision.dispersion_correction_high_laplacian,
+    )
+    q_conductive = q_raw * mapping.collision.conductive_heat_flux_moment_factor
+    correction_factor = mapping.collision.conductive_heat_flux_galilean_correction_factor
+    if correction_factor == 0.0:
+        return q_conductive
+    state = recover_macro(f, g, D=mapping.lattice.D, S=mapping.lattice.S, lattice=lattice)
+    theta_prime = state.theta - mapping.theta_ref_lu
+    return q_conductive + correction_factor * state.u * theta_prime[..., None]
 
 
 def macro_to_physical_dict(state: MacroState, mapping: UnitMapping) -> dict[str, np.ndarray]:

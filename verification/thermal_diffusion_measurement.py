@@ -21,7 +21,7 @@ DEFAULT_HEAT_FLUX_TOLERANCE = 0.05
 class ThermalDiffusionSettings:
     nx: int = 64
     ny: int = 64
-    steps: int = 160
+    steps: int = 320
     sample_interval: int = 1
     mode_index: int = 1
     amplitude: float = 1.0e-5
@@ -30,6 +30,7 @@ class ThermalDiffusionSettings:
     directions: tuple[str, ...] = DEFAULT_DIRECTIONS
     relative_tolerance: float = DEFAULT_RELATIVE_TOLERANCE
     heat_flux_tolerance: float = DEFAULT_HEAT_FLUX_TOLERANCE
+    background_velocity_lu: tuple[float, float] = (0.0, 0.0)
 
 
 def _settings_from_config(config: dict[str, Any]) -> ThermalDiffusionSettings:
@@ -49,7 +50,7 @@ def _settings_from_config(config: dict[str, Any]) -> ThermalDiffusionSettings:
     return ThermalDiffusionSettings(
         nx=int(p2.get("nx", 64)),
         ny=int(p2.get("ny", 64)),
-        steps=int(p2.get("steps", 160)),
+        steps=int(p2.get("steps", 320)),
         sample_interval=int(p2.get("sample_interval", 1)),
         mode_index=int(p2.get("mode_index", p2.get("wavenumber_mode", 1))),
         amplitude=float(p2.get("amplitude", 1.0e-5)),
@@ -58,7 +59,19 @@ def _settings_from_config(config: dict[str, Any]) -> ThermalDiffusionSettings:
         directions=directions_tuple,
         relative_tolerance=float(p2.get("relative_tolerance", DEFAULT_RELATIVE_TOLERANCE)),
         heat_flux_tolerance=float(p2.get("heat_flux_tolerance", DEFAULT_HEAT_FLUX_TOLERANCE)),
+        background_velocity_lu=_velocity_pair(p2.get("background_velocity_lu", (0.0, 0.0))),
     )
+
+
+def _velocity_pair(value: Any) -> tuple[float, float]:
+    if isinstance(value, int | float):
+        return (float(value), 0.0)
+    if isinstance(value, dict):
+        return (float(value.get("ux", 0.0)), float(value.get("uy", 0.0)))
+    items = list(value)
+    if len(items) != 2:
+        raise ValueError("background_velocity_lu must contain ux and uy")
+    return (float(items[0]), float(items[1]))
 
 
 def _simulation_config(config: dict[str, Any], settings: ThermalDiffusionSettings, direction: str) -> dict[str, Any]:
@@ -122,7 +135,7 @@ def _initialize_isobaric_thermal_wave(
     theta = theta0 * (1.0 + settings.amplitude * np.sin(phase))
     p0 = solver.mapping.lattice.rho_ref_lu * theta0
     rho = p0 / theta
-    u = np.zeros((solver.ny, solver.nx, 2), dtype=float)
+    u = np.broadcast_to(np.asarray(settings.background_velocity_lu, dtype=float), (solver.ny, solver.nx, 2)).copy()
     solver.initialize_from_macro(rho, u, theta)
     return k_mag
 
@@ -255,6 +268,7 @@ def measure_thermal_diffusion_direction(
         "alpha_measured_lu": float(alpha_measured) if np.isfinite(alpha_measured) else np.nan,
         "relative_error": float(relative_error) if np.isfinite(relative_error) else np.nan,
         "mode_index": settings.mode_index,
+        "background_velocity_lu": list(settings.background_velocity_lu),
         "k_mag_lu": k_mag,
         "fitting_window": fit["fitting_window"],
         "residual_norm": fit["residual_norm"],
@@ -328,6 +342,7 @@ def measure_thermal_diffusion(config: dict[str, Any]) -> dict[str, Any]:
         "baseline_direction": baseline["direction"],
         "baseline_relative_error": baseline["relative_error"],
         "mode_index": settings.mode_index,
+        "background_velocity_lu": list(settings.background_velocity_lu),
         "fitting_window": fitting_windows,
         "residual_norm": float(max(residuals)) if residuals else np.nan,
         "directions": list(settings.directions),

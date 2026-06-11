@@ -7,7 +7,7 @@ from functools import lru_cache
 import numpy as np
 
 from core.hermite import monomial_exponents
-from core.lattice_d2q21 import LatticeD2Q21, make_d2q21
+from core.lattice import Lattice, lattice_family, make_lattice
 
 
 def _normal_raw_moment_1d(order: int, mean: np.ndarray, theta: np.ndarray) -> np.ndarray:
@@ -46,8 +46,8 @@ def gaussian_raw_moment_targets(
 
 
 @lru_cache(maxsize=None)
-def _moment_solution_matrix(max_order: int) -> tuple[np.ndarray, tuple[tuple[int, int], ...]]:
-    lattice = make_d2q21()
+def _moment_solution_matrix(max_order: int, velocity_set: str) -> tuple[np.ndarray, tuple[tuple[int, int], ...]]:
+    lattice = make_lattice(velocity_set)
     exponents = tuple(monomial_exponents(max_order))
     a = []
     cx = lattice.c[:, 0]
@@ -62,8 +62,8 @@ def _moment_solution_matrix(max_order: int) -> tuple[np.ndarray, tuple[tuple[int
     return solution, exponents
 
 
-def _solve_moment_matched(targets: np.ndarray, max_order: int) -> np.ndarray:
-    solution, _ = _moment_solution_matrix(max_order)
+def _solve_moment_matched(targets: np.ndarray, max_order: int, lattice: Lattice) -> np.ndarray:
+    solution, _ = _moment_solution_matrix(max_order, lattice_family(lattice))
     return np.einsum("...m,am->...a", targets, solution)
 
 
@@ -71,19 +71,18 @@ def feq_hermite4(
     rho: np.ndarray,
     u: np.ndarray,
     theta: np.ndarray,
-    lattice: LatticeD2Q21 | None = None,
+    lattice: Lattice | None = None,
 ) -> np.ndarray:
     """Fourth-order Hermite/moment-matched equilibrium for ``f``.
 
-    ``theta`` is the thermodynamic lattice temperature.  The D2Q21
+    ``theta`` is the thermodynamic lattice temperature.  The lattice
     quadrature temperature remains available from ``lattice.theta_q`` and is
     not used as a thermodynamic substitute.
     """
 
-    lattice = lattice or make_d2q21()
-    del lattice
+    lattice = lattice or make_lattice()
     targets = gaussian_raw_moment_targets(rho, u, theta, max_order=4)
-    return _solve_moment_matched(targets, max_order=4)
+    return _solve_moment_matched(targets, max_order=4, lattice=lattice)
 
 
 def geq_polyatomic(
@@ -91,7 +90,7 @@ def geq_polyatomic(
     u: np.ndarray,
     theta: np.ndarray,
     S: float,
-    lattice: LatticeD2Q21 | None = None,
+    lattice: Lattice | None = None,
     order: int = 2,
 ) -> np.ndarray:
     """Polyatomic internal-energy equilibrium for ``g``.
@@ -102,11 +101,10 @@ def geq_polyatomic(
 
     if order < 2 or order > 4:
         raise ValueError("g equilibrium order must be 2, 3, or 4")
-    lattice = lattice or make_d2q21()
-    del lattice
+    lattice = lattice or make_lattice()
     e_int_extra = 0.5 * float(S) * np.asarray(rho, dtype=float) * np.asarray(theta, dtype=float)
     targets = gaussian_raw_moment_targets(e_int_extra, u, theta, max_order=order)
-    return _solve_moment_matched(targets, max_order=order)
+    return _solve_moment_matched(targets, max_order=order, lattice=lattice)
 
 
 def equilibrium_fg(
@@ -114,14 +112,14 @@ def equilibrium_fg(
     u: np.ndarray,
     theta: np.ndarray,
     S: float,
-    lattice: LatticeD2Q21 | None = None,
+    lattice: Lattice | None = None,
 ) -> tuple[np.ndarray, np.ndarray]:
-    lattice = lattice or make_d2q21()
+    lattice = lattice or make_lattice()
     return feq_hermite4(rho, u, theta, lattice), geq_polyatomic(rho, u, theta, S, lattice)
 
 
-def raw_moments(distribution: np.ndarray, lattice: LatticeD2Q21 | None = None, max_order: int = 4) -> dict[tuple[int, int], np.ndarray]:
-    lattice = lattice or make_d2q21()
+def raw_moments(distribution: np.ndarray, lattice: Lattice | None = None, max_order: int = 4) -> dict[tuple[int, int], np.ndarray]:
+    lattice = lattice or make_lattice()
     f = np.asarray(distribution, dtype=float)
     cx = lattice.c[:, 0]
     cy = lattice.c[:, 1]

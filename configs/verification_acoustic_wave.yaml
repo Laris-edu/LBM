@@ -1,12 +1,25 @@
 case:
   name: verification_acoustic_wave
   phase: Phase_2
-  purpose: P2-6 acoustic wave
+  purpose: P2-6 D2Q37 acoustic wave
 
-include: gas_air_10k_physical_timestep.yaml
+include: gas_air_10k_d2q37_physical_timestep.yaml
 
 initial_condition:
   type: acoustic_eigenmode
   amplitude: 1.0e-6
   wavenumber_mode: 1
   direction: x
+
+p2_06_acoustic_wave:
+  nx: 64
+  ny: 64
+  steps: 240
+  sample_interval: 1
+  mode_index: 1
+  amplitude: 1.0e-6
+  fit_start: 10
+  directions: [x, y]
+  sound_speed_tolerance: 0.02
+  gamma_tolerance: 0.02
+  direction_tolerance: 0.02

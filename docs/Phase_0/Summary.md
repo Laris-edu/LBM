@@ -20,7 +20,9 @@
 
 本项目的核心不是“普通 CNT 热声换能器仿真”，而是建立一个**可验证的时域热声 LBM 框架**。第一篇论文的主线是：
 
-> 2D freestanding CNT 薄膜作为零厚度表面热源，气体侧由完全可压缩 NSF 极限描述；薄膜用集总面热容 ODE；近场用 D2Q21 + SMRT + f-g 双分布 LBM 求解，远场声压由 Kirchhoff 控制面积分外推。
+> 2D freestanding CNT 薄膜作为零厚度表面热源，气体侧由完全可压缩 NSF 极限描述；薄膜用集总面热容 ODE；近场以 D2Q21 + SMRT + f-g 双分布 LBM 起步，必要时进入 D2Q37 或等价九阶速度集 fallback，远场声压由 Kirchhoff 控制面积分外推。
+
+**2026-06-06 状态更新**：Phase_2 M2-Critical 已实际触发 D2Q37 fallback，并已推进到 `D2Q37_DIAGNOSTIC_READY`。该更新不改变 Phase_0 物理冻结值，也不返工 Phase_1 参考模型、CSV、manifest 或封版报告。
 
 物理链条是：
 
@@ -53,7 +55,7 @@ Phase_1 的任务不是写 LBM，而是建立一个**1D 连续介质参考模型
 | 驱动：直接给定面热功率               | 已冻结 | 足够，但需补充“扰动功率/绝对功率”口径 |
 | 界面：Level A/B/C 三级渐进       | 已冻结 | 足够                   |
 | 辐射策略：近场 LBM + Kirchhoff   | 已冻结 | 足够                   |
-| LBM 主线：D2Q21 + SMRT + f-g | 已冻结 | 足够                   |
+| LBM 主线：D2Q21 起步 + D2Q37 fallback 预案 | 已冻结 | 足够                   |
 
 这张表对 Phase_1 已经足够。Phase_1 需要的不是 D2Q21 细节，而是：物性、薄膜 ODE、边界条件、验证工况和 M1 门槛。这些都已经有了。
 
@@ -142,7 +144,9 @@ tau_3    ≈ 0.50625
 
 也就是松弛时间非常接近 `0.5`。这不阻止 Phase_1，也不阻止 Phase_2 起步，但意味着 Phase_2 的热扩散、声波衰减、Pr 扫描可能对数值误差比较敏感。你的计划里已经放了 M2-Critical：若 `Pr/gamma` 偏差超过 5%，修正 D2Q21 或升级 D2Q37。这个风险已经被流程覆盖。
 
-结论：**速度集冻结表足够，不需要在 Phase_0 继续深挖。**
+2026-06-06 的 Phase_2 结果已经触发 D2Q37 fallback，并完成首轮诊断迁移。这个状态不推翻上面的 Phase_0 判定：D2Q21 冻结表仍然是起步基线，D2Q37 是 M2-Critical 后的 velocity-space 替换路线，Phase_1 不需要重做。
+
+结论：**速度集冻结表足够；现在只需要在 Phase_0 文档中补记 D2Q37 fallback 状态，不需要返工 Phase_0 或 Phase_1。**
 
 ---
 
@@ -366,4 +370,3 @@ Level A/B/C 至少各有一个 10 kHz baseline 通过；
 然后实现 1D 解析/有限差分参考模型；
 用 M1 决定是否进入 Phase_2。
 ```
-

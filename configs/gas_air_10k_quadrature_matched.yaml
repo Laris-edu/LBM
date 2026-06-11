@@ -30,6 +30,7 @@ collision:
   model: SMRT_central_Hermite_regularized_stress
   bulk_viscosity_policy: diagnostic_zero
   nu_b_lu: auto
+  central_moment_closure: second_order
   high_order_relaxation: 1.0
   use_binomial_transform: true
   regularized_heat_flux_factor: 0.0

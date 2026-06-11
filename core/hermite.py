@@ -1,4 +1,4 @@
-"""Hermite helpers for the Phase 2 D2Q21 implementation."""
+"""Hermite helpers for Phase 2 lattice families."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ from functools import lru_cache
 
 import numpy as np
 
-from core.lattice_d2q21 import LatticeD2Q21, make_d2q21
+from core.lattice import Lattice, make_lattice
 
 
 def hermite_0(c: np.ndarray, theta_q: float) -> np.ndarray:
@@ -75,9 +75,12 @@ def monomial_exponents(max_order: int) -> list[tuple[int, int]]:
 
 @lru_cache(maxsize=None)
 def moment_matrix(max_order: int, q: int = 21) -> tuple[np.ndarray, tuple[tuple[int, int], ...]]:
-    lattice = make_d2q21()
-    if q != lattice.q:
-        raise ValueError("only D2Q21 is supported")
+    if q == 21:
+        lattice = make_lattice("D2Q21")
+    elif q == 37:
+        lattice = make_lattice("D2Q37")
+    else:
+        raise ValueError(f"unsupported lattice Q: {q}")
     exponents = tuple(monomial_exponents(max_order))
     rows = []
     cx = lattice.c[:, 0]
@@ -87,8 +90,12 @@ def moment_matrix(max_order: int, q: int = 21) -> tuple[np.ndarray, tuple[tuple[
     return np.asarray(rows, dtype=float), exponents
 
 
-def project_raw_moments(distribution: np.ndarray, max_order: int, lattice: LatticeD2Q21 | None = None) -> dict[tuple[int, int], np.ndarray]:
-    lattice = lattice or make_d2q21()
+def project_raw_moments(
+    distribution: np.ndarray,
+    max_order: int,
+    lattice: Lattice | None = None,
+) -> dict[tuple[int, int], np.ndarray]:
+    lattice = lattice or make_lattice()
     values: dict[tuple[int, int], np.ndarray] = {}
     cx = lattice.c[:, 0]
     cy = lattice.c[:, 1]
@@ -98,8 +105,8 @@ def project_raw_moments(distribution: np.ndarray, max_order: int, lattice: Latti
     return values
 
 
-def assert_discrete_orthogonality(tol: float = 1.0e-12) -> None:
-    lattice = make_d2q21()
+def assert_discrete_orthogonality(tol: float = 1.0e-12, lattice: Lattice | None = None) -> None:
+    lattice = lattice or make_lattice()
     c = lattice.c
     w = lattice.w
     h1 = hermite_1(c, lattice.theta_q)

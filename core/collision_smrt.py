@@ -8,11 +8,14 @@ the Phase 2 implementation plan.  Relaxation rates are supplied exclusively by
 from __future__ import annotations
 
 from dataclasses import dataclass
+from functools import lru_cache
 
 import numpy as np
 
 from core.equilibrium import equilibrium_fg
-from core.lattice_d2q21 import LatticeD2Q21, make_d2q21
+from core.dispersion_correction import apply_periodic_spectral_correction
+from core.hermite import monomial_exponents
+from core.lattice import Lattice, make_lattice
 from core.macroscopic import ENERGY_CLOSURE_DEFINITION, central_energy_flux_lu, recover_macro
 from core.unit_mapping import UnitMapping
 
@@ -27,7 +30,7 @@ class CollisionDiagnostics:
     clipping_used: bool = False
 
 
-def _central_second_moment_matrix(lattice: LatticeD2Q21, u: np.ndarray) -> np.ndarray:
+def _central_second_moment_matrix(lattice: Lattice, u: np.ndarray) -> np.ndarray:
     """Return rows for ``1, xi_y, xi_x, xi_y^2, xi_x xi_y, xi_x^2``."""
 
     xi = lattice.c - u[..., None, :]
@@ -49,12 +52,12 @@ def _central_second_moment_matrix(lattice: LatticeD2Q21, u: np.ndarray) -> np.nd
 def _weighted_minimum_norm_second_order_delta(
     delta_moments: np.ndarray,
     u: np.ndarray,
-    lattice: LatticeD2Q21,
+    lattice: Lattice,
 ) -> np.ndarray:
     """Project second-order central moments back to populations.
 
     This is the binomial/central-Hermite regularization step used for the
-    current Phase 2 D2Q21 collision.  It reconstructs only the non-equilibrium
+    current Phase 2 collision.  It reconstructs only the non-equilibrium
     second-order stress content, with zero density and momentum increments,
     while minimizing the weighted population norm set by the lattice weights.
     """
@@ -66,7 +69,59 @@ def _weighted_minimum_norm_second_order_delta(
     return np.einsum("...ia,...i,a->...a", basis, multipliers, lattice.w)
 
 
-def _central_first_moment_matrix(lattice: LatticeD2Q21, u: np.ndarray) -> np.ndarray:
+@lru_cache(maxsize=None)
+def _central_monomial_exponents(max_order: int) -> tuple[tuple[int, int], ...]:
+    return tuple(monomial_exponents(max_order))
+
+
+def _central_moment_matrix(
+    lattice: Lattice,
+    u: np.ndarray,
+    *,
+    max_order: int,
+) -> np.ndarray:
+    """Return central monomial rows through ``max_order``.
+
+    Rows use ``xi_x^m xi_y^n`` ordering from :func:`monomial_exponents`.
+    This is the explicit binomial transform used for high-order central
+    relaxation; raw moments are never relaxed directly.
+    """
+
+    xi = lattice.c - u[..., None, :]
+    xi_x = xi[..., 0]
+    xi_y = xi[..., 1]
+    rows = [xi_x**m * xi_y**n for m, n in _central_monomial_exponents(max_order)]
+    return np.stack(rows, axis=-2)
+
+
+def _central_moments(
+    distribution: np.ndarray,
+    u: np.ndarray,
+    lattice: Lattice,
+    *,
+    max_order: int,
+) -> np.ndarray:
+    basis = _central_moment_matrix(lattice, u, max_order=max_order)
+    return np.einsum("...a,...ia->...i", distribution, basis)
+
+
+def _weighted_minimum_norm_central_delta(
+    delta_moments: np.ndarray,
+    u: np.ndarray,
+    lattice: Lattice,
+    *,
+    max_order: int,
+) -> np.ndarray:
+    """Project central moments through ``max_order`` back to populations."""
+
+    basis = _central_moment_matrix(lattice, u, max_order=max_order)
+    weighted_basis = basis * lattice.w
+    gram = np.einsum("...ia,...ja->...ij", weighted_basis, basis)
+    multipliers = np.linalg.solve(gram, delta_moments[..., None])[..., 0]
+    return np.einsum("...ia,...i,a->...a", basis, multipliers, lattice.w)
+
+
+def _central_first_moment_matrix(lattice: Lattice, u: np.ndarray) -> np.ndarray:
     """Return rows for ``1, xi_y, xi_x``."""
 
     xi = lattice.c - u[..., None, :]
@@ -78,7 +133,7 @@ def _central_first_moment_matrix(lattice: LatticeD2Q21, u: np.ndarray) -> np.nda
 def _weighted_minimum_norm_first_order_delta(
     delta_moments: np.ndarray,
     u: np.ndarray,
-    lattice: LatticeD2Q21,
+    lattice: Lattice,
 ) -> np.ndarray:
     """Project g first-order central internal-energy flux to populations."""
 
@@ -89,7 +144,7 @@ def _weighted_minimum_norm_first_order_delta(
     return np.einsum("...ia,...i,a->...a", basis, multipliers, lattice.w)
 
 
-def _central_heat_flux_moment_matrix(lattice: LatticeD2Q21, u: np.ndarray) -> np.ndarray:
+def _central_heat_flux_moment_matrix(lattice: Lattice, u: np.ndarray) -> np.ndarray:
     """Return rows fixing lower f moments plus third-order heat flux.
 
     Row order is ``1, xi_y, xi_x, xi_y^2, xi_x xi_y, xi_x^2,
@@ -120,7 +175,7 @@ def _central_heat_flux_moment_matrix(lattice: LatticeD2Q21, u: np.ndarray) -> np
 def _weighted_minimum_norm_heat_flux_delta(
     delta_moments: np.ndarray,
     u: np.ndarray,
-    lattice: LatticeD2Q21,
+    lattice: Lattice,
 ) -> np.ndarray:
     """Project f third-order translational heat flux to populations."""
 
@@ -131,11 +186,30 @@ def _weighted_minimum_norm_heat_flux_delta(
     return np.einsum("...ia,...i,a->...a", basis, multipliers, lattice.w)
 
 
+def _central_translational_energy_flux_lu(
+    f: np.ndarray,
+    u: np.ndarray,
+    lattice: Lattice,
+) -> np.ndarray:
+    xi = lattice.c - u[..., None, :]
+    xi2 = np.sum(xi * xi, axis=-1)
+    return 0.5 * np.einsum("...a,...a,...ai->...i", f, xi2, xi)
+
+
+def _central_internal_energy_flux_lu(
+    g: np.ndarray,
+    u: np.ndarray,
+    lattice: Lattice,
+) -> np.ndarray:
+    xi = lattice.c - u[..., None, :]
+    return np.einsum("...a,...ai->...i", g, xi)
+
+
 def _nonequilibrium_central_stress(
     f: np.ndarray,
     f_eq: np.ndarray,
     u: np.ndarray,
-    lattice: LatticeD2Q21,
+    lattice: Lattice,
 ) -> np.ndarray:
     xi = lattice.c - u[..., None, :]
     return np.einsum("...a,...ai,...aj->...ij", f - f_eq, xi, xi)
@@ -146,18 +220,33 @@ def _regularized_f_collision(
     f_eq: np.ndarray,
     u: np.ndarray,
     mapping: UnitMapping,
-    lattice: LatticeD2Q21,
+    lattice: Lattice,
 ) -> np.ndarray:
-    """Relax the central second-order non-equilibrium stress.
+    """Relax central f moments through fourth order.
 
     The previous scaffold relaxed every population-space non-equilibrium
     component with ``tau21``.  For cold physical-timestep mappings this allowed
     high-order population noise to drive the translational central energy
-    negative.  This regularized form keeps only the stress content that controls
-    shear transport and removes higher-order non-equilibrium content.
+    negative.  This regularized form relaxes hydrodynamic second-order stress
+    and explicitly damps third/fourth central ghost content through the same
+    binomial transform instead of leaving it to the minimum-norm nullspace.
     """
 
     stress = _nonequilibrium_central_stress(f, f_eq, u, lattice)
+    stress_xy = apply_periodic_spectral_correction(
+        stress[..., 0, 1],
+        enabled=mapping.collision.dispersion_correction_enabled,
+        target=mapping.collision.regularized_shear_xy_dispersion_target,
+        low_laplacian=mapping.collision.dispersion_correction_low_laplacian,
+        high_laplacian=mapping.collision.dispersion_correction_high_laplacian,
+    )
+    stress_dev = apply_periodic_spectral_correction(
+        stress[..., 0, 0] - stress[..., 1, 1],
+        enabled=mapping.collision.dispersion_correction_enabled,
+        target=mapping.collision.regularized_shear_normal_dispersion_target,
+        low_laplacian=mapping.collision.dispersion_correction_low_laplacian,
+        high_laplacian=mapping.collision.dispersion_correction_high_laplacian,
+    )
     omega_shear = 1.0 / mapping.tau21
     shear_factor = 1.0 - omega_shear
     xy_factor = mapping.collision.regularized_shear_xy_factor
@@ -167,23 +256,40 @@ def _regularized_f_collision(
     # path we remove trace non-equilibrium content instead of over-relaxing it
     # with tau22=0.5, which was the dominant source of negative K_tr growth.
     trace_post = np.zeros_like(stress[..., 0, 0])
-    dev_post = normal_factor * shear_factor * (stress[..., 0, 0] - stress[..., 1, 1])
-    xy_post = xy_factor * shear_factor * stress[..., 0, 1]
+    dev_post = normal_factor * shear_factor * stress_dev
+    xy_post = xy_factor * shear_factor * stress_xy
     delta_xx = 0.5 * (trace_post + dev_post)
     delta_yy = 0.5 * (trace_post - dev_post)
     zeros = np.zeros_like(delta_xx)
-    delta_moments = np.stack(
-        (
-            zeros,
-            zeros,
-            zeros,
-            delta_yy,
-            xy_post,
-            delta_xx,
-        ),
-        axis=-1,
-    )
-    return f_eq + _weighted_minimum_norm_second_order_delta(delta_moments, u, lattice)
+
+    if mapping.collision.central_moment_closure == "second_order":
+        delta_moments_second = np.stack(
+            (
+                zeros,
+                zeros,
+                zeros,
+                delta_yy,
+                xy_post,
+                delta_xx,
+            ),
+            axis=-1,
+        )
+        return f_eq + _weighted_minimum_norm_second_order_delta(delta_moments_second, u, lattice)
+
+    noneq_central = _central_moments(f - f_eq, u, lattice, max_order=4)
+    high_tau = mapping.collision.high_order_relaxation
+    high_order_factor = 1.0 - 1.0 / high_tau
+    delta_moments = np.zeros_like(noneq_central)
+    for index, exponent in enumerate(_central_monomial_exponents(4)):
+        if exponent == (0, 2):
+            delta_moments[..., index] = delta_yy
+        elif exponent == (1, 1):
+            delta_moments[..., index] = xy_post
+        elif exponent == (2, 0):
+            delta_moments[..., index] = delta_xx
+        elif sum(exponent) == 4:
+            delta_moments[..., index] = high_order_factor * noneq_central[..., index]
+    return f_eq + _weighted_minimum_norm_central_delta(delta_moments, u, lattice, max_order=4)
 
 
 def _regularized_heat_flux_collision(
@@ -193,7 +299,7 @@ def _regularized_heat_flux_collision(
     g_before: np.ndarray,
     u: np.ndarray,
     mapping: UnitMapping,
-    lattice: LatticeD2Q21,
+    lattice: Lattice,
 ) -> tuple[np.ndarray, np.ndarray]:
     """Apply regularized total heat-flux content before energy correction.
 
@@ -208,10 +314,29 @@ def _regularized_heat_flux_collision(
         return f_post, g_eq.copy()
 
     total_heat_flux = central_energy_flux_lu(f_before, g_before, u=u, lattice=lattice)
+    total_heat_flux = apply_periodic_spectral_correction(
+        total_heat_flux,
+        enabled=mapping.collision.dispersion_correction_enabled,
+        target=mapping.collision.regularized_heat_flux_dispersion_target,
+        low_laplacian=mapping.collision.dispersion_correction_low_laplacian,
+        high_laplacian=mapping.collision.dispersion_correction_high_laplacian,
+    )
     target_heat_flux = heat_flux_factor * total_heat_flux
     f_fraction = mapping.collision.regularized_heat_flux_f_fraction
-    f_heat_flux = f_fraction * target_heat_flux
-    g_heat_flux = (1.0 - f_fraction) * target_heat_flux
+    if mapping.collision.central_moment_closure == "fourth_order":
+        f_heat_flux = f_fraction * target_heat_flux - _central_translational_energy_flux_lu(
+            f_post,
+            u,
+            lattice,
+        )
+        g_heat_flux = (1.0 - f_fraction) * target_heat_flux - _central_internal_energy_flux_lu(
+            g_eq,
+            u,
+            lattice,
+        )
+    else:
+        f_heat_flux = f_fraction * target_heat_flux
+        g_heat_flux = (1.0 - f_fraction) * target_heat_flux
 
     zeros = np.zeros_like(f_heat_flux[..., 0])
     f_delta_moments = np.stack(
@@ -237,7 +362,7 @@ def _regularized_heat_flux_collision(
 def _correct_f_conserved_moments(
     f_post: np.ndarray,
     f_before: np.ndarray,
-    lattice: LatticeD2Q21,
+    lattice: Lattice,
 ) -> np.ndarray:
     rho_before = np.sum(f_before, axis=-1)
     rho_after = np.sum(f_post, axis=-1)
@@ -258,7 +383,7 @@ def collide_fg(
     g: np.ndarray,
     mapping: UnitMapping,
     *,
-    lattice: LatticeD2Q21 | None = None,
+    lattice: Lattice | None = None,
     return_diagnostics: bool = False,
 ) -> tuple[np.ndarray, np.ndarray] | tuple[np.ndarray, np.ndarray, CollisionDiagnostics]:
     """Collide ``f`` and ``g`` while conserving mass, momentum and total energy.
@@ -276,7 +401,7 @@ def collide_fg(
        central total energy is exactly conserved per cell.
     """
 
-    lattice = lattice or make_d2q21()
+    lattice = lattice or make_lattice()
     f = np.asarray(f, dtype=float)
     g = np.asarray(g, dtype=float)
     macro_before = recover_macro(f, g, D=mapping.lattice.D, S=mapping.lattice.S, lattice=lattice)
@@ -330,7 +455,7 @@ def assert_collision_conservation(
     mapping: UnitMapping,
     *,
     tol: float = 1.0e-12,
-    lattice: LatticeD2Q21 | None = None,
+    lattice: Lattice | None = None,
 ) -> None:
     _, _, diagnostics = collide_fg(f, g, mapping, lattice=lattice, return_diagnostics=True)
     if np.max(np.abs(diagnostics.mass_residual)) > tol:

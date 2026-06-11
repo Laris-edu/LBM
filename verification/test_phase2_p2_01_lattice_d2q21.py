@@ -1,6 +1,8 @@
 import numpy as np
 
+from core.lattice import make_lattice
 from core.lattice_d2q21 import assert_d2q21_moments, make_d2q21, moment
+from core.lattice_d2q37 import assert_d2q37_moments
 
 
 def test_p2_1_layout_opposite_and_moment_contract():
@@ -21,3 +23,12 @@ def test_p2_1_even_through_6_odd_symmetry_through_7_only():
         for m in range(total + 1):
             assert abs(moment((m, total - m))) < 1.0e-12
 
+
+def test_p2_1_d2q37_registry_entry_matches_static_contract():
+    lattice = make_lattice("D2Q37")
+    assert lattice.c.shape == (37, 2)
+    assert lattice.w.shape == (37,)
+    assert lattice.q == 37
+    assert lattice.d == 2
+    assert np.array_equal(lattice.c[lattice.opposite], -lattice.c)
+    assert_d2q37_moments(tol=1.0e-12)

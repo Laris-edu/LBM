@@ -11,7 +11,7 @@ import numpy as np
 
 from core.collision_smrt import collide_fg
 from core.equilibrium import equilibrium_fg
-from core.lattice_d2q21 import LatticeD2Q21, make_d2q21
+from core.lattice import Lattice, make_lattice
 from core.macroscopic import ENERGY_CLOSURE_DEFINITION, MacroState, heat_flux_lu, recover_macro
 from core.streaming import pull_stream_fg
 from core.unit_mapping import UnitMapping, create_unit_mapping
@@ -36,7 +36,7 @@ def minimum_hdf5_metadata(mapping: UnitMapping, case_name: str, pass_fail: str =
         {
             "schema_name": "phase2_gas_core_handoff",
             "schema_version": "0.1.0",
-            "producer": "GasSolver2D",
+        "producer": "GasSolver2D",
             "phase2_instruction_version": "v1.1",
             "validation_level": "CONTRACT",
             "case_name": case_name,
@@ -46,6 +46,7 @@ def minimum_hdf5_metadata(mapping: UnitMapping, case_name: str, pass_fail: str =
             "pass_fail": pass_fail,
             "clipping_used": False,
             "model": "SMRT_central_Hermite_regularized_stress",
+            "central_moment_closure": mapping.collision.central_moment_closure,
             "high_order_relaxation": mapping.collision.high_order_relaxation,
             "energy_closure_definition": ENERGY_CLOSURE_DEFINITION,
             "mapping_name": mapping.lattice.theta_ref_policy,
@@ -75,17 +76,47 @@ def write_metadata(group: h5py.Group, metadata: dict[str, Any]) -> None:
         group.attrs[key] = value
 
 
+def _periodic_laplacian(field: np.ndarray) -> np.ndarray:
+    return (
+        np.roll(field, 1, axis=0)
+        + np.roll(field, -1, axis=0)
+        + np.roll(field, 1, axis=1)
+        + np.roll(field, -1, axis=1)
+        - 4.0 * field
+    )
+
+
+def conservative_biharmonic_filter(field: np.ndarray, strength: float) -> np.ndarray:
+    """Damp grid-scale periodic content while preserving global moments."""
+
+    if strength == 0.0:
+        return field
+    return field - strength * _periodic_laplacian(_periodic_laplacian(field))
+
+
 class GasSolver2D:
     """Periodic 2D Phase_2 gas solver with velocity-last f/g layout."""
 
     def __init__(self, config: dict[str, Any]):
         self.config = config
         self.case_name = config.get("case", {}).get("name", "phase2_case")
-        self.lattice: LatticeD2Q21 = make_d2q21()
         self.mapping: UnitMapping = create_unit_mapping(config)
+        self.lattice: Lattice = make_lattice(self.mapping.lattice.velocity_set)
         numerics = config.get("numerics", {})
         self.ny = int(numerics.get("ny", 4))
         self.nx = int(numerics.get("nx", 64))
+        filter_config = numerics.get("high_wavenumber_filter", {}) or {}
+        if isinstance(filter_config, bool):
+            filter_config = {"enabled": filter_config}
+        self.high_wavenumber_filter_enabled = bool(filter_config.get("enabled", False))
+        self.high_wavenumber_filter_strength = float(filter_config.get("strength", 0.0))
+        self.high_wavenumber_filter_passes = int(filter_config.get("passes", 1))
+        if not self.high_wavenumber_filter_enabled:
+            self.high_wavenumber_filter_strength = 0.0
+        if not 0.0 <= self.high_wavenumber_filter_strength <= 0.03125:
+            raise ValueError("high_wavenumber_filter strength must be in [0, 0.03125]")
+        if self.high_wavenumber_filter_passes < 1:
+            raise ValueError("high_wavenumber_filter passes must be positive")
         self.t_lu = 0
         self.f: np.ndarray | None = None
         self.g: np.ndarray | None = None
@@ -115,6 +146,9 @@ class GasSolver2D:
             f, g = self._require_state()
             f_post, g_post = collide_fg(f, g, self.mapping, lattice=self.lattice)
             self.f, self.g = pull_stream_fg(f_post, g_post, lattice=self.lattice, y_axis=0, x_axis=1)
+            for _ in range(self.high_wavenumber_filter_passes):
+                self.f = conservative_biharmonic_filter(self.f, self.high_wavenumber_filter_strength)
+                self.g = conservative_biharmonic_filter(self.g, self.high_wavenumber_filter_strength)
             self.t_lu += 1
 
     def get_macro(self) -> MacroState:
@@ -152,6 +186,13 @@ class GasSolver2D:
         state = self.get_macro()
         q = self.get_heat_flux_lu()
         metadata = minimum_hdf5_metadata(self.mapping, self.case_name)
+        metadata.update(
+            {
+                "high_wavenumber_filter_enabled": self.high_wavenumber_filter_enabled,
+                "high_wavenumber_filter_strength": self.high_wavenumber_filter_strength,
+                "high_wavenumber_filter_passes": self.high_wavenumber_filter_passes,
+            }
+        )
         with h5py.File(path, "w") as h5:
             write_metadata(h5, metadata)
             time_group = h5.create_group("time")
@@ -167,21 +208,58 @@ class GasSolver2D:
             fields.create_dataset("g", data=g)
             meta = h5.create_group("metadata")
             write_metadata(meta.create_group("unit_mapping"), self.mapping.to_metadata())
-            write_metadata(meta.create_group("lattice"), {"velocity_set": "D2Q21", "Q": 21, "D": 2})
+            write_metadata(
+                meta.create_group("lattice"),
+                {
+                    "velocity_set": self.mapping.lattice.velocity_set,
+                    "Q": self.mapping.lattice.Q,
+                    "D": self.mapping.lattice.D,
+                    "theta_q_lu": self.mapping.lattice.theta_q_lu,
+                },
+            )
             write_metadata(
                 meta.create_group("collision"),
                 {
                     "model": metadata["model"],
                     "bulk_viscosity_policy": self.mapping.collision.bulk_viscosity_policy,
+                    "central_moment_closure": self.mapping.collision.central_moment_closure,
                     "tau21": self.mapping.tau21,
                     "tau22": self.mapping.tau22,
                     "tau32": self.mapping.tau32,
+                    "dispersion_correction_enabled": self.mapping.collision.dispersion_correction_enabled,
+                    "dispersion_correction_low_laplacian": (
+                        self.mapping.collision.dispersion_correction_low_laplacian
+                    ),
+                    "dispersion_correction_high_laplacian": (
+                        self.mapping.collision.dispersion_correction_high_laplacian
+                    ),
                     "regularized_shear_xy_factor": self.mapping.collision.regularized_shear_xy_factor,
                     "regularized_shear_normal_factor": self.mapping.collision.regularized_shear_normal_factor,
+                    "regularized_shear_xy_dispersion_target": (
+                        self.mapping.collision.regularized_shear_xy_dispersion_target
+                    ),
+                    "regularized_shear_normal_dispersion_target": (
+                        self.mapping.collision.regularized_shear_normal_dispersion_target
+                    ),
+                    "regularized_heat_flux_factor_policy": (
+                        self.mapping.collision.regularized_heat_flux_factor_policy
+                    ),
                     "regularized_heat_flux_factor": self.mapping.collision.regularized_heat_flux_factor,
+                    "regularized_heat_flux_dispersion_target": (
+                        self.mapping.collision.regularized_heat_flux_dispersion_target
+                    ),
                     "regularized_heat_flux_f_fraction": self.mapping.collision.regularized_heat_flux_f_fraction,
+                    "conductive_heat_flux_moment_factor_policy": (
+                        self.mapping.collision.conductive_heat_flux_moment_factor_policy
+                    ),
                     "conductive_heat_flux_moment_factor": (
                         self.mapping.collision.conductive_heat_flux_moment_factor
+                    ),
+                    "conductive_heat_flux_dispersion_target": (
+                        self.mapping.collision.conductive_heat_flux_dispersion_target
+                    ),
+                    "conductive_heat_flux_galilean_correction_factor": (
+                        self.mapping.collision.conductive_heat_flux_galilean_correction_factor
                     ),
                     "energy_closure_definition": ENERGY_CLOSURE_DEFINITION,
                     "clipping_allowed": False,

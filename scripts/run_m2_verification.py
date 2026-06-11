@@ -20,6 +20,9 @@ import numpy as np
 import yaml
 
 from core.solver import GasSolver2D
+from verification.acoustic_wave_measurement import measure_acoustic_wave
+from verification.galilean_consistency_measurement import measure_galilean_consistency
+from verification.prandtl_scan_measurement import measure_prandtl_scan
 from verification.shear_wave_measurement import measure_shear_wave
 from verification.thermal_diffusion_measurement import measure_thermal_diffusion
 
@@ -37,6 +40,7 @@ P2_TESTS = [
     "verification/test_phase2_p2_09_galilean_consistency.py",
     "verification/test_phase2_postprocess_modal_fit.py",
     "verification/test_phase2_hdf5_metadata.py",
+    "verification/test_phase2_d2q37_fallback.py",
 ]
 
 
@@ -66,6 +70,7 @@ def summary_payload_digest(payload: dict) -> str:
 
 def status_layers(config_path: Path, config: dict, passed: bool) -> dict[str, str]:
     theta_policy = str(config.get("lattice", {}).get("theta_ref_policy", ""))
+    velocity_set = str(config.get("lattice", {}).get("velocity_set", "D2Q21")).upper()
     is_diagnostic = "quadrature" in str(config_path).lower() or theta_policy == "quadrature_matched"
     if not passed:
         return {
@@ -81,6 +86,14 @@ def status_layers(config_path: Path, config: dict, passed: bool) -> dict[str, st
             "contract_validation_status": "DIAGNOSTIC_PASSED",
             "production_physics_status": "N/A",
             "m2_decision": "DIAGNOSTIC_ONLY",
+            "validation_level": "CONTRACT",
+        }
+    if velocity_set == "D2Q37":
+        return {
+            "automation_status": "PASSED",
+            "contract_validation_status": "D2Q37_DIAGNOSTIC_READY",
+            "production_physics_status": "NOT_PASSED",
+            "m2_decision": "GO-RISK / D2Q37_DYNAMIC_DIAGNOSTIC",
             "validation_level": "CONTRACT",
         }
     return {
@@ -129,6 +142,9 @@ def main(argv: list[str] | None = None) -> int:
     passed = result.returncode == 0
     p2_04 = measure_shear_wave(config)
     p2_05 = measure_thermal_diffusion(config)
+    p2_06 = measure_acoustic_wave(config)
+    p2_07 = measure_prandtl_scan(config)
+    p2_09 = measure_galilean_consistency(config)
     layered_status = status_layers(config_path, config, passed)
     summary = {
         "phase": "Phase_2",
@@ -148,9 +164,24 @@ def main(argv: list[str] | None = None) -> int:
         "raw_hdf5": str(h5_path),
         "p2_numbering": "P2-0 through P2-9 only; postprocess/HDF5 schema tests are support tests",
         "bulk_viscosity_policy": solver.mapping.collision.bulk_viscosity_policy,
+        "velocity_set": solver.mapping.lattice.velocity_set,
+        "Q": solver.mapping.lattice.Q,
+        "theta_q_lu": solver.mapping.lattice.theta_q_lu,
+        "central_moment_closure": solver.mapping.collision.central_moment_closure,
+        "high_order_relaxation": solver.mapping.collision.high_order_relaxation,
+        "regularized_heat_flux_factor_policy": solver.mapping.collision.regularized_heat_flux_factor_policy,
         "regularized_heat_flux_factor": solver.mapping.collision.regularized_heat_flux_factor,
         "regularized_heat_flux_f_fraction": solver.mapping.collision.regularized_heat_flux_f_fraction,
+        "conductive_heat_flux_moment_factor_policy": (
+            solver.mapping.collision.conductive_heat_flux_moment_factor_policy
+        ),
         "conductive_heat_flux_moment_factor": solver.mapping.collision.conductive_heat_flux_moment_factor,
+        "conductive_heat_flux_galilean_correction_factor": (
+            solver.mapping.collision.conductive_heat_flux_galilean_correction_factor
+        ),
+        "high_wavenumber_filter_enabled": solver.high_wavenumber_filter_enabled,
+        "high_wavenumber_filter_strength": solver.high_wavenumber_filter_strength,
+        "high_wavenumber_filter_passes": solver.high_wavenumber_filter_passes,
         "p2_04_shear_wave": _json_safe(p2_04),
         "p2_04_status": p2_04["p2_04_status"],
         "nu_target_lu": p2_04["nu_target_lu"],
@@ -177,6 +208,53 @@ def main(argv: list[str] | None = None) -> int:
         "thermal_clipping_used": p2_05["clipping_used"],
         "heat_flux_relative_error": p2_05["heat_flux_relative_error"],
         "heat_flux_sign_passed": p2_05["heat_flux_sign_passed"],
+        "p2_06_acoustic_wave": _json_safe(p2_06),
+        "p2_06_status": p2_06["p2_06_status"],
+        "sound_speed_target_lu": p2_06["sound_speed_target_lu"],
+        "sound_speed_measured_lu": p2_06["sound_speed_measured_lu"],
+        "sound_speed_relative_error": p2_06["sound_speed_relative_error"],
+        "gamma_target": p2_06["gamma_target"],
+        "gamma_measured": p2_06["gamma_measured"],
+        "gamma_relative_error": p2_06["gamma_relative_error"],
+        "acoustic_attenuation_measured_lu": p2_06["acoustic_attenuation_measured_lu"],
+        "acoustic_attenuation_reference_lu": p2_06["acoustic_attenuation_reference_lu"],
+        "acoustic_attenuation_relative_error": p2_06["acoustic_attenuation_relative_error"],
+        "acoustic_attenuation_target_policy": p2_06["acoustic_attenuation_target_policy"],
+        "acoustic_attenuation_target_coeff_lu": p2_06["acoustic_attenuation_target_coeff_lu"],
+        "acoustic_attenuation_status": p2_06["attenuation_status"],
+        "acoustic_direction_difference": p2_06["direction_difference"],
+        "acoustic_mode_index": p2_06["mode_index"],
+        "acoustic_fitting_window": _json_safe(p2_06["fitting_window"]),
+        "acoustic_phase_residual_norm": p2_06["phase_residual_norm"],
+        "acoustic_decay_residual_norm": p2_06["decay_residual_norm"],
+        "acoustic_directions": p2_06["directions"],
+        "acoustic_first_invalid_step": p2_06["first_invalid_step"],
+        "acoustic_nan_detected": p2_06["nan_detected"],
+        "acoustic_clipping_used": p2_06["clipping_used"],
+        "p2_07_prandtl_scan": _json_safe(p2_07),
+        "p2_07_status": p2_07["p2_07_status"],
+        "pr_targets": p2_07["pr_targets"],
+        "baseline_pr": p2_07["baseline_pr"],
+        "baseline_pr_measured": p2_07["baseline_pr_measured"],
+        "baseline_pr_relative_error": p2_07["baseline_pr_relative_error"],
+        "max_pr_relative_error": p2_07["max_pr_relative_error"],
+        "measured_pr_span": p2_07["measured_pr_span"],
+        "pr_first_invalid_step": p2_07["first_invalid_step"],
+        "pr_nan_detected": p2_07["nan_detected"],
+        "pr_clipping_used": p2_07["clipping_used"],
+        "p2_09_galilean_consistency": _json_safe(p2_09),
+        "p2_09_status": p2_09["p2_09_status"],
+        "p2_09_mach_numbers": p2_09["mach_numbers"],
+        "p2_09_background_directions": p2_09["background_directions"],
+        "p2_09_max_nu_drift_from_mach0": p2_09["max_nu_drift_from_mach0"],
+        "p2_09_max_alpha_drift_from_mach0": p2_09["max_alpha_drift_from_mach0"],
+        "p2_09_max_sound_speed_relative_error": p2_09["max_sound_speed_relative_error"],
+        "p2_09_max_sound_speed_drift_from_mach0": p2_09["max_sound_speed_drift_from_mach0"],
+        "p2_09_max_direction_difference": p2_09["max_direction_difference"],
+        "p2_09_dispersion_masking_status": p2_09["dispersion_masking_status"],
+        "p2_09_first_invalid_step": p2_09["first_invalid_step"],
+        "p2_09_nan_detected": p2_09["nan_detected"],
+        "p2_09_clipping_used": p2_09["clipping_used"],
     }
     summary["summary_json_sha256_policy"] = "sha256 of canonical summary payload before adding this digest field"
     summary["summary_json_sha256"] = summary_payload_digest(summary)
@@ -193,6 +271,9 @@ def main(argv: list[str] | None = None) -> int:
                 f"- 合同级验证状态：`{summary['contract_validation_status']}`",
                 f"- 生产级物理验证状态：`{summary['production_physics_status']}`",
                 f"- M2 决策：`{summary['m2_decision']}`",
+                f"- velocity_set：`{summary['velocity_set']}`",
+                f"- Q：`{summary['Q']}`",
+                f"- theta_q_lu：`{summary['theta_q_lu']}`",
                 f"- P2-4 真实剪切波状态：`{summary['p2_04_status']}`",
                 f"- P2-4 `nu_target_lu`：`{summary['nu_target_lu']}`",
                 f"- P2-4 `nu_measured_lu`：`{summary['nu_measured_lu']}`",
@@ -203,10 +284,35 @@ def main(argv: list[str] | None = None) -> int:
                 f"- P2-5 `alpha_measured_lu`：`{summary['alpha_measured_lu']}`",
                 f"- P2-5 最大相对误差：`{summary['alpha_relative_error']}`",
                 f"- P2-5 Fourier-law 热流误差：`{summary['heat_flux_relative_error']}`",
+                f"- P2-6 真实 acoustic eigenmode 状态：`{summary['p2_06_status']}`",
+                f"- P2-6 `sound_speed_target_lu`：`{summary['sound_speed_target_lu']}`",
+                f"- P2-6 `sound_speed_measured_lu`：`{summary['sound_speed_measured_lu']}`",
+                f"- P2-6 声速最大相对误差：`{summary['sound_speed_relative_error']}`",
+                f"- P2-6 `gamma_measured`：`{summary['gamma_measured']}`",
+                f"- P2-6 gamma 最大相对误差：`{summary['gamma_relative_error']}`",
+                f"- P2-6 声衰减诊断 measured/reference：`{summary['acoustic_attenuation_measured_lu']} / {summary['acoustic_attenuation_reference_lu']}`",
+                f"- P2-6 声衰减 target policy：`{summary['acoustic_attenuation_target_policy']}`",
+                f"- P2-6 声衰减状态：`{summary['acoustic_attenuation_status']}`",
+                f"- P2-7 真实 Pr 扫描状态：`{summary['p2_07_status']}`",
+                f"- P2-7 baseline `Pr_measured`：`{summary['baseline_pr_measured']}`",
+                f"- P2-7 最大 Pr 相对误差：`{summary['max_pr_relative_error']}`",
+                f"- P2-9 真实 Galilean consistency 状态：`{summary['p2_09_status']}`",
+                f"- P2-9 Mach 列表：`{summary['p2_09_mach_numbers']}`",
+                f"- P2-9 背景速度方向：`{summary['p2_09_background_directions']}`",
+                f"- P2-9 最大 `nu` 漂移：`{summary['p2_09_max_nu_drift_from_mach0']}`",
+                f"- P2-9 最大 `alpha` 漂移：`{summary['p2_09_max_alpha_drift_from_mach0']}`",
+                f"- P2-9 最大声速误差：`{summary['p2_09_max_sound_speed_relative_error']}`",
+                f"- P2-9 最大声速漂移：`{summary['p2_09_max_sound_speed_drift_from_mach0']}`",
+                f"- P2-9 dispersion masking 状态：`{summary['p2_09_dispersion_masking_status']}`",
+                f"- regularized_heat_flux_factor_policy：`{summary['regularized_heat_flux_factor_policy']}`",
                 f"- bulk_viscosity_policy：`{summary['bulk_viscosity_policy']}`",
+                f"- central_moment_closure：`{summary['central_moment_closure']}`",
+                f"- high_order_relaxation：`{summary['high_order_relaxation']}`",
                 f"- regularized_heat_flux_factor：`{summary['regularized_heat_flux_factor']}`",
                 f"- regularized_heat_flux_f_fraction：`{summary['regularized_heat_flux_f_fraction']}`",
                 f"- conductive_heat_flux_moment_factor：`{summary['conductive_heat_flux_moment_factor']}`",
+                f"- conductive_heat_flux_galilean_correction_factor：`{summary['conductive_heat_flux_galilean_correction_factor']}`",
+                f"- high_wavenumber_filter：`enabled={summary['high_wavenumber_filter_enabled']}, strength={summary['high_wavenumber_filter_strength']}, passes={summary['high_wavenumber_filter_passes']}`",
                 f"- HDF5 输出：`{h5_path}`",
                 f"- config_sha256：`{summary['config_sha256']}`",
                 f"- summary_json_sha256：`{summary['summary_json_sha256']}`",

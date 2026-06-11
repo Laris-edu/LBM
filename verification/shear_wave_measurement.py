@@ -29,6 +29,7 @@ class ShearWaveSettings:
     directions: tuple[str, ...] = DEFAULT_DIRECTIONS
     relative_tolerance: float = DEFAULT_RELATIVE_TOLERANCE
     direction_tolerance: float = DEFAULT_DIRECTION_TOLERANCE
+    background_velocity_lu: tuple[float, float] = (0.0, 0.0)
 
 
 def _settings_from_config(config: dict[str, Any]) -> ShearWaveSettings:
@@ -59,7 +60,19 @@ def _settings_from_config(config: dict[str, Any]) -> ShearWaveSettings:
         directions=directions_tuple,
         relative_tolerance=float(p2.get("relative_tolerance", DEFAULT_RELATIVE_TOLERANCE)),
         direction_tolerance=float(p2.get("direction_tolerance", DEFAULT_DIRECTION_TOLERANCE)),
+        background_velocity_lu=_velocity_pair(p2.get("background_velocity_lu", (0.0, 0.0))),
     )
+
+
+def _velocity_pair(value: Any) -> tuple[float, float]:
+    if isinstance(value, int | float):
+        return (float(value), 0.0)
+    if isinstance(value, dict):
+        return (float(value.get("ux", 0.0)), float(value.get("uy", 0.0)))
+    items = list(value)
+    if len(items) != 2:
+        raise ValueError("background_velocity_lu must contain ux and uy")
+    return (float(items[0]), float(items[1]))
 
 
 def _simulation_config(config: dict[str, Any], settings: ShearWaveSettings, direction: str) -> dict[str, Any]:
@@ -115,7 +128,8 @@ def _initialize_shear_wave(solver: GasSolver2D, settings: ShearWaveSettings, dir
     )
     rho = np.ones((solver.ny, solver.nx), dtype=float)
     theta = np.full((solver.ny, solver.nx), solver.mapping.theta_ref_lu, dtype=float)
-    u = settings.amplitude * np.sin(phase)[..., None] * transverse[None, None, :]
+    u = np.broadcast_to(np.asarray(settings.background_velocity_lu, dtype=float), (solver.ny, solver.nx, 2)).copy()
+    u += settings.amplitude * np.sin(phase)[..., None] * transverse[None, None, :]
     solver.initialize_from_macro(rho, u, theta)
     return k2
 
@@ -219,6 +233,7 @@ def measure_shear_wave_direction(config: dict[str, Any], direction: str, setting
         "nu_measured_lu": float(nu_measured) if np.isfinite(nu_measured) else np.nan,
         "relative_error": float(relative_error) if np.isfinite(relative_error) else np.nan,
         "mode_index": settings.mode_index,
+        "background_velocity_lu": list(settings.background_velocity_lu),
         "k2_lu": k2,
         "fitting_window": fit["fitting_window"],
         "residual_norm": fit["residual_norm"],
@@ -281,6 +296,7 @@ def measure_shear_wave(config: dict[str, Any]) -> dict[str, Any]:
         "baseline_direction": baseline["direction"],
         "baseline_relative_error": baseline["relative_error"],
         "mode_index": settings.mode_index,
+        "background_velocity_lu": list(settings.background_velocity_lu),
         "fitting_window": fitting_windows,
         "residual_norm": float(max(residuals)) if residuals else np.nan,
         "directions": list(settings.directions),

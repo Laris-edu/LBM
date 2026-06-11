@@ -30,18 +30,24 @@ collision:
   model: SMRT_central_Hermite_regularized_stress
   bulk_viscosity_policy: diagnostic_zero
   nu_b_lu: auto
+  central_moment_closure: second_order
   high_order_relaxation: 1.0
   use_binomial_transform: true
   regularized_shear_xy_factor: 0.965
-  regularized_shear_normal_factor: 0.84
-  regularized_heat_flux_factor: -0.45
+  regularized_shear_normal_factor: 0.845
+  regularized_heat_flux_factor: auto_tau32_linear
   regularized_heat_flux_f_fraction: 0.5714285714285714
   conductive_heat_flux_moment_factor: 0.05192359403391186
+  conductive_heat_flux_galilean_correction_factor: 0.03272660408381829
 
 numerics:
   precision: float64
   streaming: pull
   boundary: periodic
+  high_wavenumber_filter:
+    enabled: true
+    strength: 0.0065
+    passes: 1
   nx: 64
   ny: 4
   steps: 16
@@ -49,3 +55,43 @@ numerics:
 
 postprocess:
   save_hdf5: true
+
+p2_06_acoustic_wave:
+  nx: 64
+  ny: 64
+  steps: 240
+  sample_interval: 1
+  mode_index: 1
+  amplitude: 1.0e-6
+  fit_start: 10
+  directions: [x, y]
+  sound_speed_tolerance: 0.02
+  gamma_tolerance: 0.02
+  direction_tolerance: 0.02
+
+p2_07_prandtl_scan:
+  pr_targets: [0.5, 0.7061328707, 1.0, 2.0]
+  baseline_pr: 0.7061328707
+  baseline_tolerance: 0.03
+  scan_tolerance: 0.05
+  shear_wave:
+    nx: 64
+    ny: 64
+    steps: 240
+    sample_interval: 1
+    mode_index: 1
+    amplitude: 1.0e-5
+    fit_start: 10
+    directions: [x]
+    relative_tolerance: 0.05
+  thermal_diffusion:
+    nx: 64
+    ny: 64
+    steps: 320
+    sample_interval: 1
+    mode_index: 1
+    amplitude: 1.0e-5
+    fit_start: 10
+    directions: [x]
+    relative_tolerance: 0.05
+    heat_flux_tolerance: 0.05
