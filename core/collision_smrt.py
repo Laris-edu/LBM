@@ -13,11 +13,28 @@ from functools import lru_cache
 import numpy as np
 
 from core.equilibrium import equilibrium_fg
-from core.dispersion_correction import apply_periodic_spectral_correction
+from core.dispersion_correction import (
+    apply_periodic_diagonal_low_mode_correction,
+    apply_periodic_spectral_correction,
+)
 from core.hermite import monomial_exponents
 from core.lattice import Lattice, make_lattice
 from core.macroscopic import ENERGY_CLOSURE_DEFINITION, central_energy_flux_lu, recover_macro
-from core.unit_mapping import UnitMapping
+from core.unit_mapping import (
+    TRACE_BULK_POLICY_CALIBRATED,
+    TRACE_BULK_POLICY_CURRENT_ZERO,
+    TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL,
+    TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_ENTROPY_MANIFOLD,
+    TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_LAPLACIAN,
+    TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_PRESSURE_MEMORY,
+    TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_TWO_CHANNEL,
+    TRACE_BULK_POLICY_GHOST_ORTHOGONAL_SPECTRAL,
+    TRACE_BULK_POLICY_TAU22,
+    UnitMapping,
+    trace_bulk_local_divergence_factor_from_tau32,
+    trace_bulk_local_laplacian_factor_from_tau32,
+    trace_bulk_local_thermal_factor_from_tau32,
+)
 
 
 @dataclass
@@ -215,12 +232,148 @@ def _nonequilibrium_central_stress(
     return np.einsum("...a,...ai,...aj->...ij", f - f_eq, xi, xi)
 
 
+def _relaxed_trace_bulk_stress(trace_pre: np.ndarray, mapping: UnitMapping) -> np.ndarray:
+    """Return post-collision trace stress for the configured trace/bulk channel."""
+
+    policy = mapping.collision.trace_bulk_policy
+    if policy in {
+        TRACE_BULK_POLICY_CURRENT_ZERO,
+        TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL,
+        TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_LAPLACIAN,
+        TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_PRESSURE_MEMORY,
+        TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_TWO_CHANNEL,
+        TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_ENTROPY_MANIFOLD,
+        TRACE_BULK_POLICY_GHOST_ORTHOGONAL_SPECTRAL,
+    }:
+        return np.zeros_like(trace_pre)
+    if policy in {TRACE_BULK_POLICY_TAU22, TRACE_BULK_POLICY_CALIBRATED}:
+        trace_factor = mapping.collision.trace_bulk_scale * (1.0 - 1.0 / mapping.tau22)
+        return trace_factor * trace_pre
+    raise ValueError(f"unknown trace_bulk_policy: {policy}")
+
+
+def _periodic_central_velocity_divergence(u: np.ndarray) -> np.ndarray:
+    if u.ndim < 3 or u.shape[-1] != 2:
+        raise ValueError("u must have shape (..., ny, nx, 2)")
+    y_axis = u.ndim - 3
+    x_axis = u.ndim - 2
+    dux_dx = 0.5 * (
+        np.roll(u[..., 0], -1, axis=x_axis)
+        - np.roll(u[..., 0], 1, axis=x_axis)
+    )
+    duy_dy = 0.5 * (
+        np.roll(u[..., 1], -1, axis=y_axis)
+        - np.roll(u[..., 1], 1, axis=y_axis)
+    )
+    return dux_dx + duy_dy
+
+
+def _periodic_laplacian_scalar(field: np.ndarray) -> np.ndarray:
+    y_axis = field.ndim - 2
+    x_axis = field.ndim - 1
+    return (
+        np.roll(field, 1, axis=y_axis)
+        + np.roll(field, -1, axis=y_axis)
+        + np.roll(field, 1, axis=x_axis)
+        + np.roll(field, -1, axis=x_axis)
+        - 4.0 * field
+    )
+
+
+def _entropy_manifold_thermal_divergence(
+    rho: np.ndarray,
+    theta: np.ndarray,
+    mapping: UnitMapping,
+) -> np.ndarray:
+    gamma = float(mapping.physical.gamma)
+    rho_ref = float(mapping.lattice.rho_ref_lu)
+    theta_ref = float(mapping.theta_ref_lu)
+    entropy_linear = (theta - theta_ref) / theta_ref - (gamma - 1.0) * (rho - rho_ref) / rho_ref
+    return (mapping.alpha_lu / gamma) * _periodic_laplacian_scalar(entropy_linear)
+
+
+def _local_hydrodynamic_trace_stress(
+    rho: np.ndarray,
+    theta: np.ndarray,
+    u: np.ndarray,
+    mapping: UnitMapping,
+    pressure_divergence: np.ndarray | None = None,
+) -> np.ndarray:
+    divergence_coefficient = trace_bulk_local_divergence_factor_from_tau32(
+        mapping.tau32,
+        curve_type=mapping.collision.trace_bulk_local_divergence_curve_type,
+        coefficients=mapping.collision.trace_bulk_local_divergence_curve_coefficients,
+    )
+    policy = mapping.collision.trace_bulk_policy
+    if policy == TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_PRESSURE_MEMORY:
+        if pressure_divergence is None:
+            raise ValueError(
+                "ghost_orthogonal_local_pressure_memory requires pressure_divergence"
+            )
+        divergence = np.asarray(pressure_divergence, dtype=float)
+        divergence = divergence_coefficient * divergence
+    elif policy == TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_TWO_CHANNEL:
+        if pressure_divergence is None:
+            raise ValueError(
+                "ghost_orthogonal_local_two_channel requires pressure_divergence"
+            )
+        acoustic_divergence = np.asarray(pressure_divergence, dtype=float)
+        velocity_divergence = _periodic_central_velocity_divergence(u)
+        thermal_coefficient = trace_bulk_local_thermal_factor_from_tau32(
+            mapping.tau32,
+            curve_type=mapping.collision.trace_bulk_local_thermal_curve_type,
+            coefficients=mapping.collision.trace_bulk_local_thermal_curve_coefficients,
+        )
+        divergence = (
+            divergence_coefficient * acoustic_divergence
+            + thermal_coefficient * (velocity_divergence - acoustic_divergence)
+        )
+    elif policy == TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_ENTROPY_MANIFOLD:
+        velocity_divergence = _periodic_central_velocity_divergence(u)
+        thermal_divergence = _entropy_manifold_thermal_divergence(rho, theta, mapping)
+        acoustic_divergence = velocity_divergence - thermal_divergence
+        laplacian_coefficient = trace_bulk_local_laplacian_factor_from_tau32(
+            mapping.tau32,
+            curve_type=mapping.collision.trace_bulk_local_laplacian_curve_type,
+            coefficients=mapping.collision.trace_bulk_local_laplacian_curve_coefficients,
+        )
+        thermal_coefficient = trace_bulk_local_thermal_factor_from_tau32(
+            mapping.tau32,
+            curve_type=mapping.collision.trace_bulk_local_thermal_curve_type,
+            coefficients=mapping.collision.trace_bulk_local_thermal_curve_coefficients,
+        )
+        divergence = (
+            divergence_coefficient * acoustic_divergence
+            - laplacian_coefficient * _periodic_laplacian_scalar(acoustic_divergence)
+            + thermal_coefficient * thermal_divergence
+        )
+    elif policy == TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_LAPLACIAN:
+        divergence = _periodic_central_velocity_divergence(u)
+        laplacian_coefficient = trace_bulk_local_laplacian_factor_from_tau32(
+            mapping.tau32,
+            curve_type=mapping.collision.trace_bulk_local_laplacian_curve_type,
+            coefficients=mapping.collision.trace_bulk_local_laplacian_curve_coefficients,
+        )
+        divergence = (
+            divergence_coefficient * divergence
+            - laplacian_coefficient * _periodic_laplacian_scalar(divergence)
+        )
+    else:
+        divergence = _periodic_central_velocity_divergence(u)
+        divergence = divergence_coefficient * divergence
+    return rho * theta * divergence
+
+
 def _regularized_f_collision(
     f: np.ndarray,
     f_eq: np.ndarray,
     u: np.ndarray,
     mapping: UnitMapping,
     lattice: Lattice,
+    *,
+    rho: np.ndarray | None = None,
+    theta: np.ndarray | None = None,
+    pressure_divergence: np.ndarray | None = None,
 ) -> np.ndarray:
     """Relax central f moments through fourth order.
 
@@ -252,10 +405,27 @@ def _regularized_f_collision(
     xy_factor = mapping.collision.regularized_shear_xy_factor
     normal_factor = mapping.collision.regularized_shear_normal_factor
 
-    # Baseline bulk policy is diagnostic_zero.  For the regularized shear-wave
-    # path we remove trace non-equilibrium content instead of over-relaxing it
-    # with tau22=0.5, which was the dominant source of negative K_tr growth.
-    trace_post = np.zeros_like(stress[..., 0, 0])
+    # The default current_zero branch preserves the D2Q37 transport-candidate
+    # baseline.  tau22/calibrated are explicit diagnostic/candidate channels.
+    trace = stress[..., 0, 0] + stress[..., 1, 1]
+    if mapping.collision.trace_bulk_policy in {
+        TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL,
+        TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_LAPLACIAN,
+        TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_PRESSURE_MEMORY,
+        TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_TWO_CHANNEL,
+        TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_ENTROPY_MANIFOLD,
+    }:
+        if rho is None or theta is None:
+            raise ValueError("ghost_orthogonal_local trace policy requires rho and theta")
+        trace_post = _local_hydrodynamic_trace_stress(
+            rho,
+            theta,
+            u,
+            mapping,
+            pressure_divergence=pressure_divergence,
+        )
+    else:
+        trace_post = _relaxed_trace_bulk_stress(trace, mapping)
     dev_post = normal_factor * shear_factor * stress_dev
     xy_post = xy_factor * shear_factor * stress_xy
     delta_xx = 0.5 * (trace_post + dev_post)
@@ -321,6 +491,12 @@ def _regularized_heat_flux_collision(
         low_laplacian=mapping.collision.dispersion_correction_low_laplacian,
         high_laplacian=mapping.collision.dispersion_correction_high_laplacian,
     )
+    total_heat_flux = apply_periodic_diagonal_low_mode_correction(
+        total_heat_flux,
+        enabled=mapping.collision.dispersion_correction_enabled,
+        target=mapping.collision.regularized_heat_flux_diagonal_low_mode_target,
+        low_laplacian=mapping.collision.dispersion_correction_low_laplacian,
+    )
     target_heat_flux = heat_flux_factor * total_heat_flux
     f_fraction = mapping.collision.regularized_heat_flux_f_fraction
     if mapping.collision.central_moment_closure == "fourth_order":
@@ -384,6 +560,7 @@ def collide_fg(
     mapping: UnitMapping,
     *,
     lattice: Lattice | None = None,
+    trace_bulk_pressure_divergence: np.ndarray | None = None,
     return_diagnostics: bool = False,
 ) -> tuple[np.ndarray, np.ndarray] | tuple[np.ndarray, np.ndarray, CollisionDiagnostics]:
     """Collide ``f`` and ``g`` while conserving mass, momentum and total energy.
@@ -413,7 +590,16 @@ def collide_fg(
         lattice,
     )
 
-    f_post = _regularized_f_collision(f, f_eq, macro_before.u, mapping, lattice)
+    f_post = _regularized_f_collision(
+        f,
+        f_eq,
+        macro_before.u,
+        mapping,
+        lattice,
+        rho=macro_before.rho,
+        theta=macro_before.theta,
+        pressure_divergence=trace_bulk_pressure_divergence,
+    )
     f_post = _correct_f_conserved_moments(f_post, f, lattice)
 
     f_post, g_shape = _regularized_heat_flux_collision(

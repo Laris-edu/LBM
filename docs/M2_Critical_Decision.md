@@ -96,4 +96,6 @@ run `20260606T074742Z` 将上述判断进一步收敛：当前经验标量的单
 2. D2Q21 `fourth_order` central/binomial 高阶闭合保持 diagnostic-only，除非后续有新的理论闭合和实测报告推翻 `20260606T083915Z`；
 3. D2Q37 或等价九阶速度集路线已完成首轮诊断迁移、旧失败诊断、低 k 长窗口 closure 固化和 mode=2 high-mode dispersion/heat-flux 修复；`20260608T063346Z` 鲁棒性复核已通过，D2Q37 当前可作为输运 production candidate，不返工 Phase_1。
 
-D2Q37 输运候选通过且 P2-6 声速/gamma 通过后，Phase_2 状态仍保持 `GO-RISK / IN-PROGRESS`。production_physics_status 从 D2Q37 输运、声速/gamma 和 P2-9 Galilean 角度为 `IN_PROGRESS`，但 final M2 production pass 仍未声明；下一步必须解释或修复 matched 声衰减 target 下的过阻尼，并继续诊断 high-mode acoustic 边界。
+D2Q37 输运候选通过且 P2-6 声速/gamma 通过后，Phase_2 状态仍保持 `GO-RISK / IN-PROGRESS`。production_physics_status 从 D2Q37 输运、声速/gamma 和 P2-9 Galilean 角度为 `IN_PROGRESS`，但 final M2 production pass 仍未声明；下一步必须解释或修复 matched 声衰减 target 下的过阻尼，并基于 `20260618T143220Z` 暴露的 Pr/Mach/background/mode high-mode acoustic 外推失败继续推导可泛化 eigen-branch closure。
+
+2026-06-15 已按 D2Q37 声衰减误差修复路线完成第一步参数化：`trace_bulk_policy=current_zero|tau22|calibrated` 与 `heat_flux_retention_curve` 已进入配置、unit mapping、collision、HDF5 metadata 和诊断脚本。默认仍为 `current_zero + auto_d2q37_tau32_linear`，不改变 D2Q37 输运候选 baseline；`tau22` / `calibrated` trace 和替代 heat curve 必须先经 linear symbol 筛选，再通过 P2-5/P2-6/P2-7/P2-9 与 high-mode acoustic 动态验收，不能单点合入 production baseline。

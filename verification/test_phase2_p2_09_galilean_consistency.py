@@ -71,6 +71,8 @@ def test_p2_9_real_galilean_measurement_reports_transport_and_acoustic_fields():
     assert "alpha_drift_from_mach0" in scenario
     assert "sound_speed_relative_error" in scenario
     assert result["dispersion_masking_status"] == "NOT_RUN"
+    assert result["transport_dispersion_masking_status"] == "NOT_RUN"
+    assert result["acoustic_eigenbranch_diagnostic_status"] == "NOT_RUN"
 
 
 def test_p2_9_d2q37_dispersion_correction_does_not_mask_high_mode_acoustic_error():
@@ -105,3 +107,63 @@ def test_p2_9_d2q37_dispersion_correction_does_not_mask_high_mode_acoustic_error
     assert uncorrected["sound_speed_relative_error"] > 0.02
     assert corrected["first_invalid_step"] is None
     assert uncorrected["first_invalid_step"] is None
+
+
+def test_p2_9_splits_transport_masking_from_high_mode_acoustic_diagnostic():
+    config = d2q37_physical_timestep_config()
+    config["p2_09_galilean_consistency"] = {
+        "mach_numbers": [0.0, 0.02],
+        "background_directions": ["x"],
+        "run_dispersion_masking_check": True,
+        "run_high_mode_acoustic_diagnostic": True,
+        "shear_wave": {
+            "nx": 16,
+            "ny": 16,
+            "steps": 8,
+            "sample_interval": 1,
+            "mode_index": 1,
+            "amplitude": 1.0e-5,
+            "fit_start": 2,
+            "directions": ["x"],
+        },
+        "thermal_diffusion": {
+            "nx": 16,
+            "ny": 16,
+            "steps": 8,
+            "sample_interval": 1,
+            "mode_index": 1,
+            "amplitude": 1.0e-5,
+            "fit_start": 2,
+            "directions": ["x"],
+        },
+        "acoustic_wave": {
+            "nx": 16,
+            "ny": 16,
+            "steps": 8,
+            "sample_interval": 1,
+            "mode_index": 1,
+            "amplitude": 1.0e-6,
+            "fit_start": 2,
+            "directions": ["x"],
+        },
+        "high_mode_acoustic": {
+            "nx": 16,
+            "ny": 16,
+            "steps": 8,
+            "sample_interval": 1,
+            "mode_index": 2,
+            "amplitude": 1.0e-6,
+            "fit_start": 2,
+            "directions": ["x"],
+        },
+    }
+
+    result = measure_galilean_consistency(config)
+    masking = result["dispersion_masking_check"]
+    high_mode = masking["high_mode_acoustic_eigenbranch_diagnostic"]
+
+    assert result["dispersion_masking_status"] == result["transport_dispersion_masking_status"]
+    assert masking["status"] == masking["transport_masking_status"]
+    assert high_mode["hard_gate_role"] == "diagnostic_only_not_transport_masking"
+    assert high_mode["status"] in {"PASSED", "FAILED"}
+    assert result["acoustic_eigenbranch_diagnostic_status"] == high_mode["status"]

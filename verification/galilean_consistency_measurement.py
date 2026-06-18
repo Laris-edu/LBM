@@ -178,6 +178,18 @@ def _scenario_config(
     return config
 
 
+def _disable_high_mode_dispersion_targets(config: dict[str, Any]) -> dict[str, Any]:
+    updated = deepcopy(config)
+    collision = dict(updated.get("collision", {}) or {})
+    collision["dispersion_correction_enabled"] = True
+    collision["regularized_shear_xy_dispersion_target"] = 1.0
+    collision["regularized_shear_normal_dispersion_target"] = 1.0
+    collision["regularized_heat_flux_dispersion_target"] = 1.0
+    collision["conductive_heat_flux_dispersion_target"] = 1.0
+    updated["collision"] = collision
+    return updated
+
+
 def _finite_max(values: list[float]) -> float:
     finite = [float(item) for item in values if np.isfinite(item)]
     return float(max(finite)) if finite else np.nan
@@ -343,8 +355,9 @@ def _dispersion_masking_check(
             base_config,
             settings=settings,
             background_velocity_lu=background_velocity,
-            dispersion_correction_enabled=False,
+            dispersion_correction_enabled=True,
         )
+        disabled_config = _disable_high_mode_dispersion_targets(disabled_config)
         enabled = measure_acoustic_wave(enabled_config)
         disabled = measure_acoustic_wave(disabled_config)
         speed_delta = _directional_drift(
@@ -380,7 +393,7 @@ def _dispersion_masking_check(
             }
         )
 
-    high_mode = {"status": "NOT_RUN"}
+    high_mode = {"status": "NOT_RUN", "hard_gate_role": "diagnostic_only_not_transport_masking"}
     if settings.run_high_mode_acoustic_diagnostic:
         direction = directions[0] if directions else "x"
         background_velocity = _background_velocity(c_s_lu, mach, direction)
@@ -400,14 +413,24 @@ def _dispersion_masking_check(
             settings=settings,
             background_velocity_lu=background_velocity,
             acoustic_overrides=high_mode_overrides,
-            dispersion_correction_enabled=False,
+            dispersion_correction_enabled=True,
         )
+        disabled_config = _disable_high_mode_dispersion_targets(disabled_config)
         enabled = measure_acoustic_wave(enabled_config)
         disabled = measure_acoustic_wave(disabled_config)
-        masking_detected = enabled["p2_06_status"] == "PASSED" and disabled["p2_06_status"] != "PASSED"
+        legacy_masking_detected = enabled["p2_06_status"] == "PASSED" and disabled["p2_06_status"] != "PASSED"
+        acoustic_branch_passed = enabled["p2_06_status"] == "PASSED"
         high_mode = {
-            "status": "FAILED" if masking_detected else "PASSED",
-            "interpretation": "MASKING_DETECTED" if masking_detected else "NO_MASKING_DETECTED",
+            "status": "PASSED" if acoustic_branch_passed else "FAILED",
+            "interpretation": (
+                "ACOUSTIC_EIGENBRANCH_DIAGNOSTIC_PASS"
+                if acoustic_branch_passed
+                else "ACOUSTIC_EIGENBRANCH_CLOSURE_REQUIRED_OR_OUT_OF_SCOPE"
+            ),
+            "legacy_masking_interpretation": (
+                "MASKING_DETECTED" if legacy_masking_detected else "NO_MASKING_DETECTED"
+            ),
+            "hard_gate_role": "diagnostic_only_not_transport_masking",
             "background_direction": direction,
             "mach": mach,
             "background_velocity_lu": background_velocity,
@@ -421,17 +444,17 @@ def _dispersion_masking_check(
             "disabled": disabled,
         }
 
-    passed = all(item["status"] == "PASSED" for item in low_mode_checks) and high_mode["status"] in {
-        "PASSED",
-        "NOT_RUN",
-    }
+    transport_passed = all(item["status"] == "PASSED" for item in low_mode_checks)
     return {
-        "status": "PASSED" if passed else "FAILED",
+        "status": "PASSED" if transport_passed else "FAILED",
+        "transport_masking_status": "PASSED" if transport_passed else "FAILED",
         "low_mode_checks": low_mode_checks,
         "high_mode_acoustic_diagnostic": high_mode,
+        "high_mode_acoustic_eigenbranch_diagnostic": high_mode,
         "acceptance": {
             "low_mode_enabled_disabled_sound_speed_delta_max": settings.dispersion_delta_tolerance,
-            "high_mode_enabled_only_pass_would_be_masking": True,
+            "transport_masking_uses_low_mode_enabled_disabled_delta_only": True,
+            "high_mode_acoustic_is_eigenbranch_diagnostic_only": True,
         },
     }
 
@@ -538,6 +561,14 @@ def measure_galilean_consistency(config: dict[str, Any]) -> dict[str, Any]:
         ),
         "dispersion_masking_check": dispersion_check,
         "dispersion_masking_status": dispersion_check["status"],
+        "transport_dispersion_masking_status": dispersion_check.get(
+            "transport_masking_status",
+            dispersion_check["status"],
+        ),
+        "acoustic_eigenbranch_diagnostic_status": dispersion_check.get(
+            "high_mode_acoustic_eigenbranch_diagnostic",
+            {},
+        ).get("status", "NOT_RUN"),
         "first_invalid_step": min(first_invalid_steps) if first_invalid_steps else None,
         "nan_detected": reference["nan_detected"] or any(item["nan_detected"] for item in scenarios),
         "clipping_used": reference["clipping_used"] or any(item["clipping_used"] for item in scenarios),

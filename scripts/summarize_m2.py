@@ -95,6 +95,8 @@ def main(argv: list[str] | None = None) -> int:
                 "theta_q_lu": data.get("theta_q_lu", "not_recorded"),
                 "central_moment_closure": data.get("central_moment_closure", "not_recorded"),
                 "high_order_relaxation": data.get("high_order_relaxation", "not_recorded"),
+                "trace_bulk_policy": data.get("trace_bulk_policy", "not_recorded"),
+                "trace_bulk_scale": data.get("trace_bulk_scale", "not_recorded"),
                 "regularized_heat_flux_factor_policy": data.get(
                     "regularized_heat_flux_factor_policy",
                     "specified",
@@ -104,6 +106,8 @@ def main(argv: list[str] | None = None) -> int:
                     "regularized_heat_flux_f_fraction",
                     "not_recorded",
                 ),
+                "heat_flux_retention_policy": data.get("heat_flux_retention_policy", "not_recorded"),
+                "heat_flux_retention_curve_type": data.get("heat_flux_retention_curve_type", "not_recorded"),
                 "conductive_heat_flux_moment_factor": data.get(
                     "conductive_heat_flux_moment_factor",
                     "not_recorded",
@@ -257,6 +261,14 @@ def main(argv: list[str] | None = None) -> int:
                     "p2_09_dispersion_masking_status",
                     "not_recorded",
                 ),
+                "p2_09_transport_dispersion_masking_status": data.get(
+                    "p2_09_transport_dispersion_masking_status",
+                    data.get("p2_09_dispersion_masking_status", "not_recorded"),
+                ),
+                "p2_09_acoustic_eigenbranch_diagnostic_status": data.get(
+                    "p2_09_acoustic_eigenbranch_diagnostic_status",
+                    "not_recorded",
+                ),
                 "p2_09_first_invalid_step": data.get(
                     "p2_09_first_invalid_step",
                     "not_recorded",
@@ -287,11 +299,12 @@ def main(argv: list[str] | None = None) -> int:
         "- Contract-level Phase_2 checks：见下表 `contract_validation_status`。",
         "- Production physical validation：当前仍为 `NOT_PASSED` 或 `N/A`。",
         "- Current decision：`GO-RISK / IN-PROGRESS`，不是 final M2 production pass。",
+        "- 2026-06-15 note：D2Q37 trace / bulk 与 heat-flux retention 已显式参数化；默认仍为 `trace_bulk_policy=current_zero` 和当前 `auto_d2q37_tau32_linear`，该改造只提供后续声衰减联合扫描入口。",
         "",
         "## 汇总运行",
         "",
-        "| 运行批次 | 配置 | velocity_set | Q | theta_q_lu | automation_status | contract_validation_status | production_physics_status | M2 决策 | validation_level | bulk_viscosity_policy | central_moment_closure | high_order_relaxation | heat_flux_policy | heat_flux_factor | f_fraction | conductive_policy | conductive_factor | Galilean_q_factor | high_k_filter | config_sha256 | summary_json_sha256 |",
-        "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|",
+        "| 运行批次 | 配置 | velocity_set | Q | theta_q_lu | automation_status | contract_validation_status | production_physics_status | M2 决策 | validation_level | bulk_viscosity_policy | central_moment_closure | high_order_relaxation | trace_policy | trace_scale | heat_flux_policy | heat_flux_factor | heat_curve_policy | heat_curve_type | f_fraction | conductive_policy | conductive_factor | Galilean_q_factor | high_k_filter | config_sha256 | summary_json_sha256 |",
+        "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|",
     ]
     if rows:
         for row in rows:
@@ -310,8 +323,12 @@ def main(argv: list[str] | None = None) -> int:
                 f"`{row['bulk_viscosity_policy']}` | "
                 f"`{row['central_moment_closure']}` | "
                 f"`{_format_value(row['high_order_relaxation'])}` | "
+                f"`{row['trace_bulk_policy']}` | "
+                f"`{_format_value(row['trace_bulk_scale'])}` | "
                 f"`{row['regularized_heat_flux_factor_policy']}` | "
                 f"`{_format_value(row['regularized_heat_flux_factor'])}` | "
+                f"`{row['heat_flux_retention_policy']}` | "
+                f"`{row['heat_flux_retention_curve_type']}` | "
                 f"`{_format_value(row['regularized_heat_flux_f_fraction'])}` | "
                 f"`{row['conductive_heat_flux_moment_factor_policy']}` | "
                 f"`{_format_value(row['conductive_heat_flux_moment_factor'])}` | "
@@ -322,7 +339,7 @@ def main(argv: list[str] | None = None) -> int:
             )
     else:
         lines.append(
-            "| n/a | n/a | n/a | n/a | n/a | not_run | not_run | not_run | not_run | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a |"
+            "| n/a | n/a | n/a | n/a | n/a | not_run | not_run | not_run | not_run | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a |"
         )
 
     lines.extend(
@@ -485,10 +502,10 @@ def main(argv: list[str] | None = None) -> int:
             "",
             "## P2-9 真实 Galilean consistency",
             "",
-            "本节记录背景速度下真实剪切波、热扩散和 acoustic eigenmode 测量。`nu/alpha` 以相对 Mach 0 的漂移作为 hard metric；声学在扣除 `k·U0` 后检查声速误差和方向差异。D2Q37 dispersion correction 另设开/关对照，防止 high-mode spectral correction 掩盖 Galilean 声学误差。",
+            "本节记录背景速度下真实剪切波、热扩散和 acoustic eigenmode 测量。`nu/alpha` 以相对 Mach 0 的漂移作为 hard metric；声学在扣除 `k·U0` 后检查声速误差和方向差异。D2Q37 dispersion correction 开/关对照只作为 transport masking hard check；high-mode acoustic eigen-branch 另列 diagnostic，不与 masking hard status 混用。",
             "",
-            "| 运行批次 | P2-9 状态 | Mach 列表 | 背景方向 | 最大 nu 漂移 | 最大 alpha 漂移 | 最大声速误差 | 最大声速漂移 | 最大方向差异 | dispersion masking | first_invalid_step | NaN | clipping |",
-            "|---|---|---|---|---|---|---|---|---|---|---|---|---|",
+            "| 运行批次 | P2-9 状态 | Mach 列表 | 背景方向 | 最大 nu 漂移 | 最大 alpha 漂移 | 最大声速误差 | 最大声速漂移 | 最大方向差异 | transport masking | acoustic eigenbranch diag | legacy masking | first_invalid_step | NaN | clipping |",
+            "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|",
         ]
     )
     if rows:
@@ -514,13 +531,15 @@ def main(argv: list[str] | None = None) -> int:
                 f"`{_format_value(row['p2_09_max_sound_speed_relative_error'])}` | "
                 f"`{_format_value(row['p2_09_max_sound_speed_drift_from_mach0'])}` | "
                 f"`{_format_value(row['p2_09_max_direction_difference'])}` | "
+                f"`{row['p2_09_transport_dispersion_masking_status']}` | "
+                f"`{row['p2_09_acoustic_eigenbranch_diagnostic_status']}` | "
                 f"`{row['p2_09_dispersion_masking_status']}` | "
                 f"`{_format_value(row['p2_09_first_invalid_step'])}` | "
                 f"`{_format_value(row['p2_09_nan_detected'])}` | "
                 f"`{_format_value(row['p2_09_clipping_used'])}` |"
             )
     else:
-        lines.append("| n/a | not_run | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a |")
+        lines.append("| n/a | not_run | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a | n/a |")
 
     lines.extend(
         [
@@ -566,6 +585,7 @@ def main(argv: list[str] | None = None) -> int:
             "",
             "- 基线 `bulk_viscosity_policy`：`diagnostic_zero`。",
             "- 当前 NSF 线性声衰减目标已完成匹配推导；因 D2Q37 measured/reference 仍显著偏离，声衰减保持 diagnostic/GO-RISK 指标。",
+            "- 当前 heat-flux/tau32 关系已固化为 projection closure：`alpha_lu=theta_transport_lu*(tau32-0.5)` 是唯一热扩散映射，`regularized_heat_flux_factor=h_family(tau32)` 只作为 raw central heat-flux retention。",
             "- M2 pass/fail 运行不得使用 clipping、distribution floor 或 positivity repair。",
             "",
             "## Phase_1 回归",

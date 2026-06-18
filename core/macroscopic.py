@@ -6,7 +6,10 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from core.dispersion_correction import apply_periodic_spectral_correction
+from core.dispersion_correction import (
+    apply_periodic_diagonal_low_mode_correction,
+    apply_periodic_spectral_correction,
+)
 from core.lattice import Lattice, make_lattice
 from core.unit_mapping import UnitMapping, heat_flux_lu_to_phys, pressure_lu_to_phys, temperature_lu_to_phys
 
@@ -145,6 +148,12 @@ def heat_flux_lu(
         target=mapping.collision.conductive_heat_flux_dispersion_target,
         low_laplacian=mapping.collision.dispersion_correction_low_laplacian,
         high_laplacian=mapping.collision.dispersion_correction_high_laplacian,
+    )
+    q_raw = apply_periodic_diagonal_low_mode_correction(
+        q_raw,
+        enabled=mapping.collision.dispersion_correction_enabled,
+        target=mapping.collision.conductive_heat_flux_diagonal_low_mode_target,
+        low_laplacian=mapping.collision.dispersion_correction_low_laplacian,
     )
     q_conductive = q_raw * mapping.collision.conductive_heat_flux_moment_factor
     correction_factor = mapping.collision.conductive_heat_flux_galilean_correction_factor

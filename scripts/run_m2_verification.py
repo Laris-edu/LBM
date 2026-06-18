@@ -169,15 +169,40 @@ def main(argv: list[str] | None = None) -> int:
         "theta_q_lu": solver.mapping.lattice.theta_q_lu,
         "central_moment_closure": solver.mapping.collision.central_moment_closure,
         "high_order_relaxation": solver.mapping.collision.high_order_relaxation,
+        "trace_bulk_policy": solver.mapping.collision.trace_bulk_policy,
+        "trace_bulk_scale": solver.mapping.collision.trace_bulk_scale,
+        "trace_bulk_calibration_id": solver.mapping.collision.trace_bulk_calibration_id,
         "regularized_heat_flux_factor_policy": solver.mapping.collision.regularized_heat_flux_factor_policy,
         "regularized_heat_flux_factor": solver.mapping.collision.regularized_heat_flux_factor,
         "regularized_heat_flux_f_fraction": solver.mapping.collision.regularized_heat_flux_f_fraction,
+        "heat_flux_retention_policy": solver.mapping.collision.heat_flux_retention_policy,
+        "heat_flux_retention_curve_type": solver.mapping.collision.heat_flux_retention_curve_type,
+        "heat_flux_retention_curve_coefficients": (
+            solver.mapping.collision.heat_flux_retention_curve_coefficients
+        ),
         "conductive_heat_flux_moment_factor_policy": (
             solver.mapping.collision.conductive_heat_flux_moment_factor_policy
         ),
         "conductive_heat_flux_moment_factor": solver.mapping.collision.conductive_heat_flux_moment_factor,
+        "regularized_heat_flux_diagonal_low_mode_target": (
+            solver.mapping.collision.regularized_heat_flux_diagonal_low_mode_target
+        ),
         "conductive_heat_flux_galilean_correction_factor": (
             solver.mapping.collision.conductive_heat_flux_galilean_correction_factor
+        ),
+        "conductive_heat_flux_diagonal_low_mode_target": (
+            solver.mapping.collision.conductive_heat_flux_diagonal_low_mode_target
+        ),
+        "acoustic_phase_correction_enabled": solver.mapping.collision.acoustic_phase_correction_enabled,
+        "acoustic_phase_correction_low_laplacian": (
+            solver.mapping.collision.acoustic_phase_correction_low_laplacian
+        ),
+        "acoustic_phase_diagonal_low_mode_factor": (
+            solver.mapping.collision.acoustic_phase_diagonal_low_mode_factor
+        ),
+        "acoustic_phase_high_mode_factor": solver.mapping.collision.acoustic_phase_high_mode_factor,
+        "acoustic_phase_high_mode_diagonal_factor": (
+            solver.mapping.collision.acoustic_phase_high_mode_diagonal_factor
         ),
         "high_wavenumber_filter_enabled": solver.high_wavenumber_filter_enabled,
         "high_wavenumber_filter_strength": solver.high_wavenumber_filter_strength,
@@ -252,6 +277,12 @@ def main(argv: list[str] | None = None) -> int:
         "p2_09_max_sound_speed_drift_from_mach0": p2_09["max_sound_speed_drift_from_mach0"],
         "p2_09_max_direction_difference": p2_09["max_direction_difference"],
         "p2_09_dispersion_masking_status": p2_09["dispersion_masking_status"],
+        "p2_09_transport_dispersion_masking_status": p2_09[
+            "transport_dispersion_masking_status"
+        ],
+        "p2_09_acoustic_eigenbranch_diagnostic_status": p2_09[
+            "acoustic_eigenbranch_diagnostic_status"
+        ],
         "p2_09_first_invalid_step": p2_09["first_invalid_step"],
         "p2_09_nan_detected": p2_09["nan_detected"],
         "p2_09_clipping_used": p2_09["clipping_used"],
@@ -304,6 +335,8 @@ def main(argv: list[str] | None = None) -> int:
                 f"- P2-9 最大声速误差：`{summary['p2_09_max_sound_speed_relative_error']}`",
                 f"- P2-9 最大声速漂移：`{summary['p2_09_max_sound_speed_drift_from_mach0']}`",
                 f"- P2-9 dispersion masking 状态：`{summary['p2_09_dispersion_masking_status']}`",
+                f"- P2-9 transport dispersion masking 状态：`{summary['p2_09_transport_dispersion_masking_status']}`",
+                f"- P2-9 acoustic eigen-branch diagnostic 状态：`{summary['p2_09_acoustic_eigenbranch_diagnostic_status']}`",
                 f"- regularized_heat_flux_factor_policy：`{summary['regularized_heat_flux_factor_policy']}`",
                 f"- bulk_viscosity_policy：`{summary['bulk_viscosity_policy']}`",
                 f"- central_moment_closure：`{summary['central_moment_closure']}`",

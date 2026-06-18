@@ -33,6 +33,9 @@ collision:
   nu_b_lu: auto
   central_moment_closure: second_order
   high_order_relaxation: 1.0
+  trace_bulk_policy: current_zero
+  trace_bulk_scale: 1.0
+  trace_bulk_calibration_id: null
   use_binomial_transform: true
   dispersion_correction_enabled: true
   dispersion_correction_low_laplacian: 0.019261093311212455
@@ -42,11 +45,22 @@ collision:
   regularized_shear_xy_dispersion_target: 0.786
   regularized_shear_normal_dispersion_target: 0.785
   regularized_heat_flux_factor: auto_d2q37_tau32_linear
+  heat_flux_retention_policy: auto_d2q37_tau32_linear
+  heat_flux_retention_curve:
+    type: affine
+    coefficients: [-0.5030006782780277, 0.7230829392328689]
   regularized_heat_flux_dispersion_target: 0.8512
+  regularized_heat_flux_diagonal_low_mode_target: 0.908799
   regularized_heat_flux_f_fraction: 0.5714285714285714
   conductive_heat_flux_moment_factor: 0.0422
   conductive_heat_flux_dispersion_target: 0.3201
+  conductive_heat_flux_diagonal_low_mode_target: 0.610151
   conductive_heat_flux_galilean_correction_factor: 0.03835608923273733
+  acoustic_phase_correction_enabled: true
+  acoustic_phase_correction_low_laplacian: 0.019261093311212455
+  acoustic_phase_diagonal_low_mode_factor: 0.98405
+  acoustic_phase_high_mode_factor: 1.0
+  acoustic_phase_high_mode_diagonal_factor: 1.0
 
 numerics:
   precision: float64
@@ -83,7 +97,7 @@ p2_05_thermal_diffusion:
   mode_index: 1
   amplitude: 1.0e-5
   fit_start: 10
-  directions: [x, y]
+  directions: [x, y, diagonal]
   relative_tolerance: 0.05
   heat_flux_tolerance: 0.05
 
@@ -95,7 +109,7 @@ p2_06_acoustic_wave:
   mode_index: 1
   amplitude: 1.0e-6
   fit_start: 10
-  directions: [x, y]
+  directions: [x, y, diagonal]
   sound_speed_tolerance: 0.02
   gamma_tolerance: 0.02
   direction_tolerance: 0.02
@@ -156,7 +170,7 @@ p2_09_galilean_consistency:
     mode_index: 1
     amplitude: 1.0e-5
     fit_start: 10
-    directions: [x, y]
+    directions: [x, y, diagonal]
     relative_tolerance: 0.05
     heat_flux_tolerance: 0.05
   acoustic_wave:
@@ -167,8 +181,8 @@ p2_09_galilean_consistency:
     mode_index: 1
     amplitude: 1.0e-6
     fit_start: 10
-    directions: [x, y]
+    directions: [x, y, diagonal]
   high_mode_acoustic:
     mode_index: 2
     steps: 80
-    directions: [x, y]
+    directions: [x, y, diagonal]

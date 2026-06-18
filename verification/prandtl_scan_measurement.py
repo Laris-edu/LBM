@@ -153,9 +153,26 @@ def measure_prandtl_scan_point(
         "regularized_heat_flux_factor": mapping.collision.regularized_heat_flux_factor,
         "regularized_heat_flux_factor_policy": mapping.collision.regularized_heat_flux_factor_policy,
         "regularized_heat_flux_dispersion_target": mapping.collision.regularized_heat_flux_dispersion_target,
+        "regularized_heat_flux_diagonal_low_mode_target": (
+            mapping.collision.regularized_heat_flux_diagonal_low_mode_target
+        ),
         "conductive_heat_flux_moment_factor": mapping.collision.conductive_heat_flux_moment_factor,
         "conductive_heat_flux_moment_factor_policy": mapping.collision.conductive_heat_flux_moment_factor_policy,
         "conductive_heat_flux_dispersion_target": mapping.collision.conductive_heat_flux_dispersion_target,
+        "conductive_heat_flux_diagonal_low_mode_target": (
+            mapping.collision.conductive_heat_flux_diagonal_low_mode_target
+        ),
+        "acoustic_phase_correction_enabled": mapping.collision.acoustic_phase_correction_enabled,
+        "acoustic_phase_correction_low_laplacian": (
+            mapping.collision.acoustic_phase_correction_low_laplacian
+        ),
+        "acoustic_phase_diagonal_low_mode_factor": (
+            mapping.collision.acoustic_phase_diagonal_low_mode_factor
+        ),
+        "acoustic_phase_high_mode_factor": mapping.collision.acoustic_phase_high_mode_factor,
+        "acoustic_phase_high_mode_diagonal_factor": (
+            mapping.collision.acoustic_phase_high_mode_diagonal_factor
+        ),
         "heat_flux_relative_error": thermal["heat_flux_relative_error"],
         "heat_flux_sign_passed": thermal["heat_flux_sign_passed"],
         "shear_status": shear["p2_04_status"],

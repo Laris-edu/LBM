@@ -4,7 +4,14 @@ from core.collision_smrt import assert_collision_conservation, collide_fg
 from core.equilibrium import equilibrium_fg
 from core.lattice import make_lattice
 from core.solver import GasSolver2D, conservative_biharmonic_filter
-from core.unit_mapping import create_unit_mapping, d2q37_physical_timestep_config, physical_timestep_config
+from core.unit_mapping import (
+    TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_ENTROPY_MANIFOLD,
+    TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_PRESSURE_MEMORY,
+    TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_TWO_CHANNEL,
+    create_unit_mapping,
+    d2q37_physical_timestep_config,
+    physical_timestep_config,
+)
 
 
 def test_p2_3_collision_conserves_mass_momentum_and_total_energy():
@@ -54,6 +61,48 @@ def test_p2_3_uniform_state_has_no_drift_over_periodic_steps():
 
 def test_p2_3_d2q37_uniform_state_has_no_drift_over_periodic_steps():
     config = d2q37_physical_timestep_config()
+    config["numerics"] = {"nx": 6, "ny": 4}
+    solver = GasSolver2D(config)
+    solver.initialize_from_macro(1.0, np.zeros(2), create_unit_mapping(config).theta_ref_lu)
+    before = solver.get_macro()
+    solver.step(4)
+    after = solver.get_macro()
+    assert np.max(np.abs(after.rho - before.rho)) < 1.0e-12
+    assert np.max(np.abs(after.u - before.u)) < 1.0e-12
+    assert np.max(np.abs(after.theta - before.theta)) < 1.0e-12
+
+
+def test_p2_3_d2q37_pressure_memory_trace_policy_uniform_state_has_no_drift():
+    config = d2q37_physical_timestep_config()
+    config["collision"]["trace_bulk_policy"] = TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_PRESSURE_MEMORY
+    config["numerics"] = {"nx": 6, "ny": 4}
+    solver = GasSolver2D(config)
+    solver.initialize_from_macro(1.0, np.zeros(2), create_unit_mapping(config).theta_ref_lu)
+    before = solver.get_macro()
+    solver.step(4)
+    after = solver.get_macro()
+    assert np.max(np.abs(after.rho - before.rho)) < 1.0e-12
+    assert np.max(np.abs(after.u - before.u)) < 1.0e-12
+    assert np.max(np.abs(after.theta - before.theta)) < 1.0e-12
+
+
+def test_p2_3_d2q37_two_channel_trace_policy_uniform_state_has_no_drift():
+    config = d2q37_physical_timestep_config()
+    config["collision"]["trace_bulk_policy"] = TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_TWO_CHANNEL
+    config["numerics"] = {"nx": 6, "ny": 4}
+    solver = GasSolver2D(config)
+    solver.initialize_from_macro(1.0, np.zeros(2), create_unit_mapping(config).theta_ref_lu)
+    before = solver.get_macro()
+    solver.step(4)
+    after = solver.get_macro()
+    assert np.max(np.abs(after.rho - before.rho)) < 1.0e-12
+    assert np.max(np.abs(after.u - before.u)) < 1.0e-12
+    assert np.max(np.abs(after.theta - before.theta)) < 1.0e-12
+
+
+def test_p2_3_d2q37_entropy_manifold_trace_policy_uniform_state_has_no_drift():
+    config = d2q37_physical_timestep_config()
+    config["collision"]["trace_bulk_policy"] = TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_ENTROPY_MANIFOLD
     config["numerics"] = {"nx": 6, "ny": 4}
     solver = GasSolver2D(config)
     solver.initialize_from_macro(1.0, np.zeros(2), create_unit_mapping(config).theta_ref_lu)

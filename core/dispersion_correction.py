@@ -48,3 +48,45 @@ def apply_periodic_spectral_correction(
     spectrum = np.fft.fftn(arr, axes=(0, 1))
     corrected = np.fft.ifftn(spectrum * multiplier, axes=(0, 1))
     return np.real_if_close(corrected, tol=1000).real
+
+
+def apply_periodic_diagonal_low_mode_correction(
+    field: np.ndarray,
+    *,
+    enabled: bool,
+    target: float,
+    low_laplacian: float,
+) -> np.ndarray:
+    """Apply a multiplier only to low-k diagonal periodic modes.
+
+    This is intentionally separate from the high-wavenumber smoothstep
+    correction: D2Q37 diagonal mode=1 sits on the current low-laplacian
+    boundary, so the generic dispersion correction preserves it exactly.
+    """
+
+    arr = np.asarray(field, dtype=float)
+    if (
+        not enabled
+        or arr.ndim < 2
+        or arr.shape[0] < 2
+        or arr.shape[1] < 2
+        or target == 1.0
+        or low_laplacian <= 0.0
+    ):
+        return arr
+
+    ny, nx = arr.shape[:2]
+    ky = 2.0 * np.pi * np.fft.fftfreq(ny)
+    kx = 2.0 * np.pi * np.fft.fftfreq(nx)
+    mu_y = 4.0 * np.sin(0.5 * ky) ** 2
+    mu_x = 4.0 * np.sin(0.5 * kx) ** 2
+    mu = mu_y[:, None] + mu_x[None, :]
+    diagonal = (np.abs(ky)[:, None] > 0.0) & (np.abs(kx)[None, :] > 0.0)
+    low = mu <= float(low_laplacian) * (1.0 + 1.0e-12)
+    multiplier = np.where(diagonal & low, float(target), 1.0)
+    while multiplier.ndim < arr.ndim:
+        multiplier = multiplier[..., None]
+
+    spectrum = np.fft.fftn(arr, axes=(0, 1))
+    corrected = np.fft.ifftn(spectrum * multiplier, axes=(0, 1))
+    return np.real_if_close(corrected, tol=1000).real

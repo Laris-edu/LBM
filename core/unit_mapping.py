@@ -22,6 +22,30 @@ AUTO_TAU32_LINEAR_HEAT_FLUX_SLOPE = 0.949
 AUTO_D2Q37_TAU32_LINEAR_HEAT_FLUX_POLICY = "auto_d2q37_tau32_linear"
 AUTO_D2Q37_TAU32_LINEAR_HEAT_FLUX_INTERCEPT = -0.5030006782780277
 AUTO_D2Q37_TAU32_LINEAR_HEAT_FLUX_SLOPE = 0.7230829392328689
+TRACE_BULK_POLICY_CURRENT_ZERO = "current_zero"
+TRACE_BULK_POLICY_TAU22 = "tau22"
+TRACE_BULK_POLICY_CALIBRATED = "calibrated"
+TRACE_BULK_POLICY_GHOST_ORTHOGONAL_SPECTRAL = "ghost_orthogonal_spectral"
+TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL = "ghost_orthogonal_local"
+TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_LAPLACIAN = "ghost_orthogonal_local_laplacian"
+TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_PRESSURE_MEMORY = "ghost_orthogonal_local_pressure_memory"
+TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_TWO_CHANNEL = "ghost_orthogonal_local_two_channel"
+TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_ENTROPY_MANIFOLD = (
+    "ghost_orthogonal_local_entropy_manifold"
+)
+GHOST_ORTHOGONAL_TRACE_ALPHA_INTERCEPT = 0.699947491657
+GHOST_ORTHOGONAL_TRACE_ALPHA_SLOPE = -1.152605711210
+GHOST_ORTHOGONAL_LOCAL_TRACE_DIVERGENCE_INTERCEPT = 1.102631069
+GHOST_ORTHOGONAL_LOCAL_TRACE_DIVERGENCE_SLOPE = -1.74075050
+GHOST_ORTHOGONAL_LOCAL_TWO_CHANNEL_ACOUSTIC_INTERCEPT = GHOST_ORTHOGONAL_LOCAL_TRACE_DIVERGENCE_INTERCEPT
+GHOST_ORTHOGONAL_LOCAL_TWO_CHANNEL_ACOUSTIC_SLOPE = GHOST_ORTHOGONAL_LOCAL_TRACE_DIVERGENCE_SLOPE
+GHOST_ORTHOGONAL_LOCAL_TWO_CHANNEL_THERMAL_INTERCEPT = GHOST_ORTHOGONAL_LOCAL_TRACE_DIVERGENCE_INTERCEPT
+GHOST_ORTHOGONAL_LOCAL_TWO_CHANNEL_THERMAL_SLOPE = GHOST_ORTHOGONAL_LOCAL_TRACE_DIVERGENCE_SLOPE
+GHOST_ORTHOGONAL_LOCAL_LAPLACIAN_DIVERGENCE_INTERCEPT = 0.86390221
+GHOST_ORTHOGONAL_LOCAL_LAPLACIAN_DIVERGENCE_SLOPE = -1.41574932
+GHOST_ORTHOGONAL_LOCAL_LAPLACIAN_COEFFICIENT_INTERCEPT = 24.78889350
+GHOST_ORTHOGONAL_LOCAL_LAPLACIAN_COEFFICIENT_SLOPE = -33.74907949
+HEAT_FLUX_RETENTION_POLICY_CALIBRATED_CURVE = "calibrated_curve"
 HEAT_FLUX_TAU32_RELATION = (
     "alpha_lu = theta_transport_lu * (tau32 - 0.5); "
     "regularized_heat_flux_factor is a lattice-family projection closure h(tau32), "
@@ -63,6 +87,18 @@ class CollisionScales:
     nu_b_lu: float | str = "auto"
     central_moment_closure: str = "second_order"
     high_order_relaxation: float = 1.0
+    trace_bulk_policy: str = TRACE_BULK_POLICY_CURRENT_ZERO
+    trace_bulk_scale: float = 1.0
+    trace_bulk_calibration_id: str | None = None
+    trace_bulk_projector_alpha_curve_type: str = "affine"
+    trace_bulk_projector_alpha_curve_coefficients: tuple[float, ...] = ()
+    trace_bulk_projector_low_laplacian: float = 0.0
+    trace_bulk_local_divergence_curve_type: str = "affine"
+    trace_bulk_local_divergence_curve_coefficients: tuple[float, ...] = ()
+    trace_bulk_local_thermal_curve_type: str = "affine"
+    trace_bulk_local_thermal_curve_coefficients: tuple[float, ...] = ()
+    trace_bulk_local_laplacian_curve_type: str = "affine"
+    trace_bulk_local_laplacian_curve_coefficients: tuple[float, ...] = ()
     dispersion_correction_enabled: bool = False
     dispersion_correction_low_laplacian: float = 0.0
     dispersion_correction_high_laplacian: float = 0.0
@@ -73,11 +109,21 @@ class CollisionScales:
     regularized_heat_flux_factor_policy: str = "specified"
     regularized_heat_flux_factor: float = 0.0
     regularized_heat_flux_dispersion_target: float = 1.0
+    regularized_heat_flux_diagonal_low_mode_target: float = 1.0
     regularized_heat_flux_f_fraction: float = 0.5714285714285714
+    heat_flux_retention_policy: str = "specified"
+    heat_flux_retention_curve_type: str = "affine"
+    heat_flux_retention_curve_coefficients: tuple[float, ...] = ()
     conductive_heat_flux_moment_factor_policy: str = "specified"
     conductive_heat_flux_moment_factor: float = 1.0
     conductive_heat_flux_dispersion_target: float = 1.0
+    conductive_heat_flux_diagonal_low_mode_target: float = 1.0
     conductive_heat_flux_galilean_correction_factor: float = 0.0
+    acoustic_phase_correction_enabled: bool = False
+    acoustic_phase_correction_low_laplacian: float = 0.0
+    acoustic_phase_diagonal_low_mode_factor: float = 1.0
+    acoustic_phase_high_mode_factor: float = 1.0
+    acoustic_phase_high_mode_diagonal_factor: float = 1.0
 
 
 @dataclass(frozen=True)
@@ -130,6 +176,34 @@ class UnitMapping:
             "Pr_target": self.physical.Pr,
             "bulk_viscosity_policy": self.collision.bulk_viscosity_policy,
             "central_moment_closure": self.collision.central_moment_closure,
+            "trace_bulk_policy": self.collision.trace_bulk_policy,
+            "trace_bulk_scale": self.collision.trace_bulk_scale,
+            "trace_bulk_calibration_id": self.collision.trace_bulk_calibration_id,
+            "trace_bulk_projector_alpha_curve_type": (
+                self.collision.trace_bulk_projector_alpha_curve_type
+            ),
+            "trace_bulk_projector_alpha_curve_coefficients": (
+                self.collision.trace_bulk_projector_alpha_curve_coefficients
+            ),
+            "trace_bulk_projector_low_laplacian": self.collision.trace_bulk_projector_low_laplacian,
+            "trace_bulk_local_divergence_curve_type": (
+                self.collision.trace_bulk_local_divergence_curve_type
+            ),
+            "trace_bulk_local_divergence_curve_coefficients": (
+                self.collision.trace_bulk_local_divergence_curve_coefficients
+            ),
+            "trace_bulk_local_thermal_curve_type": (
+                self.collision.trace_bulk_local_thermal_curve_type
+            ),
+            "trace_bulk_local_thermal_curve_coefficients": (
+                self.collision.trace_bulk_local_thermal_curve_coefficients
+            ),
+            "trace_bulk_local_laplacian_curve_type": (
+                self.collision.trace_bulk_local_laplacian_curve_type
+            ),
+            "trace_bulk_local_laplacian_curve_coefficients": (
+                self.collision.trace_bulk_local_laplacian_curve_coefficients
+            ),
             "nu_lu": self.nu_lu,
             "alpha_lu": self.alpha_lu,
             "nu_b_lu": self.nu_b_lu,
@@ -148,6 +222,9 @@ class UnitMapping:
             "regularized_heat_flux_factor_policy": self.collision.regularized_heat_flux_factor_policy,
             "regularized_heat_flux_factor": self.collision.regularized_heat_flux_factor,
             "regularized_heat_flux_dispersion_target": self.collision.regularized_heat_flux_dispersion_target,
+            "regularized_heat_flux_diagonal_low_mode_target": (
+                self.collision.regularized_heat_flux_diagonal_low_mode_target
+            ),
             "regularized_heat_flux_factor_tau32_linear_intercept": AUTO_TAU32_LINEAR_HEAT_FLUX_INTERCEPT,
             "regularized_heat_flux_factor_tau32_linear_slope": AUTO_TAU32_LINEAR_HEAT_FLUX_SLOPE,
             "regularized_heat_flux_factor_d2q37_tau32_linear_intercept": (
@@ -157,11 +234,28 @@ class UnitMapping:
                 AUTO_D2Q37_TAU32_LINEAR_HEAT_FLUX_SLOPE
             ),
             "regularized_heat_flux_f_fraction": self.collision.regularized_heat_flux_f_fraction,
+            "heat_flux_retention_policy": self.collision.heat_flux_retention_policy,
+            "heat_flux_retention_curve_type": self.collision.heat_flux_retention_curve_type,
+            "heat_flux_retention_curve_coefficients": self.collision.heat_flux_retention_curve_coefficients,
             "conductive_heat_flux_moment_factor_policy": self.collision.conductive_heat_flux_moment_factor_policy,
             "conductive_heat_flux_moment_factor": self.collision.conductive_heat_flux_moment_factor,
             "conductive_heat_flux_dispersion_target": self.collision.conductive_heat_flux_dispersion_target,
+            "conductive_heat_flux_diagonal_low_mode_target": (
+                self.collision.conductive_heat_flux_diagonal_low_mode_target
+            ),
             "conductive_heat_flux_galilean_correction_factor": (
                 self.collision.conductive_heat_flux_galilean_correction_factor
+            ),
+            "acoustic_phase_correction_enabled": self.collision.acoustic_phase_correction_enabled,
+            "acoustic_phase_correction_low_laplacian": (
+                self.collision.acoustic_phase_correction_low_laplacian
+            ),
+            "acoustic_phase_diagonal_low_mode_factor": (
+                self.collision.acoustic_phase_diagonal_low_mode_factor
+            ),
+            "acoustic_phase_high_mode_factor": self.collision.acoustic_phase_high_mode_factor,
+            "acoustic_phase_high_mode_diagonal_factor": (
+                self.collision.acoustic_phase_high_mode_diagonal_factor
             ),
             "rho_scale": self.rho_scale,
             "velocity_scale": self.velocity_scale,
@@ -213,6 +307,96 @@ def _lattice_from_config(config: dict[str, Any] | None) -> LatticeScales:
 
 def _collision_from_config(config: dict[str, Any] | None) -> CollisionScales:
     collision = (config or {}).get("collision", {})
+    trace_bulk_policy = str(collision.get("trace_bulk_policy", TRACE_BULK_POLICY_CURRENT_ZERO))
+    trace_bulk_calibration_id = collision.get("trace_bulk_calibration_id", None)
+    if trace_bulk_calibration_id is not None:
+        trace_bulk_calibration_id = str(trace_bulk_calibration_id)
+
+    trace_bulk_projector_alpha_curve = dict(
+        collision.get("trace_bulk_projector_alpha_curve", {}) or {}
+    )
+    trace_bulk_projector_alpha_curve_coefficients = tuple(
+        float(item) for item in trace_bulk_projector_alpha_curve.get("coefficients", ())
+    )
+    if (
+        trace_bulk_policy == TRACE_BULK_POLICY_GHOST_ORTHOGONAL_SPECTRAL
+        and not trace_bulk_projector_alpha_curve_coefficients
+    ):
+        trace_bulk_projector_alpha_curve_coefficients = (
+            GHOST_ORTHOGONAL_TRACE_ALPHA_INTERCEPT,
+            GHOST_ORTHOGONAL_TRACE_ALPHA_SLOPE,
+        )
+    trace_bulk_projector_low_laplacian = float(
+        collision.get(
+            "trace_bulk_projector_low_laplacian",
+            collision.get("dispersion_correction_low_laplacian", 0.0),
+        )
+    )
+    trace_bulk_local_divergence_curve = dict(
+        collision.get("trace_bulk_local_divergence_curve", {}) or {}
+    )
+    trace_bulk_local_divergence_curve_coefficients = tuple(
+        float(item) for item in trace_bulk_local_divergence_curve.get("coefficients", ())
+    )
+    if not trace_bulk_local_divergence_curve_coefficients:
+        if trace_bulk_policy in {
+            TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL,
+            TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_PRESSURE_MEMORY,
+        }:
+            trace_bulk_local_divergence_curve_coefficients = (
+                GHOST_ORTHOGONAL_LOCAL_TRACE_DIVERGENCE_INTERCEPT,
+                GHOST_ORTHOGONAL_LOCAL_TRACE_DIVERGENCE_SLOPE,
+            )
+        elif trace_bulk_policy == TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_TWO_CHANNEL:
+            trace_bulk_local_divergence_curve_coefficients = (
+                GHOST_ORTHOGONAL_LOCAL_TWO_CHANNEL_ACOUSTIC_INTERCEPT,
+                GHOST_ORTHOGONAL_LOCAL_TWO_CHANNEL_ACOUSTIC_SLOPE,
+            )
+        elif trace_bulk_policy in {
+            TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_LAPLACIAN,
+            TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_ENTROPY_MANIFOLD,
+        }:
+            trace_bulk_local_divergence_curve_coefficients = (
+                GHOST_ORTHOGONAL_LOCAL_LAPLACIAN_DIVERGENCE_INTERCEPT,
+                GHOST_ORTHOGONAL_LOCAL_LAPLACIAN_DIVERGENCE_SLOPE,
+            )
+    trace_bulk_local_thermal_curve = dict(
+        collision.get("trace_bulk_local_thermal_curve", {}) or {}
+    )
+    trace_bulk_local_thermal_curve_coefficients = tuple(
+        float(item) for item in trace_bulk_local_thermal_curve.get("coefficients", ())
+    )
+    if (
+        trace_bulk_policy
+        in {
+            TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_TWO_CHANNEL,
+            TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_ENTROPY_MANIFOLD,
+        }
+        and not trace_bulk_local_thermal_curve_coefficients
+    ):
+        trace_bulk_local_thermal_curve_coefficients = (
+            GHOST_ORTHOGONAL_LOCAL_TWO_CHANNEL_THERMAL_INTERCEPT,
+            GHOST_ORTHOGONAL_LOCAL_TWO_CHANNEL_THERMAL_SLOPE,
+        )
+    trace_bulk_local_laplacian_curve = dict(
+        collision.get("trace_bulk_local_laplacian_curve", {}) or {}
+    )
+    trace_bulk_local_laplacian_curve_coefficients = tuple(
+        float(item) for item in trace_bulk_local_laplacian_curve.get("coefficients", ())
+    )
+    if (
+        trace_bulk_policy
+        in {
+            TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_LAPLACIAN,
+            TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_ENTROPY_MANIFOLD,
+        }
+        and not trace_bulk_local_laplacian_curve_coefficients
+    ):
+        trace_bulk_local_laplacian_curve_coefficients = (
+            GHOST_ORTHOGONAL_LOCAL_LAPLACIAN_COEFFICIENT_INTERCEPT,
+            GHOST_ORTHOGONAL_LOCAL_LAPLACIAN_COEFFICIENT_SLOPE,
+        )
+
     regularized_heat_flux_factor = collision.get("regularized_heat_flux_factor", 0.0)
     regularized_heat_flux_factor_policy = str(
         collision.get("regularized_heat_flux_factor_policy", "specified")
@@ -220,6 +404,17 @@ def _collision_from_config(config: dict[str, Any] | None) -> CollisionScales:
     if isinstance(regularized_heat_flux_factor, str):
         regularized_heat_flux_factor_policy = regularized_heat_flux_factor
         regularized_heat_flux_factor = 0.0
+
+    heat_flux_retention_policy = str(
+        collision.get("heat_flux_retention_policy", regularized_heat_flux_factor_policy)
+    )
+    if heat_flux_retention_policy != regularized_heat_flux_factor_policy and heat_flux_retention_policy != "specified":
+        regularized_heat_flux_factor_policy = heat_flux_retention_policy
+
+    heat_flux_retention_curve = dict(collision.get("heat_flux_retention_curve", {}) or {})
+    heat_flux_retention_curve_coefficients = tuple(
+        float(item) for item in heat_flux_retention_curve.get("coefficients", ())
+    )
 
     conductive_heat_flux_moment_factor = collision.get("conductive_heat_flux_moment_factor", 1.0)
     conductive_heat_flux_moment_factor_policy = str(
@@ -234,6 +429,26 @@ def _collision_from_config(config: dict[str, Any] | None) -> CollisionScales:
         nu_b_lu=collision.get("nu_b_lu", "auto"),
         central_moment_closure=str(collision.get("central_moment_closure", "second_order")),
         high_order_relaxation=float(collision.get("high_order_relaxation", 1.0)),
+        trace_bulk_policy=trace_bulk_policy,
+        trace_bulk_scale=float(collision.get("trace_bulk_scale", 1.0)),
+        trace_bulk_calibration_id=trace_bulk_calibration_id,
+        trace_bulk_projector_alpha_curve_type=str(
+            trace_bulk_projector_alpha_curve.get("type", "affine")
+        ),
+        trace_bulk_projector_alpha_curve_coefficients=trace_bulk_projector_alpha_curve_coefficients,
+        trace_bulk_projector_low_laplacian=trace_bulk_projector_low_laplacian,
+        trace_bulk_local_divergence_curve_type=str(
+            trace_bulk_local_divergence_curve.get("type", "affine")
+        ),
+        trace_bulk_local_divergence_curve_coefficients=trace_bulk_local_divergence_curve_coefficients,
+        trace_bulk_local_thermal_curve_type=str(
+            trace_bulk_local_thermal_curve.get("type", "affine")
+        ),
+        trace_bulk_local_thermal_curve_coefficients=trace_bulk_local_thermal_curve_coefficients,
+        trace_bulk_local_laplacian_curve_type=str(
+            trace_bulk_local_laplacian_curve.get("type", "affine")
+        ),
+        trace_bulk_local_laplacian_curve_coefficients=trace_bulk_local_laplacian_curve_coefficients,
         dispersion_correction_enabled=bool(collision.get("dispersion_correction_enabled", False)),
         dispersion_correction_low_laplacian=float(collision.get("dispersion_correction_low_laplacian", 0.0)),
         dispersion_correction_high_laplacian=float(collision.get("dispersion_correction_high_laplacian", 0.0)),
@@ -250,14 +465,44 @@ def _collision_from_config(config: dict[str, Any] | None) -> CollisionScales:
         regularized_heat_flux_dispersion_target=float(
             collision.get("regularized_heat_flux_dispersion_target", 1.0)
         ),
+        regularized_heat_flux_diagonal_low_mode_target=float(
+            collision.get("regularized_heat_flux_diagonal_low_mode_target", 1.0)
+        ),
         regularized_heat_flux_f_fraction=float(collision.get("regularized_heat_flux_f_fraction", 0.5714285714285714)),
+        heat_flux_retention_policy=heat_flux_retention_policy,
+        heat_flux_retention_curve_type=str(heat_flux_retention_curve.get("type", "affine")),
+        heat_flux_retention_curve_coefficients=heat_flux_retention_curve_coefficients,
         conductive_heat_flux_moment_factor_policy=conductive_heat_flux_moment_factor_policy,
         conductive_heat_flux_moment_factor=float(conductive_heat_flux_moment_factor),
         conductive_heat_flux_dispersion_target=float(
             collision.get("conductive_heat_flux_dispersion_target", 1.0)
         ),
+        conductive_heat_flux_diagonal_low_mode_target=float(
+            collision.get("conductive_heat_flux_diagonal_low_mode_target", 1.0)
+        ),
         conductive_heat_flux_galilean_correction_factor=float(
             collision.get("conductive_heat_flux_galilean_correction_factor", 0.0)
+        ),
+        acoustic_phase_correction_enabled=bool(
+            collision.get("acoustic_phase_correction_enabled", False)
+        ),
+        acoustic_phase_correction_low_laplacian=float(
+            collision.get(
+                "acoustic_phase_correction_low_laplacian",
+                collision.get("dispersion_correction_low_laplacian", 0.0),
+            )
+        ),
+        acoustic_phase_diagonal_low_mode_factor=float(
+            collision.get("acoustic_phase_diagonal_low_mode_factor", 1.0)
+        ),
+        acoustic_phase_high_mode_factor=float(
+            collision.get("acoustic_phase_high_mode_factor", 1.0)
+        ),
+        acoustic_phase_high_mode_diagonal_factor=float(
+            collision.get(
+                "acoustic_phase_high_mode_diagonal_factor",
+                collision.get("acoustic_phase_high_mode_factor", 1.0),
+            )
         ),
     )
 
@@ -266,6 +511,8 @@ def regularized_heat_flux_factor_from_tau32(
     tau32: float,
     *,
     policy: str = AUTO_TAU32_LINEAR_HEAT_FLUX_POLICY,
+    curve_type: str = "affine",
+    coefficients: tuple[float, ...] = (),
 ) -> float:
     """Return the projection-space heat-flux retention closure ``h(tau32)``.
 
@@ -282,9 +529,160 @@ def regularized_heat_flux_factor_from_tau32(
     elif policy == AUTO_D2Q37_TAU32_LINEAR_HEAT_FLUX_POLICY:
         intercept = AUTO_D2Q37_TAU32_LINEAR_HEAT_FLUX_INTERCEPT
         slope = AUTO_D2Q37_TAU32_LINEAR_HEAT_FLUX_SLOPE
+    elif policy == HEAT_FLUX_RETENTION_POLICY_CALIBRATED_CURVE:
+        return _heat_flux_retention_curve_value(
+            tau32,
+            curve_type=curve_type,
+            coefficients=coefficients,
+        )
     else:
         raise ValueError(f"unknown regularized_heat_flux_factor_policy: {policy}")
     return intercept + slope * (tau32 - 0.5)
+
+
+def _heat_flux_retention_curve_value(
+    tau32: float,
+    *,
+    curve_type: str,
+    coefficients: tuple[float, ...],
+) -> float:
+    x = float(tau32) - 0.5
+    if curve_type == "affine":
+        if len(coefficients) != 2:
+            raise ValueError("affine heat_flux_retention_curve requires [a, b]")
+        a, b = coefficients
+        return a + b * x
+    if curve_type == "quadratic":
+        if len(coefficients) != 3:
+            raise ValueError("quadratic heat_flux_retention_curve requires [a, b, c]")
+        a, b, c = coefficients
+        return a + b * x + c * x * x
+    if curve_type == "piecewise_affine":
+        if len(coefficients) < 4 or len(coefficients) % 2 != 0:
+            raise ValueError("piecewise_affine heat_flux_retention_curve requires [x0, y0, x1, y1, ...]")
+        points = sorted(
+            (float(coefficients[index]), float(coefficients[index + 1]))
+            for index in range(0, len(coefficients), 2)
+        )
+        if any(np.isclose(points[index][0], points[index - 1][0]) for index in range(1, len(points))):
+            raise ValueError("piecewise_affine heat_flux_retention_curve x values must be unique")
+        if x <= points[0][0]:
+            left, right = points[0], points[1]
+        elif x >= points[-1][0]:
+            left, right = points[-2], points[-1]
+        else:
+            left, right = next(
+                (points[index - 1], points[index])
+                for index in range(1, len(points))
+                if points[index - 1][0] <= x <= points[index][0]
+            )
+        slope = (right[1] - left[1]) / (right[0] - left[0])
+        return left[1] + slope * (x - left[0])
+    raise ValueError(f"unknown heat_flux_retention_curve type: {curve_type}")
+
+
+def trace_bulk_projector_alpha_from_tau32(
+    tau32: float,
+    *,
+    curve_type: str,
+    coefficients: tuple[float, ...],
+) -> float:
+    """Return the spectral trace/bulk projector amplitude alpha_h(tau32)."""
+
+    x = float(tau32) - 0.5
+    if curve_type == "constant":
+        if len(coefficients) != 1:
+            raise ValueError("constant trace_bulk_projector_alpha_curve requires [a]")
+        return float(coefficients[0])
+    if curve_type == "affine":
+        if len(coefficients) != 2:
+            raise ValueError("affine trace_bulk_projector_alpha_curve requires [a, b]")
+        a, b = coefficients
+        return float(a + b * x)
+    if curve_type == "quadratic":
+        if len(coefficients) != 3:
+            raise ValueError("quadratic trace_bulk_projector_alpha_curve requires [a, b, c]")
+        a, b, c = coefficients
+        return float(a + b * x + c * x * x)
+    raise ValueError(f"unknown trace_bulk_projector_alpha_curve type: {curve_type}")
+
+
+def trace_bulk_local_divergence_factor_from_tau32(
+    tau32: float,
+    *,
+    curve_type: str,
+    coefficients: tuple[float, ...],
+) -> float:
+    """Return chi(tau32) for the local hydrodynamic trace divergence channel."""
+
+    x = float(tau32) - 0.5
+    if curve_type == "constant":
+        if len(coefficients) != 1:
+            raise ValueError("constant trace_bulk_local_divergence_curve requires [a]")
+        return float(coefficients[0])
+    if curve_type == "affine":
+        if len(coefficients) != 2:
+            raise ValueError("affine trace_bulk_local_divergence_curve requires [a, b]")
+        a, b = coefficients
+        return float(a + b * x)
+    if curve_type == "quadratic":
+        if len(coefficients) != 3:
+            raise ValueError("quadratic trace_bulk_local_divergence_curve requires [a, b, c]")
+        a, b, c = coefficients
+        return float(a + b * x + c * x * x)
+    raise ValueError(f"unknown trace_bulk_local_divergence_curve type: {curve_type}")
+
+
+def trace_bulk_local_thermal_factor_from_tau32(
+    tau32: float,
+    *,
+    curve_type: str,
+    coefficients: tuple[float, ...],
+) -> float:
+    """Return chi_t(tau32) for the two-channel local thermal trace channel."""
+
+    x = float(tau32) - 0.5
+    if curve_type == "constant":
+        if len(coefficients) != 1:
+            raise ValueError("constant trace_bulk_local_thermal_curve requires [a]")
+        return float(coefficients[0])
+    if curve_type == "affine":
+        if len(coefficients) != 2:
+            raise ValueError("affine trace_bulk_local_thermal_curve requires [a, b]")
+        a, b = coefficients
+        return float(a + b * x)
+    if curve_type == "quadratic":
+        if len(coefficients) != 3:
+            raise ValueError("quadratic trace_bulk_local_thermal_curve requires [a, b, c]")
+        a, b, c = coefficients
+        return float(a + b * x + c * x * x)
+    raise ValueError(f"unknown trace_bulk_local_thermal_curve type: {curve_type}")
+
+
+def trace_bulk_local_laplacian_factor_from_tau32(
+    tau32: float,
+    *,
+    curve_type: str,
+    coefficients: tuple[float, ...],
+) -> float:
+    """Return b(tau32) for local trace ``a*div(u) + b*(-L div(u))``."""
+
+    x = float(tau32) - 0.5
+    if curve_type == "constant":
+        if len(coefficients) != 1:
+            raise ValueError("constant trace_bulk_local_laplacian_curve requires [b]")
+        return float(coefficients[0])
+    if curve_type == "affine":
+        if len(coefficients) != 2:
+            raise ValueError("affine trace_bulk_local_laplacian_curve requires [a, b]")
+        a, b = coefficients
+        return float(a + b * x)
+    if curve_type == "quadratic":
+        if len(coefficients) != 3:
+            raise ValueError("quadratic trace_bulk_local_laplacian_curve requires [a, b, c]")
+        a, b, c = coefficients
+        return float(a + b * x + c * x * x)
+    raise ValueError(f"unknown trace_bulk_local_laplacian_curve type: {curve_type}")
 
 
 def alpha_lu_from_tau32(tau32: float, theta_transport_lu: float) -> float:
@@ -318,6 +716,13 @@ def _resolve_collision_closure(collision: CollisionScales, tau32: float) -> Coll
         AUTO_D2Q37_TAU32_LINEAR_HEAT_FLUX_POLICY,
     }:
         heat_flux_factor = regularized_heat_flux_factor_from_tau32(tau32, policy=factor_policy)
+    elif factor_policy == HEAT_FLUX_RETENTION_POLICY_CALIBRATED_CURVE:
+        heat_flux_factor = regularized_heat_flux_factor_from_tau32(
+            tau32,
+            policy=factor_policy,
+            curve_type=collision.heat_flux_retention_curve_type,
+            coefficients=collision.heat_flux_retention_curve_coefficients,
+        )
     else:
         raise ValueError(f"unknown regularized_heat_flux_factor_policy: {factor_policy}")
 
@@ -433,10 +838,21 @@ def physical_timestep_config() -> dict[str, Any]:
             "bulk_viscosity_policy": "diagnostic_zero",
             "nu_b_lu": "auto",
             "central_moment_closure": "second_order",
+            "trace_bulk_policy": TRACE_BULK_POLICY_CURRENT_ZERO,
+            "trace_bulk_scale": 1.0,
+            "trace_bulk_calibration_id": None,
             "dispersion_correction_enabled": False,
             "regularized_shear_xy_factor": 0.965,
             "regularized_shear_normal_factor": 0.845,
             "regularized_heat_flux_factor": AUTO_TAU32_LINEAR_HEAT_FLUX_POLICY,
+            "heat_flux_retention_policy": AUTO_TAU32_LINEAR_HEAT_FLUX_POLICY,
+            "heat_flux_retention_curve": {
+                "type": "affine",
+                "coefficients": [
+                    AUTO_TAU32_LINEAR_HEAT_FLUX_INTERCEPT,
+                    AUTO_TAU32_LINEAR_HEAT_FLUX_SLOPE,
+                ],
+            },
             "regularized_heat_flux_f_fraction": 0.5714285714285714,
             "conductive_heat_flux_moment_factor": 0.05192359403391186,
             "conductive_heat_flux_galilean_correction_factor": 0.03272660408381829,
@@ -467,10 +883,25 @@ def d2q37_physical_timestep_config() -> dict[str, Any]:
         "regularized_shear_xy_dispersion_target": 0.786,
         "regularized_shear_normal_dispersion_target": 0.785,
         "regularized_heat_flux_factor": AUTO_D2Q37_TAU32_LINEAR_HEAT_FLUX_POLICY,
+        "heat_flux_retention_policy": AUTO_D2Q37_TAU32_LINEAR_HEAT_FLUX_POLICY,
+        "heat_flux_retention_curve": {
+            "type": "affine",
+            "coefficients": [
+                AUTO_D2Q37_TAU32_LINEAR_HEAT_FLUX_INTERCEPT,
+                AUTO_D2Q37_TAU32_LINEAR_HEAT_FLUX_SLOPE,
+            ],
+        },
         "regularized_heat_flux_dispersion_target": 0.8512,
+        "regularized_heat_flux_diagonal_low_mode_target": 0.908799,
         "conductive_heat_flux_moment_factor": 0.0422,
         "conductive_heat_flux_dispersion_target": 0.3201,
+        "conductive_heat_flux_diagonal_low_mode_target": 0.610151,
         "conductive_heat_flux_galilean_correction_factor": 0.03835608923273733,
+        "acoustic_phase_correction_enabled": True,
+        "acoustic_phase_correction_low_laplacian": 0.019261093311212455,
+        "acoustic_phase_diagonal_low_mode_factor": 0.98405,
+        "acoustic_phase_high_mode_factor": 1.0,
+        "acoustic_phase_high_mode_diagonal_factor": 1.0,
     }
     return config
 
@@ -527,6 +958,106 @@ def validate_unit_mapping(mapping: UnitMapping) -> None:
         raise ValueError("central_moment_closure must be second_order or fourth_order")
     if mapping.collision.high_order_relaxation <= 0.0:
         raise ValueError("high_order_relaxation must be positive")
+    if mapping.collision.trace_bulk_policy not in {
+        TRACE_BULK_POLICY_CURRENT_ZERO,
+        TRACE_BULK_POLICY_TAU22,
+        TRACE_BULK_POLICY_CALIBRATED,
+        TRACE_BULK_POLICY_GHOST_ORTHOGONAL_SPECTRAL,
+        TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL,
+        TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_LAPLACIAN,
+        TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_PRESSURE_MEMORY,
+        TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_TWO_CHANNEL,
+        TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_ENTROPY_MANIFOLD,
+    }:
+        raise ValueError(
+            "trace_bulk_policy must be current_zero, tau22, calibrated, "
+            "ghost_orthogonal_spectral, ghost_orthogonal_local, "
+            "ghost_orthogonal_local_laplacian, "
+            "ghost_orthogonal_local_pressure_memory, "
+            "ghost_orthogonal_local_two_channel, "
+            "or ghost_orthogonal_local_entropy_manifold"
+        )
+    if not np.isfinite(mapping.collision.trace_bulk_scale):
+        raise ValueError("trace_bulk_scale must be finite")
+    if mapping.collision.trace_bulk_policy == TRACE_BULK_POLICY_CALIBRATED:
+        if not mapping.collision.trace_bulk_calibration_id:
+            raise ValueError("calibrated trace_bulk_policy requires trace_bulk_calibration_id")
+    if mapping.collision.trace_bulk_policy == TRACE_BULK_POLICY_GHOST_ORTHOGONAL_SPECTRAL:
+        if mapping.lattice.velocity_set != "D2Q37":
+            raise ValueError("ghost_orthogonal_spectral trace_bulk_policy is currently D2Q37-only")
+        trace_bulk_projector_alpha_from_tau32(
+            mapping.tau32,
+            curve_type=mapping.collision.trace_bulk_projector_alpha_curve_type,
+            coefficients=mapping.collision.trace_bulk_projector_alpha_curve_coefficients,
+        )
+        if not mapping.collision.trace_bulk_projector_low_laplacian > 0.0:
+            raise ValueError("ghost_orthogonal_spectral requires trace_bulk_projector_low_laplacian > 0")
+    if mapping.collision.trace_bulk_policy == TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL:
+        if mapping.lattice.velocity_set != "D2Q37":
+            raise ValueError("ghost_orthogonal_local trace_bulk_policy is currently D2Q37-only")
+        trace_bulk_local_divergence_factor_from_tau32(
+            mapping.tau32,
+            curve_type=mapping.collision.trace_bulk_local_divergence_curve_type,
+            coefficients=mapping.collision.trace_bulk_local_divergence_curve_coefficients,
+        )
+    if mapping.collision.trace_bulk_policy == TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_PRESSURE_MEMORY:
+        if mapping.lattice.velocity_set != "D2Q37":
+            raise ValueError(
+                "ghost_orthogonal_local_pressure_memory trace_bulk_policy is currently D2Q37-only"
+            )
+        trace_bulk_local_divergence_factor_from_tau32(
+            mapping.tau32,
+            curve_type=mapping.collision.trace_bulk_local_divergence_curve_type,
+            coefficients=mapping.collision.trace_bulk_local_divergence_curve_coefficients,
+        )
+    if mapping.collision.trace_bulk_policy == TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_TWO_CHANNEL:
+        if mapping.lattice.velocity_set != "D2Q37":
+            raise ValueError(
+                "ghost_orthogonal_local_two_channel trace_bulk_policy is currently D2Q37-only"
+            )
+        trace_bulk_local_divergence_factor_from_tau32(
+            mapping.tau32,
+            curve_type=mapping.collision.trace_bulk_local_divergence_curve_type,
+            coefficients=mapping.collision.trace_bulk_local_divergence_curve_coefficients,
+        )
+        trace_bulk_local_thermal_factor_from_tau32(
+            mapping.tau32,
+            curve_type=mapping.collision.trace_bulk_local_thermal_curve_type,
+            coefficients=mapping.collision.trace_bulk_local_thermal_curve_coefficients,
+        )
+    if mapping.collision.trace_bulk_policy == TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_ENTROPY_MANIFOLD:
+        if mapping.lattice.velocity_set != "D2Q37":
+            raise ValueError(
+                "ghost_orthogonal_local_entropy_manifold trace_bulk_policy is currently D2Q37-only"
+            )
+        trace_bulk_local_divergence_factor_from_tau32(
+            mapping.tau32,
+            curve_type=mapping.collision.trace_bulk_local_divergence_curve_type,
+            coefficients=mapping.collision.trace_bulk_local_divergence_curve_coefficients,
+        )
+        trace_bulk_local_laplacian_factor_from_tau32(
+            mapping.tau32,
+            curve_type=mapping.collision.trace_bulk_local_laplacian_curve_type,
+            coefficients=mapping.collision.trace_bulk_local_laplacian_curve_coefficients,
+        )
+        trace_bulk_local_thermal_factor_from_tau32(
+            mapping.tau32,
+            curve_type=mapping.collision.trace_bulk_local_thermal_curve_type,
+            coefficients=mapping.collision.trace_bulk_local_thermal_curve_coefficients,
+        )
+    if mapping.collision.trace_bulk_policy == TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_LAPLACIAN:
+        if mapping.lattice.velocity_set != "D2Q37":
+            raise ValueError("ghost_orthogonal_local_laplacian trace_bulk_policy is currently D2Q37-only")
+        trace_bulk_local_divergence_factor_from_tau32(
+            mapping.tau32,
+            curve_type=mapping.collision.trace_bulk_local_divergence_curve_type,
+            coefficients=mapping.collision.trace_bulk_local_divergence_curve_coefficients,
+        )
+        trace_bulk_local_laplacian_factor_from_tau32(
+            mapping.tau32,
+            curve_type=mapping.collision.trace_bulk_local_laplacian_curve_type,
+            coefficients=mapping.collision.trace_bulk_local_laplacian_curve_coefficients,
+        )
     if mapping.collision.dispersion_correction_enabled:
         if not 0.0 <= mapping.collision.dispersion_correction_low_laplacian:
             raise ValueError("dispersion_correction_low_laplacian must be non-negative")
@@ -539,7 +1070,9 @@ def validate_unit_mapping(mapping: UnitMapping) -> None:
             mapping.collision.regularized_shear_xy_dispersion_target,
             mapping.collision.regularized_shear_normal_dispersion_target,
             mapping.collision.regularized_heat_flux_dispersion_target,
+            mapping.collision.regularized_heat_flux_diagonal_low_mode_target,
             mapping.collision.conductive_heat_flux_dispersion_target,
+            mapping.collision.conductive_heat_flux_diagonal_low_mode_target,
         )
         if any((not np.isfinite(item)) or item <= 0.0 for item in targets):
             raise ValueError("dispersion correction targets must be finite and positive")
@@ -553,12 +1086,38 @@ def validate_unit_mapping(mapping: UnitMapping) -> None:
         atol=1.0e-15,
     ):
         raise ValueError("regularized_heat_flux_f_fraction must match the D/S enthalpy split")
+    if mapping.collision.heat_flux_retention_policy != mapping.collision.regularized_heat_flux_factor_policy:
+        raise ValueError("heat_flux_retention_policy must match regularized_heat_flux_factor_policy")
+    if mapping.collision.heat_flux_retention_policy == HEAT_FLUX_RETENTION_POLICY_CALIBRATED_CURVE:
+        regularized_heat_flux_factor_from_tau32(
+            mapping.tau32,
+            policy=mapping.collision.heat_flux_retention_policy,
+            curve_type=mapping.collision.heat_flux_retention_curve_type,
+            coefficients=mapping.collision.heat_flux_retention_curve_coefficients,
+        )
     if not np.isfinite(mapping.collision.regularized_heat_flux_factor):
         raise ValueError("regularized_heat_flux_factor must be finite")
     if mapping.collision.conductive_heat_flux_moment_factor <= 0.0:
         raise ValueError("conductive_heat_flux_moment_factor must be positive")
     if not np.isfinite(mapping.collision.conductive_heat_flux_galilean_correction_factor):
         raise ValueError("conductive_heat_flux_galilean_correction_factor must be finite")
+    if mapping.collision.acoustic_phase_correction_enabled:
+        if mapping.lattice.velocity_set != "D2Q37":
+            raise ValueError("acoustic_phase_correction is currently D2Q37-only")
+        if not mapping.collision.acoustic_phase_correction_low_laplacian > 0.0:
+            raise ValueError("acoustic_phase_correction_low_laplacian must be positive")
+        if not np.isfinite(mapping.collision.acoustic_phase_diagonal_low_mode_factor):
+            raise ValueError("acoustic_phase_diagonal_low_mode_factor must be finite")
+        if mapping.collision.acoustic_phase_diagonal_low_mode_factor <= 0.0:
+            raise ValueError("acoustic_phase_diagonal_low_mode_factor must be positive")
+        for value in (
+            mapping.collision.acoustic_phase_high_mode_factor,
+            mapping.collision.acoustic_phase_high_mode_diagonal_factor,
+        ):
+            if not np.isfinite(value):
+                raise ValueError("acoustic_phase high-mode factors must be finite")
+            if value <= 0.0:
+                raise ValueError("acoustic_phase high-mode factors must be positive")
 
 
 def pressure_lu_to_phys(p_lu: np.ndarray, mapping: UnitMapping) -> np.ndarray:
