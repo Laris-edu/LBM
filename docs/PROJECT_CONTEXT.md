@@ -1,6 +1,6 @@
 # LBM 项目上下文入口
 
-**最后更新**：2026-06-18
+**最后更新**：2026-06-21
 **用途**：新会话第一份必读文档，用于快速恢复项目当前阶段、读取路线、不可误判规则和下一步优先级。
 **定位**：本文是全项目生命周期唯一上下文入口，不是 Phase_2 专属文档。
 **维护原则**：本文只保留压缩摘要和入口索引；阶段流水、run 细节、长命令、完整数值和推导证据由阶段状态文档、M2/M3/M4 报告和专项诊断报告维护。
@@ -14,7 +14,7 @@
 3. 当前 M2 汇总：`docs/M2_Verification_Report.md`
 4. high-mode / D2Q21-D2Q37 决策：`docs/M2_Critical_Decision.md`
 5. high-mode acoustic eigen-branch：`docs/Phase_2/Phase2_D2Q37_High_Mode_Acoustic_Eigenbranch.md`
-6. 当前声衰减主线：`docs/Phase_2/Phase2_D2Q37_Ghost_Orthogonal_Trace_Closure.md`
+6. 当前声衰减路线判断：`docs/Phase_2/Phase2_D2Q37_Recursive_Regularized_Closure.md`（本地 RR 闭合，x/y 声衰减→~1；路线起点见 `docs/Phase_2/Phase2_D2Q37_Physical_Bulk_Viscosity_Diagnosis.md`，trace closure 推导史见 `docs/Phase_2/Phase2_D2Q37_Ghost_Orthogonal_Trace_Closure.md`）
 7. 声衰减 target 口径：`docs/Phase_2/Phase2_Acoustic_Attenuation_Target_Derivation.md`
 8. heat-flux / `tau32` 口径：`docs/Phase_2/Phase2_Heat_Flux_Tau32_Closure.md`
 9. 文件职责：`docs/Phase_2/Phase2_Output_Files_Guide.md`
@@ -53,6 +53,8 @@
 - `ghost_orthogonal_local_two_channel` 已实现 diagnostic pressure/thermal projector：`div_a=div_p`、`div_t=div_c(u)-div_p`、`T_post=rho*theta*(chi_a*div_a+chi_t*div_t)`；x/y P2-5/P2-6 可维持，但 diagonal P2-5/P2-6 gate 仍失败。
 - 2026-06-18 已复核并修复 D2Q37 diagonal low-mode 分支：独立 diagonal heat-flux retention/export correction 使 P2-5 x/y/diagonal 通过；随后新增 diagonal acoustic phase correction，使 P2-6 x/y/diagonal 和 P2-9 通过。该修复仍是 spectral low-mode correction，不能写成 final M2 production pass。
 - 2026-06-18 已推导并实现 D2Q37 high-mode acoustic full-modal eigen-branch diagnostic closure：默认 `acoustic_phase_high_mode_factor=1.0`、`acoustic_phase_high_mode_diagonal_factor=1.0` 不改变 baseline；诊断 seed `axis=0.955, diagonal=0.918` 可使原始 baseline `64/mode2` x/y/diagonal acoustic speed/gamma 全部进入 hard gate。外推复核 run `20260618T143220Z` 确认该 seed 只在同一离散 Laplacian / 原始 Pr / 无背景边界内成立，`Pr=0.5/2.0`、Mach `0.05` 背景和 `64/mode3` 均失败；attenuation 仍约 `8x..17x` 过阻尼，且仍是 diagnostic spectral，不是 production baseline。
+- 2026-06-19 物理 `ν_b` 复核（run `20260619T095054Z`，见 `docs/Phase_2/Phase2_D2Q37_Physical_Bulk_Viscosity_Diagnosis.md`）改变声衰减修复路线判断：`current_zero` 6.27× 过阻尼=未声明的有效体积黏性；此前"`tau22` 破坏 P2-5/P2-7"实为 `ν_b=0`（迹因子 −1）临界 ghost 污染拟合，物理 `ν_b`（因子严格 ∈(−1,0)）严格稳定且保 transport gate（含 diagonal），声衰减 6.27→~1.67；残差主项是纵波 normal-stress 黏性，单标量 `normal_factor` 无法同时满足 diagonal 横波剪切与纵波声学。结论：声衰减 ratio→~1 无法靠局部标量标定，与 diagonal 热流同属各向同性/完备性缺陷，修复指向各向同性 / recursive-regularized 应力+热流闭合。物理 `ν_b` 严格稳定且保 transport gate ≠ 声衰减已修复；diagnostic，baseline 不变。
+- 2026-06-20 已落地并验证本地 recursive-regularized 闭合（`deviatoric_stress_policy=strain_rate_isotropic` 偏量应变率重构 + `trace_bulk_policy=ghost_orthogonal_local` 的 `div` 迹 + `diagnostic_zero` bulk，见 `docs/Phase_2/Phase2_D2Q37_Recursive_Regularized_Closure.md`，run `20260620T135213Z`）：三旋钮低 k 解耦（`xy_factor←ν_T,x`、`normal_factor←ν_T,diag`、`chi←ν_L,x`），标定后 P2-4 `ν_T/ν` x/y/diagonal=1.000/1.000/1.002 各向同性、**P2-6 声衰减 x/y=1.003**、P2-5 全过、三方向稳定。这是首个本地、稳定且让 x/y 声衰减→~1 同时保 `ν_T` 各向同性与 P2-5 的闭合（此前只有非本地 `ghost_orthogonal_spectral` 拿到 0.88）。先一步证明仅偏量各向同性不修声衰减（`ν_T` 各向同性但 `ν_L` 仍 2.3×），需 `div` 迹的独立纵波旋钮 `chi`。diagonal 声衰减余 ≈1.23（`div`/通道 stencil 各向异性）。2026-06-21 完整门况 run `20260621T083625Z`：P2-9 Galilean `PASSED`、P2-7 边缘 `FAILED`（scan max 5.24%@`Pr=2`，α/heat-flux 高 Pr 既有特性，Pr 扫描变 α 非 ν）、长窗口 3× 稳定但声衰减随窗口漂移（x→1.08/diag→1.46，弱阻尼拟合敏感）。残差:diagonal(4 约束/3 旋钮过约束,各向同性 stencil 无效)、窗口依赖、P2-7 极值、high-mode 未覆盖。强 GO-RISK 候选,非窗口无关 production pass,仍 diagnostic、baseline 不变。
 
 ## 3. 不可误判规则
 
@@ -88,14 +90,15 @@
 
 ## 5. 下一步优先级
 
-1. 基于 high-mode acoustic 外推复核结果，推导可随 `Pr/tau32`、Mach/background 和 wave-number branch 变化的 eigen-branch closure；当前 `axis=0.955, diagonal=0.918` 只能保留为窄边界 diagnostic seed。
-2. 继续复核 matched acoustic attenuation 失配；当前 low-mode 与 high-mode 声衰减仍是 diagnostic / GO-RISK，不能作为 hard pass。
-3. 对任何下一 candidate 直接运行 x/y/diagonal P2-5、x/y/diagonal P2-6、P2-7 和 P2-9 smoke；候选必须同时通过 hydrodynamic symbol、low-k ghost stability、P2-5/P2-6/P2-7/P2-9 动态 gate。
-4. 将 P2-8/P2-9 后续方向统计扩展到 high-mode acoustic wave direction，并保留 transport masking 与 acoustic eigen-branch diagnostic 的分离字段。
-5. 在更宽网格/波数/Pr 范围继续复核 heat-flux/tau32 projection closure、Galilean correction 和 D2Q37 spectral correction 的外推边界。
-6. 复核 quadrature-matched 诊断配置的 stress/heat-flux 参数口径，明确它是实现诊断还是可替代 lattice scaling 路径。
-7. 保持 D2Q21 `central_moment_closure=second_order` 作为低模态 C2+ baseline，不把 `fourth_order` 诊断失败写成 production regression。
-8. 完善 HDF5 probe 输出，供 Phase_3 Level A/B 后续复用。
+1. 本地 recursive-regularized 闭合（应变率偏量 + `div` 迹，完整门况 run `20260621T083625Z`，见 `docs/Phase_2/Phase2_D2Q37_Recursive_Regularized_Closure.md`）已表征:x/y 声衰减→~1、`ν_T` 各向同性、P2-5/P2-9 通过、长窗口稳定,强 GO-RISK 候选。剩余四残差:(a) diagonal 声衰减 1.23(4 约束/3 旋钮过约束,各向同性 stencil 已证无效,需第 4 自由度);(b) 声衰减随窗口漂移(弱阻尼拟合敏感);(c) P2-7 极值 5.24%(α/heat-flux 高 Pr 特性,与 RR 解耦);(d) high-mode 未覆盖。下一步:给 diagonal 引入第 4 自由度或明确接受残差为 GO-RISK,评估 high-mode 组合与是否升级默认 baseline。
+2. 复核物理 `ν_b` baseline 候选：本地 `tau22` + `bulk_viscosity_policy=specified`（物理 `ν_b`，迹因子严格 ∈(−1,0)）已证严格稳定且保 transport gate（含 diagonal），声衰减 6.27→~1.67；订正 `tau22` 的 `nu_b` 映射系数（实测 effective/nominal≈1.44），补跑 P2-9/high-mode/长窗口后再评估是否替换 `current_zero` baseline。
+3. 继续复核 matched acoustic attenuation 失配；low-mode 与 high-mode 声衰减仍是 diagnostic / GO-RISK，不能作为 hard pass；已证不能靠局部标量 trace/normal 标定到 ratio→1。
+4. 基于 high-mode acoustic 外推复核结果，推导可随 `Pr/tau32`、Mach/background 和 wave-number branch 变化的 eigen-branch closure；当前 `axis=0.955, diagonal=0.918` 只能保留为窄边界 diagnostic seed。
+5. 对任何下一 candidate 直接运行 x/y/diagonal P2-5、x/y/diagonal P2-6、P2-7 和 P2-9 smoke；候选必须同时通过 hydrodynamic symbol、low-k ghost stability、P2-5/P2-6/P2-7/P2-9 动态 gate。
+6. 在更宽网格/波数/Pr 范围继续复核 heat-flux/tau32 projection closure、Galilean correction 和 D2Q37 spectral correction 的外推边界。
+7. 复核 quadrature-matched 诊断配置的 stress/heat-flux 参数口径，明确它是实现诊断还是可替代 lattice scaling 路径。
+8. 保持 D2Q21 `central_moment_closure=second_order` 作为低模态 C2+ baseline，不把 `fourth_order` 诊断失败写成 production regression。
+9. 完善 HDF5 probe 输出，供 Phase_3 Level A/B 后续复用。
 
 ## 6. 详细事实入口
 

@@ -73,6 +73,7 @@ def test_hdf5_metadata_minimum_schema(tmp_path):
         "acoustic_phase_correction_enabled",
         "acoustic_phase_correction_low_laplacian",
         "acoustic_phase_diagonal_low_mode_factor",
+        "acoustic_phase_high_mode_policy",
         "acoustic_phase_high_mode_factor",
         "acoustic_phase_high_mode_diagonal_factor",
         "high_order_relaxation",

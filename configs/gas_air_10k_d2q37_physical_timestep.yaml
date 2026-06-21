@@ -59,6 +59,7 @@ collision:
   acoustic_phase_correction_enabled: true
   acoustic_phase_correction_low_laplacian: 0.019261093311212455
   acoustic_phase_diagonal_low_mode_factor: 0.98405
+  acoustic_phase_high_mode_policy: specified
   acoustic_phase_high_mode_factor: 1.0
   acoustic_phase_high_mode_diagonal_factor: 1.0
 

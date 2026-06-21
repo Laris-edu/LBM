@@ -200,6 +200,7 @@ def main(argv: list[str] | None = None) -> int:
         "acoustic_phase_diagonal_low_mode_factor": (
             solver.mapping.collision.acoustic_phase_diagonal_low_mode_factor
         ),
+        "acoustic_phase_high_mode_policy": solver.mapping.collision.acoustic_phase_high_mode_policy,
         "acoustic_phase_high_mode_factor": solver.mapping.collision.acoustic_phase_high_mode_factor,
         "acoustic_phase_high_mode_diagonal_factor": (
             solver.mapping.collision.acoustic_phase_high_mode_diagonal_factor

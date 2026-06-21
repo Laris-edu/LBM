@@ -17,6 +17,8 @@ from core.lattice import Lattice, make_lattice
 from core.macroscopic import ENERGY_CLOSURE_DEFINITION, MacroState, heat_flux_lu, recover_macro
 from core.streaming import pull_stream_fg
 from core.unit_mapping import (
+    ACOUSTIC_PHASE_HIGH_MODE_POLICY_FULL_MODAL_TARGET,
+    ACOUSTIC_PHASE_HIGH_MODE_POLICY_SPECIFIED,
     TRACE_BULK_POLICY_CURRENT_ZERO,
     TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_PRESSURE_MEMORY,
     TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_TWO_CHANNEL,
@@ -259,6 +261,122 @@ def _acoustic_eigenprojector_correction(
     return correction
 
 
+def _acoustic_eigenprojector_target_phase_correction(
+    symbol: np.ndarray,
+    *,
+    mapping: UnitMapping,
+    lattice: Lattice,
+    kx: float,
+    ky: float,
+    rho0: float,
+    u0: tuple[float, float],
+    theta0: float,
+) -> np.ndarray:
+    k_norm = float(np.hypot(kx, ky))
+    if k_norm <= 1.0e-14:
+        return np.zeros_like(symbol, dtype=complex)
+
+    values, vectors = np.linalg.eig(symbol)
+    c_target = float(np.sqrt(mapping.physical.gamma * theta0))
+    background_phase = float(kx) * float(u0[0]) + float(ky) * float(u0[1])
+    candidates_by_sign: dict[int, list[tuple[float, float, int, float]]] = {-1: [], 1: []}
+    fallback: list[tuple[float, float, int, float]] = []
+    for index, value in enumerate(values):
+        magnitude = abs(value)
+        if magnitude <= 1.0e-6 or not np.isfinite(magnitude):
+            continue
+        angle = float(np.angle(value))
+        intrinsic_angle = angle + background_phase
+        if abs(intrinsic_angle) <= 1.0e-8:
+            continue
+        phase_speed = abs(intrinsic_angle) / k_norm
+        speed_error = abs(phase_speed / c_target - 1.0)
+        sign = 1 if intrinsic_angle >= 0.0 else -1
+        observability = _acoustic_eigenvector_observability(
+            vectors[:, index],
+            mapping=mapping,
+            lattice=lattice,
+            kx=kx,
+            ky=ky,
+            rho0=rho0,
+            u0=u0,
+            theta0=theta0,
+        )
+        candidate = (speed_error, observability, index, intrinsic_angle)
+        fallback.append(candidate)
+        candidates_by_sign[sign].append(candidate)
+
+    selected: list[tuple[float, float, int, float]] = []
+    for sign in (-1, 1):
+        sign_candidates = candidates_by_sign[sign]
+        if not sign_candidates:
+            continue
+        max_observability = max(candidate[1] for candidate in sign_candidates)
+        observed_candidates = [
+            candidate
+            for candidate in sign_candidates
+            if candidate[1] >= max(1.0e-8, 1.0e-4 * max_observability)
+        ]
+        pool = observed_candidates or sign_candidates
+        pool.sort(key=lambda item: (item[0], -item[1]))
+        selected.append(pool[0])
+    if len(selected) < 2:
+        fallback.sort(key=lambda item: (item[0], -item[1]))
+        selected = fallback[:2]
+    if len(selected) < 2:
+        raise RuntimeError("no acoustic eigenvalue pair found for target phase correction")
+
+    inverse_vectors = np.linalg.inv(vectors)
+    correction = np.zeros_like(symbol, dtype=complex)
+    for _speed_error, _observability, index, intrinsic_angle in selected:
+        sign = 1.0 if intrinsic_angle >= 0.0 else -1.0
+        current_angle = float(np.angle(values[index]))
+        target_angle = -background_phase + sign * c_target * k_norm
+        multiplier = np.exp(1j * (target_angle - current_angle))
+        projector = np.outer(vectors[:, index], inverse_vectors[index, :])
+        correction += (multiplier - 1.0) * projector
+    return correction
+
+
+def _acoustic_eigenvector_observability(
+    vector: np.ndarray,
+    *,
+    mapping: UnitMapping,
+    lattice: Lattice,
+    kx: float,
+    ky: float,
+    rho0: float,
+    u0: tuple[float, float],
+    theta0: float,
+) -> float:
+    q = int(lattice.q)
+    norm = float(np.linalg.norm(vector))
+    if norm <= 0.0 or not np.isfinite(norm):
+        return 0.0
+    k_norm = float(np.hypot(kx, ky))
+    if k_norm <= 0.0:
+        return 0.0
+
+    f_vec = vector[:q]
+    g_vec = vector[q:]
+    rho_prime = np.sum(f_vec)
+    momentum_prime = np.einsum("a,ai->i", f_vec, lattice.c)
+    u0_array = np.asarray(u0, dtype=float)
+    velocity_prime = (momentum_prime - u0_array * rho_prime) / float(rho0)
+    peculiar = lattice.c - u0_array[None, :]
+    translational_prime = 0.5 * np.sum(f_vec * np.sum(peculiar * peculiar, axis=1))
+    internal_prime = translational_prime + np.sum(g_vec)
+    pressure_prime = 2.0 * internal_prime / float(mapping.lattice.D + mapping.lattice.S)
+    k_unit = np.array([kx, ky], dtype=float) / k_norm
+    longitudinal_velocity_prime = np.dot(velocity_prime, k_unit)
+    c_target = float(np.sqrt(mapping.physical.gamma * theta0))
+    observable = np.hypot(
+        abs(pressure_prime / (float(rho0) * float(theta0))),
+        abs(longitudinal_velocity_prime / c_target),
+    )
+    return float(observable / norm)
+
+
 def _acoustic_phase_correction_operator(
     *,
     mapping: UnitMapping,
@@ -370,7 +488,13 @@ def _low_diagonal_fourier_modes(ny: int, nx: int, low_laplacian: float) -> list[
     ]
 
 
-def _high_acoustic_fourier_modes(ny: int, nx: int, high_laplacian: float) -> list[tuple[int, int, float, float]]:
+def _high_acoustic_fourier_modes(
+    ny: int,
+    nx: int,
+    high_laplacian: float,
+    *,
+    include_branch_family: bool = False,
+) -> list[tuple[int, int, float, float]]:
     if high_laplacian <= 0.0:
         return []
     modes: list[tuple[int, int, float, float]] = []
@@ -379,12 +503,22 @@ def _high_acoustic_fourier_modes(ny: int, nx: int, high_laplacian: float) -> lis
     axis_target = float(high_laplacian)
     diagonal_target = 2.0 * axis_target
     tolerance = max(1.0e-12, 1.0e-10 * axis_target)
+    branch_k_limit = np.inf
+    if include_branch_family:
+        clipped = min(1.0, 0.5 * np.sqrt(axis_target))
+        branch_k_limit = 1.5 * float(2.0 * np.arcsin(clipped)) + tolerance
     for iy, ky in enumerate(ky_values):
         for ix, kx in enumerate(kx_values):
             if ix == 0 and iy == 0:
                 continue
             mu = 4.0 * np.sin(0.5 * kx) ** 2 + 4.0 * np.sin(0.5 * ky) ** 2
-            if abs(float(mu) - axis_target) <= tolerance or abs(float(mu) - diagonal_target) <= tolerance:
+            if include_branch_family:
+                if (
+                    float(mu) >= axis_target - tolerance
+                    and max(abs(float(kx)), abs(float(ky))) <= branch_k_limit
+                ):
+                    modes.append((iy, ix, float(kx), float(ky)))
+            elif abs(float(mu) - axis_target) <= tolerance or abs(float(mu) - diagonal_target) <= tolerance:
                 modes.append((iy, ix, float(kx), float(ky)))
     return modes
 
@@ -418,7 +552,7 @@ class GasSolver2D:
         self._ghost_projector_reference: tuple[float, float, float, float] | None = None
         self._ghost_projector_modes_cache: dict[tuple[int, int, float], list[tuple[int, int, float, float]]] = {}
         self._acoustic_phase_modes_cache: dict[tuple[int, int, float], list[tuple[int, int, float, float]]] = {}
-        self._acoustic_phase_high_modes_cache: dict[tuple[int, int, float], list[tuple[int, int, float, float]]] = {}
+        self._acoustic_phase_high_modes_cache: dict[tuple[int, int, float, str], list[tuple[int, int, float, float]]] = {}
         self._previous_pressure_for_trace: np.ndarray | None = None
 
     def initialize_from_macro(self, rho: np.ndarray | float, u: np.ndarray, theta: np.ndarray | float) -> None:
@@ -466,12 +600,15 @@ class GasSolver2D:
 
     def _acoustic_phase_high_modes(self) -> list[tuple[int, int, float, float]]:
         high_laplacian = self.mapping.collision.dispersion_correction_high_laplacian
-        key = (self.ny, self.nx, float(high_laplacian))
+        high_mode_policy = self.mapping.collision.acoustic_phase_high_mode_policy
+        key = (self.ny, self.nx, float(high_laplacian), high_mode_policy)
         if key not in self._acoustic_phase_high_modes_cache:
             self._acoustic_phase_high_modes_cache[key] = _high_acoustic_fourier_modes(
                 self.ny,
                 self.nx,
                 high_laplacian,
+                include_branch_family=high_mode_policy
+                == ACOUSTIC_PHASE_HIGH_MODE_POLICY_FULL_MODAL_TARGET,
             )
         return self._acoustic_phase_high_modes_cache[key]
 
@@ -638,6 +775,7 @@ class GasSolver2D:
         config["numerics"]["ny"] = self.ny
         config["numerics"]["nx"] = self.nx
         config.setdefault("collision", {})
+        config["collision"]["acoustic_phase_high_mode_policy"] = ACOUSTIC_PHASE_HIGH_MODE_POLICY_SPECIFIED
         config["collision"]["acoustic_phase_high_mode_factor"] = 1.0
         config["collision"]["acoustic_phase_high_mode_diagonal_factor"] = 1.0
 
@@ -701,6 +839,19 @@ class GasSolver2D:
             u0=u0,
             theta0=theta0,
         )
+        if self.mapping.collision.acoustic_phase_high_mode_policy == (
+            ACOUSTIC_PHASE_HIGH_MODE_POLICY_FULL_MODAL_TARGET
+        ):
+            return _acoustic_eigenprojector_target_phase_correction(
+                symbol,
+                mapping=self.mapping,
+                lattice=self.lattice,
+                kx=kx,
+                ky=ky,
+                rho0=rho0,
+                u0=u0,
+                theta0=theta0,
+            )
         return _acoustic_eigenprojector_correction(
             symbol,
             mapping=self.mapping,
@@ -813,8 +964,10 @@ class GasSolver2D:
         collision = self.mapping.collision
         if not collision.acoustic_phase_correction_enabled:
             return f_state, g_state
+        high_mode_policy = collision.acoustic_phase_high_mode_policy
         if (
-            collision.acoustic_phase_high_mode_factor == 1.0
+            high_mode_policy == ACOUSTIC_PHASE_HIGH_MODE_POLICY_SPECIFIED
+            and collision.acoustic_phase_high_mode_factor == 1.0
             and collision.acoustic_phase_high_mode_diagonal_factor == 1.0
         ):
             return f_state, g_state
@@ -846,7 +999,10 @@ class GasSolver2D:
                 if abs(kx) > 0.0 and abs(ky) > 0.0
                 else collision.acoustic_phase_high_mode_factor
             )
-            if phase_factor == 1.0:
+            if (
+                high_mode_policy == ACOUSTIC_PHASE_HIGH_MODE_POLICY_SPECIFIED
+                and phase_factor == 1.0
+            ):
                 continue
             forward_phase, inverse_phase = _modal_phase_pair(self.ny, self.nx, kx, ky)
             amplitude = np.einsum("yx,yxs->s", forward_phase, perturbation)
@@ -1024,6 +1180,13 @@ class GasSolver2D:
                     "trace_bulk_local_laplacian_curve_coefficients": (
                         self.mapping.collision.trace_bulk_local_laplacian_curve_coefficients
                     ),
+                    "deviatoric_stress_policy": self.mapping.collision.deviatoric_stress_policy,
+                    "deviatoric_strain_rate_curve_type": (
+                        self.mapping.collision.deviatoric_strain_rate_curve_type
+                    ),
+                    "deviatoric_strain_rate_curve_coefficients": (
+                        self.mapping.collision.deviatoric_strain_rate_curve_coefficients
+                    ),
                     "tau21": self.mapping.tau21,
                     "tau22": self.mapping.tau22,
                     "tau32": self.mapping.tau32,
@@ -1081,6 +1244,9 @@ class GasSolver2D:
                     ),
                     "acoustic_phase_diagonal_low_mode_factor": (
                         self.mapping.collision.acoustic_phase_diagonal_low_mode_factor
+                    ),
+                    "acoustic_phase_high_mode_policy": (
+                        self.mapping.collision.acoustic_phase_high_mode_policy
                     ),
                     "acoustic_phase_high_mode_factor": (
                         self.mapping.collision.acoustic_phase_high_mode_factor

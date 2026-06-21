@@ -45,12 +45,16 @@ GHOST_ORTHOGONAL_LOCAL_LAPLACIAN_DIVERGENCE_INTERCEPT = 0.86390221
 GHOST_ORTHOGONAL_LOCAL_LAPLACIAN_DIVERGENCE_SLOPE = -1.41574932
 GHOST_ORTHOGONAL_LOCAL_LAPLACIAN_COEFFICIENT_INTERCEPT = 24.78889350
 GHOST_ORTHOGONAL_LOCAL_LAPLACIAN_COEFFICIENT_SLOPE = -33.74907949
+DEVIATORIC_STRESS_POLICY_MEASURED = "measured"
+DEVIATORIC_STRESS_POLICY_STRAIN_RATE_ISOTROPIC = "strain_rate_isotropic"
 HEAT_FLUX_RETENTION_POLICY_CALIBRATED_CURVE = "calibrated_curve"
 HEAT_FLUX_TAU32_RELATION = (
     "alpha_lu = theta_transport_lu * (tau32 - 0.5); "
     "regularized_heat_flux_factor is a lattice-family projection closure h(tau32), "
     "not an independent transport knob"
 )
+ACOUSTIC_PHASE_HIGH_MODE_POLICY_SPECIFIED = "specified"
+ACOUSTIC_PHASE_HIGH_MODE_POLICY_FULL_MODAL_TARGET = "full_modal_target"
 
 
 @dataclass(frozen=True)
@@ -99,6 +103,9 @@ class CollisionScales:
     trace_bulk_local_thermal_curve_coefficients: tuple[float, ...] = ()
     trace_bulk_local_laplacian_curve_type: str = "affine"
     trace_bulk_local_laplacian_curve_coefficients: tuple[float, ...] = ()
+    deviatoric_stress_policy: str = DEVIATORIC_STRESS_POLICY_MEASURED
+    deviatoric_strain_rate_curve_type: str = "affine"
+    deviatoric_strain_rate_curve_coefficients: tuple[float, ...] = ()
     dispersion_correction_enabled: bool = False
     dispersion_correction_low_laplacian: float = 0.0
     dispersion_correction_high_laplacian: float = 0.0
@@ -122,6 +129,7 @@ class CollisionScales:
     acoustic_phase_correction_enabled: bool = False
     acoustic_phase_correction_low_laplacian: float = 0.0
     acoustic_phase_diagonal_low_mode_factor: float = 1.0
+    acoustic_phase_high_mode_policy: str = ACOUSTIC_PHASE_HIGH_MODE_POLICY_SPECIFIED
     acoustic_phase_high_mode_factor: float = 1.0
     acoustic_phase_high_mode_diagonal_factor: float = 1.0
 
@@ -204,6 +212,11 @@ class UnitMapping:
             "trace_bulk_local_laplacian_curve_coefficients": (
                 self.collision.trace_bulk_local_laplacian_curve_coefficients
             ),
+            "deviatoric_stress_policy": self.collision.deviatoric_stress_policy,
+            "deviatoric_strain_rate_curve_type": self.collision.deviatoric_strain_rate_curve_type,
+            "deviatoric_strain_rate_curve_coefficients": (
+                self.collision.deviatoric_strain_rate_curve_coefficients
+            ),
             "nu_lu": self.nu_lu,
             "alpha_lu": self.alpha_lu,
             "nu_b_lu": self.nu_b_lu,
@@ -253,6 +266,7 @@ class UnitMapping:
             "acoustic_phase_diagonal_low_mode_factor": (
                 self.collision.acoustic_phase_diagonal_low_mode_factor
             ),
+            "acoustic_phase_high_mode_policy": self.collision.acoustic_phase_high_mode_policy,
             "acoustic_phase_high_mode_factor": self.collision.acoustic_phase_high_mode_factor,
             "acoustic_phase_high_mode_diagonal_factor": (
                 self.collision.acoustic_phase_high_mode_diagonal_factor
@@ -397,6 +411,16 @@ def _collision_from_config(config: dict[str, Any] | None) -> CollisionScales:
             GHOST_ORTHOGONAL_LOCAL_LAPLACIAN_COEFFICIENT_SLOPE,
         )
 
+    deviatoric_stress_policy = str(
+        collision.get("deviatoric_stress_policy", DEVIATORIC_STRESS_POLICY_MEASURED)
+    )
+    deviatoric_strain_rate_curve = dict(
+        collision.get("deviatoric_strain_rate_curve", {}) or {}
+    )
+    deviatoric_strain_rate_curve_coefficients = tuple(
+        float(item) for item in deviatoric_strain_rate_curve.get("coefficients", ())
+    )
+
     regularized_heat_flux_factor = collision.get("regularized_heat_flux_factor", 0.0)
     regularized_heat_flux_factor_policy = str(
         collision.get("regularized_heat_flux_factor_policy", "specified")
@@ -449,6 +473,9 @@ def _collision_from_config(config: dict[str, Any] | None) -> CollisionScales:
             trace_bulk_local_laplacian_curve.get("type", "affine")
         ),
         trace_bulk_local_laplacian_curve_coefficients=trace_bulk_local_laplacian_curve_coefficients,
+        deviatoric_stress_policy=deviatoric_stress_policy,
+        deviatoric_strain_rate_curve_type=str(deviatoric_strain_rate_curve.get("type", "affine")),
+        deviatoric_strain_rate_curve_coefficients=deviatoric_strain_rate_curve_coefficients,
         dispersion_correction_enabled=bool(collision.get("dispersion_correction_enabled", False)),
         dispersion_correction_low_laplacian=float(collision.get("dispersion_correction_low_laplacian", 0.0)),
         dispersion_correction_high_laplacian=float(collision.get("dispersion_correction_high_laplacian", 0.0)),
@@ -494,6 +521,12 @@ def _collision_from_config(config: dict[str, Any] | None) -> CollisionScales:
         ),
         acoustic_phase_diagonal_low_mode_factor=float(
             collision.get("acoustic_phase_diagonal_low_mode_factor", 1.0)
+        ),
+        acoustic_phase_high_mode_policy=str(
+            collision.get(
+                "acoustic_phase_high_mode_policy",
+                ACOUSTIC_PHASE_HIGH_MODE_POLICY_SPECIFIED,
+            )
         ),
         acoustic_phase_high_mode_factor=float(
             collision.get("acoustic_phase_high_mode_factor", 1.0)
@@ -683,6 +716,39 @@ def trace_bulk_local_laplacian_factor_from_tau32(
         a, b, c = coefficients
         return float(a + b * x + c * x * x)
     raise ValueError(f"unknown trace_bulk_local_laplacian_curve type: {curve_type}")
+
+
+def deviatoric_strain_rate_factor_from_tau21(
+    tau21: float,
+    *,
+    curve_type: str,
+    coefficients: tuple[float, ...],
+) -> float:
+    """Return the isotropic deviatoric strain-rate coefficient G(tau21).
+
+    For ``deviatoric_stress_policy=strain_rate_isotropic`` the post-collision
+    deviatoric stress is reconstructed from the finite-difference strain rate
+    with a single coefficient, so transverse shear and longitudinal compression
+    share one isotropic shear viscosity by construction rather than relaxing the
+    measured central-moment stress with separate xy/normal factors.
+    """
+
+    x = float(tau21) - 0.5
+    if curve_type == "constant":
+        if len(coefficients) != 1:
+            raise ValueError("constant deviatoric_strain_rate_curve requires [a]")
+        return float(coefficients[0])
+    if curve_type == "affine":
+        if len(coefficients) != 2:
+            raise ValueError("affine deviatoric_strain_rate_curve requires [a, b]")
+        a, b = coefficients
+        return float(a + b * x)
+    if curve_type == "quadratic":
+        if len(coefficients) != 3:
+            raise ValueError("quadratic deviatoric_strain_rate_curve requires [a, b, c]")
+        a, b, c = coefficients
+        return float(a + b * x + c * x * x)
+    raise ValueError(f"unknown deviatoric_strain_rate_curve type: {curve_type}")
 
 
 def alpha_lu_from_tau32(tau32: float, theta_transport_lu: float) -> float:
@@ -900,6 +966,7 @@ def d2q37_physical_timestep_config() -> dict[str, Any]:
         "acoustic_phase_correction_enabled": True,
         "acoustic_phase_correction_low_laplacian": 0.019261093311212455,
         "acoustic_phase_diagonal_low_mode_factor": 0.98405,
+        "acoustic_phase_high_mode_policy": ACOUSTIC_PHASE_HIGH_MODE_POLICY_SPECIFIED,
         "acoustic_phase_high_mode_factor": 1.0,
         "acoustic_phase_high_mode_diagonal_factor": 1.0,
     }
@@ -1058,6 +1125,21 @@ def validate_unit_mapping(mapping: UnitMapping) -> None:
             curve_type=mapping.collision.trace_bulk_local_laplacian_curve_type,
             coefficients=mapping.collision.trace_bulk_local_laplacian_curve_coefficients,
         )
+    if mapping.collision.deviatoric_stress_policy not in {
+        DEVIATORIC_STRESS_POLICY_MEASURED,
+        DEVIATORIC_STRESS_POLICY_STRAIN_RATE_ISOTROPIC,
+    }:
+        raise ValueError("deviatoric_stress_policy must be measured or strain_rate_isotropic")
+    if mapping.collision.deviatoric_stress_policy == DEVIATORIC_STRESS_POLICY_STRAIN_RATE_ISOTROPIC:
+        if not mapping.collision.deviatoric_strain_rate_curve_coefficients:
+            raise ValueError(
+                "strain_rate_isotropic deviatoric_stress_policy requires deviatoric_strain_rate_curve coefficients"
+            )
+        deviatoric_strain_rate_factor_from_tau21(
+            mapping.tau21,
+            curve_type=mapping.collision.deviatoric_strain_rate_curve_type,
+            coefficients=mapping.collision.deviatoric_strain_rate_curve_coefficients,
+        )
     if mapping.collision.dispersion_correction_enabled:
         if not 0.0 <= mapping.collision.dispersion_correction_low_laplacian:
             raise ValueError("dispersion_correction_low_laplacian must be non-negative")
@@ -1110,6 +1192,11 @@ def validate_unit_mapping(mapping: UnitMapping) -> None:
             raise ValueError("acoustic_phase_diagonal_low_mode_factor must be finite")
         if mapping.collision.acoustic_phase_diagonal_low_mode_factor <= 0.0:
             raise ValueError("acoustic_phase_diagonal_low_mode_factor must be positive")
+        if mapping.collision.acoustic_phase_high_mode_policy not in {
+            ACOUSTIC_PHASE_HIGH_MODE_POLICY_SPECIFIED,
+            ACOUSTIC_PHASE_HIGH_MODE_POLICY_FULL_MODAL_TARGET,
+        }:
+            raise ValueError("unknown acoustic_phase_high_mode_policy")
         for value in (
             mapping.collision.acoustic_phase_high_mode_factor,
             mapping.collision.acoustic_phase_high_mode_diagonal_factor,

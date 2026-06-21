@@ -4,6 +4,8 @@ import pytest
 import yaml
 
 from core.unit_mapping import (
+    ACOUSTIC_PHASE_HIGH_MODE_POLICY_FULL_MODAL_TARGET,
+    ACOUSTIC_PHASE_HIGH_MODE_POLICY_SPECIFIED,
     AUTO_TAU32_LINEAR_HEAT_FLUX_POLICY,
     AUTO_D2Q37_TAU32_LINEAR_HEAT_FLUX_POLICY,
     GHOST_ORTHOGONAL_TRACE_ALPHA_INTERCEPT,
@@ -90,6 +92,7 @@ def test_p2_0_physical_and_quadrature_mapping_are_explicit():
         0.98405,
         rel_tol=1.0e-12,
     )
+    assert d2q37.collision.acoustic_phase_high_mode_policy == ACOUSTIC_PHASE_HIGH_MODE_POLICY_SPECIFIED
     assert math.isclose(d2q37.collision.acoustic_phase_high_mode_factor, 1.0, rel_tol=1.0e-12)
     assert math.isclose(
         d2q37.collision.acoustic_phase_high_mode_diagonal_factor,
@@ -179,6 +182,21 @@ def test_p2_0_d2q37_ghost_orthogonal_spectral_trace_policy_is_explicit():
     invalid["collision"]["trace_bulk_projector_low_laplacian"] = 1.0e-2
     with pytest.raises(ValueError, match="D2Q37-only"):
         create_unit_mapping(invalid)
+
+
+def test_p2_0_d2q37_high_mode_acoustic_phase_policy_is_explicit():
+    config = d2q37_physical_timestep_config()
+    config["collision"]["acoustic_phase_high_mode_policy"] = (
+        ACOUSTIC_PHASE_HIGH_MODE_POLICY_FULL_MODAL_TARGET
+    )
+    mapping = create_unit_mapping(config)
+    assert mapping.collision.acoustic_phase_high_mode_policy == (
+        ACOUSTIC_PHASE_HIGH_MODE_POLICY_FULL_MODAL_TARGET
+    )
+
+    config["collision"]["acoustic_phase_high_mode_policy"] = "not_a_policy"
+    with pytest.raises(ValueError, match="unknown acoustic_phase_high_mode_policy"):
+        create_unit_mapping(config)
 
 
 def test_p2_0_d2q37_ghost_orthogonal_local_trace_policy_is_explicit():

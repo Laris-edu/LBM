@@ -169,6 +169,7 @@ def measure_prandtl_scan_point(
         "acoustic_phase_diagonal_low_mode_factor": (
             mapping.collision.acoustic_phase_diagonal_low_mode_factor
         ),
+        "acoustic_phase_high_mode_policy": mapping.collision.acoustic_phase_high_mode_policy,
         "acoustic_phase_high_mode_factor": mapping.collision.acoustic_phase_high_mode_factor,
         "acoustic_phase_high_mode_diagonal_factor": (
             mapping.collision.acoustic_phase_high_mode_diagonal_factor

@@ -85,12 +85,14 @@ def _with_pr(config: dict[str, Any], pr: float) -> dict[str, Any]:
 def _with_high_mode_factors(
     config: dict[str, Any],
     *,
+    closure_policy: str,
     axis_factor: float,
     diagonal_factor: float,
 ) -> dict[str, Any]:
     updated = deepcopy(config)
     collision = dict(updated.get("collision", {}) or {})
     collision["acoustic_phase_correction_enabled"] = True
+    collision["acoustic_phase_high_mode_policy"] = closure_policy
     collision["acoustic_phase_high_mode_factor"] = float(axis_factor)
     collision["acoustic_phase_high_mode_diagonal_factor"] = float(diagonal_factor)
     updated["collision"] = collision
@@ -117,6 +119,7 @@ def _case_config(
     base_config: dict[str, Any],
     case: BoundaryCase,
     *,
+    closure_policy: str,
     axis_factor: float,
     diagonal_factor: float,
     steps: int,
@@ -125,6 +128,7 @@ def _case_config(
     config = _with_pr(base_config, case.pr)
     config = _with_high_mode_factors(
         config,
+        closure_policy=closure_policy,
         axis_factor=axis_factor,
         diagonal_factor=diagonal_factor,
     )
@@ -283,6 +287,7 @@ def _case_row(case: BoundaryCase, result: dict[str, Any]) -> dict[str, Any]:
 def _p2_9_semantic_smoke_config(base_config: dict[str, Any]) -> dict[str, Any]:
     config = _with_high_mode_factors(
         deepcopy(base_config),
+        closure_policy="specified",
         axis_factor=0.955,
         diagonal_factor=0.918,
     )
@@ -349,6 +354,7 @@ def _write_report(path: Path, summary: dict[str, Any]) -> None:
         f"- config_sha256: `{summary['config_sha256']}`",
         f"- axis factor: `{summary['axis_factor']}`",
         f"- diagonal factor: `{summary['diagonal_factor']}`",
+        f"- closure policy: `{summary['closure_policy']}`",
         f"- steps: `{summary['steps']}`",
         f"- fit_start: `{summary['fit_start']}`",
         "",
@@ -409,6 +415,11 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=Path, default=Path("configs/gas_air_10k_d2q37_physical_timestep.yaml"))
     parser.add_argument("--out-root", type=Path, default=Path("results/phase2_high_mode_acoustic_boundary"))
+    parser.add_argument(
+        "--closure-policy",
+        choices=("specified", "full_modal_target"),
+        default="specified",
+    )
     parser.add_argument("--axis-factor", type=float, default=0.955)
     parser.add_argument("--diagonal-factor", type=float, default=0.918)
     parser.add_argument("--steps", type=int, default=80)
@@ -427,6 +438,7 @@ def main(argv: list[str] | None = None) -> int:
         config = _case_config(
             base_config,
             case,
+            closure_policy=args.closure_policy,
             axis_factor=args.axis_factor,
             diagonal_factor=args.diagonal_factor,
             steps=args.steps,
@@ -457,6 +469,7 @@ def main(argv: list[str] | None = None) -> int:
         "yaml_version": yaml.__version__,
         "config": str(args.config),
         "config_sha256": sha256_file(args.config),
+        "closure_policy": args.closure_policy,
         "axis_factor": args.axis_factor,
         "diagonal_factor": args.diagonal_factor,
         "steps": args.steps,

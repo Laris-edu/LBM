@@ -21,6 +21,7 @@ from core.hermite import monomial_exponents
 from core.lattice import Lattice, make_lattice
 from core.macroscopic import ENERGY_CLOSURE_DEFINITION, central_energy_flux_lu, recover_macro
 from core.unit_mapping import (
+    DEVIATORIC_STRESS_POLICY_STRAIN_RATE_ISOTROPIC,
     TRACE_BULK_POLICY_CALIBRATED,
     TRACE_BULK_POLICY_CURRENT_ZERO,
     TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL,
@@ -31,6 +32,7 @@ from core.unit_mapping import (
     TRACE_BULK_POLICY_GHOST_ORTHOGONAL_SPECTRAL,
     TRACE_BULK_POLICY_TAU22,
     UnitMapping,
+    deviatoric_strain_rate_factor_from_tau21,
     trace_bulk_local_divergence_factor_from_tau32,
     trace_bulk_local_laplacian_factor_from_tau32,
     trace_bulk_local_thermal_factor_from_tau32,
@@ -268,6 +270,27 @@ def _periodic_central_velocity_divergence(u: np.ndarray) -> np.ndarray:
     return dux_dx + duy_dy
 
 
+def _strain_rate_deviatoric(u: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    """Return periodic finite-difference deviatoric strain-rate components.
+
+    Returns ``(normal_dev, shear)`` where ``normal_dev = du_x/dx - du_y/dy`` and
+    ``shear = du_x/dy + du_y/dx``.  These are the two independent traceless
+    strain-rate combinations; both follow from a single isotropic shear
+    viscosity, so reconstructing the deviatoric stress from them removes the
+    transverse/longitudinal anisotropy of the measured central-moment closure.
+    """
+
+    if u.ndim < 3 or u.shape[-1] != 2:
+        raise ValueError("u must have shape (..., ny, nx, 2)")
+    y_axis = u.ndim - 3
+    x_axis = u.ndim - 2
+    dux_dx = 0.5 * (np.roll(u[..., 0], -1, axis=x_axis) - np.roll(u[..., 0], 1, axis=x_axis))
+    duy_dy = 0.5 * (np.roll(u[..., 1], -1, axis=y_axis) - np.roll(u[..., 1], 1, axis=y_axis))
+    dux_dy = 0.5 * (np.roll(u[..., 0], -1, axis=y_axis) - np.roll(u[..., 0], 1, axis=y_axis))
+    duy_dx = 0.5 * (np.roll(u[..., 1], -1, axis=x_axis) - np.roll(u[..., 1], 1, axis=x_axis))
+    return dux_dx - duy_dy, dux_dy + duy_dx
+
+
 def _periodic_laplacian_scalar(field: np.ndarray) -> np.ndarray:
     y_axis = field.ndim - 2
     x_axis = field.ndim - 1
@@ -426,8 +449,27 @@ def _regularized_f_collision(
         )
     else:
         trace_post = _relaxed_trace_bulk_stress(trace, mapping)
-    dev_post = normal_factor * shear_factor * stress_dev
-    xy_post = xy_factor * shear_factor * stress_xy
+    if mapping.collision.deviatoric_stress_policy == DEVIATORIC_STRESS_POLICY_STRAIN_RATE_ISOTROPIC:
+        if rho is None or theta is None:
+            raise ValueError("strain_rate_isotropic deviatoric policy requires rho and theta")
+        g_dev = deviatoric_strain_rate_factor_from_tau21(
+            mapping.tau21,
+            curve_type=mapping.collision.deviatoric_strain_rate_curve_type,
+            coefficients=mapping.collision.deviatoric_strain_rate_curve_coefficients,
+        )
+        normal_dev, shear_rate = _strain_rate_deviatoric(u)
+        rho_theta = rho * theta
+        # Reconstruct both deviatoric stress components directly from the strain
+        # rate.  ``normal_factor``/``xy_factor`` carry the fixed lattice
+        # geometric ratio between the (xx-yy) and xy channels (the same lattice
+        # anisotropy the measured closure compensates); ``g_dev`` is the single
+        # isotropic shear-viscosity knob shared by both channels, so transverse
+        # and longitudinal deviatoric viscosity follow from one mu.
+        dev_post = g_dev * normal_factor * rho_theta * normal_dev
+        xy_post = g_dev * xy_factor * rho_theta * shear_rate
+    else:
+        dev_post = normal_factor * shear_factor * stress_dev
+        xy_post = xy_factor * shear_factor * stress_xy
     delta_xx = 0.5 * (trace_post + dev_post)
     delta_yy = 0.5 * (trace_post - dev_post)
     zeros = np.zeros_like(delta_xx)
