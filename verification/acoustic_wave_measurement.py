@@ -149,6 +149,52 @@ def _initialize_acoustic_wave(
     return phase, unit, k_mag
 
 
+def _prony_decay_rate(
+    times: np.ndarray,
+    amplitudes: np.ndarray,
+    start: int,
+    stop: int | None,
+    order: int = 3,
+) -> float:
+    """Window-free acoustic damping via a Prony / linear-prediction fit.
+
+    A weakly damped acoustic standing/travelling wave is a sum of forward +
+    backward eigenmodes; the log|p'| slope is biased by their beating at short
+    windows. Decomposing the complex pressure modal amplitude into a few complex
+    exponentials and returning the damping of the DOMINANT mode is window-free
+    and equals the exact one-step modal eigenvalue (the recommended caliber). On
+    too-few samples or a degenerate fit it returns NaN (caller falls back to the
+    log|p'| slope).
+    """
+    finite = np.isfinite(times) & np.isfinite(np.abs(amplitudes))
+    stop_value = (int(np.max(times[finite])) if np.any(finite) else start) if stop is None else stop
+    mask = finite & (times >= start) & (times <= stop_value)
+    x = np.asarray(amplitudes[mask], dtype=complex)
+    n = x.size
+    if n < 2 * order + 2:
+        return np.nan
+    try:
+        rows = n - order
+        matrix = np.empty((rows, order), dtype=complex)
+        rhs = np.empty(rows, dtype=complex)
+        for i in range(rows):
+            matrix[i, :] = x[i:i + order][::-1]
+            rhs[i] = -x[i + order]
+        coeffs = np.linalg.lstsq(matrix, rhs, rcond=None)[0]
+        roots = np.roots(np.concatenate(([1.0], coeffs)))
+        roots = roots[np.isfinite(roots) & (np.abs(roots) > 0.0)]
+        if roots.size == 0:
+            return np.nan
+        s = np.log(roots)  # per-step complex rate
+        tt = (times[mask] - times[mask][0]).astype(float)
+        vander = np.exp(np.outer(tt, s))
+        amp = np.linalg.lstsq(vander, x, rcond=None)[0]
+        dominant = int(np.argmax(np.abs(amp)))
+        return -float(s[dominant].real)
+    except (np.linalg.LinAlgError, ValueError):
+        return np.nan
+
+
 def _fit_phase(
     times: np.ndarray,
     amplitudes: np.ndarray,
@@ -284,7 +330,13 @@ def measure_acoustic_wave_direction(
         abs(gamma_measured / mapping.physical.gamma - 1.0) if np.isfinite(gamma_measured) else np.nan
     )
 
-    attenuation_measured = decay_fit["decay_rate"]
+    attenuation_logabs = decay_fit["decay_rate"]
+    attenuation_prony = _prony_decay_rate(time_array, pressure_array, settings.fit_start, settings.fit_stop)
+    # Prony is the window-free caliber (== exact one-step modal eigenvalue); the
+    # log|p'| slope is kept as a secondary field and used only as a fallback when
+    # Prony is unavailable (too few samples / degenerate fit).
+    attenuation_caliber = "prony" if np.isfinite(attenuation_prony) else "logabs"
+    attenuation_measured = attenuation_prony if np.isfinite(attenuation_prony) else attenuation_logabs
     attenuation_target = _reference_acoustic_attenuation_rate(solver, k_mag)
     attenuation_relative_error = (
         abs(attenuation_measured / attenuation_target - 1.0)
@@ -314,6 +366,10 @@ def measure_acoustic_wave_direction(
         "gamma_relative_error": float(gamma_relative_error) if np.isfinite(gamma_relative_error) else np.nan,
         "acoustic_attenuation_measured_lu": (
             float(attenuation_measured) if np.isfinite(attenuation_measured) else np.nan
+        ),
+        "acoustic_attenuation_caliber": attenuation_caliber,
+        "acoustic_attenuation_logabs_lu": (
+            float(attenuation_logabs) if np.isfinite(attenuation_logabs) else np.nan
         ),
         "acoustic_attenuation_reference_lu": float(attenuation_target),
         "acoustic_attenuation_relative_error": (
@@ -424,6 +480,8 @@ def measure_acoustic_wave(config: dict[str, Any]) -> dict[str, Any]:
         "gamma_measured": baseline["gamma_measured"],
         "gamma_relative_error": float(max_gamma_error) if np.isfinite(max_gamma_error) else np.nan,
         "acoustic_attenuation_measured_lu": baseline["acoustic_attenuation_measured_lu"],
+        "acoustic_attenuation_caliber": baseline.get("acoustic_attenuation_caliber", "prony"),
+        "acoustic_attenuation_logabs_lu": baseline.get("acoustic_attenuation_logabs_lu", np.nan),
         "acoustic_attenuation_reference_lu": baseline["acoustic_attenuation_reference_lu"],
         "acoustic_attenuation_relative_error": (
             float(max(attenuation_errors)) if attenuation_errors else np.nan

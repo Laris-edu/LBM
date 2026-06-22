@@ -941,8 +941,12 @@ def d2q37_physical_timestep_config() -> dict[str, Any]:
     }
     config["collision"] = {
         **config["collision"],
-        "regularized_shear_xy_factor": 0.8739,
-        "regularized_shear_normal_factor": 0.9,
+        "deviatoric_stress_policy": DEVIATORIC_STRESS_POLICY_STRAIN_RATE_ISOTROPIC,
+        "deviatoric_strain_rate_curve": {"type": "constant", "coefficients": [1.0]},
+        "trace_bulk_policy": TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL,
+        "trace_bulk_local_divergence_curve": {"type": "constant", "coefficients": [1.1052362846829455]},
+        "regularized_shear_xy_factor": 0.4763606253137551,
+        "regularized_shear_normal_factor": 0.8906391739599911,
         "dispersion_correction_enabled": True,
         "dispersion_correction_low_laplacian": 0.019261093311212455,
         "dispersion_correction_high_laplacian": 0.038429439193539104,

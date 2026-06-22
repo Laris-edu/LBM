@@ -15,6 +15,7 @@ quadrature-matched mapping 默认为诊断路径，不能单独建立 M2 product
 - Production physical validation：当前仍为 `NOT_PASSED` 或 `N/A`。
 - Current decision：`GO-RISK / IN-PROGRESS`，不是 final M2 production pass。
 - 2026-06-15 note：D2Q37 trace / bulk 与 heat-flux retention 已显式参数化；默认仍为 `trace_bulk_policy=current_zero` 和当前 `auto_d2q37_tau32_linear`，该改造只提供后续声衰减联合扫描入口。
+- 2026-06-22 note：**默认 D2Q37 baseline 已升级为本地 recursive-regularized(RR)闭合**(`deviatoric_stress_policy=strain_rate_isotropic` + `trace_bulk_policy=ghost_orthogonal_local` + `trace_bulk_local_divergence_curve=[chi*=1.1052362846829455]` + `diagnostic_zero` bulk;旧 current_zero 存 `configs/gas_air_10k_d2q37_current_zero_baseline.yaml`;`core` 代码 fallback 默认不变;详见 `docs/Phase_2/Phase2_D2Q37_Recursive_Regularized_Closure.md` 第 11 节)。RR-默认 M2 run `20260622T091454Z`:`automation_status=PASSED`、`contract_validation_status=D2Q37_DIAGNOSTIC_READY`、`production_physics_status=NOT_PASSED`、决策 `GO-RISK / D2Q37_DYNAMIC_DIAGNOSTIC`。生产 P2-6 声衰减改用窗口无关 Prony 口径(x/y→1.000、diag≈1.31);P2-7 Pr>1 重分类为鲁棒性 GO-RISK(`hard_pr_max=1.0`),硬门 Pr≤1 `PASSED`、Pr=2 `GO_RISK`。**升级 ≠ final M2 production pass**:默认携带已接受声衰减 GO-RISK(对角 ≈1.31、high-mode 5–12×、Pr=2 鲁棒性),`production_physics_status` 仍 `NOT_PASSED`。
 
 ## 汇总运行
 

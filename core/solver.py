@@ -665,6 +665,11 @@ class GasSolver2D:
             collision.central_moment_closure,
             round(float(collision.high_order_relaxation), 15),
             tuple(round(float(item), 15) for item in collision.heat_flux_retention_curve_coefficients),
+            collision.trace_bulk_local_divergence_curve_type,
+            tuple(round(float(item), 15) for item in collision.trace_bulk_local_divergence_curve_coefficients),
+            collision.deviatoric_stress_policy,
+            collision.deviatoric_strain_rate_curve_type,
+            tuple(round(float(item), 15) for item in collision.deviatoric_strain_rate_curve_coefficients),
         )
         if key not in _GHOST_PROJECTOR_OPERATOR_CACHE:
             _GHOST_PROJECTOR_OPERATOR_CACHE[key] = _ghost_orthogonal_trace_collision_operator(
@@ -711,6 +716,11 @@ class GasSolver2D:
             round(float(collision.high_order_relaxation), 15),
             collision.trace_bulk_policy,
             round(float(collision.trace_bulk_scale), 15),
+            collision.trace_bulk_local_divergence_curve_type,
+            tuple(round(float(item), 15) for item in collision.trace_bulk_local_divergence_curve_coefficients),
+            collision.deviatoric_stress_policy,
+            collision.deviatoric_strain_rate_curve_type,
+            tuple(round(float(item), 15) for item in collision.deviatoric_strain_rate_curve_coefficients),
         )
         if key not in _ACOUSTIC_PHASE_OPERATOR_CACHE:
             _ACOUSTIC_PHASE_OPERATOR_CACHE[key] = _acoustic_phase_correction_operator(
@@ -766,6 +776,11 @@ class GasSolver2D:
             collision.central_moment_closure,
             collision.trace_bulk_policy,
             round(float(collision.trace_bulk_scale), 15),
+            collision.trace_bulk_local_divergence_curve_type,
+            tuple(round(float(item), 15) for item in collision.trace_bulk_local_divergence_curve_coefficients),
+            collision.deviatoric_stress_policy,
+            collision.deviatoric_strain_rate_curve_type,
+            tuple(round(float(item), 15) for item in collision.deviatoric_strain_rate_curve_coefficients),
         )
         if key in _HIGH_MODE_MODAL_SYMBOL_CACHE:
             return _HIGH_MODE_MODAL_SYMBOL_CACHE[key]

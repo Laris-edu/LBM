@@ -8,6 +8,7 @@ from core.unit_mapping import (
     ACOUSTIC_PHASE_HIGH_MODE_POLICY_SPECIFIED,
     AUTO_TAU32_LINEAR_HEAT_FLUX_POLICY,
     AUTO_D2Q37_TAU32_LINEAR_HEAT_FLUX_POLICY,
+    DEVIATORIC_STRESS_POLICY_STRAIN_RATE_ISOTROPIC,
     GHOST_ORTHOGONAL_TRACE_ALPHA_INTERCEPT,
     GHOST_ORTHOGONAL_TRACE_ALPHA_SLOPE,
     GHOST_ORTHOGONAL_LOCAL_TRACE_DIVERGENCE_INTERCEPT,
@@ -20,7 +21,6 @@ from core.unit_mapping import (
     GHOST_ORTHOGONAL_LOCAL_TWO_CHANNEL_ACOUSTIC_SLOPE,
     GHOST_ORTHOGONAL_LOCAL_TWO_CHANNEL_THERMAL_INTERCEPT,
     GHOST_ORTHOGONAL_LOCAL_TWO_CHANNEL_THERMAL_SLOPE,
-    TRACE_BULK_POLICY_CURRENT_ZERO,
     TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL,
     TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_ENTROPY_MANIFOLD,
     TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_LAPLACIAN,
@@ -99,7 +99,13 @@ def test_p2_0_physical_and_quadrature_mapping_are_explicit():
         1.0,
         rel_tol=1.0e-12,
     )
-    assert d2q37.collision.trace_bulk_policy == TRACE_BULK_POLICY_CURRENT_ZERO
+    # D2Q37 default baseline is the RR closure (promoted 2026-06-22, chi*).
+    assert d2q37.collision.trace_bulk_policy == TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL
+    assert d2q37.collision.trace_bulk_local_divergence_curve_type == "constant"
+    assert d2q37.collision.trace_bulk_local_divergence_curve_coefficients == (1.1052362846829455,)
+    assert d2q37.collision.deviatoric_stress_policy == DEVIATORIC_STRESS_POLICY_STRAIN_RATE_ISOTROPIC
+    assert math.isclose(d2q37.collision.regularized_shear_xy_factor, 0.4763606253137551, rel_tol=1.0e-12)
+    assert math.isclose(d2q37.collision.regularized_shear_normal_factor, 0.8906391739599911, rel_tol=1.0e-12)
     assert math.isclose(d2q37.collision.trace_bulk_scale, 1.0, rel_tol=1.0e-12)
     assert d2q37.collision.trace_bulk_calibration_id is None
     assert d2q37.collision.regularized_heat_flux_factor_policy == AUTO_D2Q37_TAU32_LINEAR_HEAT_FLUX_POLICY
@@ -201,6 +207,9 @@ def test_p2_0_d2q37_high_mode_acoustic_phase_policy_is_explicit():
 
 def test_p2_0_d2q37_ghost_orthogonal_local_trace_policy_is_explicit():
     config = d2q37_physical_timestep_config()
+    # the RR default seeds an explicit constant divergence curve; drop it to test
+    # the per-policy DEFAULT (affine) curve resolution.
+    config["collision"].pop("trace_bulk_local_divergence_curve", None)
     config["collision"]["trace_bulk_policy"] = TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL
     mapping = create_unit_mapping(config)
 
@@ -226,6 +235,7 @@ def test_p2_0_d2q37_ghost_orthogonal_local_trace_policy_is_explicit():
 
 def test_p2_0_d2q37_ghost_orthogonal_local_laplacian_trace_policy_is_explicit():
     config = d2q37_physical_timestep_config()
+    config["collision"].pop("trace_bulk_local_divergence_curve", None)
     config["collision"]["trace_bulk_policy"] = TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_LAPLACIAN
     mapping = create_unit_mapping(config)
 
@@ -261,6 +271,7 @@ def test_p2_0_d2q37_ghost_orthogonal_local_laplacian_trace_policy_is_explicit():
 
 def test_p2_0_d2q37_ghost_orthogonal_local_pressure_memory_policy_is_explicit():
     config = d2q37_physical_timestep_config()
+    config["collision"].pop("trace_bulk_local_divergence_curve", None)
     config["collision"]["trace_bulk_policy"] = TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_PRESSURE_MEMORY
     mapping = create_unit_mapping(config)
 
@@ -285,6 +296,7 @@ def test_p2_0_d2q37_ghost_orthogonal_local_pressure_memory_policy_is_explicit():
 
 def test_p2_0_d2q37_ghost_orthogonal_local_two_channel_policy_is_explicit():
     config = d2q37_physical_timestep_config()
+    config["collision"].pop("trace_bulk_local_divergence_curve", None)
     config["collision"]["trace_bulk_policy"] = TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_TWO_CHANNEL
     mapping = create_unit_mapping(config)
 
@@ -320,6 +332,7 @@ def test_p2_0_d2q37_ghost_orthogonal_local_two_channel_policy_is_explicit():
 
 def test_p2_0_d2q37_ghost_orthogonal_local_entropy_manifold_policy_is_explicit():
     config = d2q37_physical_timestep_config()
+    config["collision"].pop("trace_bulk_local_divergence_curve", None)
     config["collision"]["trace_bulk_policy"] = TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_ENTROPY_MANIFOLD
     mapping = create_unit_mapping(config)
 

@@ -1,7 +1,7 @@
 case:
   name: gas_air_10k_d2q37_physical_timestep
   phase: Phase_2
-  purpose: D2Q37 RR closure (default baseline since 2026-06-22, chi*=1.1052362846829455); GO-RISK, not a final production pass
+  purpose: D2Q37 fallback diagnostic seed, not a production pass
 
 physical:
   T0_K: 300.0
@@ -33,22 +33,15 @@ collision:
   nu_b_lu: auto
   central_moment_closure: second_order
   high_order_relaxation: 1.0
-  trace_bulk_policy: ghost_orthogonal_local
+  trace_bulk_policy: current_zero
   trace_bulk_scale: 1.0
   trace_bulk_calibration_id: null
-  trace_bulk_local_divergence_curve:
-    type: constant
-    coefficients: [1.1052362846829455]
   use_binomial_transform: true
   dispersion_correction_enabled: true
   dispersion_correction_low_laplacian: 0.019261093311212455
   dispersion_correction_high_laplacian: 0.038429439193539104
-  deviatoric_stress_policy: strain_rate_isotropic
-  deviatoric_strain_rate_curve:
-    type: constant
-    coefficients: [1.0]
-  regularized_shear_xy_factor: 0.4763606253137551
-  regularized_shear_normal_factor: 0.8906391739599911
+  regularized_shear_xy_factor: 0.8739
+  regularized_shear_normal_factor: 0.9
   regularized_shear_xy_dispersion_target: 0.786
   regularized_shear_normal_dispersion_target: 0.785
   regularized_heat_flux_factor: auto_d2q37_tau32_linear
@@ -127,9 +120,6 @@ p2_07_prandtl_scan:
   baseline_pr: 0.7061328707
   baseline_tolerance: 0.03
   scan_tolerance: 0.05
-  # Air is Pr~0.706<1; Pr>hard_pr_max is a bounded robustness GO-RISK probe
-  # (measured + reported, non-blocking). Hard gate over the air-relevant range.
-  hard_pr_max: 1.0
   shear_wave:
     nx: 64
     ny: 64

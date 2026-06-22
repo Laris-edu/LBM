@@ -24,6 +24,9 @@ class PrandtlScanSettings:
     scan_tolerance: float = DEFAULT_SCAN_TOLERANCE
     baseline_tolerance: float = DEFAULT_BASELINE_TOLERANCE
     baseline_pr: float = 0.7061328707
+    # Pr above this is a robustness probe (measured + reported, but NON-blocking
+    # for p2_07_status). None => every scan point is a hard gate (legacy behaviour).
+    hard_pr_max: float | None = None
     shear_wave: dict[str, Any] = field(default_factory=dict)
     thermal_diffusion: dict[str, Any] = field(default_factory=dict)
 
@@ -73,11 +76,14 @@ def _settings_from_config(config: dict[str, Any]) -> PrandtlScanSettings:
 
     physical = dict(config.get("physical", {}) or {})
     baseline_pr = float(p2.get("baseline_pr", physical.get("Pr", 0.7061328707)))
+    hard_pr_max_raw = p2.get("hard_pr_max", None)
+    hard_pr_max = None if hard_pr_max_raw is None else float(hard_pr_max_raw)
     return PrandtlScanSettings(
         pr_targets=pr_targets,
         scan_tolerance=float(p2.get("scan_tolerance", DEFAULT_SCAN_TOLERANCE)),
         baseline_tolerance=float(p2.get("baseline_tolerance", DEFAULT_BASELINE_TOLERANCE)),
         baseline_pr=baseline_pr,
+        hard_pr_max=hard_pr_max,
         shear_wave=shear_wave,
         thermal_diffusion=thermal_diffusion,
     )
@@ -217,16 +223,42 @@ def measure_prandtl_scan(config: dict[str, Any]) -> dict[str, Any]:
         if np.isclose(point["pr_target"], settings.baseline_pr, rtol=0.0, atol=1.0e-12)
     ]
     baseline = baseline_points[0] if baseline_points else scan_points[0]
-    passed = all(point["status"] == "PASSED" for point in scan_points)
+
+    # Classify each point as a hard gate or a robustness probe. With
+    # hard_pr_max set (e.g. 1.0 for an air target, Pr~0.706<1), Pr above it is a
+    # bounded robustness GO-RISK: measured + reported, but NON-blocking. With
+    # hard_pr_max=None every point is a hard gate (legacy behaviour).
+    hard_pr_max = settings.hard_pr_max
+    for point in scan_points:
+        is_hard = hard_pr_max is None or point["pr_target"] <= hard_pr_max + 1.0e-12
+        point["gate_class"] = "hard" if is_hard else "robustness"
+    hard_points = [point for point in scan_points if point["gate_class"] == "hard"]
+    robustness_points = [point for point in scan_points if point["gate_class"] == "robustness"]
+
+    def _max_err(points: list[dict[str, Any]]) -> float:
+        errs = [p["pr_relative_error"] for p in points if np.isfinite(p["pr_relative_error"])]
+        return float(max(errs)) if errs else np.nan
+
+    passed = all(point["status"] == "PASSED" for point in hard_points)
+    robustness_passed = all(point["status"] == "PASSED" for point in robustness_points)
     return {
         "p2_07_status": "PASSED" if passed else "FAILED",
         "pr_targets": [float(item) for item in settings.pr_targets],
         "scan_tolerance": float(settings.scan_tolerance),
         "baseline_tolerance": float(settings.baseline_tolerance),
         "baseline_pr": float(settings.baseline_pr),
+        "hard_pr_max": float(hard_pr_max) if hard_pr_max is not None else None,
         "baseline_pr_measured": baseline["pr_measured"],
         "baseline_pr_relative_error": baseline["pr_relative_error"],
         "max_pr_relative_error": max_relative_error,
+        "hard_max_pr_relative_error": _max_err(hard_points),
+        "robustness_pr_targets": [float(p["pr_target"]) for p in robustness_points],
+        "robustness_max_pr_relative_error": _max_err(robustness_points),
+        "robustness_status": (
+            "NOT_APPLICABLE"
+            if not robustness_points
+            else ("PASSED" if robustness_passed else "GO_RISK")
+        ),
         "measured_pr_span": _measured_pr_span(scan_points),
         "scan_points": scan_points,
         "first_invalid_step": min(
