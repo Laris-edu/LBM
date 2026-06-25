@@ -1,0 +1,34 @@
+# verification/ — Phase_2 验证测试与测量 helper
+
+P2 编号冻结为 P2-0…P2-9；后处理和 HDF5 schema 是支撑测试，不新增 P2 编号。
+这些测试是 Phase_2 **框架与合同级**验证，保证接口、单位、守恒和后处理口径正确——
+不等价于所有 production physics measurements 已完成。更长时间的生产级输运测量由
+`scripts/phase2_robust_transport.py` 单独复核；high-mode 单标量敏感性由
+`scripts/phase2_robust_high_mode_sensitivity.py` 单独复核，避免把短时 M2 automation pass
+或局部参数重调误写为 production C3 pass。
+
+| 文件 | 对应内容 |
+|---|---|
+| `test_phase2_p2_00_unit_mapping.py` | P2-0：单位映射、D2Q21/D2Q37 velocity-set metadata、tau 映射、heat-flux/tau32 projection closure、metadata 基本字段和 `tau32 > tau21` 空气口径。 |
+| `test_phase2_p2_01_lattice_d2q21.py` | P2-1：D2Q21 数组布局、opposite map、偶数矩到六阶和奇数对称到七阶；同时检查 D2Q37 registry 静态入口。 |
+| `test_phase2_p2_02_equilibrium_macro.py` | P2-2：Hermite 正交性、D2Q21/D2Q37 `f_eq/g_eq` 矩恢复、宏观量恢复和 `gamma=1.4` 代数检查。 |
+| `test_phase2_p2_03_collision_uniform.py` | P2-3：D2Q21/D2Q37 collision 守恒、`g` 零阶矩能量修正、周期均匀态无漂移。 |
+| `shear_wave_measurement.py` | P2-4 真实周期域 shear-wave decay 测量 helper，供测试、M2 runner 和鲁棒性 runner 复用；支持均匀 `background_velocity_lu`。 |
+| `test_phase2_p2_04_streaming_shear.py` | P2-4：pull streaming 公式、剪切波黏性拟合支撑检查和真实测量字段回归。 |
+| `thermal_diffusion_measurement.py` | P2-5 真实等压 thermal sine decay 与 Fourier-law 热流验证 helper，供测试、M2 runner 和鲁棒性 runner 复用；支持均匀 `background_velocity_lu`。 |
+| `test_phase2_p2_05_thermal_heat_flux.py` | P2-5：等压热扩散拟合支撑检查、Fourier-law 热流单位/符号验证和真实测量字段回归。 |
+| `acoustic_wave_measurement.py` | P2-6 真实周期域 acoustic eigenmode helper，初始化等熵小扰动，测量声速、由声速反推 gamma、方向差异和声衰减诊断，供测试和 M2 runner 复用。 |
+| `test_phase2_p2_06_acoustic_gamma.py` | P2-6：合成相位拟合回归、真实声学测量字段回归、matched NSF 声衰减 target 公式回归，以及 D2Q37 输运候选边界下声速/gamma hard gate 检查；声衰减在 `diagnostic_zero` bulk policy 下保持诊断指标。 |
+| `prandtl_scan_measurement.py` | P2-7 真实多点 `nu/alpha/Pr` 联合扫描 helper，复用 P2-4/P2-5 测量内核，供 M2 runner 复用。 |
+| `transport_robustness_measurement.py` | P2-4/P2-5/P2-7 输运鲁棒性复核 helper，复用真实剪切波、热扩散和 Pr 扫描内核，供鲁棒性 runner 复用。 |
+| `galilean_consistency_measurement.py` | P2-9 真实 Galilean consistency helper，在 Mach `0/0.02/0.05` 和 x/diagonal 背景速度下复测剪切、热扩散和 acoustic eigenmode，并为 D2Q37 dispersion correction 提供开/关声学对照。 |
+| `high_mode_sensitivity.py` | high-mode 标量敏感性诊断 helper，扫描当前 D2Q21 physical-timestep collision 的 stress/heat-flux 经验标量，供 high-mode 诊断 runner 复用。 |
+| `high_order_closure_diagnostic.py` | D2Q21 `central_moment_closure=fourth_order` 高阶闭合诊断 helper，扫描 `high_order_relaxation` 并测 low-mode / mode=2 的剪切、热扩散和 Fourier-law。 |
+| `test_phase2_d2q37_fallback.py` | D2Q37 fallback 静态测试：正权重、opposite map、八阶偶矩和九阶奇对称。当前不代表 D2Q37 动态输运已通过。 |
+| `test_phase2_p2_07_prandtl_scan.py` | P2-7：`tau21/tau32` 映射独立性，以及 D2Q21/D2Q37 真实 Pr 扫描入口字段回归。当前 production scan 可报告 `FAILED`。 |
+| `test_phase2_p2_08_rotational_isotropy.py` | P2-8：x/y/diagonal 方向的模态幅值一致性支撑检查。 |
+| `test_phase2_p2_09_galilean_consistency.py` | P2-9：带背景速度时扣除对流速度的 Galilean consistency 合同检查、真实测量字段回归和 D2Q37 dispersion correction 声学 masking 对照。 |
+| `test_phase2_postprocess_modal_fit.py` | 支撑测试：复幅值、模态幅值、衰减拟合、相速度拟合和 RMS SPL 口径。 |
+| `test_phase2_hdf5_metadata.py` | 支撑测试：HDF5 最小 metadata schema 和字段布局。 |
+| `test_phase2_dispersion_correction.py` · `test_phase2_high_mode_sensitivity.py` · `test_phase2_transport_robustness.py` · `test_phase2_d2q37_fallback.py` · `test_phase3_handoff.py` | D2Q37 dispersion correction、high-mode 敏感性、输运鲁棒性与 Phase_3 handoff 的回归/支撑测试。 |
+| `test_phase1_*.py` | Phase_1 回归测试（常数、ODE、频率求解、线性度、M1 门、参考数据完整性、热导纳、时/频域一致），Phase_2 必须持续通过。 |

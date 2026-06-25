@@ -1,0 +1,111 @@
+{
+  "run_id": "20260621T083625Z",
+  "status": "DIAGNOSTIC_COMPLETE",
+  "config_path": "configs\\gas_air_10k_d2q37_physical_timestep.yaml",
+  "config_sha256": "f6b53b2bf343bcc627a82b0ba6c101343897e6a32e5111d70e2516dc09f3f18e",
+  "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "closure": "strain_rate_isotropic deviatoric + ghost_orthogonal_local (div) trace + diagnostic_zero bulk",
+  "nu_lu": 0.0029437499999999998,
+  "calibration": {
+    "xy_factor": 0.4763606253137551,
+    "normal_factor": 0.8906391739599911,
+    "chi": 1.0852439806681207,
+    "xy_probe_nu_T": [
+      0.0066227123848512075,
+      -0.0006041058275485783
+    ],
+    "normal_probe_nu_T": [
+      -0.014091008303700534,
+      -0.028499549918943115
+    ],
+    "chi_probe_attenuation_ratio": [
+      7.129302704388693,
+      12.777159604378356
+    ],
+    "attenuation_reference_lu": 2.22224320740558e-05
+  },
+  "full_gate": {
+    "p2_04_status": "PASSED",
+    "p2_04_nu_T_over_nu": {
+      "x": 0.9999786112209559,
+      "y": 0.9999786098953719,
+      "diagonal": 1.0017580056498137
+    },
+    "p2_04_direction_difference": 0.0017793957544418044,
+    "p2_06_status": "PASSED",
+    "p2_06_sound_speed_relative_error": 0.004902974304745733,
+    "p2_06_gamma_relative_error": 0.00982998776652444,
+    "p2_06_direction_difference": 0.004093236954291524,
+    "p2_06_attenuation_ratio": {
+      "x": 1.0026274675034188,
+      "y": 1.0026269247064115,
+      "diagonal": 1.23300240286434
+    },
+    "p2_06_first_invalid_step": {
+      "x": null,
+      "y": null,
+      "diagonal": null
+    },
+    "p2_06_negative_theta": {
+      "x": false,
+      "y": false,
+      "diagonal": false
+    },
+    "p2_05_status": "PASSED",
+    "p2_05_alpha_relative_error": {
+      "x": 0.0017996455809784484,
+      "y": 0.001799595801916909,
+      "diagonal": 0.02114710319348867
+    }
+  },
+  "extended_gate": {
+    "p2_07_status": "FAILED",
+    "p2_07_baseline_pr_relative_error": 0.0017813801174104693,
+    "p2_07_max_pr_relative_error": 0.05238447386028611,
+    "p2_07_scan_tolerance": 0.05,
+    "p2_09_status": "PASSED",
+    "p2_09_max_sound_speed_relative_error": 0.0076541641017966455,
+    "p2_09_max_direction_difference": 0.022367587942430697,
+    "p2_09_dispersion_masking_status": "PASSED"
+  },
+  "long_window": {
+    "multiplier": 3,
+    "steps": {
+      "p2_04": 720,
+      "p2_05": 960,
+      "p2_06": 720
+    },
+    "p2_04_status": "PASSED",
+    "p2_04_nu_relative_error": {
+      "x": 2.139401136436181e-05,
+      "diagonal": 0.0017580021397067824
+    },
+    "p2_05_status": "PASSED",
+    "p2_05_alpha_relative_error": {
+      "x": 0.00221909851998503,
+      "diagonal": 0.018035400610991514
+    },
+    "p2_06_attenuation_ratio": {
+      "x": 1.0833263102305666,
+      "diagonal": 1.4582876886657483
+    },
+    "p2_06_first_invalid_step": {
+      "x": null,
+      "diagonal": null
+    },
+    "p2_06_negative_theta": {
+      "x": false,
+      "diagonal": false
+    }
+  },
+  "interpretation": {
+    "x_y_attenuation": "Local, stable closure drives x/y acoustic attenuation to ratio ~1 while keeping nu_T isotropic (x/y/diagonal) and P2-5 passing -- the first local closure to do so.",
+    "diagonal_residual": "Diagonal acoustic attenuation ratio ~1.23 remains: diagonal-longitudinal loads the xy channel (shear_rate) plus chi (div) with no free knob once xy_factor and chi are pinned by x; the residual is the divergence/channel stencil anisotropy (isotropic div/strain-rate stencils do not close it -- it is the 4-constraint/3-knob over-constraint).",
+    "p2_07_pr": "Pr scan varies alpha (tau32) at fixed tau21, so g_dev(tau21) does not affect it. The scan-extreme error (~5.3% at Pr=2) is dominated by the alpha/heat-flux closure (~baseline 4.94%) plus a small RR shear error at high Pr; not closable via the deviatoric knob.",
+    "p2_09_galilean": "P2-9 Galilean (low-mode) passes with the RR closure.",
+    "long_window": "Long-window (3x) is stable (no invalid step / negative theta); nu and alpha are window-consistent. Acoustic attenuation drifts with the fit window (x ~1.0->~1.08, diagonal ~1.23->~1.46): the damping is very weak (~1.6% amplitude change over 720 steps) so the attenuation fit is sensitive; the larger diagonal drift may indicate a slow diagonal effect.",
+    "boundaries": "Diagnostic only; baseline unchanged. high-mode acoustic not addressed. Strong GO-RISK candidate; not a window-independent production pass."
+  },
+  "summary_digest": "60c7f8940256d98276173b5e9059296f5b09cff5a035fb606ef83e7048d9ef84"
+}

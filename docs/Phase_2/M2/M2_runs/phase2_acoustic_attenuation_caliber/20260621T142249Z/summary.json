@@ -1,0 +1,142 @@
+{
+  "run_id": "20260621T142249Z",
+  "status": "DIAGNOSTIC_COMPLETE",
+  "config_path": "configs\\gas_air_10k_d2q37_physical_timestep.yaml",
+  "config_sha256": "f6b53b2bf343bcc627a82b0ba6c101343897e6a32e5111d70e2516dc09f3f18e",
+  "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "closure": "strain_rate_isotropic deviatoric + ghost_orthogonal_local (div) trace + diagnostic_zero bulk",
+  "published_knobs": {
+    "xy_factor": 0.4763606253137551,
+    "normal_factor": 0.8906391739599911,
+    "chi": 1.0852439806681207
+  },
+  "nu_lu": 0.0029437499999999998,
+  "alpha_lu": 0.0041688329803125,
+  "eigen_caliber": {
+    "x": {
+      "k_mag": 0.09817477042468103,
+      "ref_ac_lu": 2.2222432074055803e-05,
+      "acoustic_fwd_sigma_lu": 2.4538929496957794e-05,
+      "acoustic_fwd_ratio": 1.1042413996443914,
+      "acoustic_bwd_ratio": 1.1042349056809166,
+      "shear_nu_ratio": 0.9999772252918537,
+      "entropy_alpha_ratio": 1.0103272547953912
+    },
+    "y": {
+      "k_mag": 0.09817477042468103,
+      "ref_ac_lu": 2.2222432074055803e-05,
+      "acoustic_fwd_sigma_lu": 2.4538843329435224e-05,
+      "acoustic_fwd_ratio": 1.1042375221424923,
+      "acoustic_bwd_ratio": 1.104234335033766,
+      "shear_nu_ratio": 0.9999774736411683,
+      "entropy_alpha_ratio": 1.01032487365341
+    },
+    "diagonal": {
+      "k_mag": 0.13884009181744894,
+      "ref_ac_lu": 4.4444864148111605e-05,
+      "acoustic_fwd_sigma_lu": 6.266442936041625e-05,
+      "acoustic_fwd_ratio": 1.4099363461116297,
+      "acoustic_bwd_ratio": 1.6126097185366048,
+      "shear_nu_ratio": 1.001763494874122,
+      "entropy_alpha_ratio": 1.0192915327432308
+    }
+  },
+  "dynamic_crosscheck": {
+    "x": {
+      "samples": 721,
+      "amplitude_change": -0.016143677652219357,
+      "logabs_ratio_240": 1.0026274675034186,
+      "logabs_ratio_480": 1.0669291001560126,
+      "logabs_ratio_720": 1.0833263102305664,
+      "prony_ratio": 1.1042211676100309
+    },
+    "diagonal": {
+      "samples": 721,
+      "amplitude_change": -0.03421838380789355,
+      "logabs_ratio_240": 1.2330035849956946,
+      "logabs_ratio_480": 1.4366208999703993,
+      "logabs_ratio_720": 1.4582880350015432,
+      "prony_ratio": 1.4110668330382552
+    }
+  },
+  "chi_recalibration": {
+    "chi_published": 1.0852439806681207,
+    "chi_eigen_recalibrated": 1.1052362846829455,
+    "probe_chi": [
+      1.1,
+      1.15
+    ],
+    "probe_ac_x_ratio": [
+      1.0272985017309952,
+      0.7666317944766485
+    ],
+    "acoustic_fwd_ratio": {
+      "x": 1.0000184775277157,
+      "y": 1.0000154119257354,
+      "diagonal": 1.265229134322534
+    },
+    "acoustic_bwd_ratio": {
+      "x": 1.0000087707282055,
+      "y": 1.0000166558615993,
+      "diagonal": 1.2773611842556531
+    },
+    "shear_nu_ratio": {
+      "x": 0.9999777172751876,
+      "y": 0.9999772119794601,
+      "diagonal": 1.001754421380216
+    },
+    "entropy_alpha_ratio": {
+      "x": 1.0103102542660258,
+      "y": 1.010305209187072,
+      "diagonal": 1.0241685795473583
+    }
+  },
+  "overconstraint": {
+    "base_point": {
+      "xy": 0.4763606253137551,
+      "normal": 0.8906391739599911,
+      "chi": 1.0852439806681207
+    },
+    "fd_step": {
+      "xy": 0.02,
+      "normal": 0.02,
+      "chi": 0.02
+    },
+    "base_quantities": {
+      "nu_T_axis": 0.9999772252918537,
+      "nu_T_diag": 1.001763494874122,
+      "nu_L_axis": 1.1042413996443914,
+      "nu_L_diag": 1.4099363461116297
+    },
+    "sensitivity_dQ_dknob": {
+      "nu_T_axis": {
+        "xy": -16.366372009551682,
+        "normal": 4.861664989475045e-05,
+        "chi": 4.593284474441184e-05
+      },
+      "nu_T_diag": {
+        "xy": -0.0002723036259921763,
+        "normal": -8.161668820312823,
+        "chi": 0.0001112078271470196
+      },
+      "nu_L_axis": {
+        "xy": 0.00016909004650900172,
+        "normal": -5.215005363102954,
+        "chi": -5.213588084683757
+      },
+      "nu_L_diag": {
+        "xy": -10.451312280765379,
+        "normal": 1.266876140587292,
+        "chi": -5.132673974500734
+      }
+    },
+    "d_diag_excess_d_chi": 0.08091411018302264
+  },
+  "interpretation": {
+    "F1_caliber": "The exact one-step modal eigenvalue sigma=-log|lambda| is the window-free, fit-free, admixture-free acoustic damping; it equals the dynamic Prony fit. The production log|p'| decay fit is biased low at short windows by a weak forward/backward beating ripple (the init is not the exact discrete eigenmode) and drifts with the window. At the published knobs the true x/y acoustic ratio is ~1.10, not the 240-window ~1.00; recalibrating chi against the eigenvalue drives x/y to ratio = 1 EXACTLY.",
+    "T1_overconstraint": "On a square (D4) lattice the most general local linear viscous closure has exactly three coefficients: bulk (chi) and two shear moduli for irreps B1 (xx-yy = normal_factor) and B2 (xy = xy_factor). nu_T(axis)<-B2, nu_T(diag)<-B1, nu_L(axis)<-B1+chi, nu_L(diag)<-B2+chi. Pinning B2 (axis shear), B1 (diag shear) and chi (axis longitudinal) leaves nu_L(diag) DETERMINED: the diagonal residual is irreducible for any D4-covariant local linear closure. The sensitivity matrix confirms the couplings and d(nu_L,diag - nu_L,axis)/d(chi) ~ 0.",
+    "boundaries": "Diagnostic only; baseline unchanged. Any 4th degree of freedom able to close the diagonal residual must be non-local (Riesz / longitudinal projector), nonlinear, or memory-based. The production P2-6 log|p'| measurement is left unchanged; the eigenvalue/Prony caliber is the recommended diagnostic ground-truth."
+  },
+  "summary_digest": "3c7d47a6e4090d79016b8638395ed73a9a8c40384b385eb605d7c784131287a8"
+}

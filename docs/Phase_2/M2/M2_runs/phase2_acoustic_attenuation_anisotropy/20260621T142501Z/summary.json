@@ -1,0 +1,49 @@
+{
+  "run_id": "20260621T142501Z",
+  "status": "DIAGNOSTIC_COMPLETE",
+  "config_path": "configs\\gas_air_10k_d2q37_physical_timestep.yaml",
+  "config_sha256": "f6b53b2bf343bcc627a82b0ba6c101343897e6a32e5111d70e2516dc09f3f18e",
+  "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "decision": "A_accept_bounded_GO_RISK_diagonal_residual",
+  "angular_bound": {
+    "chi_eigen_recalibrated": 1.1052362846829455,
+    "axis_ratio_mode1": 1.0000184775277157,
+    "diagonal_ratio_mode1": 1.265229134322534,
+    "angular_form": "1 + (diag-1)*sin^2(2*theta)",
+    "sin2_2theta_amplitude": 0.26521065679481826,
+    "max_ratio_at_45deg": 1.265229134322534,
+    "k_dependence": {
+      "axis_mode1": 1.0000184775277157,
+      "axis_mode2": 5.367728736836146,
+      "axis_mode3": 12.274890265033541,
+      "diag_mode1": 1.265229134322534,
+      "diag_mode2": 6.910657675884212,
+      "diag_mode3": null
+    },
+    "k_dependence_note": "mode>=2 ratios are dominated by high-mode acoustic over-damping (residual #3), a separate axis from the low-mode diagonal anisotropy; the diagonal bound is stated at mode 1."
+  },
+  "acoustic_compactness": {
+    "target_frequency_hz": 10000.0,
+    "dx_m": 4e-06,
+    "dt_s": 3e-09,
+    "lambda_acoustic_si_m": 0.0347,
+    "lambda_acoustic_lu_cells": 8675.000000000002,
+    "delta_thermal_si_m": 2.6603065001186158e-05,
+    "delta_thermal_lu_cells": 6.65076625029654,
+    "delta_viscous_si_m": 2.2355011100613466e-05,
+    "delta_viscous_lu_cells": 5.588752775153367,
+    "scale_separation_lambda_over_deltaT": 1304.3609824075843,
+    "probe_distance_8deltaT_si_m": 0.00021282452000948927,
+    "probe_distance_8deltaT_lu_cells": 53.20613000237232,
+    "kL_probe_compactness": 0.03853648118533633,
+    "acoustic_amplitude_loss_over_probe": 2.472768737953286e-07,
+    "diagonal_extra_amplitude_loss_over_probe": 6.558046210942848e-08
+  },
+  "interpretation": {
+    "bound": "Eigenvalue acoustic ratio is 1.000 on the lattice axes (exact) and rises to the diagonal maximum 1.265 at 45 deg, following 1 + 0.265*sin^2(2*theta) (T1 B1/B2 angular signature). The low-mode residual is bounded by the 45 deg diagonal; the axes (incl. the film normal y) are exact. Intermediate angles need higher |k| where high-mode over-damping (residual #3) dominates.",
+    "compactness": "The 10 kHz target gas region (delta_T ~ few-to-tens of um) is acoustically compact: lambda/delta_T ~ 1304, kL at the y=8*delta_T probe ~ 0.0385 << 1, and the acoustic amplitude loss across the probe distance is ~2.47e-07 (diagonal extra ~6.56e-08). The 30% diagonal attenuation error has negligible impact on p_hat; the dominant thermal/viscous diffusion (alpha, nu) and the hard-gated isotropic c/gamma/Galilean are unaffected. The film normal is the y-axis (exact).",
+    "boundaries": "Diagnostic only; baseline unchanged. Supports decision A: accept the diagonal residual (1.306 at 45 deg, eigenvalue caliber) as a bounded structural GO-RISK boundary."
+  },
+  "summary_digest": "d2e0b9862be4dc08b86bad3454c4f43fe9e911ca5df838ad35836cb2bc5557b7"
+}

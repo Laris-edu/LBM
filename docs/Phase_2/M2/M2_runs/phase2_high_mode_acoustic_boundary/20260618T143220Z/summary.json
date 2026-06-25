@@ -1,0 +1,2995 @@
+{
+  "phase": "Phase_2",
+  "diagnostic": "D2Q37 high-mode acoustic full-modal eigen-branch boundary",
+  "run_id": "20260618T143220Z",
+  "timestamp": "20260618T143220Z",
+  "command": [
+    "E:\\Code\\LBM\\.venv\\Scripts\\python.exe",
+    "-m",
+    "scripts.diagnose_phase2_high_mode_acoustic_boundary"
+  ],
+  "python_version": "3.14.2",
+  "numpy_version": "2.4.4",
+  "yaml_version": "6.0.3",
+  "config": "configs\\gas_air_10k_d2q37_physical_timestep.yaml",
+  "config_sha256": "c26a8ed1f266933175da48a9cb72396c82ab934565879471e28832b49e5000b5",
+  "axis_factor": 0.955,
+  "diagonal_factor": 0.918,
+  "steps": 80,
+  "fit_start": 10,
+  "include_n128": false,
+  "full_grid": false,
+  "case_count": 8,
+  "passed_count": 3,
+  "failed_count": 5,
+  "max_sound_speed_relative_error": 0.22794572720871975,
+  "max_gamma_relative_error": 0.5078507089701509,
+  "max_direction_difference": 0.11819003155460381,
+  "max_acoustic_attenuation_relative_error": 17.449119215294047,
+  "cases": [
+    {
+      "name": "n32_mode1_equivalent_laplacian",
+      "category": "N/mode",
+      "n": 32,
+      "mode_index": 1,
+      "pr": 0.7061328707,
+      "mach": 0.0,
+      "background_direction": "none",
+      "directions": [
+        "x",
+        "y",
+        "diagonal"
+      ],
+      "expected_scope": "same_discrete_laplacian_as_64_mode2",
+      "axis_laplacian": 0.038429439193539104,
+      "diagonal_laplacian": 0.07685887838707821,
+      "status": "PASSED",
+      "sound_speed_relative_error": 0.0038853707175550145,
+      "gamma_relative_error": 0.0077556453294972405,
+      "direction_difference": 0.0026888310987093016,
+      "acoustic_attenuation_relative_error": 11.357703125230598,
+      "first_invalid_step": null,
+      "nan_detected": false,
+      "clipping_used": false,
+      "raw": {
+        "p2_06_status": "PASSED",
+        "sound_speed_target_lu": 0.26025000000000004,
+        "sound_speed_measured_lu": 0.2599386002770277,
+        "sound_speed_relative_error": 0.0038853707175550145,
+        "gamma_target": 1.4,
+        "gamma_measured": 1.396651690371207,
+        "gamma_relative_error": 0.0077556453294972405,
+        "acoustic_attenuation_measured_lu": 0.0010984728731671361,
+        "acoustic_attenuation_reference_lu": 8.88897282962232e-05,
+        "acoustic_attenuation_relative_error": 11.357703125230598,
+        "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+        "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+        "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+        "baseline_direction": "x",
+        "baseline_sound_speed_relative_error": 0.0011965407222760405,
+        "baseline_gamma_relative_error": 0.0023916497348520638,
+        "mode_index": 1,
+        "background_velocity_lu": [
+          0.0,
+          0.0
+        ],
+        "fitting_window": {
+          "x": [
+            10,
+            80
+          ],
+          "y": [
+            10,
+            80
+          ],
+          "diagonal": [
+            10,
+            80
+          ]
+        },
+        "phase_residual_norm": 0.029615230255323397,
+        "decay_residual_norm": 0.028541912948586084,
+        "directions": [
+          "x",
+          "y",
+          "diagonal"
+        ],
+        "direction_difference": 0.0026888310987093016,
+        "direction_results": {
+          "x": {
+            "direction": "x",
+            "status": "PASSED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.2599386002770277,
+            "sound_speed_relative_error": 0.0011965407222760405,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.396651690371207,
+            "gamma_relative_error": 0.0023916497348520638,
+            "acoustic_attenuation_measured_lu": 0.0010984728731671361,
+            "acoustic_attenuation_reference_lu": 8.88897282962232e-05,
+            "acoustic_attenuation_relative_error": 11.357703125230598,
+            "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+            "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+            "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+            "mode_index": 1,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "background_advection_lu": 0.0,
+            "lab_phase_speed_lu": 0.2599386002770277,
+            "intrinsic_phase_speed_lu": 0.2599386002770277,
+            "k_mag_lu": 0.19634954084936207,
+            "fitting_window": [
+              10,
+              80
+            ],
+            "phase_residual_norm": 0.016218997497919965,
+            "decay_residual_norm": 0.012346634573514021,
+            "fit_sample_count": 71,
+            "sample_count": 81,
+            "pressure_amplitude_initial": 6.773006244491943e-08,
+            "pressure_amplitude_final": 6.630477998959568e-08,
+            "density_amplitude_initial": 9.999999999976776e-07,
+            "theta_amplitude_initial": 1.9351446373915944e-08,
+            "velocity_amplitude_initial": 2.602499999950444e-07,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.04837858944383376,
+            "max_theta_lu": 0.04837864269892023,
+            "max_mach": 1.0000002664225727e-06,
+            "max_mean_pressure_drift": 8.333611578592581e-15,
+            "clipping_used": false
+          },
+          "y": {
+            "direction": "y",
+            "status": "PASSED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.25993860056419543,
+            "sound_speed_relative_error": 0.0011965396188456934,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.396651693457115,
+            "gamma_relative_error": 0.002391647530632146,
+            "acoustic_attenuation_measured_lu": 0.0010984728581794935,
+            "acoustic_attenuation_reference_lu": 8.88897282962232e-05,
+            "acoustic_attenuation_relative_error": 11.35770295662121,
+            "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+            "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+            "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+            "mode_index": 1,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "background_advection_lu": 0.0,
+            "lab_phase_speed_lu": 0.25993860056419543,
+            "intrinsic_phase_speed_lu": 0.25993860056419543,
+            "k_mag_lu": 0.19634954084936207,
+            "fitting_window": [
+              10,
+              80
+            ],
+            "phase_residual_norm": 0.016218997216053636,
+            "decay_residual_norm": 0.012346633795681234,
+            "fit_sample_count": 71,
+            "sample_count": 81,
+            "pressure_amplitude_initial": 6.773006250022595e-08,
+            "pressure_amplitude_final": 6.630477997196398e-08,
+            "density_amplitude_initial": 9.999999999866234e-07,
+            "theta_amplitude_initial": 1.93514464294122e-08,
+            "velocity_amplitude_initial": 2.602500000080685e-07,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.048378589443833574,
+            "max_theta_lu": 0.04837864269892105,
+            "max_mach": 1.000000149161126e-06,
+            "max_mean_pressure_drift": 8.403000517631654e-15,
+            "clipping_used": false
+          },
+          "diagonal": {
+            "direction": "diagonal",
+            "status": "PASSED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.25923883227075634,
+            "sound_speed_relative_error": 0.0038853707175550145,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.3891420965387038,
+            "gamma_relative_error": 0.0077556453294972405,
+            "acoustic_attenuation_measured_lu": 0.0021151426350778887,
+            "acoustic_attenuation_reference_lu": 0.00017777945659244642,
+            "acoustic_attenuation_relative_error": 10.897564969651043,
+            "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+            "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+            "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+            "mode_index": 1,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "background_advection_lu": 0.0,
+            "lab_phase_speed_lu": 0.25923883227075634,
+            "intrinsic_phase_speed_lu": 0.25923883227075634,
+            "k_mag_lu": 0.2776801836348979,
+            "fitting_window": [
+              10,
+              80
+            ],
+            "phase_residual_norm": 0.029615230255323397,
+            "decay_residual_norm": 0.028541912948586084,
+            "fit_sample_count": 71,
+            "sample_count": 81,
+            "pressure_amplitude_initial": 6.773006251523293e-08,
+            "pressure_amplitude_final": 5.925588122933868e-08,
+            "density_amplitude_initial": 9.999999999969093e-07,
+            "theta_amplitude_initial": 1.93514464442497e-08,
+            "velocity_amplitude_initial": 2.6024999999347167e-07,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.04837858324144362,
+            "max_theta_lu": 0.04837864890125685,
+            "max_mach": 1.000000211183225e-06,
+            "max_mean_pressure_drift": 9.658940314238862e-15,
+            "clipping_used": false
+          }
+        },
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "negative_theta_detected": false,
+        "clipping_used": false,
+        "acceptance": {
+          "sound_speed_relative_error_max": 0.02,
+          "gamma_relative_error_max": 0.02,
+          "direction_difference_max": 0.02,
+          "attenuation_is_diagnostic_only": true,
+          "requires_no_nan": true,
+          "requires_no_clipping": true,
+          "requires_positive_theta": true
+        }
+      }
+    },
+    {
+      "name": "n64_mode2_seed",
+      "category": "N/mode",
+      "n": 64,
+      "mode_index": 2,
+      "pr": 0.7061328707,
+      "mach": 0.0,
+      "background_direction": "none",
+      "directions": [
+        "x",
+        "y",
+        "diagonal"
+      ],
+      "expected_scope": "calibrated_seed_scope",
+      "axis_laplacian": 0.038429439193539104,
+      "diagonal_laplacian": 0.07685887838707821,
+      "status": "PASSED",
+      "sound_speed_relative_error": 0.003885370781599451,
+      "gamma_relative_error": 0.007755645457088289,
+      "direction_difference": 0.0026888305136586687,
+      "acoustic_attenuation_relative_error": 11.357703207335398,
+      "first_invalid_step": null,
+      "nan_detected": false,
+      "clipping_used": false,
+      "raw": {
+        "p2_06_status": "PASSED",
+        "sound_speed_target_lu": 0.26025000000000004,
+        "sound_speed_measured_lu": 0.2599386002770277,
+        "sound_speed_relative_error": 0.003885370781599451,
+        "gamma_target": 1.4,
+        "gamma_measured": 1.396651690371207,
+        "gamma_relative_error": 0.007755645457088289,
+        "acoustic_attenuation_measured_lu": 0.0010984728731671361,
+        "acoustic_attenuation_reference_lu": 8.88897282962232e-05,
+        "acoustic_attenuation_relative_error": 11.357703207335398,
+        "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+        "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+        "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+        "baseline_direction": "x",
+        "baseline_sound_speed_relative_error": 0.0011965407222760405,
+        "baseline_gamma_relative_error": 0.0023916497348520638,
+        "mode_index": 2,
+        "background_velocity_lu": [
+          0.0,
+          0.0
+        ],
+        "fitting_window": {
+          "x": [
+            10,
+            80
+          ],
+          "y": [
+            10,
+            80
+          ],
+          "diagonal": [
+            10,
+            80
+          ]
+        },
+        "phase_residual_norm": 0.029615230613277324,
+        "decay_residual_norm": 0.02854191323433909,
+        "directions": [
+          "x",
+          "y",
+          "diagonal"
+        ],
+        "direction_difference": 0.0026888305136586687,
+        "direction_results": {
+          "x": {
+            "direction": "x",
+            "status": "PASSED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.2599386002770277,
+            "sound_speed_relative_error": 0.0011965407222760405,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.396651690371207,
+            "gamma_relative_error": 0.0023916497348520638,
+            "acoustic_attenuation_measured_lu": 0.0010984728731671361,
+            "acoustic_attenuation_reference_lu": 8.88897282962232e-05,
+            "acoustic_attenuation_relative_error": 11.357703125230598,
+            "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+            "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+            "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+            "mode_index": 2,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "background_advection_lu": 0.0,
+            "lab_phase_speed_lu": 0.2599386002770277,
+            "intrinsic_phase_speed_lu": 0.2599386002770277,
+            "k_mag_lu": 0.19634954084936207,
+            "fitting_window": [
+              10,
+              80
+            ],
+            "phase_residual_norm": 0.01621899749791994,
+            "decay_residual_norm": 0.01234663457351401,
+            "fit_sample_count": 71,
+            "sample_count": 81,
+            "pressure_amplitude_initial": 6.773006244491943e-08,
+            "pressure_amplitude_final": 6.630477998959566e-08,
+            "density_amplitude_initial": 9.999999999976778e-07,
+            "theta_amplitude_initial": 1.9351446373915947e-08,
+            "velocity_amplitude_initial": 2.602499999950444e-07,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.04837858944383376,
+            "max_theta_lu": 0.04837864269892023,
+            "max_mach": 1.0000002664225727e-06,
+            "max_mean_pressure_drift": 8.333611578592581e-15,
+            "clipping_used": false
+          },
+          "y": {
+            "direction": "y",
+            "status": "PASSED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.25993860039526845,
+            "sound_speed_relative_error": 0.0011965402679408044,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.3966516916418237,
+            "gamma_relative_error": 0.002391648827268722,
+            "acoustic_attenuation_measured_lu": 0.0010984728804654094,
+            "acoustic_attenuation_reference_lu": 8.88897282962232e-05,
+            "acoustic_attenuation_relative_error": 11.357703207335398,
+            "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+            "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+            "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+            "mode_index": 2,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "background_advection_lu": 0.0,
+            "lab_phase_speed_lu": 0.25993860039526845,
+            "intrinsic_phase_speed_lu": 0.25993860039526845,
+            "k_mag_lu": 0.19634954084936207,
+            "fitting_window": [
+              10,
+              80
+            ],
+            "phase_residual_norm": 0.016218997017879967,
+            "decay_residual_norm": 0.012346633622756382,
+            "fit_sample_count": 71,
+            "sample_count": 81,
+            "pressure_amplitude_initial": 6.773006250022595e-08,
+            "pressure_amplitude_final": 6.630477975158327e-08,
+            "density_amplitude_initial": 9.999999999866234e-07,
+            "theta_amplitude_initial": 1.9351446429412202e-08,
+            "velocity_amplitude_initial": 2.602500000080685e-07,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.04837858944383349,
+            "max_theta_lu": 0.048378642698921,
+            "max_mach": 1.000000149161126e-06,
+            "max_mean_pressure_drift": 8.520961713998076e-15,
+            "clipping_used": false
+          },
+          "diagonal": {
+            "direction": "diagonal",
+            "status": "PASSED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.2592388322540888,
+            "sound_speed_relative_error": 0.003885370781599451,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.3891420963600762,
+            "gamma_relative_error": 0.007755645457088289,
+            "acoustic_attenuation_measured_lu": 0.0021151426287062867,
+            "acoustic_attenuation_reference_lu": 0.00017777945659244642,
+            "acoustic_attenuation_relative_error": 10.89756493381112,
+            "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+            "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+            "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+            "mode_index": 2,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "background_advection_lu": 0.0,
+            "lab_phase_speed_lu": 0.2592388322540888,
+            "intrinsic_phase_speed_lu": 0.2592388322540888,
+            "k_mag_lu": 0.2776801836348979,
+            "fitting_window": [
+              10,
+              80
+            ],
+            "phase_residual_norm": 0.029615230613277324,
+            "decay_residual_norm": 0.02854191323433909,
+            "fit_sample_count": 71,
+            "sample_count": 81,
+            "pressure_amplitude_initial": 6.773006251523293e-08,
+            "pressure_amplitude_final": 5.925588114921467e-08,
+            "density_amplitude_initial": 9.999999999969093e-07,
+            "theta_amplitude_initial": 1.93514464442497e-08,
+            "velocity_amplitude_initial": 2.6024999999347167e-07,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.04837858324144362,
+            "max_theta_lu": 0.04837864890125685,
+            "max_mach": 1.000000211183225e-06,
+            "max_mean_pressure_drift": 9.665879208142769e-15,
+            "clipping_used": false
+          }
+        },
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "negative_theta_detected": false,
+        "clipping_used": false,
+        "acceptance": {
+          "sound_speed_relative_error_max": 0.02,
+          "gamma_relative_error_max": 0.02,
+          "direction_difference_max": 0.02,
+          "attenuation_is_diagnostic_only": true,
+          "requires_no_nan": true,
+          "requires_no_clipping": true,
+          "requires_positive_theta": true
+        }
+      }
+    },
+    {
+      "name": "n64_mode1_low_mode_control",
+      "category": "mode",
+      "n": 64,
+      "mode_index": 1,
+      "pr": 0.7061328707,
+      "mach": 0.0,
+      "background_direction": "none",
+      "directions": [
+        "x",
+        "y",
+        "diagonal"
+      ],
+      "expected_scope": "low_mode_control_not_high_mode_target",
+      "axis_laplacian": 0.009630546655606228,
+      "diagonal_laplacian": 0.019261093311212455,
+      "status": "PASSED",
+      "sound_speed_relative_error": 0.006994664754050195,
+      "gamma_relative_error": 0.013940404173079068,
+      "direction_difference": 0.00848385716186134,
+      "acoustic_attenuation_relative_error": 8.423990348074936,
+      "first_invalid_step": null,
+      "nan_detected": false,
+      "clipping_used": false,
+      "raw": {
+        "p2_06_status": "PASSED",
+        "sound_speed_target_lu": 0.26025000000000004,
+        "sound_speed_measured_lu": 0.2606375618085166,
+        "sound_speed_relative_error": 0.006994664754050195,
+        "gamma_target": 1.4,
+        "gamma_measured": 1.4041728379577916,
+        "gamma_relative_error": 0.013940404173079068,
+        "acoustic_attenuation_measured_lu": 9.41390650061593e-05,
+        "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+        "acoustic_attenuation_relative_error": 8.423990348074936,
+        "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+        "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+        "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+        "baseline_direction": "x",
+        "baseline_sound_speed_relative_error": 0.001489190426576581,
+        "baseline_gamma_relative_error": 0.0029805985412798552,
+        "mode_index": 1,
+        "background_velocity_lu": [
+          0.0,
+          0.0
+        ],
+        "fitting_window": {
+          "x": [
+            10,
+            80
+          ],
+          "y": [
+            10,
+            80
+          ],
+          "diagonal": [
+            10,
+            80
+          ]
+        },
+        "phase_residual_norm": 0.0029594267940271407,
+        "decay_residual_norm": 0.004855386945633868,
+        "directions": [
+          "x",
+          "y",
+          "diagonal"
+        ],
+        "direction_difference": 0.00848385716186134,
+        "direction_results": {
+          "x": {
+            "direction": "x",
+            "status": "PASSED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.2606375618085166,
+            "sound_speed_relative_error": 0.001489190426576581,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.4041728379577916,
+            "gamma_relative_error": 0.0029805985412798552,
+            "acoustic_attenuation_measured_lu": 9.41390650061593e-05,
+            "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+            "acoustic_attenuation_relative_error": 3.2362179212627487,
+            "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+            "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+            "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+            "mode_index": 1,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "background_advection_lu": 0.0,
+            "lab_phase_speed_lu": 0.2606375618085166,
+            "intrinsic_phase_speed_lu": 0.2606375618085166,
+            "k_mag_lu": 0.09817477042468103,
+            "fitting_window": [
+              10,
+              80
+            ],
+            "phase_residual_norm": 0.00052612348228472,
+            "decay_residual_norm": 0.0010131939373337155,
+            "fit_sample_count": 71,
+            "sample_count": 81,
+            "pressure_amplitude_initial": 6.773006246956259e-08,
+            "pressure_amplitude_final": 6.722548013391178e-08,
+            "density_amplitude_initial": 9.999999999533867e-07,
+            "theta_amplitude_initial": 1.9351446400378626e-08,
+            "velocity_amplitude_initial": 2.6025000001274305e-07,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.048378596251344184,
+            "max_theta_lu": 0.048378635891507274,
+            "max_mach": 1.0000002664225727e-06,
+            "max_mean_pressure_drift": 7.570333249162786e-15,
+            "clipping_used": false
+          },
+          "y": {
+            "direction": "y",
+            "status": "PASSED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.2606375623241329,
+            "sound_speed_relative_error": 0.0014891924078110907,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.4041728435135095,
+            "gamma_relative_error": 0.00298060250964971,
+            "acoustic_attenuation_measured_lu": 9.413907519132638e-05,
+            "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+            "acoustic_attenuation_relative_error": 3.236218379590939,
+            "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+            "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+            "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+            "mode_index": 1,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "background_advection_lu": 0.0,
+            "lab_phase_speed_lu": 0.2606375623241329,
+            "intrinsic_phase_speed_lu": 0.2606375623241329,
+            "k_mag_lu": 0.09817477042468103,
+            "fitting_window": [
+              10,
+              80
+            ],
+            "phase_residual_norm": 0.0005261235258703976,
+            "decay_residual_norm": 0.0010131935630114026,
+            "fit_sample_count": 71,
+            "sample_count": 81,
+            "pressure_amplitude_initial": 6.773006250628058e-08,
+            "pressure_amplitude_final": 6.722548021686095e-08,
+            "density_amplitude_initial": 9.99999999983151e-07,
+            "theta_amplitude_initial": 1.9351446435852717e-08,
+            "velocity_amplitude_initial": 2.6024999999320597e-07,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.04837859625134127,
+            "max_theta_lu": 0.04837863589150454,
+            "max_mach": 1.000000149161126e-06,
+            "max_mean_pressure_drift": 7.542577673547157e-15,
+            "clipping_used": false
+          },
+          "diagonal": {
+            "direction": "diagonal",
+            "status": "PASSED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.25842963849775846,
+            "sound_speed_relative_error": 0.006994664754050195,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.3804834341576893,
+            "gamma_relative_error": 0.013940404173079068,
+            "acoustic_attenuation_measured_lu": 0.0004188479707533055,
+            "acoustic_attenuation_reference_lu": 4.4444864148111605e-05,
+            "acoustic_attenuation_relative_error": 8.423990348074936,
+            "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+            "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+            "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+            "mode_index": 1,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "background_advection_lu": 0.0,
+            "lab_phase_speed_lu": 0.25842963849775846,
+            "intrinsic_phase_speed_lu": 0.25842963849775846,
+            "k_mag_lu": 0.13884009181744894,
+            "fitting_window": [
+              10,
+              80
+            ],
+            "phase_residual_norm": 0.0029594267940271407,
+            "decay_residual_norm": 0.004855386945633868,
+            "fit_sample_count": 71,
+            "sample_count": 81,
+            "pressure_amplitude_initial": 6.773006249588908e-08,
+            "pressure_amplitude_final": 6.610119518228685e-08,
+            "density_amplitude_initial": 9.999999999631712e-07,
+            "theta_amplitude_initial": 1.9351446426042103e-08,
+            "velocity_amplitude_initial": 2.602499999960285e-07,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.04837859412002842,
+            "max_theta_lu": 0.04837863802279776,
+            "max_mach": 1.000000211183225e-06,
+            "max_mean_pressure_drift": 7.764622278472189e-15,
+            "clipping_used": false
+          }
+        },
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "negative_theta_detected": false,
+        "clipping_used": false,
+        "acceptance": {
+          "sound_speed_relative_error_max": 0.02,
+          "gamma_relative_error_max": 0.02,
+          "direction_difference_max": 0.02,
+          "attenuation_is_diagnostic_only": true,
+          "requires_no_nan": true,
+          "requires_no_clipping": true,
+          "requires_positive_theta": true
+        }
+      }
+    },
+    {
+      "name": "n64_mode3_out_of_scope",
+      "category": "mode",
+      "n": 64,
+      "mode_index": 3,
+      "pr": 0.7061328707,
+      "mach": 0.0,
+      "background_direction": "none",
+      "directions": [
+        "x",
+        "y",
+        "diagonal"
+      ],
+      "expected_scope": "outside_targeted_high_mode_symbol",
+      "axis_laplacian": 0.08611932853558227,
+      "diagonal_laplacian": 0.17223865707116454,
+      "status": "FAILED",
+      "sound_speed_relative_error": 0.22794572720871975,
+      "gamma_relative_error": 0.5078507089701509,
+      "direction_difference": 0.11819003155460381,
+      "acoustic_attenuation_relative_error": 13.472041947384458,
+      "first_invalid_step": null,
+      "nan_detected": false,
+      "clipping_used": false,
+      "raw": {
+        "p2_06_status": "FAILED",
+        "sound_speed_target_lu": 0.26025000000000004,
+        "sound_speed_measured_lu": 0.2888139197939837,
+        "sound_speed_relative_error": 0.22794572720871975,
+        "gamma_target": 1.4,
+        "gamma_measured": 1.7241807856514504,
+        "gamma_relative_error": 0.5078507089701509,
+        "acoustic_attenuation_measured_lu": 0.002600660441612652,
+        "acoustic_attenuation_reference_lu": 0.0002000018886665022,
+        "acoustic_attenuation_relative_error": 13.472041947384458,
+        "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+        "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+        "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+        "baseline_direction": "x",
+        "baseline_sound_speed_relative_error": 0.10975569565411591,
+        "baseline_gamma_relative_error": 0.23155770403675024,
+        "mode_index": 3,
+        "background_velocity_lu": [
+          0.0,
+          0.0
+        ],
+        "fitting_window": {
+          "x": [
+            10,
+            80
+          ],
+          "y": [
+            10,
+            80
+          ],
+          "diagonal": [
+            10,
+            80
+          ]
+        },
+        "phase_residual_norm": 0.06873794798629976,
+        "decay_residual_norm": 0.06943123083104175,
+        "directions": [
+          "x",
+          "y",
+          "diagonal"
+        ],
+        "direction_difference": 0.11819003155460381,
+        "direction_results": {
+          "x": {
+            "direction": "x",
+            "status": "FAILED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.2888139197939837,
+            "sound_speed_relative_error": 0.10975569565411591,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.7241807856514504,
+            "gamma_relative_error": 0.23155770403675024,
+            "acoustic_attenuation_measured_lu": 0.002600660441612652,
+            "acoustic_attenuation_reference_lu": 0.0002000018886665022,
+            "acoustic_attenuation_relative_error": 12.003179414716348,
+            "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+            "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+            "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+            "mode_index": 3,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "background_advection_lu": 0.0,
+            "lab_phase_speed_lu": 0.2888139197939837,
+            "intrinsic_phase_speed_lu": 0.2888139197939837,
+            "k_mag_lu": 0.2945243112740431,
+            "fitting_window": [
+              10,
+              80
+            ],
+            "phase_residual_norm": 0.03500572861154244,
+            "decay_residual_norm": 0.03369979080620445,
+            "fit_sample_count": 71,
+            "sample_count": 81,
+            "pressure_amplitude_initial": 6.77300624695626e-08,
+            "pressure_amplitude_final": 6.102472660238416e-08,
+            "density_amplitude_initial": 9.999999999533867e-07,
+            "theta_amplitude_initial": 1.9351446400378626e-08,
+            "velocity_amplitude_initial": 2.6025000001274305e-07,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.048378580099131,
+            "max_theta_lu": 0.04837865204354858,
+            "max_mach": 1.0000002664225727e-06,
+            "max_mean_pressure_drift": 9.63812363252714e-15,
+            "clipping_used": false
+          },
+          "y": {
+            "direction": "y",
+            "status": "FAILED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.2888139198686826,
+            "sound_speed_relative_error": 0.10975569594114343,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.7241807865433358,
+            "gamma_relative_error": 0.23155770467381132,
+            "acoustic_attenuation_measured_lu": 0.0026006604179938508,
+            "acoustic_attenuation_reference_lu": 0.0002000018886665022,
+            "acoustic_attenuation_relative_error": 12.003179296623456,
+            "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+            "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+            "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+            "mode_index": 3,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "background_advection_lu": 0.0,
+            "lab_phase_speed_lu": 0.2888139198686826,
+            "intrinsic_phase_speed_lu": 0.2888139198686826,
+            "k_mag_lu": 0.2945243112740431,
+            "fitting_window": [
+              10,
+              80
+            ],
+            "phase_residual_norm": 0.035005729132738216,
+            "decay_residual_norm": 0.033699790893433404,
+            "fit_sample_count": 71,
+            "sample_count": 81,
+            "pressure_amplitude_initial": 6.773006250628058e-08,
+            "pressure_amplitude_final": 6.102472681407096e-08,
+            "density_amplitude_initial": 9.999999999831508e-07,
+            "theta_amplitude_initial": 1.9351446435852717e-08,
+            "velocity_amplitude_initial": 2.602499999932059e-07,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.04837858009913097,
+            "max_theta_lu": 0.04837865204354847,
+            "max_mach": 1.000000149161126e-06,
+            "max_mean_pressure_drift": 9.776901510605285e-15,
+            "clipping_used": false
+          },
+          "diagonal": {
+            "direction": "diagonal",
+            "status": "FAILED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.31957287550606933,
+            "sound_speed_relative_error": 0.22794572720871975,
+            "gamma_target": 1.4,
+            "gamma_measured": 2.1109909925582113,
+            "gamma_relative_error": 0.5078507089701509,
+            "acoustic_attenuation_measured_lu": 0.005788871444675473,
+            "acoustic_attenuation_reference_lu": 0.00040000377733300445,
+            "acoustic_attenuation_relative_error": 13.472041947384458,
+            "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+            "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+            "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+            "mode_index": 3,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "background_advection_lu": 0.0,
+            "lab_phase_speed_lu": 0.31957287550606933,
+            "intrinsic_phase_speed_lu": 0.31957287550606933,
+            "k_mag_lu": 0.4165202754523468,
+            "fitting_window": [
+              10,
+              80
+            ],
+            "phase_residual_norm": 0.06873794798629976,
+            "decay_residual_norm": 0.06943123083104175,
+            "fit_sample_count": 71,
+            "sample_count": 81,
+            "pressure_amplitude_initial": 6.773006249588908e-08,
+            "pressure_amplitude_final": 5.38670904769474e-08,
+            "density_amplitude_initial": 9.999999999631708e-07,
+            "theta_amplitude_initial": 1.9351446426042103e-08,
+            "velocity_amplitude_initial": 2.602499999960285e-07,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.04837856853240503,
+            "max_theta_lu": 0.048378663610277935,
+            "max_mach": 1.000000211183225e-06,
+            "max_mean_pressure_drift": 1.2136125437933742e-14,
+            "clipping_used": false
+          }
+        },
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "negative_theta_detected": false,
+        "clipping_used": false,
+        "acceptance": {
+          "sound_speed_relative_error_max": 0.02,
+          "gamma_relative_error_max": 0.02,
+          "direction_difference_max": 0.02,
+          "attenuation_is_diagnostic_only": true,
+          "requires_no_nan": true,
+          "requires_no_clipping": true,
+          "requires_positive_theta": true
+        }
+      }
+    },
+    {
+      "name": "n64_mode2_pr_0p5",
+      "category": "Pr",
+      "n": 64,
+      "mode_index": 2,
+      "pr": 0.5,
+      "mach": 0.0,
+      "background_direction": "none",
+      "directions": [
+        "x",
+        "y",
+        "diagonal"
+      ],
+      "expected_scope": "same_seed_different_tau32",
+      "axis_laplacian": 0.038429439193539104,
+      "diagonal_laplacian": 0.07685887838707821,
+      "status": "FAILED",
+      "sound_speed_relative_error": 0.09840996079675524,
+      "gamma_relative_error": 0.20650444197752926,
+      "direction_difference": 0.09210136802145992,
+      "acoustic_attenuation_relative_error": 9.613477266919194,
+      "first_invalid_step": null,
+      "nan_detected": false,
+      "clipping_used": false,
+      "raw": {
+        "p2_06_status": "FAILED",
+        "sound_speed_target_lu": 0.26025000000000004,
+        "sound_speed_measured_lu": 0.2618918112697706,
+        "sound_speed_relative_error": 0.09840996079675524,
+        "gamma_target": 1.4,
+        "gamma_measured": 1.4177197774507528,
+        "gamma_relative_error": 0.20650444197752926,
+        "acoustic_attenuation_measured_lu": 0.0010840789409729322,
+        "acoustic_attenuation_reference_lu": 0.00010214173109428171,
+        "acoustic_attenuation_relative_error": 9.613477266919194,
+        "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+        "acoustic_attenuation_target_coeff_lu": 0.002649375,
+        "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+        "baseline_direction": "x",
+        "baseline_sound_speed_relative_error": 0.006308592775295274,
+        "baseline_gamma_relative_error": 0.01265698389339498,
+        "mode_index": 2,
+        "background_velocity_lu": [
+          0.0,
+          0.0
+        ],
+        "fitting_window": {
+          "x": [
+            10,
+            80
+          ],
+          "y": [
+            10,
+            80
+          ],
+          "diagonal": [
+            10,
+            80
+          ]
+        },
+        "phase_residual_norm": 0.0331463785929866,
+        "decay_residual_norm": 0.033471543535055756,
+        "directions": [
+          "x",
+          "y",
+          "diagonal"
+        ],
+        "direction_difference": 0.09210136802145992,
+        "direction_results": {
+          "x": {
+            "direction": "x",
+            "status": "PASSED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.2618918112697706,
+            "sound_speed_relative_error": 0.006308592775295274,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.4177197774507528,
+            "gamma_relative_error": 0.01265698389339498,
+            "acoustic_attenuation_measured_lu": 0.0010840789409729322,
+            "acoustic_attenuation_reference_lu": 0.00010214173109428171,
+            "acoustic_attenuation_relative_error": 9.613477266919194,
+            "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+            "acoustic_attenuation_target_coeff_lu": 0.002649375,
+            "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+            "mode_index": 2,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "background_advection_lu": 0.0,
+            "lab_phase_speed_lu": 0.2618918112697706,
+            "intrinsic_phase_speed_lu": 0.2618918112697706,
+            "k_mag_lu": 0.19634954084936207,
+            "fitting_window": [
+              10,
+              80
+            ],
+            "phase_residual_norm": 0.01887546103483895,
+            "decay_residual_norm": 0.014567217533631447,
+            "fit_sample_count": 71,
+            "sample_count": 81,
+            "pressure_amplitude_initial": 6.773006244491943e-08,
+            "pressure_amplitude_final": 6.708702499695414e-08,
+            "density_amplitude_initial": 9.999999999976778e-07,
+            "theta_amplitude_initial": 1.9351446373915947e-08,
+            "velocity_amplitude_initial": 2.602499999950444e-07,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.048378588188024915,
+            "max_theta_lu": 0.048378643954727345,
+            "max_mach": 1.0000002664225727e-06,
+            "max_mean_pressure_drift": 8.36136715420821e-15,
+            "clipping_used": false
+          },
+          "y": {
+            "direction": "y",
+            "status": "FAILED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.27440831787981557,
+            "sound_speed_relative_error": 0.05440275842388287,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.5564712477606502,
+            "gamma_relative_error": 0.11176517697189303,
+            "acoustic_attenuation_measured_lu": 0.0010306753141033226,
+            "acoustic_attenuation_reference_lu": 0.00010214173109428171,
+            "acoustic_attenuation_relative_error": 9.090638792404643,
+            "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+            "acoustic_attenuation_target_coeff_lu": 0.002649375,
+            "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+            "mode_index": 2,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "background_advection_lu": 0.0,
+            "lab_phase_speed_lu": 0.27440831787981557,
+            "intrinsic_phase_speed_lu": 0.27440831787981557,
+            "k_mag_lu": 0.19634954084936207,
+            "fitting_window": [
+              10,
+              80
+            ],
+            "phase_residual_norm": 0.01873086240797179,
+            "decay_residual_norm": 0.01518863785546587,
+            "fit_sample_count": 71,
+            "sample_count": 81,
+            "pressure_amplitude_initial": 6.773006250022595e-08,
+            "pressure_amplitude_final": 6.734381479787985e-08,
+            "density_amplitude_initial": 9.999999999866234e-07,
+            "theta_amplitude_initial": 1.9351446429412202e-08,
+            "velocity_amplitude_initial": 2.602500000080685e-07,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.04837858815675211,
+            "max_theta_lu": 0.04837864398601258,
+            "max_mach": 1.000000149161126e-06,
+            "max_mean_pressure_drift": 8.500145032286355e-15,
+            "clipping_used": false
+          },
+          "diagonal": {
+            "direction": "diagonal",
+            "status": "FAILED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.28586119229735557,
+            "sound_speed_relative_error": 0.09840996079675524,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.6891062187685408,
+            "gamma_relative_error": 0.20650444197752926,
+            "acoustic_attenuation_measured_lu": 0.002135825250510128,
+            "acoustic_attenuation_reference_lu": 0.0002042834621885634,
+            "acoustic_attenuation_relative_error": 9.455203899661047,
+            "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+            "acoustic_attenuation_target_coeff_lu": 0.002649375,
+            "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+            "mode_index": 2,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "background_advection_lu": 0.0,
+            "lab_phase_speed_lu": 0.28586119229735557,
+            "intrinsic_phase_speed_lu": 0.28586119229735557,
+            "k_mag_lu": 0.2776801836348979,
+            "fitting_window": [
+              10,
+              80
+            ],
+            "phase_residual_norm": 0.0331463785929866,
+            "decay_residual_norm": 0.033471543535055756,
+            "fit_sample_count": 71,
+            "sample_count": 81,
+            "pressure_amplitude_initial": 6.773006251523293e-08,
+            "pressure_amplitude_final": 5.965871729414029e-08,
+            "density_amplitude_initial": 9.999999999969093e-07,
+            "theta_amplitude_initial": 1.93514464442497e-08,
+            "velocity_amplitude_initial": 2.6024999999347167e-07,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.04837858110532928,
+            "max_theta_lu": 0.048378651037372794,
+            "max_mach": 1.000000211183225e-06,
+            "max_mean_pressure_drift": 9.63812363252714e-15,
+            "clipping_used": false
+          }
+        },
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "negative_theta_detected": false,
+        "clipping_used": false,
+        "acceptance": {
+          "sound_speed_relative_error_max": 0.02,
+          "gamma_relative_error_max": 0.02,
+          "direction_difference_max": 0.02,
+          "attenuation_is_diagnostic_only": true,
+          "requires_no_nan": true,
+          "requires_no_clipping": true,
+          "requires_positive_theta": true
+        }
+      }
+    },
+    {
+      "name": "n64_mode2_pr_2p0",
+      "category": "Pr",
+      "n": 64,
+      "mode_index": 2,
+      "pr": 2.0,
+      "mach": 0.0,
+      "background_direction": "none",
+      "directions": [
+        "x",
+        "y",
+        "diagonal"
+      ],
+      "expected_scope": "same_seed_different_tau32",
+      "axis_laplacian": 0.038429439193539104,
+      "diagonal_laplacian": 0.07685887838707821,
+      "status": "FAILED",
+      "sound_speed_relative_error": 0.06574660478552774,
+      "gamma_relative_error": 0.13581582561187955,
+      "direction_difference": 0.07824920836001839,
+      "acoustic_attenuation_relative_error": 17.449119215294047,
+      "first_invalid_step": null,
+      "nan_detected": false,
+      "clipping_used": false,
+      "raw": {
+        "p2_06_status": "FAILED",
+        "sound_speed_target_lu": 0.26025000000000004,
+        "sound_speed_measured_lu": 0.25699619741973884,
+        "sound_speed_relative_error": 0.06574660478552774,
+        "gamma_target": 1.4,
+        "gamma_measured": 1.3652115511260232,
+        "gamma_relative_error": 0.13581582561187955,
+        "acoustic_attenuation_measured_lu": 0.001113370560912458,
+        "acoustic_attenuation_reference_lu": 6.80944873961878e-05,
+        "acoustic_attenuation_relative_error": 17.449119215294047,
+        "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+        "acoustic_attenuation_target_coeff_lu": 0.0017662499999999998,
+        "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+        "baseline_direction": "x",
+        "baseline_sound_speed_relative_error": 0.012502603574490734,
+        "baseline_gamma_relative_error": 0.024848892052840466,
+        "mode_index": 2,
+        "background_velocity_lu": [
+          0.0,
+          0.0
+        ],
+        "fitting_window": {
+          "x": [
+            10,
+            80
+          ],
+          "y": [
+            10,
+            80
+          ],
+          "diagonal": [
+            10,
+            80
+          ]
+        },
+        "phase_residual_norm": 0.022288907942254264,
+        "decay_residual_norm": 0.02188276214858423,
+        "directions": [
+          "x",
+          "y",
+          "diagonal"
+        ],
+        "direction_difference": 0.07824920836001839,
+        "direction_results": {
+          "x": {
+            "direction": "x",
+            "status": "FAILED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.25699619741973884,
+            "sound_speed_relative_error": 0.012502603574490734,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.3652115511260232,
+            "gamma_relative_error": 0.024848892052840466,
+            "acoustic_attenuation_measured_lu": 0.001113370560912458,
+            "acoustic_attenuation_reference_lu": 6.80944873961878e-05,
+            "acoustic_attenuation_relative_error": 15.350377299040936,
+            "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+            "acoustic_attenuation_target_coeff_lu": 0.0017662499999999998,
+            "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+            "mode_index": 2,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "background_advection_lu": 0.0,
+            "lab_phase_speed_lu": 0.25699619741973884,
+            "intrinsic_phase_speed_lu": 0.25699619741973884,
+            "k_mag_lu": 0.19634954084936207,
+            "fitting_window": [
+              10,
+              80
+            ],
+            "phase_residual_norm": 0.012104962250607434,
+            "decay_residual_norm": 0.009039598864527829,
+            "fit_sample_count": 71,
+            "sample_count": 81,
+            "pressure_amplitude_initial": 6.773006244491943e-08,
+            "pressure_amplitude_final": 6.515362597272716e-08,
+            "density_amplitude_initial": 9.999999999976778e-07,
+            "theta_amplitude_initial": 1.9351446373915947e-08,
+            "velocity_amplitude_initial": 2.602499999950444e-07,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.048378591404637274,
+            "max_theta_lu": 0.04837864073813508,
+            "max_mach": 1.0000002664225727e-06,
+            "max_mean_pressure_drift": 8.389122729823839e-15,
+            "clipping_used": false
+          },
+          "y": {
+            "direction": "y",
+            "status": "FAILED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.2571389523970588,
+            "sound_speed_relative_error": 0.011954073402271725,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.3667286542929087,
+            "gamma_relative_error": 0.023765246933636575,
+            "acoustic_attenuation_measured_lu": 0.0010820935891123692,
+            "acoustic_attenuation_reference_lu": 6.80944873961878e-05,
+            "acoustic_attenuation_relative_error": 14.891060062124048,
+            "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+            "acoustic_attenuation_target_coeff_lu": 0.0017662499999999998,
+            "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+            "mode_index": 2,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "background_advection_lu": 0.0,
+            "lab_phase_speed_lu": 0.2571389523970588,
+            "intrinsic_phase_speed_lu": 0.2571389523970588,
+            "k_mag_lu": 0.19634954084936207,
+            "fitting_window": [
+              10,
+              80
+            ],
+            "phase_residual_norm": 0.012063002446452437,
+            "decay_residual_norm": 0.009407079491251852,
+            "fit_sample_count": 71,
+            "sample_count": 81,
+            "pressure_amplitude_initial": 6.773006250022595e-08,
+            "pressure_amplitude_final": 6.53269203434427e-08,
+            "density_amplitude_initial": 9.999999999866234e-07,
+            "theta_amplitude_initial": 1.9351446429412202e-08,
+            "velocity_amplitude_initial": 2.602500000080685e-07,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.04837859137091291,
+            "max_theta_lu": 0.04837864077185967,
+            "max_mach": 1.000000149161126e-06,
+            "max_mean_pressure_drift": 8.396061623727746e-15,
+            "clipping_used": false
+          },
+          "diagonal": {
+            "direction": "diagonal",
+            "status": "FAILED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.2773605538954336,
+            "sound_speed_relative_error": 0.06574660478552774,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.5901421558566313,
+            "gamma_relative_error": 0.13581582561187955,
+            "acoustic_attenuation_measured_lu": 0.002512566631753213,
+            "acoustic_attenuation_reference_lu": 0.0001361889747923756,
+            "acoustic_attenuation_relative_error": 17.449119215294047,
+            "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+            "acoustic_attenuation_target_coeff_lu": 0.0017662499999999998,
+            "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+            "mode_index": 2,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "background_advection_lu": 0.0,
+            "lab_phase_speed_lu": 0.2773605538954336,
+            "intrinsic_phase_speed_lu": 0.2773605538954336,
+            "k_mag_lu": 0.2776801836348979,
+            "fitting_window": [
+              10,
+              80
+            ],
+            "phase_residual_norm": 0.022288907942254264,
+            "decay_residual_norm": 0.02188276214858423,
+            "fit_sample_count": 71,
+            "sample_count": 81,
+            "pressure_amplitude_initial": 6.773006251523293e-08,
+            "pressure_amplitude_final": 5.707580344889169e-08,
+            "density_amplitude_initial": 9.999999999969093e-07,
+            "theta_amplitude_initial": 1.93514464442497e-08,
+            "velocity_amplitude_initial": 2.6024999999347167e-07,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.04837858616866393,
+            "max_theta_lu": 0.04837864597408108,
+            "max_mach": 1.000000211183225e-06,
+            "max_mean_pressure_drift": 9.721390359374027e-15,
+            "clipping_used": false
+          }
+        },
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "negative_theta_detected": false,
+        "clipping_used": false,
+        "acceptance": {
+          "sound_speed_relative_error_max": 0.02,
+          "gamma_relative_error_max": 0.02,
+          "direction_difference_max": 0.02,
+          "attenuation_is_diagnostic_only": true,
+          "requires_no_nan": true,
+          "requires_no_clipping": true,
+          "requires_positive_theta": true
+        }
+      }
+    },
+    {
+      "name": "n64_mode2_mach_0p05_x",
+      "category": "Mach/background",
+      "n": 64,
+      "mode_index": 2,
+      "pr": 0.7061328707,
+      "mach": 0.05,
+      "background_direction": "x",
+      "directions": [
+        "x",
+        "y",
+        "diagonal"
+      ],
+      "expected_scope": "background_velocity_boundary",
+      "axis_laplacian": 0.038429439193539104,
+      "diagonal_laplacian": 0.07685887838707821,
+      "status": "FAILED",
+      "sound_speed_relative_error": 0.04849155375971925,
+      "gamma_relative_error": 0.09933453830547001,
+      "direction_difference": 0.053034193603552535,
+      "acoustic_attenuation_relative_error": 11.385997102168384,
+      "first_invalid_step": null,
+      "nan_detected": false,
+      "clipping_used": false,
+      "raw": {
+        "p2_06_status": "FAILED",
+        "sound_speed_target_lu": 0.26025000000000004,
+        "sound_speed_measured_lu": 0.27286992686596695,
+        "sound_speed_relative_error": 0.04849155375971925,
+        "gamma_target": 1.4,
+        "gamma_measured": 1.539068353627658,
+        "gamma_relative_error": 0.09933453830547001,
+        "acoustic_attenuation_measured_lu": 0.0011009879170895554,
+        "acoustic_attenuation_reference_lu": 8.88897282962232e-05,
+        "acoustic_attenuation_relative_error": 11.385997102168384,
+        "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+        "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+        "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+        "baseline_direction": "x",
+        "baseline_sound_speed_relative_error": 0.04849155375971925,
+        "baseline_gamma_relative_error": 0.09933453830547001,
+        "mode_index": 2,
+        "background_velocity_lu": [
+          0.013012500000000003,
+          0.0
+        ],
+        "fitting_window": {
+          "x": [
+            10,
+            80
+          ],
+          "y": [
+            10,
+            80
+          ],
+          "diagonal": [
+            10,
+            80
+          ]
+        },
+        "phase_residual_norm": 0.03090202803556414,
+        "decay_residual_norm": 0.02974593495776858,
+        "directions": [
+          "x",
+          "y",
+          "diagonal"
+        ],
+        "direction_difference": 0.053034193603552535,
+        "direction_results": {
+          "x": {
+            "direction": "x",
+            "status": "FAILED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.27286992686596695,
+            "sound_speed_relative_error": 0.04849155375971925,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.539068353627658,
+            "gamma_relative_error": 0.09933453830547001,
+            "acoustic_attenuation_measured_lu": 0.0011009879170895554,
+            "acoustic_attenuation_reference_lu": 8.88897282962232e-05,
+            "acoustic_attenuation_relative_error": 11.385997102168384,
+            "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+            "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+            "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+            "mode_index": 2,
+            "background_velocity_lu": [
+              0.013012500000000003,
+              0.0
+            ],
+            "background_advection_lu": 0.013012500000000003,
+            "lab_phase_speed_lu": 0.28588242686596693,
+            "intrinsic_phase_speed_lu": 0.27286992686596695,
+            "k_mag_lu": 0.19634954084936207,
+            "fitting_window": [
+              10,
+              80
+            ],
+            "phase_residual_norm": 0.01697535678319145,
+            "decay_residual_norm": 0.013538662446333389,
+            "fit_sample_count": 71,
+            "sample_count": 81,
+            "pressure_amplitude_initial": 6.773006246276718e-08,
+            "pressure_amplitude_final": 6.649727997896023e-08,
+            "density_amplitude_initial": 9.999999999210616e-07,
+            "theta_amplitude_initial": 1.9351446394170027e-08,
+            "velocity_amplitude_initial": 2.6024999997290793e-07,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.0483785890855139,
+            "max_theta_lu": 0.048378643057268605,
+            "max_mach": 0.050000989999739114,
+            "max_mean_pressure_drift": 8.694434061595757e-15,
+            "clipping_used": false
+          },
+          "y": {
+            "direction": "y",
+            "status": "PASSED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.26011104172578836,
+            "sound_speed_relative_error": 0.0005339414955299882,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.3985053629434447,
+            "gamma_relative_error": 0.0010675978975394074,
+            "acoustic_attenuation_measured_lu": 0.001054564125767829,
+            "acoustic_attenuation_reference_lu": 8.88897282962232e-05,
+            "acoustic_attenuation_relative_error": 10.863734381699487,
+            "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+            "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+            "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+            "mode_index": 2,
+            "background_velocity_lu": [
+              0.013012500000000003,
+              0.0
+            ],
+            "background_advection_lu": 0.0,
+            "lab_phase_speed_lu": 0.26011104172578836,
+            "intrinsic_phase_speed_lu": 0.26011104172578836,
+            "k_mag_lu": 0.19634954084936207,
+            "fitting_window": [
+              10,
+              80
+            ],
+            "phase_residual_norm": 0.016120588966373663,
+            "decay_residual_norm": 0.012864031589068967,
+            "fit_sample_count": 71,
+            "sample_count": 81,
+            "pressure_amplitude_initial": 6.7730062479314e-08,
+            "pressure_amplitude_final": 6.652841201597468e-08,
+            "density_amplitude_initial": 9.999999999865154e-07,
+            "theta_amplitude_initial": 1.935144640752679e-08,
+            "velocity_amplitude_initial": 2.6025000001975256e-07,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.04837858941750172,
+            "max_theta_lu": 0.04837864272524775,
+            "max_mach": 0.050000013910476204,
+            "max_mean_pressure_drift": 8.590350653037149e-15,
+            "clipping_used": false
+          },
+          "diagonal": {
+            "direction": "diagonal",
+            "status": "PASSED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.2590677779806424,
+            "sound_speed_relative_error": 0.004542639843833407,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.3873094982447174,
+            "gamma_relative_error": 0.00906464411091612,
+            "acoustic_attenuation_measured_lu": 0.0021845746735489908,
+            "acoustic_attenuation_reference_lu": 0.00017777945659244642,
+            "acoustic_attenuation_relative_error": 11.288116497943047,
+            "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+            "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+            "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+            "mode_index": 2,
+            "background_velocity_lu": [
+              0.013012500000000003,
+              0.0
+            ],
+            "background_advection_lu": 0.009201226990189952,
+            "lab_phase_speed_lu": 0.26826900497083234,
+            "intrinsic_phase_speed_lu": 0.2590677779806424,
+            "k_mag_lu": 0.2776801836348979,
+            "fitting_window": [
+              10,
+              80
+            ],
+            "phase_residual_norm": 0.03090202803556414,
+            "decay_residual_norm": 0.02974593495776858,
+            "fit_sample_count": 71,
+            "sample_count": 81,
+            "pressure_amplitude_initial": 6.773006245402913e-08,
+            "pressure_amplitude_final": 5.898838684477124e-08,
+            "density_amplitude_initial": 9.999999999556449e-07,
+            "theta_amplitude_initial": 1.9351446384789534e-08,
+            "velocity_amplitude_initial": 2.602500000046718e-07,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.04837858289366518,
+            "max_theta_lu": 0.04837864924904152,
+            "max_mach": 0.05000069711157867,
+            "max_mean_pressure_drift": 9.721390359374027e-15,
+            "clipping_used": false
+          }
+        },
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "negative_theta_detected": false,
+        "clipping_used": false,
+        "acceptance": {
+          "sound_speed_relative_error_max": 0.02,
+          "gamma_relative_error_max": 0.02,
+          "direction_difference_max": 0.02,
+          "attenuation_is_diagnostic_only": true,
+          "requires_no_nan": true,
+          "requires_no_clipping": true,
+          "requires_positive_theta": true
+        }
+      }
+    },
+    {
+      "name": "n64_mode2_mach_0p05_diagonal",
+      "category": "Mach/background",
+      "n": 64,
+      "mode_index": 2,
+      "pr": 0.7061328707,
+      "mach": 0.05,
+      "background_direction": "diagonal",
+      "directions": [
+        "x",
+        "y",
+        "diagonal"
+      ],
+      "expected_scope": "background_velocity_boundary",
+      "axis_laplacian": 0.038429439193539104,
+      "diagonal_laplacian": 0.07685887838707821,
+      "status": "FAILED",
+      "sound_speed_relative_error": 0.08885532324496692,
+      "gamma_relative_error": 0.18560591495890155,
+      "direction_difference": 0.09035910543536092,
+      "acoustic_attenuation_relative_error": 12.406423192991074,
+      "first_invalid_step": null,
+      "nan_detected": false,
+      "clipping_used": false,
+      "raw": {
+        "p2_06_status": "FAILED",
+        "sound_speed_target_lu": 0.26025000000000004,
+        "sound_speed_measured_lu": 0.25985864073960924,
+        "sound_speed_relative_error": 0.08885532324496692,
+        "gamma_target": 1.4,
+        "gamma_measured": 1.3957925763593113,
+        "gamma_relative_error": 0.18560591495890155,
+        "acoustic_attenuation_measured_lu": 0.0011345493590280032,
+        "acoustic_attenuation_reference_lu": 8.88897282962232e-05,
+        "acoustic_attenuation_relative_error": 12.406423192991074,
+        "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+        "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+        "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+        "baseline_direction": "x",
+        "baseline_sound_speed_relative_error": 0.0015037819803681574,
+        "baseline_gamma_relative_error": 0.0030053026004918104,
+        "mode_index": 2,
+        "background_velocity_lu": [
+          0.00920122699018995,
+          0.00920122699018995
+        ],
+        "fitting_window": {
+          "x": [
+            10,
+            80
+          ],
+          "y": [
+            10,
+            80
+          ],
+          "diagonal": [
+            10,
+            80
+          ]
+        },
+        "phase_residual_norm": 0.030696503189323654,
+        "decay_residual_norm": 0.0307073926124241,
+        "directions": [
+          "x",
+          "y",
+          "diagonal"
+        ],
+        "direction_difference": 0.09035910543536092,
+        "direction_results": {
+          "x": {
+            "direction": "x",
+            "status": "PASSED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.25985864073960924,
+            "sound_speed_relative_error": 0.0015037819803681574,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.3957925763593113,
+            "gamma_relative_error": 0.0030053026004918104,
+            "acoustic_attenuation_measured_lu": 0.0011345493590280032,
+            "acoustic_attenuation_reference_lu": 8.88897282962232e-05,
+            "acoustic_attenuation_relative_error": 11.763559758526213,
+            "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+            "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+            "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+            "mode_index": 2,
+            "background_velocity_lu": [
+              0.00920122699018995,
+              0.00920122699018995
+            ],
+            "background_advection_lu": 0.00920122699018995,
+            "lab_phase_speed_lu": 0.2690598677297992,
+            "intrinsic_phase_speed_lu": 0.25985864073960924,
+            "k_mag_lu": 0.19634954084936207,
+            "fitting_window": [
+              10,
+              80
+            ],
+            "phase_residual_norm": 0.0168238098005372,
+            "decay_residual_norm": 0.012789679448293463,
+            "fit_sample_count": 71,
+            "sample_count": 81,
+            "pressure_amplitude_initial": 6.773006244908948e-08,
+            "pressure_amplitude_final": 6.62630611093086e-08,
+            "density_amplitude_initial": 9.999999998884739e-07,
+            "theta_amplitude_initial": 1.935144638206219e-08,
+            "velocity_amplitude_initial": 2.602500000195502e-07,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.0483785892207385,
+            "max_theta_lu": 0.04837864292202052,
+            "max_mach": 0.050000697111634185,
+            "max_mean_pressure_drift": 8.555656183517613e-15,
+            "clipping_used": false
+          },
+          "y": {
+            "direction": "y",
+            "status": "PASSED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.25985864068495,
+            "sound_speed_relative_error": 0.001503782190393932,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.3957925757721235,
+            "gamma_relative_error": 0.0030053030199117536,
+            "acoustic_attenuation_measured_lu": 0.00113454934328059,
+            "acoustic_attenuation_reference_lu": 8.88897282962232e-05,
+            "acoustic_attenuation_relative_error": 11.763559581369487,
+            "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+            "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+            "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+            "mode_index": 2,
+            "background_velocity_lu": [
+              0.00920122699018995,
+              0.00920122699018995
+            ],
+            "background_advection_lu": 0.00920122699018995,
+            "lab_phase_speed_lu": 0.26905986767513995,
+            "intrinsic_phase_speed_lu": 0.25985864068495,
+            "k_mag_lu": 0.19634954084936207,
+            "fitting_window": [
+              10,
+              80
+            ],
+            "phase_residual_norm": 0.016823810355392838,
+            "decay_residual_norm": 0.01278967962466661,
+            "fit_sample_count": 71,
+            "sample_count": 81,
+            "pressure_amplitude_initial": 6.773006246183966e-08,
+            "pressure_amplitude_final": 6.626306120303032e-08,
+            "density_amplitude_initial": 1.0000000000194294e-06,
+            "theta_amplitude_initial": 1.935144638833706e-08,
+            "velocity_amplitude_initial": 2.6024999997607615e-07,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.048378589220738746,
+            "max_theta_lu": 0.04837864292202048,
+            "max_mach": 0.05000069711163425,
+            "max_mean_pressure_drift": 8.333611578592581e-15,
+            "clipping_used": false
+          },
+          "diagonal": {
+            "direction": "diagonal",
+            "status": "FAILED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.2833745978745027,
+            "sound_speed_relative_error": 0.08885532324496692,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.659848280942462,
+            "gamma_relative_error": 0.18560591495890155,
+            "acoustic_attenuation_measured_lu": 0.0023833866300983237,
+            "acoustic_attenuation_reference_lu": 0.00017777945659244642,
+            "acoustic_attenuation_relative_error": 12.406423192991074,
+            "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+            "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+            "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+            "mode_index": 2,
+            "background_velocity_lu": [
+              0.00920122699018995,
+              0.00920122699018995
+            ],
+            "background_advection_lu": 0.013012500000000003,
+            "lab_phase_speed_lu": 0.2963870978745027,
+            "intrinsic_phase_speed_lu": 0.2833745978745027,
+            "k_mag_lu": 0.2776801836348979,
+            "fitting_window": [
+              10,
+              80
+            ],
+            "phase_residual_norm": 0.030696503189323654,
+            "decay_residual_norm": 0.0307073926124241,
+            "fit_sample_count": 71,
+            "sample_count": 81,
+            "pressure_amplitude_initial": 6.773006246071223e-08,
+            "pressure_amplitude_final": 5.8189468824858e-08,
+            "density_amplitude_initial": 9.999999999664894e-07,
+            "theta_amplitude_initial": 1.9351446390101383e-08,
+            "velocity_amplitude_initial": 2.602499999926995e-07,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.04837858248000683,
+            "max_theta_lu": 0.04837864966272566,
+            "max_mach": 0.05000098999979419,
+            "max_mean_pressure_drift": 9.707512571566213e-15,
+            "clipping_used": false
+          }
+        },
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "negative_theta_detected": false,
+        "clipping_used": false,
+        "acceptance": {
+          "sound_speed_relative_error_max": 0.02,
+          "gamma_relative_error_max": 0.02,
+          "direction_difference_max": 0.02,
+          "attenuation_is_diagnostic_only": true,
+          "requires_no_nan": true,
+          "requires_no_clipping": true,
+          "requires_positive_theta": true
+        }
+      }
+    }
+  ],
+  "p2_9_semantic_smoke": {
+    "p2_09_status": "FAILED",
+    "velocity_set": "D2Q37",
+    "c_s_lu": 0.26025000000000004,
+    "mach_numbers": [
+      0.0,
+      0.02
+    ],
+    "background_directions": [
+      "x"
+    ],
+    "scenario_count": 1,
+    "reference": {
+      "name": "mach_0",
+      "mach": 0.0,
+      "background_velocity_lu": [
+        0.0,
+        0.0
+      ],
+      "p2_04_status": "FAILED",
+      "p2_05_status": "FAILED",
+      "p2_06_status": "FAILED",
+      "status": "FAILED",
+      "first_invalid_step": null,
+      "nan_detected": false,
+      "clipping_used": false,
+      "shear": {
+        "p2_04_status": "FAILED",
+        "nu_target_lu": 0.0029437499999999998,
+        "nu_measured_lu": -0.007145979735936095,
+        "relative_error": 3.4275090398084402,
+        "baseline_direction": "x",
+        "baseline_relative_error": 3.4275090398084402,
+        "mode_index": 1,
+        "background_velocity_lu": [
+          0.0,
+          0.0
+        ],
+        "fitting_window": {
+          "x": [
+            2,
+            8
+          ]
+        },
+        "residual_norm": 0.0008228667972281898,
+        "directions": [
+          "x"
+        ],
+        "direction_difference": null,
+        "direction_results": {
+          "x": {
+            "direction": "x",
+            "status": "FAILED",
+            "nu_target_lu": 0.0029437499999999998,
+            "nu_measured_lu": -0.007145979735936095,
+            "relative_error": 3.4275090398084402,
+            "mode_index": 1,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "k2_lu": 0.15421256876702122,
+            "fitting_window": [
+              2,
+              8
+            ],
+            "residual_norm": 0.0008228667972281898,
+            "fit_sample_count": 7,
+            "sample_count": 9,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.048378616070537867,
+            "max_theta_lu": 0.04837861607236721,
+            "max_rho_drift": 9.800382727576107e-12,
+            "clipping_used": false
+          }
+        },
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "negative_theta_detected": false,
+        "clipping_used": false,
+        "acceptance": {
+          "relative_error_max": 0.05,
+          "direction_difference_max": 0.05,
+          "requires_no_nan": true,
+          "requires_no_clipping": true,
+          "requires_positive_theta": true
+        }
+      },
+      "thermal": {
+        "p2_05_status": "FAILED",
+        "alpha_target_lu": 0.0041688329803125,
+        "alpha_measured_lu": 0.0059676816661451805,
+        "relative_error": 0.4314993415010444,
+        "baseline_direction": "x",
+        "baseline_relative_error": 0.4314993415010444,
+        "mode_index": 1,
+        "background_velocity_lu": [
+          0.0,
+          0.0
+        ],
+        "fitting_window": {
+          "x": [
+            2,
+            8
+          ]
+        },
+        "residual_norm": 0.0012652698202588863,
+        "directions": [
+          "x"
+        ],
+        "direction_difference": null,
+        "direction_results": {
+          "x": {
+            "direction": "x",
+            "status": "FAILED",
+            "alpha_target_lu": 0.0041688329803125,
+            "alpha_measured_lu": 0.0059676816661451805,
+            "relative_error": 0.4314993415010444,
+            "mode_index": 1,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "k_mag_lu": 0.39269908169872414,
+            "fitting_window": [
+              2,
+              8
+            ],
+            "residual_norm": 0.0012652698202588863,
+            "fit_sample_count": 7,
+            "sample_count": 9,
+            "heat_flux_ratio_real": 3.7666332365631625,
+            "heat_flux_ratio_imag": 2.2071927772994577e-10,
+            "heat_flux_relative_error": 2.7666332365631625,
+            "heat_flux_sign_passed": true,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.048378132285268285,
+            "max_theta_lu": 0.04837909985758969,
+            "max_pressure_drift": 3.9285932645904964e-08,
+            "clipping_used": false
+          }
+        },
+        "heat_flux_relative_error": 2.7666332365631625,
+        "heat_flux_sign_passed": true,
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "negative_theta_detected": false,
+        "clipping_used": false,
+        "acceptance": {
+          "relative_error_max": 0.05,
+          "heat_flux_relative_error_max": 0.05,
+          "requires_no_nan": true,
+          "requires_no_clipping": true,
+          "requires_positive_theta": true,
+          "requires_fourier_sign": true
+        }
+      },
+      "acoustic": {
+        "p2_06_status": "FAILED",
+        "sound_speed_target_lu": 0.26025000000000004,
+        "sound_speed_measured_lu": 0.3096617977860922,
+        "sound_speed_relative_error": 0.18986281570064234,
+        "gamma_target": 1.4,
+        "gamma_measured": 1.9820829282618848,
+        "gamma_relative_error": 0.4157735201870607,
+        "acoustic_attenuation_measured_lu": -0.016386106459710295,
+        "acoustic_attenuation_reference_lu": 0.0003555589131848928,
+        "acoustic_attenuation_relative_error": 47.085489217336594,
+        "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+        "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+        "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+        "baseline_direction": "x",
+        "baseline_sound_speed_relative_error": 0.18986281570064234,
+        "baseline_gamma_relative_error": 0.4157735201870607,
+        "mode_index": 1,
+        "background_velocity_lu": [
+          0.0,
+          0.0
+        ],
+        "fitting_window": {
+          "x": [
+            2,
+            8
+          ]
+        },
+        "phase_residual_norm": 0.009271548538668625,
+        "decay_residual_norm": 0.0021760005986090417,
+        "directions": [
+          "x"
+        ],
+        "direction_difference": null,
+        "direction_results": {
+          "x": {
+            "direction": "x",
+            "status": "FAILED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.3096617977860922,
+            "sound_speed_relative_error": 0.18986281570064234,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.9820829282618848,
+            "gamma_relative_error": 0.4157735201870607,
+            "acoustic_attenuation_measured_lu": -0.016386106459710295,
+            "acoustic_attenuation_reference_lu": 0.0003555589131848928,
+            "acoustic_attenuation_relative_error": 47.085489217336594,
+            "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+            "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+            "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+            "mode_index": 1,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "background_advection_lu": 0.0,
+            "lab_phase_speed_lu": 0.3096617977860922,
+            "intrinsic_phase_speed_lu": 0.3096617977860922,
+            "k_mag_lu": 0.39269908169872414,
+            "fitting_window": [
+              2,
+              8
+            ],
+            "phase_residual_norm": 0.009271548538668625,
+            "decay_residual_norm": 0.0021760005986090417,
+            "fit_sample_count": 7,
+            "sample_count": 9,
+            "pressure_amplitude_initial": 6.77300624250034e-08,
+            "pressure_amplitude_final": 7.932936009986098e-08,
+            "density_amplitude_initial": 9.999999999778359e-07,
+            "theta_amplitude_initial": 1.9351446354439113e-08,
+            "velocity_amplitude_initial": 2.6025000002356866e-07,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.04837857739785303,
+            "max_theta_lu": 0.048378654745029864,
+            "max_mach": 1.0000002664225727e-06,
+            "max_mean_pressure_drift": 9.305056725139593e-15,
+            "clipping_used": false
+          }
+        },
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "negative_theta_detected": false,
+        "clipping_used": false,
+        "acceptance": {
+          "sound_speed_relative_error_max": 0.02,
+          "gamma_relative_error_max": 0.02,
+          "direction_difference_max": 0.02,
+          "attenuation_is_diagnostic_only": true,
+          "requires_no_nan": true,
+          "requires_no_clipping": true,
+          "requires_positive_theta": true
+        }
+      }
+    },
+    "scenarios": [
+      {
+        "name": "mach_0p02_x",
+        "mach": 0.02,
+        "background_direction": "x",
+        "background_velocity_lu": [
+          0.005205,
+          0.0
+        ],
+        "status": "FAILED",
+        "p2_04_status": "FAILED",
+        "nu_relative_error": 3.4273775961562287,
+        "nu_drift_from_mach0": 5.4147543863236614e-05,
+        "p2_05_status": "FAILED",
+        "alpha_relative_error": 0.40357726987058506,
+        "alpha_drift_from_mach0": 0.019505472912883515,
+        "heat_flux_relative_error": 2.7698544670974217,
+        "heat_flux_sign_passed": true,
+        "p2_06_status": "FAILED",
+        "sound_speed_relative_error": 0.19342415620873155,
+        "sound_speed_drift_from_mach0": 0.0029930681597039044,
+        "gamma_relative_error": 0.4242612166225228,
+        "direction_difference": null,
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "clipping_used": false,
+        "shear": {
+          "p2_04_status": "FAILED",
+          "nu_target_lu": 0.0029437499999999998,
+          "nu_measured_lu": -0.007145592798684898,
+          "relative_error": 3.4273775961562287,
+          "baseline_direction": "x",
+          "baseline_relative_error": 3.4273775961562287,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.005205,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              2,
+              8
+            ]
+          },
+          "residual_norm": 0.0008228057060635005,
+          "directions": [
+            "x"
+          ],
+          "direction_difference": null,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "FAILED",
+              "nu_target_lu": 0.0029437499999999998,
+              "nu_measured_lu": -0.007145592798684898,
+              "relative_error": 3.4273775961562287,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.005205,
+                0.0
+              ],
+              "k2_lu": 0.15421256876702122,
+              "fitting_window": [
+                2,
+                8
+              ],
+              "residual_norm": 0.0008228057060635005,
+              "fit_sample_count": 7,
+              "sample_count": 9,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837861607053809,
+              "max_theta_lu": 0.04837861607236736,
+              "max_rho_drift": 9.794831612452981e-12,
+              "clipping_used": false
+            }
+          },
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "relative_error_max": 0.05,
+            "direction_difference_max": 0.05,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true
+          }
+        },
+        "thermal": {
+          "p2_05_status": "FAILED",
+          "alpha_target_lu": 0.0041688329803125,
+          "alpha_measured_lu": 0.005851279213053474,
+          "relative_error": 0.40357726987058506,
+          "baseline_direction": "x",
+          "baseline_relative_error": 0.40357726987058506,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.005205,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              2,
+              8
+            ]
+          },
+          "residual_norm": 0.0012662035338612543,
+          "directions": [
+            "x"
+          ],
+          "direction_difference": null,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "FAILED",
+              "alpha_target_lu": 0.0041688329803125,
+              "alpha_measured_lu": 0.005851279213053474,
+              "relative_error": 0.40357726987058506,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.005205,
+                0.0
+              ],
+              "k_mag_lu": 0.39269908169872414,
+              "fitting_window": [
+                2,
+                8
+              ],
+              "residual_norm": 0.0012662035338612543,
+              "fit_sample_count": 7,
+              "sample_count": 9,
+              "heat_flux_ratio_real": 3.7649527123248396,
+              "heat_flux_ratio_imag": -0.16471268168254485,
+              "heat_flux_relative_error": 2.7698544670974217,
+              "heat_flux_sign_passed": true,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837813228526833,
+              "max_theta_lu": 0.04837909985758966,
+              "max_pressure_drift": 3.9286129370486034e-08,
+              "clipping_used": false
+            }
+          },
+          "heat_flux_relative_error": 2.7698544670974217,
+          "heat_flux_sign_passed": true,
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "relative_error_max": 0.05,
+            "heat_flux_relative_error_max": 0.05,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true,
+            "requires_fourier_sign": true
+          }
+        },
+        "acoustic": {
+          "p2_06_status": "FAILED",
+          "sound_speed_target_lu": 0.26025000000000004,
+          "sound_speed_measured_lu": 0.3105886366533224,
+          "sound_speed_relative_error": 0.19342415620873155,
+          "gamma_target": 1.4,
+          "gamma_measured": 1.9939657032715319,
+          "gamma_relative_error": 0.4242612166225228,
+          "acoustic_attenuation_measured_lu": -0.0167888586798736,
+          "acoustic_attenuation_reference_lu": 0.0003555589131848928,
+          "acoustic_attenuation_relative_error": 48.21821913980058,
+          "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+          "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+          "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+          "baseline_direction": "x",
+          "baseline_sound_speed_relative_error": 0.19342415620873155,
+          "baseline_gamma_relative_error": 0.4242612166225228,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.005205,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              2,
+              8
+            ]
+          },
+          "phase_residual_norm": 0.009490808986819659,
+          "decay_residual_norm": 0.002198662948987397,
+          "directions": [
+            "x"
+          ],
+          "direction_difference": null,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "FAILED",
+              "sound_speed_target_lu": 0.26025000000000004,
+              "sound_speed_measured_lu": 0.3105886366533224,
+              "sound_speed_relative_error": 0.19342415620873155,
+              "gamma_target": 1.4,
+              "gamma_measured": 1.9939657032715319,
+              "gamma_relative_error": 0.4242612166225228,
+              "acoustic_attenuation_measured_lu": -0.0167888586798736,
+              "acoustic_attenuation_reference_lu": 0.0003555589131848928,
+              "acoustic_attenuation_relative_error": 48.21821913980058,
+              "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+              "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+              "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.005205,
+                0.0
+              ],
+              "background_advection_lu": 0.005205,
+              "lab_phase_speed_lu": 0.31579363665332244,
+              "intrinsic_phase_speed_lu": 0.3105886366533224,
+              "k_mag_lu": 0.39269908169872414,
+              "fitting_window": [
+                2,
+                8
+              ],
+              "phase_residual_norm": 0.009490808986819659,
+              "decay_residual_norm": 0.002198662948987397,
+              "fit_sample_count": 7,
+              "sample_count": 9,
+              "pressure_amplitude_initial": 6.773006240451318e-08,
+              "pressure_amplitude_final": 7.957068708463898e-08,
+              "density_amplitude_initial": 9.999999998916977e-07,
+              "theta_amplitude_initial": 1.9351446337801328e-08,
+              "velocity_amplitude_initial": 2.6025000000464155e-07,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837857690941175,
+              "max_theta_lu": 0.048378655233465774,
+              "max_mach": 0.020000995999735826,
+              "max_mean_pressure_drift": 9.332812300755222e-15,
+              "clipping_used": false
+            }
+          },
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "sound_speed_relative_error_max": 0.02,
+            "gamma_relative_error_max": 0.02,
+            "direction_difference_max": 0.02,
+            "attenuation_is_diagnostic_only": true,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true
+          }
+        }
+      }
+    ],
+    "max_nu_drift_from_mach0": 5.4147543863236614e-05,
+    "max_alpha_drift_from_mach0": 0.019505472912883515,
+    "max_sound_speed_relative_error": 0.19342415620873155,
+    "max_sound_speed_drift_from_mach0": 0.0029930681597039044,
+    "max_direction_difference": null,
+    "dispersion_masking_check": {
+      "status": "FAILED",
+      "transport_masking_status": "FAILED",
+      "low_mode_checks": [
+        {
+          "background_direction": "x",
+          "mach": 0.02,
+          "background_velocity_lu": [
+            0.005205,
+            0.0
+          ],
+          "status": "FAILED",
+          "sound_speed_delta_enabled_vs_disabled": 0.024510858738898467,
+          "enabled_sound_speed_relative_error": 0.19342415620873155,
+          "disabled_sound_speed_relative_error": 0.1648721397426216,
+          "enabled_gamma_relative_error": 0.4242612166225228,
+          "disabled_gamma_relative_error": 0.3569271019485538,
+          "enabled_status": "FAILED",
+          "disabled_status": "FAILED",
+          "enabled": {
+            "p2_06_status": "FAILED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.3105886366533224,
+            "sound_speed_relative_error": 0.19342415620873155,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.9939657032715319,
+            "gamma_relative_error": 0.4242612166225228,
+            "acoustic_attenuation_measured_lu": -0.0167888586798736,
+            "acoustic_attenuation_reference_lu": 0.0003555589131848928,
+            "acoustic_attenuation_relative_error": 48.21821913980058,
+            "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+            "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+            "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+            "baseline_direction": "x",
+            "baseline_sound_speed_relative_error": 0.19342415620873155,
+            "baseline_gamma_relative_error": 0.4242612166225228,
+            "mode_index": 1,
+            "background_velocity_lu": [
+              0.005205,
+              0.0
+            ],
+            "fitting_window": {
+              "x": [
+                2,
+                8
+              ]
+            },
+            "phase_residual_norm": 0.009490808986819659,
+            "decay_residual_norm": 0.002198662948987397,
+            "directions": [
+              "x"
+            ],
+            "direction_difference": null,
+            "direction_results": {
+              "x": {
+                "direction": "x",
+                "status": "FAILED",
+                "sound_speed_target_lu": 0.26025000000000004,
+                "sound_speed_measured_lu": 0.3105886366533224,
+                "sound_speed_relative_error": 0.19342415620873155,
+                "gamma_target": 1.4,
+                "gamma_measured": 1.9939657032715319,
+                "gamma_relative_error": 0.4242612166225228,
+                "acoustic_attenuation_measured_lu": -0.0167888586798736,
+                "acoustic_attenuation_reference_lu": 0.0003555589131848928,
+                "acoustic_attenuation_relative_error": 48.21821913980058,
+                "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+                "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+                "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+                "mode_index": 1,
+                "background_velocity_lu": [
+                  0.005205,
+                  0.0
+                ],
+                "background_advection_lu": 0.005205,
+                "lab_phase_speed_lu": 0.31579363665332244,
+                "intrinsic_phase_speed_lu": 0.3105886366533224,
+                "k_mag_lu": 0.39269908169872414,
+                "fitting_window": [
+                  2,
+                  8
+                ],
+                "phase_residual_norm": 0.009490808986819659,
+                "decay_residual_norm": 0.002198662948987397,
+                "fit_sample_count": 7,
+                "sample_count": 9,
+                "pressure_amplitude_initial": 6.773006240451318e-08,
+                "pressure_amplitude_final": 7.957068708463898e-08,
+                "density_amplitude_initial": 9.999999998916977e-07,
+                "theta_amplitude_initial": 1.9351446337801328e-08,
+                "velocity_amplitude_initial": 2.6025000000464155e-07,
+                "first_invalid_step": null,
+                "nan_detected": false,
+                "negative_theta_detected": false,
+                "min_theta_lu": 0.04837857690941175,
+                "max_theta_lu": 0.048378655233465774,
+                "max_mach": 0.020000995999735826,
+                "max_mean_pressure_drift": 9.332812300755222e-15,
+                "clipping_used": false
+              }
+            },
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "clipping_used": false,
+            "acceptance": {
+              "sound_speed_relative_error_max": 0.02,
+              "gamma_relative_error_max": 0.02,
+              "direction_difference_max": 0.02,
+              "attenuation_is_diagnostic_only": true,
+              "requires_no_nan": true,
+              "requires_no_clipping": true,
+              "requires_positive_theta": true
+            }
+          },
+          "disabled": {
+            "p2_06_status": "FAILED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.30315797436801734,
+            "sound_speed_relative_error": 0.1648721397426216,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.8996979427279752,
+            "gamma_relative_error": 0.3569271019485538,
+            "acoustic_attenuation_measured_lu": -0.007965144821096903,
+            "acoustic_attenuation_reference_lu": 0.0003555589131848928,
+            "acoustic_attenuation_relative_error": 23.40175826208294,
+            "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+            "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+            "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+            "baseline_direction": "x",
+            "baseline_sound_speed_relative_error": 0.1648721397426216,
+            "baseline_gamma_relative_error": 0.3569271019485538,
+            "mode_index": 1,
+            "background_velocity_lu": [
+              0.005205,
+              0.0
+            ],
+            "fitting_window": {
+              "x": [
+                2,
+                8
+              ]
+            },
+            "phase_residual_norm": 0.006262375236289285,
+            "decay_residual_norm": 0.0011641032699128545,
+            "directions": [
+              "x"
+            ],
+            "direction_difference": null,
+            "direction_results": {
+              "x": {
+                "direction": "x",
+                "status": "FAILED",
+                "sound_speed_target_lu": 0.26025000000000004,
+                "sound_speed_measured_lu": 0.30315797436801734,
+                "sound_speed_relative_error": 0.1648721397426216,
+                "gamma_target": 1.4,
+                "gamma_measured": 1.8996979427279752,
+                "gamma_relative_error": 0.3569271019485538,
+                "acoustic_attenuation_measured_lu": -0.007965144821096903,
+                "acoustic_attenuation_reference_lu": 0.0003555589131848928,
+                "acoustic_attenuation_relative_error": 23.40175826208294,
+                "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+                "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+                "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+                "mode_index": 1,
+                "background_velocity_lu": [
+                  0.005205,
+                  0.0
+                ],
+                "background_advection_lu": 0.005205,
+                "lab_phase_speed_lu": 0.30836297436801735,
+                "intrinsic_phase_speed_lu": 0.30315797436801734,
+                "k_mag_lu": 0.39269908169872414,
+                "fitting_window": [
+                  2,
+                  8
+                ],
+                "phase_residual_norm": 0.006262375236289285,
+                "decay_residual_norm": 0.0011641032699128545,
+                "fit_sample_count": 7,
+                "sample_count": 9,
+                "pressure_amplitude_initial": 6.773006240451318e-08,
+                "pressure_amplitude_final": 7.442457484994627e-08,
+                "density_amplitude_initial": 9.999999998916977e-07,
+                "theta_amplitude_initial": 1.9351446337801328e-08,
+                "velocity_amplitude_initial": 2.6025000000464155e-07,
+                "first_invalid_step": null,
+                "nan_detected": false,
+                "negative_theta_detected": false,
+                "min_theta_lu": 0.048378583668540955,
+                "max_theta_lu": 0.04837864847435465,
+                "max_mach": 0.020000995999735826,
+                "max_mean_pressure_drift": 8.944234242136417e-15,
+                "clipping_used": false
+              }
+            },
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "clipping_used": false,
+            "acceptance": {
+              "sound_speed_relative_error_max": 0.02,
+              "gamma_relative_error_max": 0.02,
+              "direction_difference_max": 0.02,
+              "attenuation_is_diagnostic_only": true,
+              "requires_no_nan": true,
+              "requires_no_clipping": true,
+              "requires_positive_theta": true
+            }
+          }
+        }
+      ],
+      "high_mode_acoustic_diagnostic": {
+        "status": "FAILED",
+        "interpretation": "ACOUSTIC_EIGENBRANCH_CLOSURE_REQUIRED_OR_OUT_OF_SCOPE",
+        "legacy_masking_interpretation": "NO_MASKING_DETECTED",
+        "hard_gate_role": "diagnostic_only_not_transport_masking",
+        "background_direction": "x",
+        "mach": 0.02,
+        "background_velocity_lu": [
+          0.005205,
+          0.0
+        ],
+        "enabled_status": "FAILED",
+        "disabled_status": "FAILED",
+        "enabled_sound_speed_relative_error": 1.099853999753198,
+        "disabled_sound_speed_relative_error": 0.8629905702868739,
+        "enabled_gamma_relative_error": 3.4093868202795026,
+        "disabled_gamma_relative_error": 2.470733864977811,
+        "enabled": {
+          "p2_06_status": "FAILED",
+          "sound_speed_target_lu": 0.26025000000000004,
+          "sound_speed_measured_lu": 0.5464870034357698,
+          "sound_speed_relative_error": 1.099853999753198,
+          "gamma_target": 1.4,
+          "gamma_measured": 6.173141548391303,
+          "gamma_relative_error": 3.4093868202795026,
+          "acoustic_attenuation_measured_lu": 0.1640946684814369,
+          "acoustic_attenuation_reference_lu": 0.0014222356527395712,
+          "acoustic_attenuation_relative_error": 114.37797422343527,
+          "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+          "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+          "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+          "baseline_direction": "x",
+          "baseline_sound_speed_relative_error": 1.099853999753198,
+          "baseline_gamma_relative_error": 3.4093868202795026,
+          "mode_index": 2,
+          "background_velocity_lu": [
+            0.005205,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              2,
+              8
+            ]
+          },
+          "phase_residual_norm": 0.2589871030430303,
+          "decay_residual_norm": 0.13738158853543103,
+          "directions": [
+            "x"
+          ],
+          "direction_difference": null,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "FAILED",
+              "sound_speed_target_lu": 0.26025000000000004,
+              "sound_speed_measured_lu": 0.5464870034357698,
+              "sound_speed_relative_error": 1.099853999753198,
+              "gamma_target": 1.4,
+              "gamma_measured": 6.173141548391303,
+              "gamma_relative_error": 3.4093868202795026,
+              "acoustic_attenuation_measured_lu": 0.1640946684814369,
+              "acoustic_attenuation_reference_lu": 0.0014222356527395712,
+              "acoustic_attenuation_relative_error": 114.37797422343527,
+              "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+              "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+              "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+              "mode_index": 2,
+              "background_velocity_lu": [
+                0.005205,
+                0.0
+              ],
+              "background_advection_lu": 0.005205,
+              "lab_phase_speed_lu": 0.5516920034357699,
+              "intrinsic_phase_speed_lu": 0.5464870034357698,
+              "k_mag_lu": 0.7853981633974483,
+              "fitting_window": [
+                2,
+                8
+              ],
+              "phase_residual_norm": 0.2589871030430303,
+              "decay_residual_norm": 0.13738158853543103,
+              "fit_sample_count": 7,
+              "sample_count": 9,
+              "pressure_amplitude_initial": 6.773006246031185e-08,
+              "pressure_amplitude_final": 6.765357532489063e-08,
+              "density_amplitude_initial": 9.999999998898357e-07,
+              "theta_amplitude_initial": 1.9351446393835704e-08,
+              "velocity_amplitude_initial": 2.602500000084204e-07,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.048378509046008246,
+              "max_theta_lu": 0.04837872309677573,
+              "max_mach": 0.020000995999735826,
+              "max_mean_pressure_drift": 1.1560197243909442e-14,
+              "clipping_used": false
+            }
+          },
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "sound_speed_relative_error_max": 0.02,
+            "gamma_relative_error_max": 0.02,
+            "direction_difference_max": 0.02,
+            "attenuation_is_diagnostic_only": true,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true
+          }
+        },
+        "disabled": {
+          "p2_06_status": "FAILED",
+          "sound_speed_target_lu": 0.26025000000000004,
+          "sound_speed_measured_lu": 0.48484329591715897,
+          "sound_speed_relative_error": 0.8629905702868739,
+          "gamma_target": 1.4,
+          "gamma_measured": 4.859027410968935,
+          "gamma_relative_error": 2.470733864977811,
+          "acoustic_attenuation_measured_lu": 0.1656456226699165,
+          "acoustic_attenuation_reference_lu": 0.0014222356527395712,
+          "acoustic_attenuation_relative_error": 115.46847858921468,
+          "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+          "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+          "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+          "baseline_direction": "x",
+          "baseline_sound_speed_relative_error": 0.8629905702868739,
+          "baseline_gamma_relative_error": 2.470733864977811,
+          "mode_index": 2,
+          "background_velocity_lu": [
+            0.005205,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              2,
+              8
+            ]
+          },
+          "phase_residual_norm": 0.22929024554595695,
+          "decay_residual_norm": 0.10807026315942192,
+          "directions": [
+            "x"
+          ],
+          "direction_difference": null,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "FAILED",
+              "sound_speed_target_lu": 0.26025000000000004,
+              "sound_speed_measured_lu": 0.48484329591715897,
+              "sound_speed_relative_error": 0.8629905702868739,
+              "gamma_target": 1.4,
+              "gamma_measured": 4.859027410968935,
+              "gamma_relative_error": 2.470733864977811,
+              "acoustic_attenuation_measured_lu": 0.1656456226699165,
+              "acoustic_attenuation_reference_lu": 0.0014222356527395712,
+              "acoustic_attenuation_relative_error": 115.46847858921468,
+              "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+              "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+              "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+              "mode_index": 2,
+              "background_velocity_lu": [
+                0.005205,
+                0.0
+              ],
+              "background_advection_lu": 0.005205,
+              "lab_phase_speed_lu": 0.490048295917159,
+              "intrinsic_phase_speed_lu": 0.48484329591715897,
+              "k_mag_lu": 0.7853981633974483,
+              "fitting_window": [
+                2,
+                8
+              ],
+              "phase_residual_norm": 0.22929024554595695,
+              "decay_residual_norm": 0.10807026315942192,
+              "fit_sample_count": 7,
+              "sample_count": 9,
+              "pressure_amplitude_initial": 6.773006246031185e-08,
+              "pressure_amplitude_final": 5.940939063819275e-08,
+              "density_amplitude_initial": 9.999999998898357e-07,
+              "theta_amplitude_initial": 1.9351446393835704e-08,
+              "velocity_amplitude_initial": 2.602500000084204e-07,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837851102979798,
+              "max_theta_lu": 0.04837872111298842,
+              "max_mach": 0.020000995999735826,
+              "max_mean_pressure_drift": 1.1657341758564144e-14,
+              "clipping_used": false
+            }
+          },
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "sound_speed_relative_error_max": 0.02,
+            "gamma_relative_error_max": 0.02,
+            "direction_difference_max": 0.02,
+            "attenuation_is_diagnostic_only": true,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true
+          }
+        }
+      },
+      "high_mode_acoustic_eigenbranch_diagnostic": {
+        "status": "FAILED",
+        "interpretation": "ACOUSTIC_EIGENBRANCH_CLOSURE_REQUIRED_OR_OUT_OF_SCOPE",
+        "legacy_masking_interpretation": "NO_MASKING_DETECTED",
+        "hard_gate_role": "diagnostic_only_not_transport_masking",
+        "background_direction": "x",
+        "mach": 0.02,
+        "background_velocity_lu": [
+          0.005205,
+          0.0
+        ],
+        "enabled_status": "FAILED",
+        "disabled_status": "FAILED",
+        "enabled_sound_speed_relative_error": 1.099853999753198,
+        "disabled_sound_speed_relative_error": 0.8629905702868739,
+        "enabled_gamma_relative_error": 3.4093868202795026,
+        "disabled_gamma_relative_error": 2.470733864977811,
+        "enabled": {
+          "p2_06_status": "FAILED",
+          "sound_speed_target_lu": 0.26025000000000004,
+          "sound_speed_measured_lu": 0.5464870034357698,
+          "sound_speed_relative_error": 1.099853999753198,
+          "gamma_target": 1.4,
+          "gamma_measured": 6.173141548391303,
+          "gamma_relative_error": 3.4093868202795026,
+          "acoustic_attenuation_measured_lu": 0.1640946684814369,
+          "acoustic_attenuation_reference_lu": 0.0014222356527395712,
+          "acoustic_attenuation_relative_error": 114.37797422343527,
+          "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+          "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+          "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+          "baseline_direction": "x",
+          "baseline_sound_speed_relative_error": 1.099853999753198,
+          "baseline_gamma_relative_error": 3.4093868202795026,
+          "mode_index": 2,
+          "background_velocity_lu": [
+            0.005205,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              2,
+              8
+            ]
+          },
+          "phase_residual_norm": 0.2589871030430303,
+          "decay_residual_norm": 0.13738158853543103,
+          "directions": [
+            "x"
+          ],
+          "direction_difference": null,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "FAILED",
+              "sound_speed_target_lu": 0.26025000000000004,
+              "sound_speed_measured_lu": 0.5464870034357698,
+              "sound_speed_relative_error": 1.099853999753198,
+              "gamma_target": 1.4,
+              "gamma_measured": 6.173141548391303,
+              "gamma_relative_error": 3.4093868202795026,
+              "acoustic_attenuation_measured_lu": 0.1640946684814369,
+              "acoustic_attenuation_reference_lu": 0.0014222356527395712,
+              "acoustic_attenuation_relative_error": 114.37797422343527,
+              "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+              "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+              "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+              "mode_index": 2,
+              "background_velocity_lu": [
+                0.005205,
+                0.0
+              ],
+              "background_advection_lu": 0.005205,
+              "lab_phase_speed_lu": 0.5516920034357699,
+              "intrinsic_phase_speed_lu": 0.5464870034357698,
+              "k_mag_lu": 0.7853981633974483,
+              "fitting_window": [
+                2,
+                8
+              ],
+              "phase_residual_norm": 0.2589871030430303,
+              "decay_residual_norm": 0.13738158853543103,
+              "fit_sample_count": 7,
+              "sample_count": 9,
+              "pressure_amplitude_initial": 6.773006246031185e-08,
+              "pressure_amplitude_final": 6.765357532489063e-08,
+              "density_amplitude_initial": 9.999999998898357e-07,
+              "theta_amplitude_initial": 1.9351446393835704e-08,
+              "velocity_amplitude_initial": 2.602500000084204e-07,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.048378509046008246,
+              "max_theta_lu": 0.04837872309677573,
+              "max_mach": 0.020000995999735826,
+              "max_mean_pressure_drift": 1.1560197243909442e-14,
+              "clipping_used": false
+            }
+          },
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "sound_speed_relative_error_max": 0.02,
+            "gamma_relative_error_max": 0.02,
+            "direction_difference_max": 0.02,
+            "attenuation_is_diagnostic_only": true,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true
+          }
+        },
+        "disabled": {
+          "p2_06_status": "FAILED",
+          "sound_speed_target_lu": 0.26025000000000004,
+          "sound_speed_measured_lu": 0.48484329591715897,
+          "sound_speed_relative_error": 0.8629905702868739,
+          "gamma_target": 1.4,
+          "gamma_measured": 4.859027410968935,
+          "gamma_relative_error": 2.470733864977811,
+          "acoustic_attenuation_measured_lu": 0.1656456226699165,
+          "acoustic_attenuation_reference_lu": 0.0014222356527395712,
+          "acoustic_attenuation_relative_error": 115.46847858921468,
+          "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+          "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+          "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+          "baseline_direction": "x",
+          "baseline_sound_speed_relative_error": 0.8629905702868739,
+          "baseline_gamma_relative_error": 2.470733864977811,
+          "mode_index": 2,
+          "background_velocity_lu": [
+            0.005205,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              2,
+              8
+            ]
+          },
+          "phase_residual_norm": 0.22929024554595695,
+          "decay_residual_norm": 0.10807026315942192,
+          "directions": [
+            "x"
+          ],
+          "direction_difference": null,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "FAILED",
+              "sound_speed_target_lu": 0.26025000000000004,
+              "sound_speed_measured_lu": 0.48484329591715897,
+              "sound_speed_relative_error": 0.8629905702868739,
+              "gamma_target": 1.4,
+              "gamma_measured": 4.859027410968935,
+              "gamma_relative_error": 2.470733864977811,
+              "acoustic_attenuation_measured_lu": 0.1656456226699165,
+              "acoustic_attenuation_reference_lu": 0.0014222356527395712,
+              "acoustic_attenuation_relative_error": 115.46847858921468,
+              "acoustic_attenuation_target_policy": "MATCHED_LINEARIZED_NSF_D2_BULK_ZERO_CP_ALPHA",
+              "acoustic_attenuation_target_coeff_lu": 0.0023056415960625,
+              "attenuation_status": "DIAGNOSTIC_ONLY_MATCHED_NSF_TARGET_DERIVED_GO_RISK",
+              "mode_index": 2,
+              "background_velocity_lu": [
+                0.005205,
+                0.0
+              ],
+              "background_advection_lu": 0.005205,
+              "lab_phase_speed_lu": 0.490048295917159,
+              "intrinsic_phase_speed_lu": 0.48484329591715897,
+              "k_mag_lu": 0.7853981633974483,
+              "fitting_window": [
+                2,
+                8
+              ],
+              "phase_residual_norm": 0.22929024554595695,
+              "decay_residual_norm": 0.10807026315942192,
+              "fit_sample_count": 7,
+              "sample_count": 9,
+              "pressure_amplitude_initial": 6.773006246031185e-08,
+              "pressure_amplitude_final": 5.940939063819275e-08,
+              "density_amplitude_initial": 9.999999998898357e-07,
+              "theta_amplitude_initial": 1.9351446393835704e-08,
+              "velocity_amplitude_initial": 2.602500000084204e-07,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837851102979798,
+              "max_theta_lu": 0.04837872111298842,
+              "max_mach": 0.020000995999735826,
+              "max_mean_pressure_drift": 1.1657341758564144e-14,
+              "clipping_used": false
+            }
+          },
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "sound_speed_relative_error_max": 0.02,
+            "gamma_relative_error_max": 0.02,
+            "direction_difference_max": 0.02,
+            "attenuation_is_diagnostic_only": true,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true
+          }
+        }
+      },
+      "acceptance": {
+        "low_mode_enabled_disabled_sound_speed_delta_max": 0.005,
+        "transport_masking_uses_low_mode_enabled_disabled_delta_only": true,
+        "high_mode_acoustic_is_eigenbranch_diagnostic_only": true
+      }
+    },
+    "dispersion_masking_status": "FAILED",
+    "transport_dispersion_masking_status": "FAILED",
+    "acoustic_eigenbranch_diagnostic_status": "FAILED",
+    "first_invalid_step": null,
+    "nan_detected": false,
+    "clipping_used": false,
+    "acceptance": {
+      "nu_drift_from_mach0_max": 0.02,
+      "alpha_drift_from_mach0_max": 0.02,
+      "sound_speed_relative_error_max": 0.02,
+      "sound_speed_drift_from_mach0_max": 0.02,
+      "direction_difference_max": 0.02,
+      "requires_no_nan": true,
+      "requires_no_clipping": true,
+      "requires_positive_theta": true
+    }
+  },
+  "summary_json_sha256_policy": "sha256 of canonical summary payload before adding this digest field",
+  "summary_json_sha256": "cb26cc9f4ff9decc149b7717e7af3e8c2f3a5aff56845a38d16ad615d06c3981"
+}

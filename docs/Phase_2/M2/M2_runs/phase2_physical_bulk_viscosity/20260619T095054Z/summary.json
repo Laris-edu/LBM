@@ -1,0 +1,189 @@
+{
+  "run_id": "20260619T095054Z",
+  "status": "DIAGNOSTIC_COMPLETE",
+  "config_path": "configs\\gas_air_10k_d2q37_physical_timestep.yaml",
+  "config_sha256": "f6b53b2bf343bcc627a82b0ba6c101343897e6a32e5111d70e2516dc09f3f18e",
+  "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "nu_lu": 0.0029437499999999998,
+  "alpha_lu": 0.0041688329803125,
+  "theta_transport_lu": 0.04837861607142859,
+  "physical_nu_b_over_nu": 0.6,
+  "attenuation_sweep": [
+    {
+      "variant": "current_zero",
+      "tau22": 0.5,
+      "trace_factor": 0.0,
+      "attenuation_measured_lu": 0.00013933853853065816,
+      "attenuation_reference_lu": 2.22224320740558e-05,
+      "attenuation_ratio": 6.270175022531977,
+      "sound_speed_relative_error": 0.004750299268599489,
+      "gamma_relative_error": 0.009523163880339913,
+      "first_invalid_step": null,
+      "negative_theta_detected": false,
+      "nan_detected": false,
+      "p2_06_status": "PASSED"
+    },
+    {
+      "variant": "tau22_nu_b=0.0nu",
+      "tau22": 0.5,
+      "trace_factor": -1.0,
+      "attenuation_measured_lu": 3.909642915753075e-05,
+      "attenuation_reference_lu": 2.22224320740558e-05,
+      "attenuation_ratio": 1.7593226982196501,
+      "sound_speed_relative_error": 0.004790890202800213,
+      "gamma_relative_error": 0.009604733034535462,
+      "first_invalid_step": null,
+      "negative_theta_detected": false,
+      "nan_detected": false,
+      "p2_06_status": "PASSED"
+    },
+    {
+      "variant": "tau22_nu_b=0.3nu",
+      "tau22": 0.5304240823637214,
+      "trace_factor": -0.8852839327047783,
+      "attenuation_measured_lu": 4.521532377586086e-05,
+      "attenuation_reference_lu": 2.6478337536317543e-05,
+      "attenuation_ratio": 1.7076345413998808,
+      "sound_speed_relative_error": 0.004786453417567005,
+      "gamma_relative_error": 0.009595816971452509,
+      "first_invalid_step": null,
+      "negative_theta_detected": false,
+      "nan_detected": false,
+      "p2_06_status": "PASSED"
+    },
+    {
+      "variant": "tau22_nu_b=0.6nu",
+      "tau22": 0.5608481647274428,
+      "trace_factor": -0.7830137689511265,
+      "attenuation_measured_lu": 5.1331942416420733e-05,
+      "attenuation_reference_lu": 3.0734242998579274e-05,
+      "attenuation_ratio": 1.6701873027682383,
+      "sound_speed_relative_error": 0.004782252271694265,
+      "gamma_relative_error": 0.009587374480178656,
+      "first_invalid_step": null,
+      "negative_theta_detected": false,
+      "nan_detected": false,
+      "p2_06_status": "PASSED"
+    },
+    {
+      "variant": "tau22_nu_b=1.0nu",
+      "tau22": 0.6014136078790714,
+      "trace_factor": -0.6627492076984629,
+      "attenuation_measured_lu": 5.9483651184023946e-05,
+      "attenuation_reference_lu": 3.640878361492826e-05,
+      "attenuation_ratio": 1.6337719988984905,
+      "sound_speed_relative_error": 0.004777040565548729,
+      "gamma_relative_error": 0.009576901247662306,
+      "first_invalid_step": null,
+      "negative_theta_detected": false,
+      "nan_detected": false,
+      "p2_06_status": "PASSED"
+    }
+  ],
+  "thermal_ghost_control": [
+    {
+      "variant": "current_zero",
+      "trace_factor": 0.0,
+      "p2_05_status": "PASSED",
+      "alpha_relative_error": 0.004967776602796015,
+      "heat_flux_relative_error": 0.00033683803070928646,
+      "any_invalid_step": false
+    },
+    {
+      "variant": "tau22_nu_b=0_marginal",
+      "trace_factor": -1.0,
+      "p2_05_status": "FAILED",
+      "alpha_relative_error": 11.805583536279512,
+      "heat_flux_relative_error": 0.21517710782135735,
+      "any_invalid_step": false
+    },
+    {
+      "variant": "tau22_nu_b=0.6nu",
+      "trace_factor": -0.7830137689511265,
+      "p2_05_status": "PASSED",
+      "alpha_relative_error": 0.010101726750139983,
+      "heat_flux_relative_error": 0.0012833164596619164,
+      "any_invalid_step": false
+    }
+  ],
+  "physical_nu_b_full_gate": {
+    "nu_b_over_nu": 0.6,
+    "p2_05_status": "PASSED",
+    "alpha_relative_error": 0.010101726750139983,
+    "heat_flux_relative_error": 0.0012833164596619164,
+    "p2_06_status": "PASSED",
+    "sound_speed_relative_error": 0.004782252374170293,
+    "gamma_relative_error": 0.009587374686110595,
+    "attenuation_ratio": 1.6701873027682383,
+    "direction_difference": 0.004406183048692144,
+    "p2_07_status": "PASSED",
+    "baseline_pr_relative_error": 0.006109630422979073,
+    "max_pr_relative_error": 0.04935443875694734
+  },
+  "normal_factor_scan": [
+    {
+      "regularized_shear_normal_factor": 0.7,
+      "p2_06_status": "PASSED",
+      "attenuation_ratio": 2.2848072244628503,
+      "sound_speed_relative_error": 0.004765451521180797,
+      "gamma_relative_error": 0.009553612570562198,
+      "p2_04_status": "FAILED",
+      "shear_relative_error_x": 0.0052913318547739285,
+      "shear_relative_error_y": 0.005291328806714124,
+      "shear_relative_error_diagonal": 1.0440461343757494
+    },
+    {
+      "regularized_shear_normal_factor": 0.9,
+      "p2_06_status": "PASSED",
+      "attenuation_ratio": 1.6701873027682383,
+      "sound_speed_relative_error": 0.004782252271694265,
+      "gamma_relative_error": 0.009587374480178656,
+      "p2_04_status": "PASSED",
+      "shear_relative_error_x": 0.005291330606208344,
+      "shear_relative_error_y": 0.005291327214326125,
+      "shear_relative_error_diagonal": 0.006732101640322341
+    },
+    {
+      "regularized_shear_normal_factor": 1.0,
+      "p2_06_status": "PASSED",
+      "attenuation_ratio": 1.403219854153091,
+      "sound_speed_relative_error": 0.0047899661861590115,
+      "gamma_relative_error": 0.0096028761483824,
+      "p2_04_status": "FAILED",
+      "shear_relative_error_x": 0.005291331039090297,
+      "shear_relative_error_y": 0.005291328797701111,
+      "shear_relative_error_diagonal": 0.46353235279832894
+    },
+    {
+      "regularized_shear_normal_factor": 1.1,
+      "p2_06_status": "PASSED",
+      "attenuation_ratio": 1.158639209227772,
+      "sound_speed_relative_error": 0.004797246518789766,
+      "gamma_relative_error": 0.009617506611741211,
+      "p2_04_status": "FAILED",
+      "shear_relative_error_x": 0.005291330981083364,
+      "shear_relative_error_y": 0.005291331934913823,
+      "shear_relative_error_diagonal": 0.8822214906405151
+    },
+    {
+      "regularized_shear_normal_factor": 1.3,
+      "p2_06_status": "PASSED",
+      "attenuation_ratio": 0.7260895886920821,
+      "sound_speed_relative_error": 0.004811053480390237,
+      "gamma_relative_error": 0.009645253196371328,
+      "p2_04_status": "FAILED",
+      "shear_relative_error_x": 0.005291330583545806,
+      "shear_relative_error_y": 0.005291333007347299,
+      "shear_relative_error_diagonal": 1.6228039885513965
+    }
+  ],
+  "effective_bulk_viscosity_slope": 1.4371011438533254,
+  "interpretation": {
+    "trace_over_attenuation_source": "current_zero (trace_post=0) imposes a large effective bulk viscosity; the matched-NSF target assumes nu_b=0, hence ~6.27x over-attenuation.",
+    "marginal_ghost": "tau22 nu_b=0 has trace factor -1 (|lambda|=1, marginal ghost) that contaminates the longer thermal fit; a physical nu_b (factor ~-0.78) is strictly stable and keeps P2-5/P2-6/P2-7 passing with the existing heat curve.",
+    "normal_stress_isotropy_wall": "The residual attenuation (~1.67x) is a longitudinal normal-stress viscosity excess. A scalar regularized_shear_normal_factor that drives the attenuation ratio to 1 (~1.25) breaks P2-4 diagonal transverse shear; only 0.9 keeps diagonal shear correct. One scalar normal_factor cannot satisfy both.",
+    "conclusion": "Acoustic attenuation ratio -> ~1 is NOT reachable by local scalar calibration of the current closure. It needs an isotropic / recursive-regularized stress (and heat-flux) closure. Diagnostic only; baseline unchanged."
+  },
+  "summary_digest": "6f2297ef8b5255631bd02985414ab7e25227e28200c1e2374d4bfd9263380a14"
+}

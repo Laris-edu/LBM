@@ -1,0 +1,4191 @@
+{
+  "phase": "Phase_2",
+  "run_id": "20260610T141926Z",
+  "config": "configs\\gas_air_10k_d2q37_physical_timestep.yaml",
+  "config_sha256": "b603317c4c4d5f6e0a1b52ad6b83f924ccda6cb479536055e607e7f6ace29563",
+  "timestamp": "20260610T141926Z",
+  "command": [
+    "E:\\Code\\LBM\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "verification/test_phase2_p2_00_unit_mapping.py",
+    "verification/test_phase2_p2_01_lattice_d2q21.py",
+    "verification/test_phase2_p2_02_equilibrium_macro.py",
+    "verification/test_phase2_p2_03_collision_uniform.py",
+    "verification/test_phase2_p2_04_streaming_shear.py",
+    "verification/test_phase2_p2_05_thermal_heat_flux.py",
+    "verification/test_phase2_p2_06_acoustic_gamma.py",
+    "verification/test_phase2_p2_07_prandtl_scan.py",
+    "verification/test_phase2_p2_08_rotational_isotropy.py",
+    "verification/test_phase2_p2_09_galilean_consistency.py",
+    "verification/test_phase2_postprocess_modal_fit.py",
+    "verification/test_phase2_hdf5_metadata.py",
+    "verification/test_phase2_d2q37_fallback.py"
+  ],
+  "returncode": 0,
+  "status": "PASSED",
+  "automation_status": "PASSED",
+  "contract_validation_status": "D2Q37_DIAGNOSTIC_READY",
+  "production_physics_status": "NOT_PASSED",
+  "m2_decision": "GO-RISK / D2Q37_DYNAMIC_DIAGNOSTIC",
+  "validation_level": "CONTRACT",
+  "python_version": "3.14.2",
+  "numpy_version": "2.4.4",
+  "h5py_version": "3.16.0",
+  "stdout": "..................................                                       [100%]\n34 passed in 37.07s\n",
+  "stderr": "",
+  "raw_hdf5": "results\\m2\\20260610T141926Z\\raw\\uniform_state.h5",
+  "p2_numbering": "P2-0 through P2-9 only; postprocess/HDF5 schema tests are support tests",
+  "bulk_viscosity_policy": "diagnostic_zero",
+  "velocity_set": "D2Q37",
+  "Q": 37,
+  "theta_q_lu": 0.6979533220196852,
+  "central_moment_closure": "second_order",
+  "high_order_relaxation": 1.0,
+  "regularized_heat_flux_factor_policy": "auto_d2q37_tau32_linear",
+  "regularized_heat_flux_factor": -0.4406919094590798,
+  "regularized_heat_flux_f_fraction": 0.5714285714285714,
+  "conductive_heat_flux_moment_factor_policy": "specified",
+  "conductive_heat_flux_moment_factor": 0.0422,
+  "conductive_heat_flux_galilean_correction_factor": 0.03835608923273733,
+  "high_wavenumber_filter_enabled": true,
+  "high_wavenumber_filter_strength": 0.0065,
+  "high_wavenumber_filter_passes": 1,
+  "p2_04_shear_wave": {
+    "p2_04_status": "PASSED",
+    "nu_target_lu": 0.0029437499999999998,
+    "nu_measured_lu": 0.002928173646068064,
+    "relative_error": 0.013635142019907676,
+    "baseline_direction": "x",
+    "baseline_relative_error": 0.005291330422738216,
+    "mode_index": 1,
+    "background_velocity_lu": [
+      0.0,
+      0.0
+    ],
+    "fitting_window": {
+      "x": [
+        10,
+        240
+      ],
+      "y": [
+        10,
+        240
+      ],
+      "diagonal": [
+        10,
+        240
+      ]
+    },
+    "residual_norm": 6.879552759513689e-07,
+    "directions": [
+      "x",
+      "y",
+      "diagonal"
+    ],
+    "direction_difference": 0.00834381159716946,
+    "direction_results": {
+      "x": {
+        "direction": "x",
+        "status": "PASSED",
+        "nu_target_lu": 0.0029437499999999998,
+        "nu_measured_lu": 0.002928173646068064,
+        "relative_error": 0.005291330422738216,
+        "mode_index": 1,
+        "background_velocity_lu": [
+          0.0,
+          0.0
+        ],
+        "k2_lu": 0.009638285547938826,
+        "fitting_window": [
+          10,
+          240
+        ],
+        "residual_norm": 2.6590482610147693e-07,
+        "fit_sample_count": 231,
+        "sample_count": 241,
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "negative_theta_detected": false,
+        "min_theta_lu": 0.04837861607046827,
+        "max_theta_lu": 0.04837861607266371,
+        "max_rho_drift": 2.2172486069393926e-11,
+        "clipping_used": false
+      },
+      "y": {
+        "direction": "y",
+        "status": "PASSED",
+        "nu_target_lu": 0.0029437499999999998,
+        "nu_measured_lu": 0.0029281736439215424,
+        "relative_error": 0.0052913311519176,
+        "mode_index": 1,
+        "background_velocity_lu": [
+          0.0,
+          0.0
+        ],
+        "k2_lu": 0.009638285547938826,
+        "fitting_window": [
+          10,
+          240
+        ],
+        "residual_norm": 2.659047542470009e-07,
+        "fit_sample_count": 231,
+        "sample_count": 241,
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "negative_theta_detected": false,
+        "min_theta_lu": 0.04837861607046864,
+        "max_theta_lu": 0.04837861607266372,
+        "max_rho_drift": 2.2175039582350564e-11,
+        "clipping_used": false
+      },
+      "diagonal": {
+        "direction": "diagonal",
+        "status": "PASSED",
+        "nu_target_lu": 0.0029437499999999998,
+        "nu_measured_lu": 0.0029036115506788965,
+        "relative_error": 0.013635142019907676,
+        "mode_index": 1,
+        "background_velocity_lu": [
+          0.0,
+          0.0
+        ],
+        "k2_lu": 0.019276571095877652,
+        "fitting_window": [
+          10,
+          240
+        ],
+        "residual_norm": 6.879552759513689e-07,
+        "fit_sample_count": 231,
+        "sample_count": 241,
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "negative_theta_detected": false,
+        "min_theta_lu": 0.04837861606973126,
+        "max_theta_lu": 0.048378616073667086,
+        "max_rho_drift": 4.1023628938319234e-11,
+        "clipping_used": false
+      }
+    },
+    "first_invalid_step": null,
+    "nan_detected": false,
+    "negative_theta_detected": false,
+    "clipping_used": false,
+    "acceptance": {
+      "relative_error_max": 0.05,
+      "direction_difference_max": 0.05,
+      "requires_no_nan": true,
+      "requires_no_clipping": true,
+      "requires_positive_theta": true
+    }
+  },
+  "p2_04_status": "PASSED",
+  "nu_target_lu": 0.0029437499999999998,
+  "nu_measured_lu": 0.002928173646068064,
+  "relative_error": 0.013635142019907676,
+  "mode_index": 1,
+  "fitting_window": {
+    "x": [
+      10,
+      240
+    ],
+    "y": [
+      10,
+      240
+    ],
+    "diagonal": [
+      10,
+      240
+    ]
+  },
+  "residual_norm": 6.879552759513689e-07,
+  "directions": [
+    "x",
+    "y",
+    "diagonal"
+  ],
+  "first_invalid_step": null,
+  "nan_detected": false,
+  "clipping_used": false,
+  "p2_05_thermal_diffusion": {
+    "p2_05_status": "PASSED",
+    "alpha_target_lu": 0.0041688329803125,
+    "alpha_measured_lu": 0.004163789517208977,
+    "relative_error": 0.0012098021502279233,
+    "baseline_direction": "x",
+    "baseline_relative_error": 0.0012098021502279233,
+    "mode_index": 1,
+    "background_velocity_lu": [
+      0.0,
+      0.0
+    ],
+    "fitting_window": {
+      "x": [
+        10,
+        320
+      ],
+      "y": [
+        10,
+        320
+      ]
+    },
+    "residual_norm": 0.0004532653701906404,
+    "directions": [
+      "x",
+      "y"
+    ],
+    "direction_difference": 7.1617449263566805e-09,
+    "direction_results": {
+      "x": {
+        "direction": "x",
+        "status": "PASSED",
+        "alpha_target_lu": 0.0041688329803125,
+        "alpha_measured_lu": 0.004163789517208977,
+        "relative_error": 0.0012098021502279233,
+        "mode_index": 1,
+        "background_velocity_lu": [
+          0.0,
+          0.0
+        ],
+        "k_mag_lu": 0.09817477042468103,
+        "fitting_window": [
+          10,
+          320
+        ],
+        "residual_norm": 0.00045326536881898203,
+        "fit_sample_count": 311,
+        "sample_count": 321,
+        "heat_flux_ratio_real": 0.9998433483822073,
+        "heat_flux_ratio_imag": 2.2706801189190315e-10,
+        "heat_flux_relative_error": 0.0001566516177928226,
+        "heat_flux_sign_passed": true,
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "negative_theta_detected": false,
+        "min_theta_lu": 0.048378132285268285,
+        "max_theta_lu": 0.04837909985758969,
+        "max_pressure_drift": 1.2155407722036493e-09,
+        "clipping_used": false
+      },
+      "y": {
+        "direction": "y",
+        "status": "PASSED",
+        "alpha_target_lu": 0.0041688329803125,
+        "alpha_measured_lu": 0.004163789547065096,
+        "relative_error": 0.0012097949884829484,
+        "mode_index": 1,
+        "background_velocity_lu": [
+          0.0,
+          0.0
+        ],
+        "k_mag_lu": 0.09817477042468103,
+        "fitting_window": [
+          10,
+          320
+        ],
+        "residual_norm": 0.0004532653701906404,
+        "fit_sample_count": 311,
+        "sample_count": 321,
+        "heat_flux_ratio_real": 0.9998433485367246,
+        "heat_flux_ratio_imag": 1.1853808613429925e-12,
+        "heat_flux_relative_error": 0.00015665146327537016,
+        "heat_flux_sign_passed": true,
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "negative_theta_detected": false,
+        "min_theta_lu": 0.048378132285268285,
+        "max_theta_lu": 0.04837909985758969,
+        "max_pressure_drift": 1.2155409248593152e-09,
+        "clipping_used": false
+      }
+    },
+    "heat_flux_relative_error": 0.0001566516177928226,
+    "heat_flux_sign_passed": true,
+    "first_invalid_step": null,
+    "nan_detected": false,
+    "negative_theta_detected": false,
+    "clipping_used": false,
+    "acceptance": {
+      "relative_error_max": 0.05,
+      "heat_flux_relative_error_max": 0.05,
+      "requires_no_nan": true,
+      "requires_no_clipping": true,
+      "requires_positive_theta": true,
+      "requires_fourier_sign": true
+    }
+  },
+  "p2_05_status": "PASSED",
+  "alpha_target_lu": 0.0041688329803125,
+  "alpha_measured_lu": 0.004163789517208977,
+  "alpha_relative_error": 0.0012098021502279233,
+  "thermal_mode_index": 1,
+  "thermal_fitting_window": {
+    "x": [
+      10,
+      320
+    ],
+    "y": [
+      10,
+      320
+    ]
+  },
+  "thermal_residual_norm": 0.0004532653701906404,
+  "thermal_directions": [
+    "x",
+    "y"
+  ],
+  "thermal_first_invalid_step": null,
+  "thermal_nan_detected": false,
+  "thermal_clipping_used": false,
+  "heat_flux_relative_error": 0.0001566516177928226,
+  "heat_flux_sign_passed": true,
+  "p2_06_acoustic_wave": {
+    "p2_06_status": "PASSED",
+    "sound_speed_target_lu": 0.26025000000000004,
+    "sound_speed_measured_lu": 0.261486265384653,
+    "sound_speed_relative_error": 0.00475029949862571,
+    "gamma_target": 1.4,
+    "gamma_measured": 1.4133324294324758,
+    "gamma_relative_error": 0.009523164342577717,
+    "acoustic_attenuation_measured_lu": 0.00013933853853065816,
+    "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+    "acoustic_attenuation_relative_error": 5.270175394335025,
+    "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+    "baseline_direction": "x",
+    "baseline_sound_speed_relative_error": 0.004750299268599489,
+    "baseline_gamma_relative_error": 0.009523163880339913,
+    "mode_index": 1,
+    "background_velocity_lu": [
+      0.0,
+      0.0
+    ],
+    "fitting_window": {
+      "x": [
+        10,
+        240
+      ],
+      "y": [
+        10,
+        240
+      ]
+    },
+    "phase_residual_norm": 0.001876849165828464,
+    "decay_residual_norm": 0.0018992017487016034,
+    "directions": [
+      "x",
+      "y"
+    ],
+    "direction_difference": 2.3002626593972356e-10,
+    "direction_results": {
+      "x": {
+        "direction": "x",
+        "status": "PASSED",
+        "sound_speed_target_lu": 0.26025000000000004,
+        "sound_speed_measured_lu": 0.261486265384653,
+        "sound_speed_relative_error": 0.004750299268599489,
+        "gamma_target": 1.4,
+        "gamma_measured": 1.4133324294324758,
+        "gamma_relative_error": 0.009523163880339913,
+        "acoustic_attenuation_measured_lu": 0.00013933853853065816,
+        "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+        "acoustic_attenuation_relative_error": 5.270175022531977,
+        "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+        "mode_index": 1,
+        "background_velocity_lu": [
+          0.0,
+          0.0
+        ],
+        "background_advection_lu": 0.0,
+        "lab_phase_speed_lu": 0.261486265384653,
+        "intrinsic_phase_speed_lu": 0.261486265384653,
+        "k_mag_lu": 0.09817477042468103,
+        "fitting_window": [
+          10,
+          240
+        ],
+        "phase_residual_norm": 0.0018768489778144147,
+        "decay_residual_norm": 0.0018992017487016034,
+        "fit_sample_count": 231,
+        "sample_count": 241,
+        "pressure_amplitude_initial": 6.773006246956259e-08,
+        "pressure_amplitude_final": 6.560289151761974e-08,
+        "density_amplitude_initial": 9.999999999533867e-07,
+        "theta_amplitude_initial": 1.9351446400378626e-08,
+        "velocity_amplitude_initial": 2.6025000001274305e-07,
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "negative_theta_detected": false,
+        "min_theta_lu": 0.04837859603130422,
+        "max_theta_lu": 0.04837863611153446,
+        "max_mach": 1.0000002664225727e-06,
+        "max_mean_pressure_drift": 7.924216838262055e-15,
+        "clipping_used": false
+      },
+      "y": {
+        "direction": "y",
+        "status": "PASSED",
+        "sound_speed_target_lu": 0.26025000000000004,
+        "sound_speed_measured_lu": 0.26148626544451736,
+        "sound_speed_relative_error": 0.00475029949862571,
+        "gamma_target": 1.4,
+        "gamma_measured": 1.4133324300796088,
+        "gamma_relative_error": 0.009523164342577717,
+        "acoustic_attenuation_measured_lu": 0.00013933854679302614,
+        "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+        "acoustic_attenuation_relative_error": 5.270175394335025,
+        "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+        "mode_index": 1,
+        "background_velocity_lu": [
+          0.0,
+          0.0
+        ],
+        "background_advection_lu": 0.0,
+        "lab_phase_speed_lu": 0.26148626544451736,
+        "intrinsic_phase_speed_lu": 0.26148626544451736,
+        "k_mag_lu": 0.09817477042468103,
+        "fitting_window": [
+          10,
+          240
+        ],
+        "phase_residual_norm": 0.001876849165828464,
+        "decay_residual_norm": 0.0018992017215008808,
+        "fit_sample_count": 231,
+        "sample_count": 241,
+        "pressure_amplitude_initial": 6.773006250628058e-08,
+        "pressure_amplitude_final": 6.560289144769496e-08,
+        "density_amplitude_initial": 9.99999999983151e-07,
+        "theta_amplitude_initial": 1.9351446435852717e-08,
+        "velocity_amplitude_initial": 2.6024999999320597e-07,
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "negative_theta_detected": false,
+        "min_theta_lu": 0.04837859603130421,
+        "max_theta_lu": 0.048378636111534236,
+        "max_mach": 1.000000149161126e-06,
+        "max_mean_pressure_drift": 7.834011217511261e-15,
+        "clipping_used": false
+      }
+    },
+    "first_invalid_step": null,
+    "nan_detected": false,
+    "negative_theta_detected": false,
+    "clipping_used": false,
+    "acceptance": {
+      "sound_speed_relative_error_max": 0.02,
+      "gamma_relative_error_max": 0.02,
+      "direction_difference_max": 0.02,
+      "attenuation_is_diagnostic_only": true,
+      "requires_no_nan": true,
+      "requires_no_clipping": true,
+      "requires_positive_theta": true
+    }
+  },
+  "p2_06_status": "PASSED",
+  "sound_speed_target_lu": 0.26025000000000004,
+  "sound_speed_measured_lu": 0.261486265384653,
+  "sound_speed_relative_error": 0.00475029949862571,
+  "gamma_target": 1.4,
+  "gamma_measured": 1.4133324294324758,
+  "gamma_relative_error": 0.009523164342577717,
+  "acoustic_attenuation_measured_lu": 0.00013933853853065816,
+  "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+  "acoustic_attenuation_relative_error": 5.270175394335025,
+  "acoustic_attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+  "acoustic_direction_difference": 2.3002626593972356e-10,
+  "acoustic_mode_index": 1,
+  "acoustic_fitting_window": {
+    "x": [
+      10,
+      240
+    ],
+    "y": [
+      10,
+      240
+    ]
+  },
+  "acoustic_phase_residual_norm": 0.001876849165828464,
+  "acoustic_decay_residual_norm": 0.0018992017487016034,
+  "acoustic_directions": [
+    "x",
+    "y"
+  ],
+  "acoustic_first_invalid_step": null,
+  "acoustic_nan_detected": false,
+  "acoustic_clipping_used": false,
+  "p2_07_prandtl_scan": {
+    "p2_07_status": "PASSED",
+    "pr_targets": [
+      0.5,
+      0.7061328707,
+      1.0,
+      2.0
+    ],
+    "scan_tolerance": 0.05,
+    "baseline_tolerance": 0.03,
+    "baseline_pr": 0.7061328707,
+    "baseline_pr_measured": 0.7032472797800872,
+    "baseline_pr_relative_error": 0.004086470180962198,
+    "max_pr_relative_error": 0.046078897425779974,
+    "measured_pr_span": 1.4107687950976269,
+    "scan_points": [
+      {
+        "pr_target": 0.5,
+        "pr_measured": 0.4970734100508133,
+        "pr_relative_error": 0.005853179898373417,
+        "point_tolerance": 0.05,
+        "status": "PASSED",
+        "nu_target_lu": 0.0029437499999999998,
+        "nu_measured_lu": 0.002934353551082046,
+        "nu_relative_error": 0.0031919996324258904,
+        "alpha_target_lu": 0.0058874999999999995,
+        "alpha_measured_lu": 0.0059032599446067376,
+        "alpha_relative_error": 0.0026768483408472488,
+        "tau21": 0.5608481647274428,
+        "tau32": 0.6216963294548856,
+        "central_moment_closure": "second_order",
+        "high_order_relaxation": 1.0,
+        "dispersion_correction_enabled": true,
+        "regularized_shear_xy_dispersion_target": 0.786,
+        "regularized_shear_normal_dispersion_target": 0.785,
+        "regularized_heat_flux_factor": -0.4150041386819375,
+        "regularized_heat_flux_factor_policy": "auto_d2q37_tau32_linear",
+        "regularized_heat_flux_dispersion_target": 0.8512,
+        "conductive_heat_flux_moment_factor": 0.0422,
+        "conductive_heat_flux_moment_factor_policy": "specified",
+        "conductive_heat_flux_dispersion_target": 0.3201,
+        "heat_flux_relative_error": 0.013915285420045942,
+        "heat_flux_sign_passed": true,
+        "shear_status": "PASSED",
+        "thermal_status": "PASSED",
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "clipping_used": false,
+        "shear": {
+          "p2_04_status": "PASSED",
+          "nu_target_lu": 0.0029437499999999998,
+          "nu_measured_lu": 0.002934353551082046,
+          "relative_error": 0.0031919996324258904,
+          "baseline_direction": "x",
+          "baseline_relative_error": 0.0031919996324258904,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.0,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              240
+            ]
+          },
+          "residual_norm": 2.6287014693014236e-07,
+          "directions": [
+            "x"
+          ],
+          "direction_difference": null,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "nu_target_lu": 0.0029437499999999998,
+              "nu_measured_lu": 0.002934353551082046,
+              "relative_error": 0.0031919996324258904,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.0,
+                0.0
+              ],
+              "k2_lu": 0.009638285547938826,
+              "fitting_window": [
+                10,
+                240
+              ],
+              "residual_norm": 2.6287014693014236e-07,
+              "fit_sample_count": 231,
+              "sample_count": 241,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837861607048022,
+              "max_theta_lu": 0.048378616072653764,
+              "max_rho_drift": 2.1718182807717312e-11,
+              "clipping_used": false
+            }
+          },
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "relative_error_max": 0.05,
+            "direction_difference_max": 0.05,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true
+          }
+        },
+        "thermal": {
+          "p2_05_status": "PASSED",
+          "alpha_target_lu": 0.0058874999999999995,
+          "alpha_measured_lu": 0.0059032599446067376,
+          "relative_error": 0.0026768483408472488,
+          "baseline_direction": "x",
+          "baseline_relative_error": 0.0026768483408472488,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.0,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              320
+            ]
+          },
+          "residual_norm": 0.0006552393454904873,
+          "directions": [
+            "x"
+          ],
+          "direction_difference": null,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "alpha_target_lu": 0.0058874999999999995,
+              "alpha_measured_lu": 0.0059032599446067376,
+              "relative_error": 0.0026768483408472488,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.0,
+                0.0
+              ],
+              "k_mag_lu": 0.09817477042468103,
+              "fitting_window": [
+                10,
+                320
+              ],
+              "residual_norm": 0.0006552393454904873,
+              "fit_sample_count": 311,
+              "sample_count": 321,
+              "heat_flux_ratio_real": 1.013915285420046,
+              "heat_flux_ratio_imag": -1.272534008572171e-10,
+              "heat_flux_relative_error": 0.013915285420045942,
+              "heat_flux_sign_passed": true,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.048378132285268285,
+              "max_theta_lu": 0.04837909985758969,
+              "max_pressure_drift": 1.6664522123344128e-09,
+              "clipping_used": false
+            }
+          },
+          "heat_flux_relative_error": 0.013915285420045942,
+          "heat_flux_sign_passed": true,
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "relative_error_max": 0.05,
+            "heat_flux_relative_error_max": 0.05,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true,
+            "requires_fourier_sign": true
+          }
+        }
+      },
+      {
+        "pr_target": 0.7061328707,
+        "pr_measured": 0.7032472797800872,
+        "pr_relative_error": 0.004086470180962198,
+        "point_tolerance": 0.03,
+        "status": "PASSED",
+        "nu_target_lu": 0.0029437499999999998,
+        "nu_measured_lu": 0.002928173648171154,
+        "nu_relative_error": 0.005291329708312809,
+        "alpha_target_lu": 0.00416883298051515,
+        "alpha_measured_lu": 0.004163789512398576,
+        "alpha_relative_error": 0.0012098033526760643,
+        "tau21": 0.5608481647274428,
+        "tau32": 0.586170984601132,
+        "central_moment_closure": "second_order",
+        "high_order_relaxation": 1.0,
+        "dispersion_correction_enabled": true,
+        "regularized_shear_xy_dispersion_target": 0.786,
+        "regularized_shear_normal_dispersion_target": 0.785,
+        "regularized_heat_flux_factor": -0.4406919094560509,
+        "regularized_heat_flux_factor_policy": "auto_d2q37_tau32_linear",
+        "regularized_heat_flux_dispersion_target": 0.8512,
+        "conductive_heat_flux_moment_factor": 0.0422,
+        "conductive_heat_flux_moment_factor_policy": "specified",
+        "conductive_heat_flux_dispersion_target": 0.3201,
+        "heat_flux_relative_error": 0.00015665175778261243,
+        "heat_flux_sign_passed": true,
+        "shear_status": "PASSED",
+        "thermal_status": "PASSED",
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "clipping_used": false,
+        "shear": {
+          "p2_04_status": "PASSED",
+          "nu_target_lu": 0.0029437499999999998,
+          "nu_measured_lu": 0.002928173648171154,
+          "relative_error": 0.005291329708312809,
+          "baseline_direction": "x",
+          "baseline_relative_error": 0.005291329708312809,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.0,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              240
+            ]
+          },
+          "residual_norm": 2.6590479987002964e-07,
+          "directions": [
+            "x"
+          ],
+          "direction_difference": null,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "nu_target_lu": 0.0029437499999999998,
+              "nu_measured_lu": 0.002928173648171154,
+              "relative_error": 0.005291329708312809,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.0,
+                0.0
+              ],
+              "k2_lu": 0.009638285547938826,
+              "fitting_window": [
+                10,
+                240
+              ],
+              "residual_norm": 2.6590479987002964e-07,
+              "fit_sample_count": 231,
+              "sample_count": 241,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837861607046807,
+              "max_theta_lu": 0.048378616072663805,
+              "max_rho_drift": 2.2171930957881614e-11,
+              "clipping_used": false
+            }
+          },
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "relative_error_max": 0.05,
+            "direction_difference_max": 0.05,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true
+          }
+        },
+        "thermal": {
+          "p2_05_status": "PASSED",
+          "alpha_target_lu": 0.00416883298051515,
+          "alpha_measured_lu": 0.004163789512398576,
+          "relative_error": 0.0012098033526760643,
+          "baseline_direction": "x",
+          "baseline_relative_error": 0.0012098033526760643,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.0,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              320
+            ]
+          },
+          "residual_norm": 0.0004532653187234064,
+          "directions": [
+            "x"
+          ],
+          "direction_difference": null,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "alpha_target_lu": 0.00416883298051515,
+              "alpha_measured_lu": 0.004163789512398576,
+              "relative_error": 0.0012098033526760643,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.0,
+                0.0
+              ],
+              "k_mag_lu": 0.09817477042468103,
+              "fitting_window": [
+                10,
+                320
+              ],
+              "residual_norm": 0.0004532653187234064,
+              "fit_sample_count": 311,
+              "sample_count": 321,
+              "heat_flux_ratio_real": 0.9998433482422174,
+              "heat_flux_ratio_imag": 1.1985704331929155e-10,
+              "heat_flux_relative_error": 0.00015665175778261243,
+              "heat_flux_sign_passed": true,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.048378132285268285,
+              "max_theta_lu": 0.04837909985758969,
+              "max_pressure_drift": 1.2155409179204213e-09,
+              "clipping_used": false
+            }
+          },
+          "heat_flux_relative_error": 0.00015665175778261243,
+          "heat_flux_sign_passed": true,
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "relative_error_max": 0.05,
+            "heat_flux_relative_error_max": 0.05,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true,
+            "requires_fourier_sign": true
+          }
+        }
+      },
+      {
+        "pr_target": 1.0,
+        "pr_measured": 0.990066271001471,
+        "pr_relative_error": 0.009933728998528957,
+        "point_tolerance": 0.05,
+        "status": "PASSED",
+        "nu_target_lu": 0.0029437499999999998,
+        "nu_measured_lu": 0.0029239009963732427,
+        "nu_relative_error": 0.006742761316945067,
+        "alpha_target_lu": 0.0029437499999999998,
+        "alpha_measured_lu": 0.002953237658945457,
+        "alpha_relative_error": 0.0032229839305162322,
+        "tau21": 0.5608481647274428,
+        "tau32": 0.5608481647274428,
+        "central_moment_closure": "second_order",
+        "high_order_relaxation": 1.0,
+        "dispersion_correction_enabled": true,
+        "regularized_shear_xy_dispersion_target": 0.786,
+        "regularized_shear_normal_dispersion_target": 0.785,
+        "regularized_heat_flux_factor": -0.45900240847998264,
+        "regularized_heat_flux_factor_policy": "auto_d2q37_tau32_linear",
+        "regularized_heat_flux_dispersion_target": 0.8512,
+        "conductive_heat_flux_moment_factor": 0.0422,
+        "conductive_heat_flux_moment_factor_policy": "specified",
+        "conductive_heat_flux_dispersion_target": 0.3201,
+        "heat_flux_relative_error": 0.009950161534708958,
+        "heat_flux_sign_passed": true,
+        "shear_status": "PASSED",
+        "thermal_status": "PASSED",
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "clipping_used": false,
+        "shear": {
+          "p2_04_status": "PASSED",
+          "nu_target_lu": 0.0029437499999999998,
+          "nu_measured_lu": 0.0029239009963732427,
+          "relative_error": 0.006742761316945067,
+          "baseline_direction": "x",
+          "baseline_relative_error": 0.006742761316945067,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.0,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              240
+            ]
+          },
+          "residual_norm": 2.685095326227281e-07,
+          "directions": [
+            "x"
+          ],
+          "direction_difference": null,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "nu_target_lu": 0.0029437499999999998,
+              "nu_measured_lu": 0.0029239009963732427,
+              "relative_error": 0.006742761316945067,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.0,
+                0.0
+              ],
+              "k2_lu": 0.009638285547938826,
+              "fitting_window": [
+                10,
+                240
+              ],
+              "residual_norm": 2.685095326227281e-07,
+              "fit_sample_count": 231,
+              "sample_count": 241,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837861607046041,
+              "max_theta_lu": 0.0483786160726722,
+              "max_rho_drift": 2.2500890040078048e-11,
+              "clipping_used": false
+            }
+          },
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "relative_error_max": 0.05,
+            "direction_difference_max": 0.05,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true
+          }
+        },
+        "thermal": {
+          "p2_05_status": "PASSED",
+          "alpha_target_lu": 0.0029437499999999998,
+          "alpha_measured_lu": 0.002953237658945457,
+          "relative_error": 0.0032229839305162322,
+          "baseline_direction": "x",
+          "baseline_relative_error": 0.0032229839305162322,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.0,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              320
+            ]
+          },
+          "residual_norm": 0.00031651484691025503,
+          "directions": [
+            "x"
+          ],
+          "direction_difference": null,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "alpha_target_lu": 0.0029437499999999998,
+              "alpha_measured_lu": 0.002953237658945457,
+              "relative_error": 0.0032229839305162322,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.0,
+                0.0
+              ],
+              "k_mag_lu": 0.09817477042468103,
+              "fitting_window": [
+                10,
+                320
+              ],
+              "residual_norm": 0.00031651484691025503,
+              "fit_sample_count": 311,
+              "sample_count": 321,
+              "heat_flux_ratio_real": 0.990049838465291,
+              "heat_flux_ratio_imag": -1.7580056899413125e-10,
+              "heat_flux_relative_error": 0.009950161534708958,
+              "heat_flux_sign_passed": true,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.048378132285268285,
+              "max_theta_lu": 0.04837909985758969,
+              "max_pressure_drift": 9.026366182274259e-10,
+              "clipping_used": false
+            }
+          },
+          "heat_flux_relative_error": 0.009950161534708958,
+          "heat_flux_sign_passed": true,
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "relative_error_max": 0.05,
+            "heat_flux_relative_error_max": 0.05,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true,
+            "requires_fourier_sign": true
+          }
+        }
+      },
+      {
+        "pr_target": 2.0,
+        "pr_measured": 1.90784220514844,
+        "pr_relative_error": 0.046078897425779974,
+        "point_tolerance": 0.05,
+        "status": "PASSED",
+        "nu_target_lu": 0.0029437499999999998,
+        "nu_measured_lu": 0.002918906930963384,
+        "nu_relative_error": 0.008439259120718745,
+        "alpha_target_lu": 0.0014718749999999999,
+        "alpha_measured_lu": 0.0015299519651502194,
+        "alpha_relative_error": 0.03945781071777121,
+        "tau21": 0.5608481647274428,
+        "tau32": 0.5304240823637214,
+        "central_moment_closure": "second_order",
+        "high_order_relaxation": 1.0,
+        "dispersion_correction_enabled": true,
+        "regularized_shear_xy_dispersion_target": 0.786,
+        "regularized_shear_normal_dispersion_target": 0.785,
+        "regularized_heat_flux_factor": -0.4810015433790052,
+        "regularized_heat_flux_factor_policy": "auto_d2q37_tau32_linear",
+        "regularized_heat_flux_dispersion_target": 0.8512,
+        "conductive_heat_flux_moment_factor": 0.0422,
+        "conductive_heat_flux_moment_factor_policy": "specified",
+        "conductive_heat_flux_dispersion_target": 0.3201,
+        "heat_flux_relative_error": 0.021464527614942996,
+        "heat_flux_sign_passed": true,
+        "shear_status": "PASSED",
+        "thermal_status": "PASSED",
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "clipping_used": false,
+        "shear": {
+          "p2_04_status": "PASSED",
+          "nu_target_lu": 0.0029437499999999998,
+          "nu_measured_lu": 0.002918906930963384,
+          "relative_error": 0.008439259120718745,
+          "baseline_direction": "x",
+          "baseline_relative_error": 0.008439259120718745,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.0,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              240
+            ]
+          },
+          "residual_norm": 2.722516804139691e-07,
+          "directions": [
+            "x"
+          ],
+          "direction_difference": null,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "nu_target_lu": 0.0029437499999999998,
+              "nu_measured_lu": 0.002918906930963384,
+              "relative_error": 0.008439259120718745,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.0,
+                0.0
+              ],
+              "k2_lu": 0.009638285547938826,
+              "fitting_window": [
+                10,
+                240
+              ],
+              "residual_norm": 2.722516804139691e-07,
+              "fit_sample_count": 231,
+              "sample_count": 241,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837861607044977,
+              "max_theta_lu": 0.04837861607268205,
+              "max_rho_drift": 2.2892132633955953e-11,
+              "clipping_used": false
+            }
+          },
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "relative_error_max": 0.05,
+            "direction_difference_max": 0.05,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true
+          }
+        },
+        "thermal": {
+          "p2_05_status": "PASSED",
+          "alpha_target_lu": 0.0014718749999999999,
+          "alpha_measured_lu": 0.0015299519651502194,
+          "relative_error": 0.03945781071777121,
+          "baseline_direction": "x",
+          "baseline_relative_error": 0.03945781071777121,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.0,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              320
+            ]
+          },
+          "residual_norm": 0.00015998473405797926,
+          "directions": [
+            "x"
+          ],
+          "direction_difference": null,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "alpha_target_lu": 0.0014718749999999999,
+              "alpha_measured_lu": 0.0015299519651502194,
+              "relative_error": 0.03945781071777121,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.0,
+                0.0
+              ],
+              "k_mag_lu": 0.09817477042468103,
+              "fitting_window": [
+                10,
+                320
+              ],
+              "residual_norm": 0.00015998473405797926,
+              "fit_sample_count": 311,
+              "sample_count": 321,
+              "heat_flux_ratio_real": 0.978535472385057,
+              "heat_flux_ratio_imag": -2.6563144632705506e-11,
+              "heat_flux_relative_error": 0.021464527614942996,
+              "heat_flux_sign_passed": true,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.048378132285268285,
+              "max_theta_lu": 0.04837909985758969,
+              "max_pressure_drift": 5.365530589274137e-10,
+              "clipping_used": false
+            }
+          },
+          "heat_flux_relative_error": 0.021464527614942996,
+          "heat_flux_sign_passed": true,
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "relative_error_max": 0.05,
+            "heat_flux_relative_error_max": 0.05,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true,
+            "requires_fourier_sign": true
+          }
+        }
+      }
+    ],
+    "first_invalid_step": null,
+    "nan_detected": false,
+    "clipping_used": false,
+    "acceptance": {
+      "baseline_pr_relative_error_max": 0.03,
+      "scan_pr_relative_error_max": 0.05,
+      "requires_p2_04_pass": true,
+      "requires_p2_05_pass": true,
+      "requires_no_nan": true,
+      "requires_no_clipping": true
+    }
+  },
+  "p2_07_status": "PASSED",
+  "pr_targets": [
+    0.5,
+    0.7061328707,
+    1.0,
+    2.0
+  ],
+  "baseline_pr": 0.7061328707,
+  "baseline_pr_measured": 0.7032472797800872,
+  "baseline_pr_relative_error": 0.004086470180962198,
+  "max_pr_relative_error": 0.046078897425779974,
+  "measured_pr_span": 1.4107687950976269,
+  "pr_first_invalid_step": null,
+  "pr_nan_detected": false,
+  "pr_clipping_used": false,
+  "p2_09_galilean_consistency": {
+    "p2_09_status": "PASSED",
+    "velocity_set": "D2Q37",
+    "c_s_lu": 0.26025000000000004,
+    "mach_numbers": [
+      0.0,
+      0.02,
+      0.05
+    ],
+    "background_directions": [
+      "x",
+      "diagonal"
+    ],
+    "scenario_count": 4,
+    "reference": {
+      "name": "mach_0",
+      "mach": 0.0,
+      "background_velocity_lu": [
+        0.0,
+        0.0
+      ],
+      "p2_04_status": "PASSED",
+      "p2_05_status": "PASSED",
+      "p2_06_status": "PASSED",
+      "status": "PASSED",
+      "first_invalid_step": null,
+      "nan_detected": false,
+      "clipping_used": false,
+      "shear": {
+        "p2_04_status": "PASSED",
+        "nu_target_lu": 0.0029437499999999998,
+        "nu_measured_lu": 0.0029282432489238374,
+        "relative_error": 0.013604979547990892,
+        "baseline_direction": "x",
+        "baseline_relative_error": 0.00526768614052231,
+        "mode_index": 1,
+        "background_velocity_lu": [
+          0.0,
+          0.0
+        ],
+        "fitting_window": {
+          "x": [
+            10,
+            120
+          ],
+          "y": [
+            10,
+            120
+          ],
+          "diagonal": [
+            10,
+            120
+          ]
+        },
+        "residual_norm": 9.90664878482926e-07,
+        "directions": [
+          "x",
+          "y",
+          "diagonal"
+        ],
+        "direction_difference": 0.008337293407468626,
+        "direction_results": {
+          "x": {
+            "direction": "x",
+            "status": "PASSED",
+            "nu_target_lu": 0.0029437499999999998,
+            "nu_measured_lu": 0.0029282432489238374,
+            "relative_error": 0.00526768614052231,
+            "mode_index": 1,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "k2_lu": 0.009638285547938826,
+            "fitting_window": [
+              10,
+              120
+            ],
+            "residual_norm": 3.828870499841027e-07,
+            "fit_sample_count": 111,
+            "sample_count": 121,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.04837861607094228,
+            "max_theta_lu": 0.04837861607205675,
+            "max_rho_drift": 1.1220135931466757e-11,
+            "clipping_used": false
+          },
+          "y": {
+            "direction": "y",
+            "status": "PASSED",
+            "nu_target_lu": 0.0029437499999999998,
+            "nu_measured_lu": 0.0029282432322732836,
+            "relative_error": 0.005267691796761342,
+            "mode_index": 1,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "k2_lu": 0.009638285547938826,
+            "fitting_window": [
+              10,
+              120
+            ],
+            "residual_norm": 3.8288730489026887e-07,
+            "fit_sample_count": 111,
+            "sample_count": 121,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.048378616070941946,
+            "max_theta_lu": 0.048378616072056825,
+            "max_rho_drift": 1.121980286455937e-11,
+            "clipping_used": false
+          },
+          "diagonal": {
+            "direction": "diagonal",
+            "status": "PASSED",
+            "nu_target_lu": 0.0029437499999999998,
+            "nu_measured_lu": 0.0029037003414556016,
+            "relative_error": 0.013604979547990892,
+            "mode_index": 1,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "k2_lu": 0.019276571095877652,
+            "fitting_window": [
+              10,
+              120
+            ],
+            "residual_norm": 9.90664878482926e-07,
+            "fit_sample_count": 111,
+            "sample_count": 121,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.04837861607057763,
+            "max_theta_lu": 0.04837861607255744,
+            "max_rho_drift": 2.0748625040312163e-11,
+            "clipping_used": false
+          }
+        },
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "negative_theta_detected": false,
+        "clipping_used": false,
+        "acceptance": {
+          "relative_error_max": 0.05,
+          "direction_difference_max": 0.05,
+          "requires_no_nan": true,
+          "requires_no_clipping": true,
+          "requires_positive_theta": true
+        }
+      },
+      "thermal": {
+        "p2_05_status": "PASSED",
+        "alpha_target_lu": 0.0041688329803125,
+        "alpha_measured_lu": 0.004163789517208977,
+        "relative_error": 0.0012098021502279233,
+        "baseline_direction": "x",
+        "baseline_relative_error": 0.0012098021502279233,
+        "mode_index": 1,
+        "background_velocity_lu": [
+          0.0,
+          0.0
+        ],
+        "fitting_window": {
+          "x": [
+            10,
+            320
+          ],
+          "y": [
+            10,
+            320
+          ]
+        },
+        "residual_norm": 0.0004532653701906404,
+        "directions": [
+          "x",
+          "y"
+        ],
+        "direction_difference": 7.1617449263566805e-09,
+        "direction_results": {
+          "x": {
+            "direction": "x",
+            "status": "PASSED",
+            "alpha_target_lu": 0.0041688329803125,
+            "alpha_measured_lu": 0.004163789517208977,
+            "relative_error": 0.0012098021502279233,
+            "mode_index": 1,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "k_mag_lu": 0.09817477042468103,
+            "fitting_window": [
+              10,
+              320
+            ],
+            "residual_norm": 0.00045326536881898203,
+            "fit_sample_count": 311,
+            "sample_count": 321,
+            "heat_flux_ratio_real": 0.9998433483822073,
+            "heat_flux_ratio_imag": 2.2706801189190315e-10,
+            "heat_flux_relative_error": 0.0001566516177928226,
+            "heat_flux_sign_passed": true,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.048378132285268285,
+            "max_theta_lu": 0.04837909985758969,
+            "max_pressure_drift": 1.2155407722036493e-09,
+            "clipping_used": false
+          },
+          "y": {
+            "direction": "y",
+            "status": "PASSED",
+            "alpha_target_lu": 0.0041688329803125,
+            "alpha_measured_lu": 0.004163789547065096,
+            "relative_error": 0.0012097949884829484,
+            "mode_index": 1,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "k_mag_lu": 0.09817477042468103,
+            "fitting_window": [
+              10,
+              320
+            ],
+            "residual_norm": 0.0004532653701906404,
+            "fit_sample_count": 311,
+            "sample_count": 321,
+            "heat_flux_ratio_real": 0.9998433485367246,
+            "heat_flux_ratio_imag": 1.1853808613429925e-12,
+            "heat_flux_relative_error": 0.00015665146327537016,
+            "heat_flux_sign_passed": true,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.048378132285268285,
+            "max_theta_lu": 0.04837909985758969,
+            "max_pressure_drift": 1.2155409248593152e-09,
+            "clipping_used": false
+          }
+        },
+        "heat_flux_relative_error": 0.0001566516177928226,
+        "heat_flux_sign_passed": true,
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "negative_theta_detected": false,
+        "clipping_used": false,
+        "acceptance": {
+          "relative_error_max": 0.05,
+          "heat_flux_relative_error_max": 0.05,
+          "requires_no_nan": true,
+          "requires_no_clipping": true,
+          "requires_positive_theta": true,
+          "requires_fourier_sign": true
+        }
+      },
+      "acoustic": {
+        "p2_06_status": "PASSED",
+        "sound_speed_target_lu": 0.26025000000000004,
+        "sound_speed_measured_lu": 0.2606375620258311,
+        "sound_speed_relative_error": 0.0014891912615986325,
+        "gamma_target": 1.4,
+        "gamma_measured": 1.4041728402993354,
+        "gamma_relative_error": 0.00298060021381108,
+        "acoustic_attenuation_measured_lu": 9.413909990805206e-05,
+        "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+        "acoustic_attenuation_relative_error": 3.2362199847993223,
+        "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+        "baseline_direction": "x",
+        "baseline_sound_speed_relative_error": 0.0014891912615986325,
+        "baseline_gamma_relative_error": 0.00298060021381108,
+        "mode_index": 1,
+        "background_velocity_lu": [
+          0.0,
+          0.0
+        ],
+        "fitting_window": {
+          "x": [
+            10,
+            80
+          ],
+          "y": [
+            10,
+            80
+          ]
+        },
+        "phase_residual_norm": 0.0005261231083315412,
+        "decay_residual_norm": 0.0010131938909350355,
+        "directions": [
+          "x",
+          "y"
+        ],
+        "direction_difference": 3.2266195265858636e-10,
+        "direction_results": {
+          "x": {
+            "direction": "x",
+            "status": "PASSED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.2606375620258311,
+            "sound_speed_relative_error": 0.0014891912615986325,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.4041728402993354,
+            "gamma_relative_error": 0.00298060021381108,
+            "acoustic_attenuation_measured_lu": 9.413909990805206e-05,
+            "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+            "acoustic_attenuation_relative_error": 3.2362194918330918,
+            "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+            "mode_index": 1,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "background_advection_lu": 0.0,
+            "lab_phase_speed_lu": 0.2606375620258311,
+            "intrinsic_phase_speed_lu": 0.2606375620258311,
+            "k_mag_lu": 0.09817477042468103,
+            "fitting_window": [
+              10,
+              80
+            ],
+            "phase_residual_norm": 0.0005261229463433402,
+            "decay_residual_norm": 0.0010131933459283772,
+            "fit_sample_count": 71,
+            "sample_count": 81,
+            "pressure_amplitude_initial": 6.773006246956259e-08,
+            "pressure_amplitude_final": 6.722548010690602e-08,
+            "density_amplitude_initial": 9.999999999533867e-07,
+            "theta_amplitude_initial": 1.9351446400378626e-08,
+            "velocity_amplitude_initial": 2.6025000001274305e-07,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.048378596251342,
+            "max_theta_lu": 0.04837863589150508,
+            "max_mach": 1.0000002664225727e-06,
+            "max_mean_pressure_drift": 7.5842110369706e-15,
+            "clipping_used": false
+          },
+          "y": {
+            "direction": "y",
+            "status": "PASSED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.26063756194185833,
+            "sound_speed_relative_error": 0.0014891909389367353,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.4041728393945365,
+            "gamma_relative_error": 0.0029805995675260544,
+            "acoustic_attenuation_measured_lu": 9.413911086296063e-05,
+            "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+            "acoustic_attenuation_relative_error": 3.2362199847993223,
+            "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+            "mode_index": 1,
+            "background_velocity_lu": [
+              0.0,
+              0.0
+            ],
+            "background_advection_lu": 0.0,
+            "lab_phase_speed_lu": 0.26063756194185833,
+            "intrinsic_phase_speed_lu": 0.26063756194185833,
+            "k_mag_lu": 0.09817477042468103,
+            "fitting_window": [
+              10,
+              80
+            ],
+            "phase_residual_norm": 0.0005261231083315412,
+            "decay_residual_norm": 0.0010131938909350355,
+            "fit_sample_count": 71,
+            "sample_count": 81,
+            "pressure_amplitude_initial": 6.773006250628058e-08,
+            "pressure_amplitude_final": 6.722548007640875e-08,
+            "density_amplitude_initial": 9.99999999983151e-07,
+            "theta_amplitude_initial": 1.9351446435852717e-08,
+            "velocity_amplitude_initial": 2.6024999999320597e-07,
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "min_theta_lu": 0.048378596251342075,
+            "max_theta_lu": 0.0483786358915048,
+            "max_mach": 1.000000149161126e-06,
+            "max_mean_pressure_drift": 7.542577673547157e-15,
+            "clipping_used": false
+          }
+        },
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "negative_theta_detected": false,
+        "clipping_used": false,
+        "acceptance": {
+          "sound_speed_relative_error_max": 0.02,
+          "gamma_relative_error_max": 0.02,
+          "direction_difference_max": 0.02,
+          "attenuation_is_diagnostic_only": true,
+          "requires_no_nan": true,
+          "requires_no_clipping": true,
+          "requires_positive_theta": true
+        }
+      }
+    },
+    "scenarios": [
+      {
+        "name": "mach_0p02_x",
+        "mach": 0.02,
+        "background_direction": "x",
+        "background_velocity_lu": [
+          0.005205,
+          0.0
+        ],
+        "status": "PASSED",
+        "p2_04_status": "PASSED",
+        "nu_relative_error": 0.013592608752297508,
+        "nu_drift_from_mach0": 1.769505833237872e-05,
+        "p2_05_status": "PASSED",
+        "alpha_relative_error": 0.0019293959101395197,
+        "alpha_drift_from_mach0": 0.0007204653804780969,
+        "heat_flux_relative_error": 0.00015263163484552616,
+        "heat_flux_sign_passed": true,
+        "p2_06_status": "PASSED",
+        "sound_speed_relative_error": 0.001557113701482038,
+        "sound_speed_drift_from_mach0": 6.78214407863198e-05,
+        "gamma_relative_error": 0.0031166520060430525,
+        "direction_difference": 0.008342524458094023,
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "clipping_used": false,
+        "shear": {
+          "p2_04_status": "PASSED",
+          "nu_target_lu": 0.0029437499999999998,
+          "nu_measured_lu": 0.0029282950643589383,
+          "relative_error": 0.013592608752297508,
+          "baseline_direction": "x",
+          "baseline_relative_error": 0.005250084294203483,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.005205,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              120
+            ],
+            "y": [
+              10,
+              120
+            ],
+            "diagonal": [
+              10,
+              120
+            ]
+          },
+          "residual_norm": 9.906158581323612e-07,
+          "directions": [
+            "x",
+            "y",
+            "diagonal"
+          ],
+          "direction_difference": 0.008342524458094023,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "nu_target_lu": 0.0029437499999999998,
+              "nu_measured_lu": 0.0029282950643589383,
+              "relative_error": 0.005250084294203483,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.005205,
+                0.0
+              ],
+              "k2_lu": 0.009638285547938826,
+              "fitting_window": [
+                10,
+                120
+              ],
+              "residual_norm": 3.828534908464161e-07,
+              "fit_sample_count": 111,
+              "sample_count": 121,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837861607094343,
+              "max_theta_lu": 0.048378616072054834,
+              "max_rho_drift": 1.1185941062308302e-11,
+              "clipping_used": false
+            },
+            "y": {
+              "direction": "y",
+              "status": "PASSED",
+              "nu_target_lu": 0.0029437499999999998,
+              "nu_measured_lu": 0.0029282466082391706,
+              "relative_error": 0.005266544971831544,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.005205,
+                0.0
+              ],
+              "k2_lu": 0.009638285547938826,
+              "fitting_window": [
+                10,
+                120
+              ],
+              "residual_norm": 3.829021817715527e-07,
+              "fit_sample_count": 111,
+              "sample_count": 121,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.048378615790560235,
+              "max_theta_lu": 0.04837861635132436,
+              "max_rho_drift": 5.691148663444778e-09,
+              "clipping_used": false
+            },
+            "diagonal": {
+              "direction": "diagonal",
+              "status": "PASSED",
+              "nu_target_lu": 0.0029437499999999998,
+              "nu_measured_lu": 0.002903736757985424,
+              "relative_error": 0.013592608752297508,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.005205,
+                0.0
+              ],
+              "k2_lu": 0.019276571095877652,
+              "fitting_window": [
+                10,
+                120
+              ],
+              "residual_norm": 9.906158581323612e-07,
+              "fit_sample_count": 111,
+              "sample_count": 121,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837861573039225,
+              "max_theta_lu": 0.048378616410768606,
+              "max_rho_drift": 9.401051714874598e-09,
+              "clipping_used": false
+            }
+          },
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "relative_error_max": 0.05,
+            "direction_difference_max": 0.05,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true
+          }
+        },
+        "thermal": {
+          "p2_05_status": "PASSED",
+          "alpha_target_lu": 0.0041688329803125,
+          "alpha_measured_lu": 0.004160789651010231,
+          "relative_error": 0.0019293959101395197,
+          "baseline_direction": "x",
+          "baseline_relative_error": 0.0019293959101395197,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.005205,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              320
+            ],
+            "y": [
+              10,
+              320
+            ]
+          },
+          "residual_norm": 0.00045320904841150635,
+          "directions": [
+            "x",
+            "y"
+          ],
+          "direction_difference": 0.0005990214591925355,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "alpha_target_lu": 0.0041688329803125,
+              "alpha_measured_lu": 0.004160789651010231,
+              "relative_error": 0.0019293959101395197,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.005205,
+                0.0
+              ],
+              "k_mag_lu": 0.09817477042468103,
+              "fitting_window": [
+                10,
+                320
+              ],
+              "residual_norm": 0.0004528123620228903,
+              "fit_sample_count": 311,
+              "sample_count": 321,
+              "heat_flux_ratio_real": 0.9998685587839712,
+              "heat_flux_ratio_imag": -8.951847462971524e-06,
+              "heat_flux_relative_error": 0.00013174569763045073,
+              "heat_flux_sign_passed": true,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837813228526833,
+              "max_theta_lu": 0.04837909985758966,
+              "max_pressure_drift": 1.226737510184872e-09,
+              "clipping_used": false
+            },
+            "y": {
+              "direction": "y",
+              "status": "PASSED",
+              "alpha_target_lu": 0.0041688329803125,
+              "alpha_measured_lu": 0.0041632868714252275,
+              "relative_error": 0.0013303744509469695,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.005205,
+                0.0
+              ],
+              "k_mag_lu": 0.09817477042468103,
+              "fitting_window": [
+                10,
+                320
+              ],
+              "residual_norm": 0.00045320904841150635,
+              "fit_sample_count": 311,
+              "sample_count": 321,
+              "heat_flux_ratio_real": 0.9998473683651559,
+              "heat_flux_ratio_imag": -6.514577684982231e-10,
+              "heat_flux_relative_error": 0.00015263163484552616,
+              "heat_flux_sign_passed": true,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837813228526833,
+              "max_theta_lu": 0.04837909985758966,
+              "max_pressure_drift": 1.2154128814501064e-09,
+              "clipping_used": false
+            }
+          },
+          "heat_flux_relative_error": 0.00015263163484552616,
+          "heat_flux_sign_passed": true,
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "relative_error_max": 0.05,
+            "heat_flux_relative_error_max": 0.05,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true,
+            "requires_fourier_sign": true
+          }
+        },
+        "acoustic": {
+          "p2_06_status": "PASSED",
+          "sound_speed_target_lu": 0.26025000000000004,
+          "sound_speed_measured_lu": 0.2606552388408107,
+          "sound_speed_relative_error": 0.001557113701482038,
+          "gamma_target": 1.4,
+          "gamma_measured": 1.4043633128084603,
+          "gamma_relative_error": 0.0031166520060430525,
+          "acoustic_attenuation_measured_lu": 9.358127358075756e-05,
+          "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+          "acoustic_attenuation_relative_error": 3.2362777688601385,
+          "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+          "baseline_direction": "x",
+          "baseline_sound_speed_relative_error": 0.001557113701482038,
+          "baseline_gamma_relative_error": 0.0031166520060430525,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.005205,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              80
+            ],
+            "y": [
+              10,
+              80
+            ]
+          },
+          "phase_residual_norm": 0.0005428156972953615,
+          "decay_residual_norm": 0.0010211970725730658,
+          "directions": [
+            "x",
+            "y"
+          ],
+          "direction_difference": 6.788267353310979e-05,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "sound_speed_target_lu": 0.26025000000000004,
+              "sound_speed_measured_lu": 0.2606552388408107,
+              "sound_speed_relative_error": 0.001557113701482038,
+              "gamma_target": 1.4,
+              "gamma_measured": 1.4043633128084603,
+              "gamma_relative_error": 0.0031166520060430525,
+              "acoustic_attenuation_measured_lu": 9.358127358075756e-05,
+              "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+              "acoustic_attenuation_relative_error": 3.211117544150878,
+              "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.005205,
+                0.0
+              ],
+              "background_advection_lu": 0.005205,
+              "lab_phase_speed_lu": 0.2658602388408107,
+              "intrinsic_phase_speed_lu": 0.2606552388408107,
+              "k_mag_lu": 0.09817477042468103,
+              "fitting_window": [
+                10,
+                80
+              ],
+              "phase_residual_norm": 0.0005428156972953615,
+              "decay_residual_norm": 0.0010211970725730658,
+              "fit_sample_count": 71,
+              "sample_count": 81,
+              "pressure_amplitude_initial": 6.77300624573264e-08,
+              "pressure_amplitude_final": 6.722520903286359e-08,
+              "density_amplitude_initial": 9.999999999062112e-07,
+              "theta_amplitude_initial": 1.9351446389721066e-08,
+              "velocity_amplitude_initial": 2.602499999991273e-07,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837859624207616,
+              "max_theta_lu": 0.04837863590077782,
+              "max_mach": 0.020000995999735826,
+              "max_mean_pressure_drift": 7.5842110369706e-15,
+              "clipping_used": false
+            },
+            "y": {
+              "direction": "y",
+              "status": "PASSED",
+              "sound_speed_target_lu": 0.26025000000000004,
+              "sound_speed_measured_lu": 0.2606375723750237,
+              "sound_speed_relative_error": 0.0014892310279488452,
+              "gamma_target": 1.4,
+              "gamma_measured": 1.404172951810933,
+              "gamma_relative_error": 0.002980679864952096,
+              "acoustic_attenuation_measured_lu": 9.414039496532709e-05,
+              "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+              "acoustic_attenuation_relative_error": 3.2362777688601385,
+              "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.005205,
+                0.0
+              ],
+              "background_advection_lu": 0.0,
+              "lab_phase_speed_lu": 0.2606375723750237,
+              "intrinsic_phase_speed_lu": 0.2606375723750237,
+              "k_mag_lu": 0.09817477042468103,
+              "fitting_window": [
+                10,
+                80
+              ],
+              "phase_residual_norm": 0.000526126888299612,
+              "decay_residual_norm": 0.0010131784093555048,
+              "fit_sample_count": 71,
+              "sample_count": 81,
+              "pressure_amplitude_initial": 6.77300625096758e-08,
+              "pressure_amplitude_final": 6.722547022177474e-08,
+              "density_amplitude_initial": 9.999999999778124e-07,
+              "theta_amplitude_initial": 1.9351446438831566e-08,
+              "velocity_amplitude_initial": 2.6025000000645144e-07,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.048378596251354426,
+              "max_theta_lu": 0.048378635891492536,
+              "max_mach": 0.02000000411221375,
+              "max_mean_pressure_drift": 7.445433158892456e-15,
+              "clipping_used": false
+            }
+          },
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "sound_speed_relative_error_max": 0.02,
+            "gamma_relative_error_max": 0.02,
+            "direction_difference_max": 0.02,
+            "attenuation_is_diagnostic_only": true,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true
+          }
+        }
+      },
+      {
+        "name": "mach_0p02_diagonal",
+        "mach": 0.02,
+        "background_direction": "diagonal",
+        "background_velocity_lu": [
+          0.0036804907960759797,
+          0.0036804907960759797
+        ],
+        "status": "PASSED",
+        "p2_04_status": "PASSED",
+        "nu_relative_error": 0.013571680445228718,
+        "nu_drift_from_mach0": 3.375838489816374e-05,
+        "p2_05_status": "PASSED",
+        "alpha_relative_error": 0.0016298605361801943,
+        "alpha_drift_from_mach0": 0.0004205743564459352,
+        "heat_flux_relative_error": 0.00014219895713297852,
+        "heat_flux_sign_passed": true,
+        "p2_06_status": "PASSED",
+        "sound_speed_relative_error": 0.0015372104524065122,
+        "sound_speed_drift_from_mach0": 4.794810957942097e-05,
+        "gamma_relative_error": 0.0030767839207881398,
+        "direction_difference": 0.008313368530141061,
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "clipping_used": false,
+        "shear": {
+          "p2_04_status": "PASSED",
+          "nu_target_lu": 0.0029437499999999998,
+          "nu_measured_lu": 0.0029282708442999604,
+          "relative_error": 0.013571680445228718,
+          "baseline_direction": "x",
+          "baseline_relative_error": 0.005258311915087632,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.0036804907960759797,
+            0.0036804907960759797
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              120
+            ],
+            "y": [
+              10,
+              120
+            ],
+            "diagonal": [
+              10,
+              120
+            ]
+          },
+          "residual_norm": 9.90494778055015e-07,
+          "directions": [
+            "x",
+            "y",
+            "diagonal"
+          ],
+          "direction_difference": 0.008313368530141061,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "nu_target_lu": 0.0029437499999999998,
+              "nu_measured_lu": 0.0029282708442999604,
+              "relative_error": 0.005258311915087632,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.0036804907960759797,
+                0.0036804907960759797
+              ],
+              "k2_lu": 0.009638285547938826,
+              "fitting_window": [
+                10,
+                120
+              ],
+              "residual_norm": 3.8287778829715294e-07,
+              "fit_sample_count": 111,
+              "sample_count": 121,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837861587287643,
+              "max_theta_lu": 0.048378616269011986,
+              "max_rho_drift": 4.023553490384302e-09,
+              "clipping_used": false
+            },
+            "y": {
+              "direction": "y",
+              "status": "PASSED",
+              "nu_target_lu": 0.0029437499999999998,
+              "nu_measured_lu": 0.0029282708383690354,
+              "relative_error": 0.00525831392983922,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.0036804907960759797,
+                0.0036804907960759797
+              ],
+              "k2_lu": 0.009638285547938826,
+              "fitting_window": [
+                10,
+                120
+              ],
+              "residual_norm": 3.828777399331444e-07,
+              "fit_sample_count": 111,
+              "sample_count": 121,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.0483786158728762,
+              "max_theta_lu": 0.04837861626901165,
+              "max_rho_drift": 4.023542832243265e-09,
+              "clipping_used": false
+            },
+            "diagonal": {
+              "direction": "diagonal",
+              "status": "PASSED",
+              "nu_target_lu": 0.0029437499999999998,
+              "nu_measured_lu": 0.0029037983656893577,
+              "relative_error": 0.013571680445228718,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.0036804907960759797,
+                0.0036804907960759797
+              ],
+              "k2_lu": 0.019276571095877652,
+              "fitting_window": [
+                10,
+                120
+              ],
+              "residual_norm": 9.90494778055015e-07,
+              "fit_sample_count": 111,
+              "sample_count": 121,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.048378616070578,
+              "max_theta_lu": 0.04837861607255697,
+              "max_rho_drift": 2.0741075523744712e-11,
+              "clipping_used": false
+            }
+          },
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "relative_error_max": 0.05,
+            "direction_difference_max": 0.05,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true
+          }
+        },
+        "thermal": {
+          "p2_05_status": "PASSED",
+          "alpha_target_lu": 0.0041688329803125,
+          "alpha_measured_lu": 0.004162038516109832,
+          "relative_error": 0.0016298605361801943,
+          "baseline_direction": "x",
+          "baseline_relative_error": 0.0016298240382274232,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.0036804907960759797,
+            0.0036804907960759797
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              320
+            ],
+            "y": [
+              10,
+              320
+            ]
+          },
+          "residual_norm": 0.00045301084262616855,
+          "directions": [
+            "x",
+            "y"
+          ],
+          "direction_difference": 3.649795280442046e-08,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "alpha_target_lu": 0.0041688329803125,
+              "alpha_measured_lu": 0.004162038516109832,
+              "relative_error": 0.0016298240382274232,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.0036804907960759797,
+                0.0036804907960759797
+              ],
+              "k_mag_lu": 0.09817477042468103,
+              "fitting_window": [
+                10,
+                320
+              ],
+              "residual_norm": 0.00045301084262616855,
+              "fit_sample_count": 311,
+              "sample_count": 321,
+              "heat_flux_ratio_real": 0.9998579631205636,
+              "heat_flux_ratio_imag": -6.78736249842371e-06,
+              "heat_flux_relative_error": 0.00014219895713297852,
+              "heat_flux_sign_passed": true,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837813228526845,
+              "max_theta_lu": 0.04837909985758972,
+              "max_pressure_drift": 1.220930509471252e-09,
+              "clipping_used": false
+            },
+            "y": {
+              "direction": "y",
+              "status": "PASSED",
+              "alpha_target_lu": 0.0041688329803125,
+              "alpha_measured_lu": 0.0041620383639559624,
+              "relative_error": 0.0016298605361801943,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.0036804907960759797,
+                0.0036804907960759797
+              ],
+              "k_mag_lu": 0.09817477042468103,
+              "fitting_window": [
+                10,
+                320
+              ],
+              "residual_norm": 0.0004530106347244289,
+              "fit_sample_count": 311,
+              "sample_count": 321,
+              "heat_flux_ratio_real": 0.9998579632250338,
+              "heat_flux_ratio_imag": -6.786903800672818e-06,
+              "heat_flux_relative_error": 0.00014219883088825602,
+              "heat_flux_sign_passed": true,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837813228526845,
+              "max_theta_lu": 0.04837909985758972,
+              "max_pressure_drift": 1.2209301972210262e-09,
+              "clipping_used": false
+            }
+          },
+          "heat_flux_relative_error": 0.00014219895713297852,
+          "heat_flux_sign_passed": true,
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "relative_error_max": 0.05,
+            "heat_flux_relative_error_max": 0.05,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true,
+            "requires_fourier_sign": true
+          }
+        },
+        "acoustic": {
+          "p2_06_status": "PASSED",
+          "sound_speed_target_lu": 0.26025000000000004,
+          "sound_speed_measured_lu": 0.26065005883247716,
+          "sound_speed_relative_error": 0.0015372104524065122,
+          "gamma_target": 1.4,
+          "gamma_measured": 1.4043074954658914,
+          "gamma_relative_error": 0.0030767839207881398,
+          "acoustic_attenuation_measured_lu": 9.374361007989471e-05,
+          "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+          "acoustic_attenuation_relative_error": 3.2184248491108827,
+          "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+          "baseline_direction": "x",
+          "baseline_sound_speed_relative_error": 0.001537209730939848,
+          "baseline_gamma_relative_error": 0.003076782475636808,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.0036804907960759797,
+            0.0036804907960759797
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              80
+            ],
+            "y": [
+              10,
+              80
+            ]
+          },
+          "phase_residual_norm": 0.0005379064426818596,
+          "decay_residual_norm": 0.0010188624049039393,
+          "directions": [
+            "x",
+            "y"
+          ],
+          "direction_difference": 7.214666477645483e-10,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "sound_speed_target_lu": 0.26025000000000004,
+              "sound_speed_measured_lu": 0.26065005883247716,
+              "sound_speed_relative_error": 0.001537209730939848,
+              "gamma_target": 1.4,
+              "gamma_measured": 1.4043074954658914,
+              "gamma_relative_error": 0.003076782475636808,
+              "acoustic_attenuation_measured_lu": 9.374361007989471e-05,
+              "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+              "acoustic_attenuation_relative_error": 3.2184226176278123,
+              "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.0036804907960759797,
+                0.0036804907960759797
+              ],
+              "background_advection_lu": 0.0036804907960759797,
+              "lab_phase_speed_lu": 0.2643305496285531,
+              "intrinsic_phase_speed_lu": 0.26065005883247716,
+              "k_mag_lu": 0.09817477042468103,
+              "fitting_window": [
+                10,
+                80
+              ],
+              "phase_residual_norm": 0.0005379064426818596,
+              "decay_residual_norm": 0.0010188624049039393,
+              "fit_sample_count": 71,
+              "sample_count": 81,
+              "pressure_amplitude_initial": 6.773006248869853e-08,
+              "pressure_amplitude_final": 6.722529580160139e-08,
+              "density_amplitude_initial": 9.999999999938583e-07,
+              "theta_amplitude_initial": 1.935144641729351e-08,
+              "velocity_amplitude_initial": 2.60250000005119e-07,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.048378596251939986,
+              "max_theta_lu": 0.04837863589090958,
+              "max_mach": 0.020000703119130787,
+              "max_mean_pressure_drift": 7.61196661258623e-15,
+              "clipping_used": false
+            },
+            "y": {
+              "direction": "y",
+              "status": "PASSED",
+              "sound_speed_target_lu": 0.26025000000000004,
+              "sound_speed_measured_lu": 0.26065005902023886,
+              "sound_speed_relative_error": 0.0015372104524065122,
+              "gamma_target": 1.4,
+              "gamma_measured": 1.4043074974891032,
+              "gamma_relative_error": 0.0030767839207881398,
+              "acoustic_attenuation_measured_lu": 9.374365966887568e-05,
+              "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+              "acoustic_attenuation_relative_error": 3.2184248491108827,
+              "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.0036804907960759797,
+                0.0036804907960759797
+              ],
+              "background_advection_lu": 0.0036804907960759797,
+              "lab_phase_speed_lu": 0.2643305498163148,
+              "intrinsic_phase_speed_lu": 0.26065005902023886,
+              "k_mag_lu": 0.09817477042468103,
+              "fitting_window": [
+                10,
+                80
+              ],
+              "phase_residual_norm": 0.0005379060426529128,
+              "decay_residual_norm": 0.0010188623606359058,
+              "fit_sample_count": 71,
+              "sample_count": 81,
+              "pressure_amplitude_initial": 6.773006247591202e-08,
+              "pressure_amplitude_final": 6.722529566350185e-08,
+              "density_amplitude_initial": 1.0000000000549764e-06,
+              "theta_amplitude_initial": 1.9351446401927376e-08,
+              "velocity_amplitude_initial": 2.602500000003061e-07,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.048378596251939784,
+              "max_theta_lu": 0.04837863589090897,
+              "max_mach": 0.020000703119130617,
+              "max_mean_pressure_drift": 7.598088824778415e-15,
+              "clipping_used": false
+            }
+          },
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "sound_speed_relative_error_max": 0.02,
+            "gamma_relative_error_max": 0.02,
+            "direction_difference_max": 0.02,
+            "attenuation_is_diagnostic_only": true,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true
+          }
+        }
+      },
+      {
+        "name": "mach_0p05_x",
+        "mach": 0.05,
+        "background_direction": "x",
+        "background_velocity_lu": [
+          0.013012500000000003,
+          0.0
+        ],
+        "status": "PASSED",
+        "p2_04_status": "PASSED",
+        "nu_relative_error": 0.013527654856173021,
+        "nu_drift_from_mach0": 0.00011061873355622254,
+        "p2_05_status": "PASSED",
+        "alpha_relative_error": 0.005706820633772591,
+        "alpha_drift_from_mach0": 0.004502465576079917,
+        "heat_flux_relative_error": 0.00013152904446379833,
+        "heat_flux_sign_passed": true,
+        "p2_06_status": "PASSED",
+        "sound_speed_relative_error": 0.0016595257598086555,
+        "sound_speed_drift_from_mach0": 0.0001700812147511499,
+        "gamma_relative_error": 0.0033218055453645423,
+        "direction_difference": 0.008370004744437264,
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "clipping_used": false,
+        "shear": {
+          "p2_04_status": "PASSED",
+          "nu_target_lu": 0.0029437499999999998,
+          "nu_measured_lu": 0.0029285671674835778,
+          "relative_error": 0.013527654856173021,
+          "baseline_direction": "x",
+          "baseline_relative_error": 0.005157650111735745,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.013012500000000003,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              120
+            ],
+            "y": [
+              10,
+              120
+            ],
+            "diagonal": [
+              10,
+              120
+            ]
+          },
+          "residual_norm": 9.903618812658129e-07,
+          "directions": [
+            "x",
+            "y",
+            "diagonal"
+          ],
+          "direction_difference": 0.008370004744437264,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "nu_target_lu": 0.0029437499999999998,
+              "nu_measured_lu": 0.0029285671674835778,
+              "relative_error": 0.005157650111735745,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.013012500000000003,
+                0.0
+              ],
+              "k2_lu": 0.009638285547938826,
+              "fitting_window": [
+                10,
+                120
+              ],
+              "residual_norm": 3.826753614172097e-07,
+              "fit_sample_count": 111,
+              "sample_count": 121,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.0483786160709444,
+              "max_theta_lu": 0.04837861607205406,
+              "max_rho_drift": 1.1173284519827575e-11,
+              "clipping_used": false
+            },
+            "y": {
+              "direction": "y",
+              "status": "PASSED",
+              "nu_target_lu": 0.0029437499999999998,
+              "nu_measured_lu": 0.002928264149886218,
+              "relative_error": 0.005260586025913172,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.013012500000000003,
+                0.0
+              ],
+              "k2_lu": 0.009638285547938826,
+              "fitting_window": [
+                10,
+                120
+              ],
+              "residual_norm": 3.8298282604211754e-07,
+              "fit_sample_count": 111,
+              "sample_count": 121,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837861536998776,
+              "max_theta_lu": 0.04837861677189649,
+              "max_rho_drift": 1.4211033017019759e-08,
+              "clipping_used": false
+            },
+            "diagonal": {
+              "direction": "diagonal",
+              "status": "PASSED",
+              "nu_target_lu": 0.0029437499999999998,
+              "nu_measured_lu": 0.0029039279660171406,
+              "relative_error": 0.013527654856173021,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.013012500000000003,
+                0.0
+              ],
+              "k2_lu": 0.019276571095877652,
+              "fitting_window": [
+                10,
+                120
+              ],
+              "residual_norm": 9.903618812658129e-07,
+              "fit_sample_count": 111,
+              "sample_count": 121,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.048378615220294185,
+              "max_theta_lu": 0.048378616920870844,
+              "max_rho_drift": 2.3467306986546532e-08,
+              "clipping_used": false
+            }
+          },
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "relative_error_max": 0.05,
+            "direction_difference_max": 0.05,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true
+          }
+        },
+        "thermal": {
+          "p2_05_status": "PASSED",
+          "alpha_target_lu": 0.0041688329803125,
+          "alpha_measured_lu": 0.0041450421982417015,
+          "relative_error": 0.005706820633772591,
+          "baseline_direction": "x",
+          "baseline_relative_error": 0.005706820633772591,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.013012500000000003,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              320
+            ],
+            "y": [
+              10,
+              320
+            ]
+          },
+          "residual_norm": 0.0004529135155450507,
+          "directions": [
+            "x",
+            "y"
+          ],
+          "direction_difference": 0.003743662789481362,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "alpha_target_lu": 0.0041688329803125,
+              "alpha_measured_lu": 0.0041450421982417015,
+              "relative_error": 0.005706820633772591,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.013012500000000003,
+                0.0
+              ],
+              "k_mag_lu": 0.09817477042468103,
+              "fitting_window": [
+                10,
+                320
+              ],
+              "residual_norm": 0.00045043458275034884,
+              "fit_sample_count": 311,
+              "sample_count": 321,
+              "heat_flux_ratio_real": 1.0000008946724717,
+              "heat_flux_ratio_imag": -2.623160970325055e-10,
+              "heat_flux_relative_error": 8.946725101182363e-07,
+              "heat_flux_sign_passed": true,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837813228526859,
+              "max_theta_lu": 0.04837909985758974,
+              "max_pressure_drift": 1.2856645886794027e-09,
+              "clipping_used": false
+            },
+            "y": {
+              "direction": "y",
+              "status": "PASSED",
+              "alpha_target_lu": 0.0041688329803125,
+              "alpha_measured_lu": 0.00416064890314566,
+              "relative_error": 0.00196315784429113,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.013012500000000003,
+                0.0
+              ],
+              "k_mag_lu": 0.09817477042468103,
+              "fitting_window": [
+                10,
+                320
+              ],
+              "residual_norm": 0.0004529135155450507,
+              "fit_sample_count": 311,
+              "sample_count": 321,
+              "heat_flux_ratio_real": 0.9998684709555368,
+              "heat_flux_ratio_imag": -3.8666376067121213e-10,
+              "heat_flux_relative_error": 0.00013152904446379833,
+              "heat_flux_sign_passed": true,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837813228526859,
+              "max_theta_lu": 0.04837909985758974,
+              "max_pressure_drift": 1.2147409397811337e-09,
+              "clipping_used": false
+            }
+          },
+          "heat_flux_relative_error": 0.00013152904446379833,
+          "heat_flux_sign_passed": true,
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "relative_error_max": 0.05,
+            "heat_flux_relative_error_max": 0.05,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true,
+            "requires_fourier_sign": true
+          }
+        },
+        "acoustic": {
+          "p2_06_status": "PASSED",
+          "sound_speed_target_lu": 0.26025000000000004,
+          "sound_speed_measured_lu": 0.26068189157899024,
+          "sound_speed_relative_error": 0.0016595257598086555,
+          "gamma_target": 1.4,
+          "gamma_measured": 1.4046505277635104,
+          "gamma_relative_error": 0.0033218055453645423,
+          "acoustic_attenuation_measured_lu": 9.27746547735534e-05,
+          "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+          "acoustic_attenuation_relative_error": 3.236584826234499,
+          "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+          "baseline_direction": "x",
+          "baseline_sound_speed_relative_error": 0.0016595257598086555,
+          "baseline_gamma_relative_error": 0.0033218055453645423,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.013012500000000003,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              80
+            ],
+            "y": [
+              10,
+              80
+            ]
+          },
+          "phase_residual_norm": 0.000568254908727433,
+          "decay_residual_norm": 0.0010328978234493888,
+          "directions": [
+            "x",
+            "y"
+          ],
+          "direction_difference": 0.00017008658920506498,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "sound_speed_target_lu": 0.26025000000000004,
+              "sound_speed_measured_lu": 0.26068189157899024,
+              "sound_speed_relative_error": 0.0016595257598086555,
+              "gamma_target": 1.4,
+              "gamma_measured": 1.4046505277635104,
+              "gamma_relative_error": 0.0033218055453645423,
+              "acoustic_attenuation_measured_lu": 9.27746547735534e-05,
+              "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+              "acoustic_attenuation_relative_error": 3.174820040596086,
+              "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.013012500000000003,
+                0.0
+              ],
+              "background_advection_lu": 0.013012500000000003,
+              "lab_phase_speed_lu": 0.2736943915789902,
+              "intrinsic_phase_speed_lu": 0.26068189157899024,
+              "k_mag_lu": 0.09817477042468103,
+              "fitting_window": [
+                10,
+                80
+              ],
+              "phase_residual_norm": 0.000568254908727433,
+              "decay_residual_norm": 0.0010328978234493888,
+              "fit_sample_count": 71,
+              "sample_count": 81,
+              "pressure_amplitude_initial": 6.773006249739995e-08,
+              "pressure_amplitude_final": 6.722458102197545e-08,
+              "density_amplitude_initial": 9.99999999938011e-07,
+              "theta_amplitude_initial": 1.9351446428092604e-08,
+              "velocity_amplitude_initial": 2.602499999940201e-07,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837859622630151,
+              "max_theta_lu": 0.048378635916548035,
+              "max_mach": 0.050000989999739114,
+              "max_mean_pressure_drift": 7.764622278472189e-15,
+              "clipping_used": false
+            },
+            "y": {
+              "direction": "y",
+              "status": "PASSED",
+              "sound_speed_target_lu": 0.26025000000000004,
+              "sound_speed_measured_lu": 0.2606376265441496,
+              "sound_speed_relative_error": 0.0014894391706035126,
+              "gamma_target": 1.4,
+              "gamma_measured": 1.40417353547835,
+              "gamma_relative_error": 0.002981096770250158,
+              "acoustic_attenuation_measured_lu": 9.414721852697166e-05,
+              "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+              "acoustic_attenuation_relative_error": 3.236584826234499,
+              "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.013012500000000003,
+                0.0
+              ],
+              "background_advection_lu": 0.0,
+              "lab_phase_speed_lu": 0.2606376265441496,
+              "intrinsic_phase_speed_lu": 0.2606376265441496,
+              "k_mag_lu": 0.09817477042468103,
+              "fitting_window": [
+                10,
+                80
+              ],
+              "phase_residual_norm": 0.0005261481446818117,
+              "decay_residual_norm": 0.001013097908880764,
+              "fit_sample_count": 71,
+              "sample_count": 81,
+              "pressure_amplitude_initial": 6.773006248342739e-08,
+              "pressure_amplitude_final": 6.722541801418726e-08,
+              "density_amplitude_initial": 9.999999999558096e-07,
+              "theta_amplitude_initial": 1.9351446413636058e-08,
+              "velocity_amplitude_initial": 2.602500000051387e-07,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.048378596251421005,
+              "max_theta_lu": 0.048378635891426054,
+              "max_mach": 0.050000010229567945,
+              "max_mean_pressure_drift": 7.556455461354972e-15,
+              "clipping_used": false
+            }
+          },
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "sound_speed_relative_error_max": 0.02,
+            "gamma_relative_error_max": 0.02,
+            "direction_difference_max": 0.02,
+            "attenuation_is_diagnostic_only": true,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true
+          }
+        }
+      },
+      {
+        "name": "mach_0p05_diagonal",
+        "mach": 0.05,
+        "background_direction": "diagonal",
+        "background_velocity_lu": [
+          0.00920122699018995,
+          0.00920122699018995
+        ],
+        "status": "PASSED",
+        "p2_04_status": "PASSED",
+        "nu_relative_error": 0.01339686603232526,
+        "nu_drift_from_mach0": 0.0002109839479624842,
+        "p2_05_status": "PASSED",
+        "alpha_relative_error": 0.0038350317768781617,
+        "alpha_drift_from_mach0": 0.0026284166336661974,
+        "heat_flux_relative_error": 6.570399740701225e-05,
+        "heat_flux_sign_passed": true,
+        "p2_06_status": "PASSED",
+        "sound_speed_relative_error": 0.0016095763370793659,
+        "sound_speed_drift_from_mach0": 0.0001202063878791293,
+        "gamma_relative_error": 0.003221743410143585,
+        "direction_difference": 0.008187749288306088,
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "clipping_used": false,
+        "shear": {
+          "p2_04_status": "PASSED",
+          "nu_target_lu": 0.0029437499999999998,
+          "nu_measured_lu": 0.002928415662584793,
+          "relative_error": 0.01339686603232526,
+          "baseline_direction": "x",
+          "baseline_relative_error": 0.005209116744019249,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.00920122699018995,
+            0.00920122699018995
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              120
+            ],
+            "y": [
+              10,
+              120
+            ],
+            "diagonal": [
+              10,
+              120
+            ]
+          },
+          "residual_norm": 9.896012841470284e-07,
+          "directions": [
+            "x",
+            "y",
+            "diagonal"
+          ],
+          "direction_difference": 0.008187749288306088,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "nu_target_lu": 0.0029437499999999998,
+              "nu_measured_lu": 0.002928415662584793,
+              "relative_error": 0.005209116744019249,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.00920122699018995,
+                0.00920122699018995
+              ],
+              "k2_lu": 0.009638285547938826,
+              "fitting_window": [
+                10,
+                120
+              ],
+              "residual_norm": 3.828286930766457e-07,
+              "fit_sample_count": 111,
+              "sample_count": 121,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837861557533682,
+              "max_theta_lu": 0.04837861656654789,
+              "max_rho_drift": 1.0050990706389484e-08,
+              "clipping_used": false
+            },
+            "y": {
+              "direction": "y",
+              "status": "PASSED",
+              "nu_target_lu": 0.0029437499999999998,
+              "nu_measured_lu": 0.0029284156603266113,
+              "relative_error": 0.005209117511129846,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.00920122699018995,
+                0.00920122699018995
+              ],
+              "k2_lu": 0.009638285547938826,
+              "fitting_window": [
+                10,
+                120
+              ],
+              "residual_norm": 3.8282854909819883e-07,
+              "fit_sample_count": 111,
+              "sample_count": 121,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837861557533654,
+              "max_theta_lu": 0.04837861656654799,
+              "max_rho_drift": 1.0050997589772237e-08,
+              "clipping_used": false
+            },
+            "diagonal": {
+              "direction": "diagonal",
+              "status": "PASSED",
+              "nu_target_lu": 0.0029437499999999998,
+              "nu_measured_lu": 0.002904312975617342,
+              "relative_error": 0.01339686603232526,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.00920122699018995,
+                0.00920122699018995
+              ],
+              "k2_lu": 0.019276571095877652,
+              "fitting_window": [
+                10,
+                120
+              ],
+              "residual_norm": 9.896012841470284e-07,
+              "fit_sample_count": 111,
+              "sample_count": 121,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837861607057739,
+              "max_theta_lu": 0.048378616072557744,
+              "max_rho_drift": 2.074984628563925e-11,
+              "clipping_used": false
+            }
+          },
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "relative_error_max": 0.05,
+            "direction_difference_max": 0.05,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true
+          }
+        },
+        "thermal": {
+          "p2_05_status": "PASSED",
+          "alpha_target_lu": 0.0041688329803125,
+          "alpha_measured_lu": 0.004152845456707901,
+          "relative_error": 0.0038350317768781617,
+          "baseline_direction": "x",
+          "baseline_relative_error": 0.0038350117838975573,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.00920122699018995,
+            0.00920122699018995
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              320
+            ],
+            "y": [
+              10,
+              320
+            ]
+          },
+          "residual_norm": 0.0004516739297016627,
+          "directions": [
+            "x",
+            "y"
+          ],
+          "direction_difference": 1.999298055026476e-08,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "alpha_target_lu": 0.0041688329803125,
+              "alpha_measured_lu": 0.004152845456707901,
+              "relative_error": 0.0038350117838975573,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.00920122699018995,
+                0.00920122699018995
+              ],
+              "k_mag_lu": 0.09817477042468103,
+              "fitting_window": [
+                10,
+                320
+              ],
+              "residual_norm": 0.0004516738773050815,
+              "fit_sample_count": 311,
+              "sample_count": 321,
+              "heat_flux_ratio_real": 0.9999346850688497,
+              "heat_flux_ratio_imag": -7.139680952160606e-06,
+              "heat_flux_relative_error": 6.570399740701225e-05,
+              "heat_flux_sign_passed": true,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.048378132285268424,
+              "max_theta_lu": 0.04837909985758972,
+              "max_pressure_drift": 1.250910444672293e-09,
+              "clipping_used": false
+            },
+            "y": {
+              "direction": "y",
+              "status": "PASSED",
+              "alpha_target_lu": 0.0041688329803125,
+              "alpha_measured_lu": 0.0041528453733605045,
+              "relative_error": 0.0038350317768781617,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.00920122699018995,
+                0.00920122699018995
+              ],
+              "k_mag_lu": 0.09817477042468103,
+              "fitting_window": [
+                10,
+                320
+              ],
+              "residual_norm": 0.0004516739297016627,
+              "fit_sample_count": 311,
+              "sample_count": 321,
+              "heat_flux_ratio_real": 0.9999346853685952,
+              "heat_flux_ratio_imag": -7.140378587813586e-06,
+              "heat_flux_relative_error": 6.57037752486281e-05,
+              "heat_flux_sign_passed": true,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.048378132285268424,
+              "max_theta_lu": 0.04837909985758972,
+              "max_pressure_drift": 1.2509102156887941e-09,
+              "clipping_used": false
+            }
+          },
+          "heat_flux_relative_error": 6.570399740701225e-05,
+          "heat_flux_sign_passed": true,
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "relative_error_max": 0.05,
+            "heat_flux_relative_error_max": 0.05,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true,
+            "requires_fourier_sign": true
+          }
+        },
+        "acoustic": {
+          "p2_06_status": "PASSED",
+          "sound_speed_target_lu": 0.26025000000000004,
+          "sound_speed_measured_lu": 0.260668892207272,
+          "sound_speed_relative_error": 0.0016095763370793659,
+          "gamma_target": 1.4,
+          "gamma_measured": 1.4045104404029292,
+          "gamma_relative_error": 0.003221743410143585,
+          "acoustic_attenuation_measured_lu": 9.316799705422127e-05,
+          "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+          "acoustic_attenuation_relative_error": 3.192520276076931,
+          "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+          "baseline_direction": "x",
+          "baseline_sound_speed_relative_error": 0.0016095762046954842,
+          "baseline_gamma_relative_error": 0.003221743144949496,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.00920122699018995,
+            0.00920122699018995
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              80
+            ],
+            "y": [
+              10,
+              80
+            ]
+          },
+          "phase_residual_norm": 0.0005557922572200264,
+          "decay_residual_norm": 0.0010271846189743004,
+          "directions": [
+            "x",
+            "y"
+          ],
+          "direction_difference": 1.3238401729309868e-10,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "sound_speed_target_lu": 0.26025000000000004,
+              "sound_speed_measured_lu": 0.260668892207272,
+              "sound_speed_relative_error": 0.0016095762046954842,
+              "gamma_target": 1.4,
+              "gamma_measured": 1.4045104404029292,
+              "gamma_relative_error": 0.003221743144949496,
+              "acoustic_attenuation_measured_lu": 9.316799705422127e-05,
+              "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+              "acoustic_attenuation_relative_error": 3.192520276076931,
+              "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.00920122699018995,
+                0.00920122699018995
+              ],
+              "background_advection_lu": 0.00920122699018995,
+              "lab_phase_speed_lu": 0.26987011919746196,
+              "intrinsic_phase_speed_lu": 0.260668892207272,
+              "k_mag_lu": 0.09817477042468103,
+              "fitting_window": [
+                10,
+                80
+              ],
+              "phase_residual_norm": 0.0005557922528577646,
+              "decay_residual_norm": 0.0010271846189743004,
+              "fit_sample_count": 71,
+              "sample_count": 81,
+              "pressure_amplitude_initial": 6.773006246798586e-08,
+              "pressure_amplitude_final": 6.722488964015348e-08,
+              "density_amplitude_initial": 9.999999998954661e-07,
+              "theta_amplitude_initial": 1.9351446400624547e-08,
+              "velocity_amplitude_initial": 2.6025000001186764e-07,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.048378596225681414,
+              "max_theta_lu": 0.048378635917168504,
+              "max_mach": 0.050000697111634185,
+              "max_mean_pressure_drift": 7.625844400394044e-15,
+              "clipping_used": false
+            },
+            "y": {
+              "direction": "y",
+              "status": "PASSED",
+              "sound_speed_target_lu": 0.26025000000000004,
+              "sound_speed_measured_lu": 0.26066889224172496,
+              "sound_speed_relative_error": 0.0016095763370793659,
+              "gamma_target": 1.4,
+              "gamma_measured": 1.404510440774201,
+              "gamma_relative_error": 0.003221743410143585,
+              "acoustic_attenuation_measured_lu": 9.31679515723824e-05,
+              "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+              "acoustic_attenuation_relative_error": 3.1925182294135093,
+              "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.00920122699018995,
+                0.00920122699018995
+              ],
+              "background_advection_lu": 0.00920122699018995,
+              "lab_phase_speed_lu": 0.2698701192319149,
+              "intrinsic_phase_speed_lu": 0.26066889224172496,
+              "k_mag_lu": 0.09817477042468103,
+              "fitting_window": [
+                10,
+                80
+              ],
+              "phase_residual_norm": 0.0005557922572200264,
+              "decay_residual_norm": 0.0010271843330140384,
+              "fit_sample_count": 71,
+              "sample_count": 81,
+              "pressure_amplitude_initial": 6.77300624651086e-08,
+              "pressure_amplitude_final": 6.722488970709089e-08,
+              "density_amplitude_initial": 1.0000000000189932e-06,
+              "theta_amplitude_initial": 1.9351446392272554e-08,
+              "velocity_amplitude_initial": 2.602499999794067e-07,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837859622568144,
+              "max_theta_lu": 0.04837863591716878,
+              "max_mach": 0.05000069711163425,
+              "max_mean_pressure_drift": 7.445433158892456e-15,
+              "clipping_used": false
+            }
+          },
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "sound_speed_relative_error_max": 0.02,
+            "gamma_relative_error_max": 0.02,
+            "direction_difference_max": 0.02,
+            "attenuation_is_diagnostic_only": true,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true
+          }
+        }
+      }
+    ],
+    "max_nu_drift_from_mach0": 0.0002109839479624842,
+    "max_alpha_drift_from_mach0": 0.004502465576079917,
+    "max_sound_speed_relative_error": 0.0016595257598086555,
+    "max_sound_speed_drift_from_mach0": 0.0001700812147511499,
+    "max_direction_difference": 0.008370004744437264,
+    "dispersion_masking_check": {
+      "status": "PASSED",
+      "low_mode_checks": [
+        {
+          "background_direction": "x",
+          "mach": 0.05,
+          "background_velocity_lu": [
+            0.013012500000000003,
+            0.0
+          ],
+          "status": "PASSED",
+          "sound_speed_delta_enabled_vs_disabled": 1.5723199409123367e-09,
+          "enabled_sound_speed_relative_error": 0.0016595257598086555,
+          "disabled_sound_speed_relative_error": 0.0016595257777582972,
+          "enabled_gamma_relative_error": 0.0033218055453645423,
+          "disabled_gamma_relative_error": 0.003321805581323556,
+          "enabled_status": "PASSED",
+          "disabled_status": "PASSED",
+          "enabled": {
+            "p2_06_status": "PASSED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.26068189157899024,
+            "sound_speed_relative_error": 0.0016595257598086555,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.4046505277635104,
+            "gamma_relative_error": 0.0033218055453645423,
+            "acoustic_attenuation_measured_lu": 9.27746547735534e-05,
+            "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+            "acoustic_attenuation_relative_error": 3.236584826234499,
+            "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+            "baseline_direction": "x",
+            "baseline_sound_speed_relative_error": 0.0016595257598086555,
+            "baseline_gamma_relative_error": 0.0033218055453645423,
+            "mode_index": 1,
+            "background_velocity_lu": [
+              0.013012500000000003,
+              0.0
+            ],
+            "fitting_window": {
+              "x": [
+                10,
+                80
+              ],
+              "y": [
+                10,
+                80
+              ]
+            },
+            "phase_residual_norm": 0.000568254908727433,
+            "decay_residual_norm": 0.0010328978234493888,
+            "directions": [
+              "x",
+              "y"
+            ],
+            "direction_difference": 0.00017008658920506498,
+            "direction_results": {
+              "x": {
+                "direction": "x",
+                "status": "PASSED",
+                "sound_speed_target_lu": 0.26025000000000004,
+                "sound_speed_measured_lu": 0.26068189157899024,
+                "sound_speed_relative_error": 0.0016595257598086555,
+                "gamma_target": 1.4,
+                "gamma_measured": 1.4046505277635104,
+                "gamma_relative_error": 0.0033218055453645423,
+                "acoustic_attenuation_measured_lu": 9.27746547735534e-05,
+                "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+                "acoustic_attenuation_relative_error": 3.174820040596086,
+                "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+                "mode_index": 1,
+                "background_velocity_lu": [
+                  0.013012500000000003,
+                  0.0
+                ],
+                "background_advection_lu": 0.013012500000000003,
+                "lab_phase_speed_lu": 0.2736943915789902,
+                "intrinsic_phase_speed_lu": 0.26068189157899024,
+                "k_mag_lu": 0.09817477042468103,
+                "fitting_window": [
+                  10,
+                  80
+                ],
+                "phase_residual_norm": 0.000568254908727433,
+                "decay_residual_norm": 0.0010328978234493888,
+                "fit_sample_count": 71,
+                "sample_count": 81,
+                "pressure_amplitude_initial": 6.773006249739995e-08,
+                "pressure_amplitude_final": 6.722458102197545e-08,
+                "density_amplitude_initial": 9.99999999938011e-07,
+                "theta_amplitude_initial": 1.9351446428092604e-08,
+                "velocity_amplitude_initial": 2.602499999940201e-07,
+                "first_invalid_step": null,
+                "nan_detected": false,
+                "negative_theta_detected": false,
+                "min_theta_lu": 0.04837859622630151,
+                "max_theta_lu": 0.048378635916548035,
+                "max_mach": 0.050000989999739114,
+                "max_mean_pressure_drift": 7.764622278472189e-15,
+                "clipping_used": false
+              },
+              "y": {
+                "direction": "y",
+                "status": "PASSED",
+                "sound_speed_target_lu": 0.26025000000000004,
+                "sound_speed_measured_lu": 0.2606376265441496,
+                "sound_speed_relative_error": 0.0014894391706035126,
+                "gamma_target": 1.4,
+                "gamma_measured": 1.40417353547835,
+                "gamma_relative_error": 0.002981096770250158,
+                "acoustic_attenuation_measured_lu": 9.414721852697166e-05,
+                "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+                "acoustic_attenuation_relative_error": 3.236584826234499,
+                "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+                "mode_index": 1,
+                "background_velocity_lu": [
+                  0.013012500000000003,
+                  0.0
+                ],
+                "background_advection_lu": 0.0,
+                "lab_phase_speed_lu": 0.2606376265441496,
+                "intrinsic_phase_speed_lu": 0.2606376265441496,
+                "k_mag_lu": 0.09817477042468103,
+                "fitting_window": [
+                  10,
+                  80
+                ],
+                "phase_residual_norm": 0.0005261481446818117,
+                "decay_residual_norm": 0.001013097908880764,
+                "fit_sample_count": 71,
+                "sample_count": 81,
+                "pressure_amplitude_initial": 6.773006248342739e-08,
+                "pressure_amplitude_final": 6.722541801418726e-08,
+                "density_amplitude_initial": 9.999999999558096e-07,
+                "theta_amplitude_initial": 1.9351446413636058e-08,
+                "velocity_amplitude_initial": 2.602500000051387e-07,
+                "first_invalid_step": null,
+                "nan_detected": false,
+                "negative_theta_detected": false,
+                "min_theta_lu": 0.048378596251421005,
+                "max_theta_lu": 0.048378635891426054,
+                "max_mach": 0.050000010229567945,
+                "max_mean_pressure_drift": 7.556455461354972e-15,
+                "clipping_used": false
+              }
+            },
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "clipping_used": false,
+            "acceptance": {
+              "sound_speed_relative_error_max": 0.02,
+              "gamma_relative_error_max": 0.02,
+              "direction_difference_max": 0.02,
+              "attenuation_is_diagnostic_only": true,
+              "requires_no_nan": true,
+              "requires_no_clipping": true,
+              "requires_positive_theta": true
+            }
+          },
+          "disabled": {
+            "p2_06_status": "PASSED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.2606818915836616,
+            "sound_speed_relative_error": 0.0016595257777582972,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.4046505278138528,
+            "gamma_relative_error": 0.003321805581323556,
+            "acoustic_attenuation_measured_lu": 9.277466615445418e-05,
+            "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+            "acoustic_attenuation_relative_error": 3.2365852153470493,
+            "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+            "baseline_direction": "x",
+            "baseline_sound_speed_relative_error": 0.0016595257777582972,
+            "baseline_gamma_relative_error": 0.003321805581323556,
+            "mode_index": 1,
+            "background_velocity_lu": [
+              0.013012500000000003,
+              0.0
+            ],
+            "fitting_window": {
+              "x": [
+                10,
+                80
+              ],
+              "y": [
+                10,
+                80
+              ]
+            },
+            "phase_residual_norm": 0.0005682547769137677,
+            "decay_residual_norm": 0.0010328976918201607,
+            "directions": [
+              "x",
+              "y"
+            ],
+            "direction_difference": 0.00017008503249278642,
+            "direction_results": {
+              "x": {
+                "direction": "x",
+                "status": "PASSED",
+                "sound_speed_target_lu": 0.26025000000000004,
+                "sound_speed_measured_lu": 0.2606818915836616,
+                "sound_speed_relative_error": 0.0016595257777582972,
+                "gamma_target": 1.4,
+                "gamma_measured": 1.4046505278138528,
+                "gamma_relative_error": 0.003321805581323556,
+                "acoustic_attenuation_measured_lu": 9.277466615445418e-05,
+                "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+                "acoustic_attenuation_relative_error": 3.174820552731785,
+                "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+                "mode_index": 1,
+                "background_velocity_lu": [
+                  0.013012500000000003,
+                  0.0
+                ],
+                "background_advection_lu": 0.013012500000000003,
+                "lab_phase_speed_lu": 0.2736943915836616,
+                "intrinsic_phase_speed_lu": 0.2606818915836616,
+                "k_mag_lu": 0.09817477042468103,
+                "fitting_window": [
+                  10,
+                  80
+                ],
+                "phase_residual_norm": 0.0005682547769137677,
+                "decay_residual_norm": 0.0010328976918201607,
+                "fit_sample_count": 71,
+                "sample_count": 81,
+                "pressure_amplitude_initial": 6.773006249739995e-08,
+                "pressure_amplitude_final": 6.722458105231016e-08,
+                "density_amplitude_initial": 9.99999999938011e-07,
+                "theta_amplitude_initial": 1.9351446428092604e-08,
+                "velocity_amplitude_initial": 2.602499999940201e-07,
+                "first_invalid_step": null,
+                "nan_detected": false,
+                "negative_theta_detected": false,
+                "min_theta_lu": 0.0483785962263016,
+                "max_theta_lu": 0.04837863591654828,
+                "max_mach": 0.050000989999739114,
+                "max_mean_pressure_drift": 7.681355551625302e-15,
+                "clipping_used": false
+              },
+              "y": {
+                "direction": "y",
+                "status": "PASSED",
+                "sound_speed_target_lu": 0.26025000000000004,
+                "sound_speed_measured_lu": 0.26063762695395537,
+                "sound_speed_relative_error": 0.001489440745265469,
+                "gamma_target": 1.4,
+                "gamma_measured": 1.4041735398939703,
+                "gamma_relative_error": 0.002981099924264541,
+                "acoustic_attenuation_measured_lu": 9.414722717399886e-05,
+                "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+                "acoustic_attenuation_relative_error": 3.2365852153470493,
+                "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+                "mode_index": 1,
+                "background_velocity_lu": [
+                  0.013012500000000003,
+                  0.0
+                ],
+                "background_advection_lu": 0.0,
+                "lab_phase_speed_lu": 0.26063762695395537,
+                "intrinsic_phase_speed_lu": 0.26063762695395537,
+                "k_mag_lu": 0.09817477042468103,
+                "fitting_window": [
+                  10,
+                  80
+                ],
+                "phase_residual_norm": 0.0005261486377877746,
+                "decay_residual_norm": 0.001013097731978489,
+                "fit_sample_count": 71,
+                "sample_count": 81,
+                "pressure_amplitude_initial": 6.773006248342739e-08,
+                "pressure_amplitude_final": 6.7225417948704e-08,
+                "density_amplitude_initial": 9.999999999558096e-07,
+                "theta_amplitude_initial": 1.9351446413636058e-08,
+                "velocity_amplitude_initial": 2.602500000051387e-07,
+                "first_invalid_step": null,
+                "nan_detected": false,
+                "negative_theta_detected": false,
+                "min_theta_lu": 0.04837859625142119,
+                "max_theta_lu": 0.048378635891426276,
+                "max_mach": 0.05000001022957744,
+                "max_mean_pressure_drift": 7.667477763817487e-15,
+                "clipping_used": false
+              }
+            },
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "clipping_used": false,
+            "acceptance": {
+              "sound_speed_relative_error_max": 0.02,
+              "gamma_relative_error_max": 0.02,
+              "direction_difference_max": 0.02,
+              "attenuation_is_diagnostic_only": true,
+              "requires_no_nan": true,
+              "requires_no_clipping": true,
+              "requires_positive_theta": true
+            }
+          }
+        },
+        {
+          "background_direction": "diagonal",
+          "mach": 0.05,
+          "background_velocity_lu": [
+            0.00920122699018995,
+            0.00920122699018995
+          ],
+          "status": "PASSED",
+          "sound_speed_delta_enabled_vs_disabled": 5.11844455708399e-10,
+          "enabled_sound_speed_relative_error": 0.0016095763370793659,
+          "disabled_sound_speed_relative_error": 0.001609576791319789,
+          "enabled_gamma_relative_error": 0.003221743410143585,
+          "disabled_gamma_relative_error": 0.0032217443200865947,
+          "enabled_status": "PASSED",
+          "disabled_status": "PASSED",
+          "enabled": {
+            "p2_06_status": "PASSED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.260668892207272,
+            "sound_speed_relative_error": 0.0016095763370793659,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.4045104404029292,
+            "gamma_relative_error": 0.003221743410143585,
+            "acoustic_attenuation_measured_lu": 9.316799705422127e-05,
+            "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+            "acoustic_attenuation_relative_error": 3.192520276076931,
+            "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+            "baseline_direction": "x",
+            "baseline_sound_speed_relative_error": 0.0016095762046954842,
+            "baseline_gamma_relative_error": 0.003221743144949496,
+            "mode_index": 1,
+            "background_velocity_lu": [
+              0.00920122699018995,
+              0.00920122699018995
+            ],
+            "fitting_window": {
+              "x": [
+                10,
+                80
+              ],
+              "y": [
+                10,
+                80
+              ]
+            },
+            "phase_residual_norm": 0.0005557922572200264,
+            "decay_residual_norm": 0.0010271846189743004,
+            "directions": [
+              "x",
+              "y"
+            ],
+            "direction_difference": 1.3238401729309868e-10,
+            "direction_results": {
+              "x": {
+                "direction": "x",
+                "status": "PASSED",
+                "sound_speed_target_lu": 0.26025000000000004,
+                "sound_speed_measured_lu": 0.260668892207272,
+                "sound_speed_relative_error": 0.0016095762046954842,
+                "gamma_target": 1.4,
+                "gamma_measured": 1.4045104404029292,
+                "gamma_relative_error": 0.003221743144949496,
+                "acoustic_attenuation_measured_lu": 9.316799705422127e-05,
+                "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+                "acoustic_attenuation_relative_error": 3.192520276076931,
+                "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+                "mode_index": 1,
+                "background_velocity_lu": [
+                  0.00920122699018995,
+                  0.00920122699018995
+                ],
+                "background_advection_lu": 0.00920122699018995,
+                "lab_phase_speed_lu": 0.26987011919746196,
+                "intrinsic_phase_speed_lu": 0.260668892207272,
+                "k_mag_lu": 0.09817477042468103,
+                "fitting_window": [
+                  10,
+                  80
+                ],
+                "phase_residual_norm": 0.0005557922528577646,
+                "decay_residual_norm": 0.0010271846189743004,
+                "fit_sample_count": 71,
+                "sample_count": 81,
+                "pressure_amplitude_initial": 6.773006246798586e-08,
+                "pressure_amplitude_final": 6.722488964015348e-08,
+                "density_amplitude_initial": 9.999999998954661e-07,
+                "theta_amplitude_initial": 1.9351446400624547e-08,
+                "velocity_amplitude_initial": 2.6025000001186764e-07,
+                "first_invalid_step": null,
+                "nan_detected": false,
+                "negative_theta_detected": false,
+                "min_theta_lu": 0.048378596225681414,
+                "max_theta_lu": 0.048378635917168504,
+                "max_mach": 0.050000697111634185,
+                "max_mean_pressure_drift": 7.625844400394044e-15,
+                "clipping_used": false
+              },
+              "y": {
+                "direction": "y",
+                "status": "PASSED",
+                "sound_speed_target_lu": 0.26025000000000004,
+                "sound_speed_measured_lu": 0.26066889224172496,
+                "sound_speed_relative_error": 0.0016095763370793659,
+                "gamma_target": 1.4,
+                "gamma_measured": 1.404510440774201,
+                "gamma_relative_error": 0.003221743410143585,
+                "acoustic_attenuation_measured_lu": 9.31679515723824e-05,
+                "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+                "acoustic_attenuation_relative_error": 3.1925182294135093,
+                "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+                "mode_index": 1,
+                "background_velocity_lu": [
+                  0.00920122699018995,
+                  0.00920122699018995
+                ],
+                "background_advection_lu": 0.00920122699018995,
+                "lab_phase_speed_lu": 0.2698701192319149,
+                "intrinsic_phase_speed_lu": 0.26066889224172496,
+                "k_mag_lu": 0.09817477042468103,
+                "fitting_window": [
+                  10,
+                  80
+                ],
+                "phase_residual_norm": 0.0005557922572200264,
+                "decay_residual_norm": 0.0010271843330140384,
+                "fit_sample_count": 71,
+                "sample_count": 81,
+                "pressure_amplitude_initial": 6.77300624651086e-08,
+                "pressure_amplitude_final": 6.722488970709089e-08,
+                "density_amplitude_initial": 1.0000000000189932e-06,
+                "theta_amplitude_initial": 1.9351446392272554e-08,
+                "velocity_amplitude_initial": 2.602499999794067e-07,
+                "first_invalid_step": null,
+                "nan_detected": false,
+                "negative_theta_detected": false,
+                "min_theta_lu": 0.04837859622568144,
+                "max_theta_lu": 0.04837863591716878,
+                "max_mach": 0.05000069711163425,
+                "max_mean_pressure_drift": 7.445433158892456e-15,
+                "clipping_used": false
+              }
+            },
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "clipping_used": false,
+            "acceptance": {
+              "sound_speed_relative_error_max": 0.02,
+              "gamma_relative_error_max": 0.02,
+              "direction_difference_max": 0.02,
+              "attenuation_is_diagnostic_only": true,
+              "requires_no_nan": true,
+              "requires_no_clipping": true,
+              "requires_positive_theta": true
+            }
+          },
+          "disabled": {
+            "p2_06_status": "PASSED",
+            "sound_speed_target_lu": 0.26025000000000004,
+            "sound_speed_measured_lu": 0.26066889234069396,
+            "sound_speed_relative_error": 0.001609576791319789,
+            "gamma_target": 1.4,
+            "gamma_measured": 1.404510441840711,
+            "gamma_relative_error": 0.0032217443200865947,
+            "acoustic_attenuation_measured_lu": 9.316795678468118e-05,
+            "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+            "acoustic_attenuation_relative_error": 3.1925189411808956,
+            "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+            "baseline_direction": "x",
+            "baseline_sound_speed_relative_error": 0.0016095767173638365,
+            "baseline_gamma_relative_error": 0.003221744171936436,
+            "mode_index": 1,
+            "background_velocity_lu": [
+              0.00920122699018995,
+              0.00920122699018995
+            ],
+            "fitting_window": {
+              "x": [
+                10,
+                80
+              ],
+              "y": [
+                10,
+                80
+              ]
+            },
+            "phase_residual_norm": 0.0005557922228392412,
+            "decay_residual_norm": 0.0010271845824004321,
+            "directions": [
+              "x",
+              "y"
+            ],
+            "direction_difference": 7.395599769262877e-11,
+            "direction_results": {
+              "x": {
+                "direction": "x",
+                "status": "PASSED",
+                "sound_speed_target_lu": 0.26025000000000004,
+                "sound_speed_measured_lu": 0.26066889234069396,
+                "sound_speed_relative_error": 0.0016095767173638365,
+                "gamma_target": 1.4,
+                "gamma_measured": 1.404510441840711,
+                "gamma_relative_error": 0.003221744171936436,
+                "acoustic_attenuation_measured_lu": 9.316795678468118e-05,
+                "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+                "acoustic_attenuation_relative_error": 3.19251846396474,
+                "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+                "mode_index": 1,
+                "background_velocity_lu": [
+                  0.00920122699018995,
+                  0.00920122699018995
+                ],
+                "background_advection_lu": 0.00920122699018995,
+                "lab_phase_speed_lu": 0.2698701193308839,
+                "intrinsic_phase_speed_lu": 0.26066889234069396,
+                "k_mag_lu": 0.09817477042468103,
+                "fitting_window": [
+                  10,
+                  80
+                ],
+                "phase_residual_norm": 0.0005557922228392412,
+                "decay_residual_norm": 0.0010271845824004321,
+                "fit_sample_count": 71,
+                "sample_count": 81,
+                "pressure_amplitude_initial": 6.773006246798586e-08,
+                "pressure_amplitude_final": 6.722488972792226e-08,
+                "density_amplitude_initial": 9.999999998954661e-07,
+                "theta_amplitude_initial": 1.9351446400624547e-08,
+                "velocity_amplitude_initial": 2.6025000001186764e-07,
+                "first_invalid_step": null,
+                "nan_detected": false,
+                "negative_theta_detected": false,
+                "min_theta_lu": 0.048378596225681504,
+                "max_theta_lu": 0.04837863591716869,
+                "max_mach": 0.050000697111634185,
+                "max_mean_pressure_drift": 7.500944310123714e-15,
+                "clipping_used": false
+              },
+              "y": {
+                "direction": "y",
+                "status": "PASSED",
+                "sound_speed_target_lu": 0.26025000000000004,
+                "sound_speed_measured_lu": 0.260668892359941,
+                "sound_speed_relative_error": 0.001609576791319789,
+                "gamma_target": 1.4,
+                "gamma_measured": 1.4045104420481211,
+                "gamma_relative_error": 0.0032217443200865947,
+                "acoustic_attenuation_measured_lu": 9.316796738958479e-05,
+                "acoustic_attenuation_reference_lu": 2.22224320740558e-05,
+                "acoustic_attenuation_relative_error": 3.1925189411808956,
+                "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+                "mode_index": 1,
+                "background_velocity_lu": [
+                  0.00920122699018995,
+                  0.00920122699018995
+                ],
+                "background_advection_lu": 0.00920122699018995,
+                "lab_phase_speed_lu": 0.26987011935013094,
+                "intrinsic_phase_speed_lu": 0.260668892359941,
+                "k_mag_lu": 0.09817477042468103,
+                "fitting_window": [
+                  10,
+                  80
+                ],
+                "phase_residual_norm": 0.0005557921800897117,
+                "decay_residual_norm": 0.0010271843362141847,
+                "fit_sample_count": 71,
+                "sample_count": 81,
+                "pressure_amplitude_initial": 6.77300624651086e-08,
+                "pressure_amplitude_final": 6.722488975476831e-08,
+                "density_amplitude_initial": 1.0000000000189932e-06,
+                "theta_amplitude_initial": 1.9351446392272554e-08,
+                "velocity_amplitude_initial": 2.602499999794067e-07,
+                "first_invalid_step": null,
+                "nan_detected": false,
+                "negative_theta_detected": false,
+                "min_theta_lu": 0.04837859622568148,
+                "max_theta_lu": 0.04837863591716874,
+                "max_mach": 0.05000069711163425,
+                "max_mean_pressure_drift": 7.556455461354972e-15,
+                "clipping_used": false
+              }
+            },
+            "first_invalid_step": null,
+            "nan_detected": false,
+            "negative_theta_detected": false,
+            "clipping_used": false,
+            "acceptance": {
+              "sound_speed_relative_error_max": 0.02,
+              "gamma_relative_error_max": 0.02,
+              "direction_difference_max": 0.02,
+              "attenuation_is_diagnostic_only": true,
+              "requires_no_nan": true,
+              "requires_no_clipping": true,
+              "requires_positive_theta": true
+            }
+          }
+        }
+      ],
+      "high_mode_acoustic_diagnostic": {
+        "status": "PASSED",
+        "interpretation": "NO_MASKING_DETECTED",
+        "background_direction": "x",
+        "mach": 0.05,
+        "background_velocity_lu": [
+          0.013012500000000003,
+          0.0
+        ],
+        "enabled_status": "FAILED",
+        "disabled_status": "FAILED",
+        "enabled_sound_speed_relative_error": 0.0489865389561881,
+        "disabled_sound_speed_relative_error": 0.025375616510961985,
+        "enabled_gamma_relative_error": 0.10037275891128239,
+        "disabled_gamma_relative_error": 0.05139515493523539,
+        "enabled": {
+          "p2_06_status": "FAILED",
+          "sound_speed_target_lu": 0.26025000000000004,
+          "sound_speed_measured_lu": 0.272998746763348,
+          "sound_speed_relative_error": 0.0489865389561881,
+          "gamma_target": 1.4,
+          "gamma_measured": 1.5405218624757953,
+          "gamma_relative_error": 0.10037275891128239,
+          "acoustic_attenuation_measured_lu": 0.0010545888748379564,
+          "acoustic_attenuation_reference_lu": 8.88897282962232e-05,
+          "acoustic_attenuation_relative_error": 10.864012806109168,
+          "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+          "baseline_direction": "x",
+          "baseline_sound_speed_relative_error": 0.0489865389561881,
+          "baseline_gamma_relative_error": 0.10037275891128239,
+          "mode_index": 2,
+          "background_velocity_lu": [
+            0.013012500000000003,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              80
+            ],
+            "y": [
+              10,
+              80
+            ]
+          },
+          "phase_residual_norm": 0.016811977140340006,
+          "decay_residual_norm": 0.014065779671043596,
+          "directions": [
+            "x",
+            "y"
+          ],
+          "direction_difference": 0.001993202893802149,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "FAILED",
+              "sound_speed_target_lu": 0.26025000000000004,
+              "sound_speed_measured_lu": 0.272998746763348,
+              "sound_speed_relative_error": 0.0489865389561881,
+              "gamma_target": 1.4,
+              "gamma_measured": 1.5405218624757953,
+              "gamma_relative_error": 0.10037275891128239,
+              "acoustic_attenuation_measured_lu": 0.0010545888748379564,
+              "acoustic_attenuation_reference_lu": 8.88897282962232e-05,
+              "acoustic_attenuation_relative_error": 10.864012806109168,
+              "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+              "mode_index": 2,
+              "background_velocity_lu": [
+                0.013012500000000003,
+                0.0
+              ],
+              "background_advection_lu": 0.013012500000000003,
+              "lab_phase_speed_lu": 0.286011246763348,
+              "intrinsic_phase_speed_lu": 0.272998746763348,
+              "k_mag_lu": 0.19634954084936207,
+              "fitting_window": [
+                10,
+                80
+              ],
+              "phase_residual_norm": 0.016811977140340006,
+              "decay_residual_norm": 0.014065779671043596,
+              "fit_sample_count": 71,
+              "sample_count": 81,
+              "pressure_amplitude_initial": 6.773006246276718e-08,
+              "pressure_amplitude_final": 6.668950607516694e-08,
+              "density_amplitude_initial": 9.999999999210616e-07,
+              "theta_amplitude_initial": 1.9351446394170027e-08,
+              "velocity_amplitude_initial": 2.6024999997290793e-07,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837858908172857,
+              "max_theta_lu": 0.04837864306104273,
+              "max_mach": 0.050000989999739114,
+              "max_mean_pressure_drift": 8.541778395709798e-15,
+              "clipping_used": false
+            },
+            "y": {
+              "direction": "y",
+              "status": "FAILED",
+              "sound_speed_target_lu": 0.26025000000000004,
+              "sound_speed_measured_lu": 0.272480015710236,
+              "sound_speed_relative_error": 0.04699333606238598,
+              "gamma_target": 1.4,
+              "gamma_measured": 1.534673064062662,
+              "gamma_relative_error": 0.09619504575904436,
+              "acoustic_attenuation_measured_lu": 0.0010073951606186856,
+              "acoustic_attenuation_reference_lu": 8.88897282962232e-05,
+              "acoustic_attenuation_relative_error": 10.333088534836802,
+              "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+              "mode_index": 2,
+              "background_velocity_lu": [
+                0.013012500000000003,
+                0.0
+              ],
+              "background_advection_lu": 0.0,
+              "lab_phase_speed_lu": 0.272480015710236,
+              "intrinsic_phase_speed_lu": 0.272480015710236,
+              "k_mag_lu": 0.19634954084936207,
+              "fitting_window": [
+                10,
+                80
+              ],
+              "phase_residual_norm": 0.015952857817170485,
+              "decay_residual_norm": 0.013401611605237874,
+              "fit_sample_count": 71,
+              "sample_count": 81,
+              "pressure_amplitude_initial": 6.7730062479314e-08,
+              "pressure_amplitude_final": 6.672071810143643e-08,
+              "density_amplitude_initial": 9.999999999865154e-07,
+              "theta_amplitude_initial": 1.935144640752679e-08,
+              "velocity_amplitude_initial": 2.6025000001975256e-07,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.048378589394210726,
+              "max_theta_lu": 0.04837864274856861,
+              "max_mach": 0.05000001390726566,
+              "max_mean_pressure_drift": 8.722189637211386e-15,
+              "clipping_used": false
+            }
+          },
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "sound_speed_relative_error_max": 0.02,
+            "gamma_relative_error_max": 0.02,
+            "direction_difference_max": 0.02,
+            "attenuation_is_diagnostic_only": true,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true
+          }
+        },
+        "disabled": {
+          "p2_06_status": "FAILED",
+          "sound_speed_target_lu": 0.26025000000000004,
+          "sound_speed_measured_lu": 0.2668540041969779,
+          "sound_speed_relative_error": 0.025375616510961985,
+          "gamma_target": 1.4,
+          "gamma_measured": 1.4719532169093295,
+          "gamma_relative_error": 0.05139515493523539,
+          "acoustic_attenuation_measured_lu": 0.001013950659959762,
+          "acoustic_attenuation_reference_lu": 8.88897282962232e-05,
+          "acoustic_attenuation_relative_error": 10.406837205990687,
+          "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+          "baseline_direction": "x",
+          "baseline_sound_speed_relative_error": 0.025375616510961985,
+          "baseline_gamma_relative_error": 0.05139515493523539,
+          "mode_index": 2,
+          "background_velocity_lu": [
+            0.013012500000000003,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              80
+            ],
+            "y": [
+              10,
+              80
+            ]
+          },
+          "phase_residual_norm": 0.008892916563976496,
+          "decay_residual_norm": 0.007006129833561077,
+          "directions": [
+            "x",
+            "y"
+          ],
+          "direction_difference": 0.0010487778666552518,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "FAILED",
+              "sound_speed_target_lu": 0.26025000000000004,
+              "sound_speed_measured_lu": 0.2668540041969779,
+              "sound_speed_relative_error": 0.025375616510961985,
+              "gamma_target": 1.4,
+              "gamma_measured": 1.4719532169093295,
+              "gamma_relative_error": 0.05139515493523539,
+              "acoustic_attenuation_measured_lu": 0.001013950659959762,
+              "acoustic_attenuation_reference_lu": 8.88897282962232e-05,
+              "acoustic_attenuation_relative_error": 10.406837205990687,
+              "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+              "mode_index": 2,
+              "background_velocity_lu": [
+                0.013012500000000003,
+                0.0
+              ],
+              "background_advection_lu": 0.013012500000000003,
+              "lab_phase_speed_lu": 0.2798665041969779,
+              "intrinsic_phase_speed_lu": 0.2668540041969779,
+              "k_mag_lu": 0.19634954084936207,
+              "fitting_window": [
+                10,
+                80
+              ],
+              "phase_residual_norm": 0.008892916563976496,
+              "decay_residual_norm": 0.007006129833561077,
+              "fit_sample_count": 71,
+              "sample_count": 81,
+              "pressure_amplitude_initial": 6.773006246276718e-08,
+              "pressure_amplitude_final": 6.482662497039086e-08,
+              "density_amplitude_initial": 9.999999999210616e-07,
+              "theta_amplitude_initial": 1.9351446394170027e-08,
+              "velocity_amplitude_initial": 2.6024999997290793e-07,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837859276517325,
+              "max_theta_lu": 0.04837863937762534,
+              "max_mach": 0.050000989999739114,
+              "max_mean_pressure_drift": 8.396061623727746e-15,
+              "clipping_used": false
+            },
+            "y": {
+              "direction": "y",
+              "status": "FAILED",
+              "sound_speed_target_lu": 0.26025000000000004,
+              "sound_speed_measured_lu": 0.2665810597571809,
+              "sound_speed_relative_error": 0.024326838644306736,
+              "gamma_target": 1.4,
+              "gamma_measured": 1.4689436613138556,
+              "gamma_relative_error": 0.04924547236703969,
+              "acoustic_attenuation_measured_lu": 0.0009710844051187288,
+              "acoustic_attenuation_reference_lu": 8.88897282962232e-05,
+              "acoustic_attenuation_relative_error": 9.924596392989413,
+              "attenuation_status": "DIAGNOSTIC_ONLY_UNTIL_MATCHED_NSF_TARGET_DERIVATION",
+              "mode_index": 2,
+              "background_velocity_lu": [
+                0.013012500000000003,
+                0.0
+              ],
+              "background_advection_lu": 0.0,
+              "lab_phase_speed_lu": 0.2665810597571809,
+              "intrinsic_phase_speed_lu": 0.2665810597571809,
+              "k_mag_lu": 0.19634954084936207,
+              "fitting_window": [
+                10,
+                80
+              ],
+              "phase_residual_norm": 0.008423675738575187,
+              "decay_residual_norm": 0.006659200918364532,
+              "fit_sample_count": 71,
+              "sample_count": 81,
+              "pressure_amplitude_initial": 6.7730062479314e-08,
+              "pressure_amplitude_final": 6.493983089518533e-08,
+              "density_amplitude_initial": 9.999999999865154e-07,
+              "theta_amplitude_initial": 1.935144640752679e-08,
+              "velocity_amplitude_initial": 2.6025000001975256e-07,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.048378592953551514,
+              "max_theta_lu": 0.048378639189256264,
+              "max_mach": 0.050000012136094465,
+              "max_mean_pressure_drift": 8.368306048112117e-15,
+              "clipping_used": false
+            }
+          },
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "sound_speed_relative_error_max": 0.02,
+            "gamma_relative_error_max": 0.02,
+            "direction_difference_max": 0.02,
+            "attenuation_is_diagnostic_only": true,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true
+          }
+        }
+      },
+      "acceptance": {
+        "low_mode_enabled_disabled_sound_speed_delta_max": 0.005,
+        "high_mode_enabled_only_pass_would_be_masking": true
+      }
+    },
+    "dispersion_masking_status": "PASSED",
+    "first_invalid_step": null,
+    "nan_detected": false,
+    "clipping_used": false,
+    "acceptance": {
+      "nu_drift_from_mach0_max": 0.02,
+      "alpha_drift_from_mach0_max": 0.02,
+      "sound_speed_relative_error_max": 0.02,
+      "sound_speed_drift_from_mach0_max": 0.02,
+      "direction_difference_max": 0.02,
+      "requires_no_nan": true,
+      "requires_no_clipping": true,
+      "requires_positive_theta": true
+    }
+  },
+  "p2_09_status": "PASSED",
+  "p2_09_mach_numbers": [
+    0.0,
+    0.02,
+    0.05
+  ],
+  "p2_09_background_directions": [
+    "x",
+    "diagonal"
+  ],
+  "p2_09_max_nu_drift_from_mach0": 0.0002109839479624842,
+  "p2_09_max_alpha_drift_from_mach0": 0.004502465576079917,
+  "p2_09_max_sound_speed_relative_error": 0.0016595257598086555,
+  "p2_09_max_sound_speed_drift_from_mach0": 0.0001700812147511499,
+  "p2_09_max_direction_difference": 0.008370004744437264,
+  "p2_09_dispersion_masking_status": "PASSED",
+  "p2_09_first_invalid_step": null,
+  "p2_09_nan_detected": false,
+  "p2_09_clipping_used": false,
+  "summary_json_sha256_policy": "sha256 of canonical summary payload before adding this digest field",
+  "summary_json_sha256": "442141e04fa358a03884073e19b4e641286394f9d7af3f5a6e6e8f0af0b8c70f"
+}

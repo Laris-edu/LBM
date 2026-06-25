@@ -1,0 +1,67 @@
+{
+  "run_id": "20260625T052906Z",
+  "status": "DIAGNOSTIC_COMPLETE",
+  "config_path": "configs\\gas_air_10k_d2q37_physical_timestep.yaml",
+  "config_sha256": "061bf8b0aaad9f2d743ef86d9d3079874d004d5e46568613124b6867f4a46554",
+  "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "design": "driven isobaric-temperature film wall; forced thermal admittance Y=q_g/theta_wall by lock-in; production dx/dt/tau unchanged, operating point swept by frequency (no tau confound)",
+  "per_frequency": [
+    {
+      "f_hz": 10000.0,
+      "ny": 108,
+      "nx": 4,
+      "delta_T_cells": 6.65076625029654,
+      "k_thermal_lu": 0.1503586146867532,
+      "k_thermal_x_cal": 1.5315402728861713,
+      "settle_steps": 8333,
+      "lockin_steps": 33333,
+      "amplitude": 0.001,
+      "m_T_analytic_lu": {
+        "real": 0.15035861468675324,
+        "imag": 0.1503586146867532,
+        "abs": 0.21263919210963686
+      },
+      "Y_LBM_lu": {
+        "real": 0.0019580216585370173,
+        "imag": 0.0013178214635359302,
+        "abs": 0.0023601911416357858
+      },
+      "m_T_LBM_over_analytic": {
+        "real": 0.7454077187499015,
+        "imag": -0.14567552508345533,
+        "abs": 0.7595090689256269
+      },
+      "admittance_abs_err": 0.24049093107437314,
+      "admittance_complex_err": 0.2933233510657985,
+      "delta_T_lbm_cells": 22.41914009178136,
+      "delta_T_lbm_over_analytic": 3.370910846668495,
+      "qoi_rel_err_from_forced_admittance": {
+        "T_s_hat": 0.3817314459741192,
+        "q_g_hat": 0.006004360778033055,
+        "p_hat_probe": 0.8854234160828792
+      },
+      "nan_detected": false,
+      "timed_out": false,
+      "min_theta_lu": 0.04833026193523469,
+      "positivity_ok": true,
+      "complete": true
+    }
+  ],
+  "verdict": {
+    "config_operating_point_f_hz": 10000.0,
+    "config_k_thermal_x_cal": 1.5315402728861713,
+    "config_forced_admittance_complex_err": 0.2933233510657985,
+    "config_qoi_rel_err": {
+      "T_s_hat": 0.3817314459741192,
+      "q_g_hat": 0.006004360778033055,
+      "p_hat_probe": 0.8854234160828792
+    },
+    "T_s_hat_certified_at_config_dx": false,
+    "p_hat_certified_at_config_dx": false,
+    "validation_frequency_present": false,
+    "validation_admittance_complex_err": null,
+    "overall": "Forced near-wall thermal-layer sim at the PRODUCTION config (dx/dt/tau unchanged). The forced thermal admittance Y=q_g/theta_wall sets T_s_hat/q_g/p_hat through the Level C closed form. Read config_forced_admittance_complex_err and config_qoi_rel_err: small (<5-10%) -> config dx certifies T_s_hat/p_hat (free-mode caliber was over-pessimistic for the forced response); large -> config dx is inadequate and the operating point must be moved onto the calibration k (lower the thermal feature wavenumber, e.g. dx~2.6um with the closure re-verified at the new tau, or re-tune the RR thermal dispersion). q_g in Level C is separately energy-pinned (~P/2)."
+  },
+  "summary_digest": "c206e08c4a038dbc15e11a404f727b6ef6d77f5bf923e464df1443835f1d5b3c"
+}

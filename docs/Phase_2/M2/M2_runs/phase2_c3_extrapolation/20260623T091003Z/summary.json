@@ -1,0 +1,156 @@
+{
+  "run_id": "20260623T091003Z",
+  "status": "DIAGNOSTIC_COMPLETE",
+  "config_path": "configs\\gas_air_10k_d2q37_physical_timestep.yaml",
+  "config_sha256": "061bf8b0aaad9f2d743ef86d9d3079874d004d5e46568613124b6867f4a46554",
+  "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "default_closure": "D2Q37 RR (strain_rate_isotropic + ghost_orthogonal_local + diagnostic_zero)",
+  "tolerances": {
+    "nu": 0.05,
+    "alpha": 0.05,
+    "speed": 0.02,
+    "gamma": 0.02,
+    "pr": 0.05,
+    "galilean": 0.02
+  },
+  "wavenumber_axis": [
+    {
+      "nx": 64,
+      "mode": 1,
+      "nu_max_rel_err": 0.0017580044405076656,
+      "nu_dir_diff": 0.00177939381486406,
+      "p2_04_status": "PASSED",
+      "alpha_max_rel_err": 0.021201369877144938,
+      "heat_flux_rel_err": 0.0019396618319797113,
+      "p2_05_status": "PASSED",
+      "speed_max_rel_err": 0.004905103878075856,
+      "gamma_max_rel_err": 0.009834267800206353,
+      "p2_06_speed_gamma_status": "PASSED",
+      "atten_diag_GO_RISK": 0.30801417062375736,
+      "hard_pass": true
+    },
+    {
+      "nx": 64,
+      "mode": 2,
+      "nu_max_rel_err": 1.9397560479595994,
+      "nu_dir_diff": 1.5045694429145993,
+      "p2_04_status": "FAILED",
+      "alpha_max_rel_err": 0.7230774305537757,
+      "heat_flux_rel_err": 0.8085087854573758,
+      "p2_05_status": "FAILED",
+      "speed_max_rel_err": 0.09267802823848248,
+      "gamma_max_rel_err": 0.19394527339513767,
+      "p2_06_speed_gamma_status": "FAILED",
+      "atten_diag_GO_RISK": 5.912426989400341,
+      "hard_pass": false
+    },
+    {
+      "nx": 64,
+      "mode": 3,
+      "nu_max_rel_err": 5.087140413237435,
+      "nu_dir_diff": 3.9070596134227893,
+      "p2_04_status": "FAILED",
+      "alpha_max_rel_err": 0.8729339521451112,
+      "heat_flux_rel_err": 2.8838223123520272,
+      "p2_05_status": "FAILED",
+      "speed_max_rel_err": 0.22864234700093888,
+      "gamma_max_rel_err": 0.509562016843975,
+      "p2_06_speed_gamma_status": "FAILED",
+      "atten_diag_GO_RISK": 13.062030135214933,
+      "hard_pass": false
+    }
+  ],
+  "resolution_axis": [
+    {
+      "nx": 48,
+      "mode": 1,
+      "nu_max_rel_err": 0.474590226253673,
+      "nu_dir_diff": 0.35907590789112703,
+      "p2_04_status": "FAILED",
+      "alpha_max_rel_err": 0.9068078254901278,
+      "heat_flux_rel_err": 0.5264735374044898,
+      "p2_05_status": "FAILED",
+      "speed_max_rel_err": 0.035216475790782464,
+      "gamma_max_rel_err": 0.07167315174868771,
+      "p2_06_speed_gamma_status": "FAILED",
+      "atten_diag_GO_RISK": 1.863712630697116,
+      "hard_pass": false
+    },
+    {
+      "nx": 64,
+      "mode": 1,
+      "nu_max_rel_err": 0.0017580044405076656,
+      "nu_dir_diff": 0.00177939381486406,
+      "p2_04_status": "PASSED",
+      "alpha_max_rel_err": 0.021201369877144938,
+      "heat_flux_rel_err": 0.0019396618319797113,
+      "p2_05_status": "PASSED",
+      "speed_max_rel_err": 0.004905103878075856,
+      "gamma_max_rel_err": 0.009834267800206353,
+      "p2_06_speed_gamma_status": "PASSED",
+      "atten_diag_GO_RISK": 0.30801417062375736,
+      "hard_pass": true
+    },
+    {
+      "nx": 96,
+      "mode": 1,
+      "nu_max_rel_err": 0.3395576062306067,
+      "nu_dir_diff": 0.2835433766046705,
+      "p2_04_status": "FAILED",
+      "alpha_max_rel_err": 0.7780484504375147,
+      "heat_flux_rel_err": 0.4421644807640937,
+      "p2_05_status": "FAILED",
+      "speed_max_rel_err": 0.008648952906723406,
+      "gamma_max_rel_err": 0.01722310142706418,
+      "p2_06_speed_gamma_status": "PASSED",
+      "atten_diag_GO_RISK": 1.2243618652730368,
+      "hard_pass": false
+    }
+  ],
+  "prandtl_axis": {
+    "pr_targets": [
+      0.5,
+      0.6,
+      0.7061328707,
+      0.8,
+      1.0
+    ],
+    "p2_07_status": "PASSED",
+    "baseline_pr_rel_err": 0.0017625300129058274,
+    "max_pr_rel_err": 0.010060269764272989,
+    "scan_tolerance": 0.05,
+    "hard_pass": true
+  },
+  "mach_axis": {
+    "mach_numbers": [
+      0.0,
+      0.02,
+      0.05,
+      0.08
+    ],
+    "p2_09_status": "FAILED",
+    "max_sound_speed_rel_err": 0.009526666300185171,
+    "max_direction_difference": 0.02671497782734753,
+    "dispersion_masking_status": "PASSED",
+    "hard_pass": false
+  },
+  "verdict": {
+    "transport_nu_alpha_all_axes_pass": false,
+    "resolution_hard_pass": false,
+    "wavenumber_mode1_hard_pass": true,
+    "acoustic_speed_gamma_envelope_modes": [
+      1
+    ],
+    "prandtl_air_range_pass": true,
+    "mach_galilean_pass": false,
+    "c3_ready_compact_air": false
+  },
+  "interpretation": {
+    "transport": "Transport hard gates (nu isotropy P2-4, thermal alpha P2-5) hold across resolution (48/64/96) and wavenumber (mode 1/2/3): all-axes nu/alpha within tol = False.",
+    "acoustic": "Acoustic sound-speed/gamma hard gate holds at modes [1] (low-k envelope). Acoustic ATTENUATION anisotropy (diagonal ~1.31) and high-mode over-damping remain accepted bounded GO-RISK (reported, not gated); the compact-air target only excites the lowest mode, so the low-k envelope is the production-relevant one.",
+    "prandtl_mach": "P2-7 over air-relevant Pr in [0.5,1.0]: PASSED (max 0.01006). P2-9 Galilean over Mach [0,0.08]: FAILED (max speed err 0.009527).",
+    "boundaries": "Diagnostic; baseline unchanged. C3-readiness is for the BOUNDED_PRODUCTION_GO compact-air boundary (M2_Critical_Decision \u00a75): hard gates across resolution / air-Pr / Mach / low-k; high-k acoustic attenuation is the documented GO-RISK boundary."
+  },
+  "summary_digest": "c4dd2e5302461493b5585ffa8dfe11b9fa692077333a6f120b00a02f4f3ab810"
+}

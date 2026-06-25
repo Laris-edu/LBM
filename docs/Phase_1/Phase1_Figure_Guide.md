@@ -1,6 +1,6 @@
 # Phase_1 图集简要说明
 
-本文档对 `figures/phase1/` 中的 Phase_1 九张封版图做简要说明。每张图均由 `scripts/plot_phase1_reference.py` 生成，并同时输出 `.pdf` 与 `.png` 两种格式。PDF 适合作为正式报告插图，PNG 适合快速预览或插入汇报材料。
+本文档对 `figures/phase1/` 中的 Phase_1 九张封版图做简要说明。每张图均由 `scripts/phase1_plot_reference.py` 生成，并同时输出 `.pdf` 与 `.png` 两种格式。PDF 适合作为正式报告插图，PNG 适合快速预览或插入汇报材料。
 
 ## Fig_P1_01：10 kHz 基准层级对比图
 

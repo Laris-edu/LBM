@@ -1,0 +1,210 @@
+# Phase_3 Level C gas-side config (thermoacoustic film target). Derived from the
+# production RR baseline by (1) refining dx so the 10 kHz thermal layer feature
+# k_thermal=1/delta_T lands on the validated calibration k~0.098 (dx 4.0->2.6118 um,
+# dt scaled to keep dt/dx and the lattice sound speed), and (2) re-tuning the
+# conductive heat-flux EXPORT factor at the new tau (x1.506) so the Fourier-law q
+# export is accurate again. This certifies the near-wall THERMAL admittance on the
+# wall-normal axis -> T_s_hat / p_hat (axis alpha 0.45%, Fourier-q 0.0072%, acoustic
+# c 0.75% / gamma 1.5%). KNOWN QoI-IRRELEVANT residuals at this new tau (NOT re-derived;
+# see M2_Critical §5.5 item 2a-③/④/⑤): P2-4 shear nu ~34% (no QoI uses nu) and diagonal
+# P2-5 alpha ~15% (the thermal layer is the wall-normal axis). Diagnostic config; the
+# default production baseline configs/gas_air_10k_d2q37_physical_timestep.yaml is unchanged.
+case:
+  name: gas_air_10k_d2q37_levelc_dx2p6
+  phase: Phase_2
+  purpose: Phase_3 Level C gas-side (dx->calibration-k + heat-flux export re-tuned); certifies T_s_hat/p_hat; nu/diagonal-alpha are QoI-irrelevant residuals
+
+physical:
+  T0_K: 300.0
+  p0_Pa: 101325.0
+  rho0_kg_m3: 1.177
+  c0_m_s: 347.0
+  gamma: 1.4
+  cp_J_kgK: 1005.0
+  kg_W_mK: 0.0263
+  nu0_m2_s: 1.57e-5
+  alpha0_m2_s: 2.2233775895e-5
+  Pr: 0.7061328707
+
+lattice:
+  velocity_set: D2Q37
+  Q: 37
+  D: 2
+  S: 3
+  dx_m: 2.61175e-6   # tuned: k_thermal=1/delta_T -> calibration k 2*pi/64 (10 kHz air, delta_T=26.6 um)
+  dt_s: 1.95881e-9   # dt/dx kept = 7.5e-4 s/m so c_lu and theta_ref_lu are unchanged
+  theta_q_lu: 0.6979533220196852
+  theta_ref_policy: physical_sound_speed
+  theta_transport_policy: theta_ref_lu
+  rho_ref_lu: 1.0
+
+collision:
+  model: SMRT_central_Hermite_regularized_stress
+  bulk_viscosity_policy: diagnostic_zero
+  nu_b_lu: auto
+  central_moment_closure: second_order
+  high_order_relaxation: 1.0
+  trace_bulk_policy: ghost_orthogonal_local
+  trace_bulk_scale: 1.0
+  trace_bulk_calibration_id: null
+  trace_bulk_local_divergence_curve:
+    type: constant
+    coefficients: [1.1052362846829455]
+  use_binomial_transform: true
+  dispersion_correction_enabled: true
+  dispersion_correction_low_laplacian: 0.019261093311212455
+  dispersion_correction_high_laplacian: 0.038429439193539104
+  deviatoric_stress_policy: strain_rate_isotropic
+  deviatoric_strain_rate_curve:
+    type: constant
+    coefficients: [1.0]
+  regularized_shear_xy_factor: 0.4763606253137551
+  regularized_shear_normal_factor: 0.8906391739599911
+  regularized_shear_xy_dispersion_target: 0.786
+  regularized_shear_normal_dispersion_target: 0.785
+  regularized_heat_flux_factor: auto_d2q37_tau32_linear
+  heat_flux_retention_policy: auto_d2q37_tau32_linear
+  heat_flux_retention_curve:
+    type: affine
+    coefficients: [-0.5030006782780277, 0.7230829392328689]
+  regularized_heat_flux_dispersion_target: 0.8512
+  regularized_heat_flux_diagonal_low_mode_target: 0.908799
+  regularized_heat_flux_f_fraction: 0.5714285714285714
+  conductive_heat_flux_moment_factor: 0.0635448   # re-tuned at the new tau (prod 0.0422 x1.5058) so Fourier-q export is accurate
+  conductive_heat_flux_dispersion_target: 0.3201
+  conductive_heat_flux_diagonal_low_mode_target: 0.610151
+  conductive_heat_flux_galilean_correction_factor: 0.03835608923273733
+  acoustic_phase_correction_enabled: true
+  acoustic_phase_correction_low_laplacian: 0.019261093311212455
+  acoustic_phase_diagonal_low_mode_factor: 0.98405
+  acoustic_phase_high_mode_policy: specified
+  acoustic_phase_high_mode_factor: 1.0
+  acoustic_phase_high_mode_diagonal_factor: 1.0
+
+numerics:
+  precision: float64
+  streaming: pull
+  boundary: periodic
+  high_wavenumber_filter:
+    enabled: true
+    strength: 0.0065
+    passes: 1
+  nx: 64
+  ny: 4
+  steps: 16
+  output_interval: 1
+
+postprocess:
+  save_hdf5: true
+
+p2_04_shear_wave:
+  nx: 64
+  ny: 64
+  steps: 240
+  sample_interval: 1
+  mode_index: 1
+  amplitude: 1.0e-5
+  fit_start: 10
+  directions: [x, y, diagonal]
+  relative_tolerance: 0.05
+
+p2_05_thermal_diffusion:
+  nx: 64
+  ny: 64
+  steps: 320
+  sample_interval: 1
+  mode_index: 1
+  amplitude: 1.0e-5
+  fit_start: 10
+  directions: [x, y, diagonal]
+  relative_tolerance: 0.05
+  heat_flux_tolerance: 0.05
+
+p2_06_acoustic_wave:
+  nx: 64
+  ny: 64
+  steps: 240
+  sample_interval: 1
+  mode_index: 1
+  amplitude: 1.0e-6
+  fit_start: 10
+  directions: [x, y, diagonal]
+  sound_speed_tolerance: 0.02
+  gamma_tolerance: 0.02
+  direction_tolerance: 0.02
+
+p2_07_prandtl_scan:
+  pr_targets: [0.5, 0.7061328707, 1.0, 2.0]
+  baseline_pr: 0.7061328707
+  baseline_tolerance: 0.03
+  scan_tolerance: 0.05
+  # Air is Pr~0.706<1; Pr>hard_pr_max is a bounded robustness GO-RISK probe
+  # (measured + reported, non-blocking). Hard gate over the air-relevant range.
+  hard_pr_max: 1.0
+  shear_wave:
+    nx: 64
+    ny: 64
+    steps: 240
+    sample_interval: 1
+    mode_index: 1
+    amplitude: 1.0e-5
+    fit_start: 10
+    directions: [x]
+    relative_tolerance: 0.05
+  thermal_diffusion:
+    nx: 64
+    ny: 64
+    steps: 320
+    sample_interval: 1
+    mode_index: 1
+    amplitude: 1.0e-5
+    fit_start: 10
+    directions: [x]
+    relative_tolerance: 0.05
+    heat_flux_tolerance: 0.05
+
+p2_09_galilean_consistency:
+  mach_numbers: [0.0, 0.02, 0.05]
+  background_directions: [x, diagonal]
+  drift_tolerance: 0.02
+  sound_speed_tolerance: 0.02
+  gamma_tolerance: 0.02
+  direction_tolerance: 0.02
+  dispersion_delta_tolerance: 0.005
+  run_dispersion_masking_check: true
+  run_high_mode_acoustic_diagnostic: true
+  shear_wave:
+    nx: 64
+    ny: 64
+    steps: 120
+    sample_interval: 1
+    mode_index: 1
+    amplitude: 1.0e-5
+    fit_start: 10
+    directions: [x, y, diagonal]
+    relative_tolerance: 0.05
+    direction_tolerance: 0.05
+  thermal_diffusion:
+    nx: 64
+    ny: 64
+    steps: 320
+    sample_interval: 1
+    mode_index: 1
+    amplitude: 1.0e-5
+    fit_start: 10
+    directions: [x, y, diagonal]
+    relative_tolerance: 0.05
+    heat_flux_tolerance: 0.05
+  acoustic_wave:
+    nx: 64
+    ny: 64
+    steps: 80
+    sample_interval: 1
+    mode_index: 1
+    amplitude: 1.0e-6
+    fit_start: 10
+    directions: [x, y, diagonal]
+  high_mode_acoustic:
+    mode_index: 2
+    steps: 80
+    directions: [x, y, diagonal]

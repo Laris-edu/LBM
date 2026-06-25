@@ -1,0 +1,67 @@
+{
+  "phase": "Phase_2",
+  "run_id": "20260606T083915Z",
+  "timestamp": "20260606T083915Z",
+  "command": [
+    "E:\\Code\\LBM\\.venv\\Scripts\\python.exe",
+    "-m",
+    "scripts.diagnose_phase2_high_order_closure"
+  ],
+  "config": "configs\\gas_air_10k_physical_timestep.yaml",
+  "config_sha256": "8bb04dce87dad2df54509d3c49b7457a93d9f342e69d69a19c4b20c66094eb8c",
+  "python_version": "3.14.2",
+  "numpy_version": "2.4.4",
+  "production_physics_status": "NOT_PASSED",
+  "m2_decision": "GO-RISK / D2Q21_HIGH_ORDER_CLOSURE_FAILED",
+  "scope": "D2Q21 fourth-order central-moment closure diagnostic; not a production pass",
+  "tolerance": 0.05,
+  "rows": [
+    {
+      "central_moment_closure": "fourth_order",
+      "high_order_relaxation": 0.7,
+      "status": "FAILED",
+      "max_metric": 818.0230614805442,
+      "shear_x_mode1_error": 2.4019883282295638,
+      "shear_x_mode2_error": 0.045533342934848675,
+      "shear_diagonal_mode1_error": 14.671490452091133,
+      "shear_diagonal_mode2_error": 3.9636320718994424,
+      "thermal_mode1_alpha_error": 818.0230614805442,
+      "thermal_mode1_heat_flux_error": 0.4115305850549446,
+      "thermal_mode2_alpha_error": 49.03865323862659,
+      "thermal_mode2_heat_flux_error": 0.13059323486837812
+    },
+    {
+      "central_moment_closure": "fourth_order",
+      "high_order_relaxation": 0.85,
+      "status": "FAILED",
+      "max_metric": 613.5825090190189,
+      "shear_x_mode1_error": 0.06451833671177587,
+      "shear_x_mode2_error": 0.17685782049667909,
+      "shear_diagonal_mode1_error": 0.17043973422515113,
+      "shear_diagonal_mode2_error": 1.3346153933990963,
+      "thermal_mode1_alpha_error": 613.5825090190189,
+      "thermal_mode1_heat_flux_error": 1.4253859756463698,
+      "thermal_mode2_alpha_error": 8.600489408759476,
+      "thermal_mode2_heat_flux_error": 0.9224523039233786
+    },
+    {
+      "central_moment_closure": "fourth_order",
+      "high_order_relaxation": 1.0,
+      "status": "FAILED",
+      "max_metric": 598.9527873833892,
+      "shear_x_mode1_error": 0.04396579561320668,
+      "shear_x_mode2_error": 0.32693280347756215,
+      "shear_diagonal_mode1_error": 0.02576642723618794,
+      "shear_diagonal_mode2_error": 1.86240613339921,
+      "thermal_mode1_alpha_error": 598.9527873833892,
+      "thermal_mode1_heat_flux_error": 2.862190797303151,
+      "thermal_mode2_alpha_error": 34.004548311360296,
+      "thermal_mode2_heat_flux_error": 3.4677217090094605
+    }
+  ],
+  "joint_pass_exists": false,
+  "best_high_order_relaxation": 1.0,
+  "best_max_metric": 598.9527873833892,
+  "summary_json_sha256_policy": "sha256 of canonical summary payload before adding this digest field",
+  "summary_json_sha256": "d3fce1459cb0ace78bd6585918a4ebc8acf608ebaaec4492cf060d130b74eae7"
+}

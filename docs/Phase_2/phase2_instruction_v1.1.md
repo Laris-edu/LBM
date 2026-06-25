@@ -269,7 +269,7 @@ Hermite/SMRT core passes near quadrature reference, but Phase_0 physical-timeste
 3. 检查是否需要采用 quadrature-matched `Delta t`、重定义 lattice scaling、或升级 D2Q37；
 4. 记录决策，不修改 Phase_1。
 
-**生产判定硬规则**：quadrature-matched mapping 默认只是诊断配置。若仅配置 B 通过而配置 A 未通过，Phase_2 不能声明 `M2 PASSED`，除非 `docs/M2_Critical_Decision.md` 明确批准 lattice-scaling change，并把新 mapping 写入配置、metadata 和 Phase_3 handoff。否则状态只能是 `GO-RISK` 或 `NO-GO`。
+**生产判定硬规则**：quadrature-matched mapping 默认只是诊断配置。若仅配置 B 通过而配置 A 未通过，Phase_2 不能声明 `M2 PASSED`，除非 `docs/Phase_2/M2/M2_Critical_Decision.md` 明确批准 lattice-scaling change，并把新 mapping 写入配置、metadata 和 Phase_3 handoff。否则状态只能是 `GO-RISK` 或 `NO-GO`。
 
 ### 3.4 输运系数 lattice unit 映射
 
@@ -351,9 +351,9 @@ cnt_thermophone_lbm/
 │   ├── verification_thermal_diffusion.yaml
 │   └── verification_acoustic_wave.yaml
 ├── scripts/
-│   ├── run_m2_verification.py
-│   ├── summarize_m2.py
-│   └── make_phase3_handoff.py
+│   ├── phase2_m2_verification.py
+│   ├── phase2_m2_summarize.py
+│   └── phase2_phase3_handoff.py
 ├── results/
 ├── docs/
 └── tests/
@@ -371,8 +371,8 @@ core/collision_smrt.py
 core/streaming.py
 verification/*.py
 configs/*.yaml
-scripts/run_m2_verification.py
-scripts/summarize_m2.py
+scripts/phase2_m2_verification.py
+scripts/phase2_m2_summarize.py
 ```
 
 ### 4.1 环境依赖
@@ -700,7 +700,7 @@ collision:
 | `stokes_hypothesis` | 按当前 D/S 约定采用 Stokes-like bulk-viscosity closure；公式必须写入 `core/unit_mapping.py` | 可作为声衰减目标，但需在 M2 report 中给出推导 |
 | `specified` | 由配置直接给出 `nu_b_lu` 或 SI bulk viscosity | 可作为硬目标，前提是来源和单位换算写入 metadata |
 
-如果 acoustic attenuation 被用作硬指标，`bulk_viscosity_policy`、`nu_b_lu`、linearized NSF attenuation target 必须在 `docs/M2_Verification_Report.md` 中同一约定下推导清楚。若 bulk viscosity 未物理固定，声衰减只能作为 diagnostic/GO-RISK 指标；声速、gamma、nu、alpha、Pr 仍为硬指标。
+如果 acoustic attenuation 被用作硬指标，`bulk_viscosity_policy`、`nu_b_lu`、linearized NSF attenuation target 必须在 `docs/Phase_2/M2/M2_Verification_Report.md` 中同一约定下推导清楚。若 bulk viscosity 未物理固定，声衰减只能作为 diagnostic/GO-RISK 指标；声速、gamma、nu、alpha、Pr 仍为硬指标。
 
 #### 中心矩与 binomial transform
 
@@ -1148,7 +1148,7 @@ alpha_acoustic = [ (gamma - 1)/2 * alpha_lu
 | 频率相位拟合残差 | 无系统漂移 |
 | 不同传播方向差异 | `<2%`，并入 rotational isotropy |
 
-若 `c`、`gamma`、`nu`、`alpha`、`Pr` 全部通过，而只有声衰减率因 bulk-viscosity convention 未定或推导不完整而未达标，Phase_2 不应直接 `NO-GO`；状态应为 `GO-RISK`，并在 `docs/M2_Critical_Decision.md` 中限定 Phase_3 可进入的范围。
+若 `c`、`gamma`、`nu`、`alpha`、`Pr` 全部通过，而只有声衰减率因 bulk-viscosity convention 未定或推导不完整而未达标，Phase_2 不应直接 `NO-GO`；状态应为 `GO-RISK`，并在 `docs/Phase_2/M2/M2_Critical_Decision.md` 中限定 Phase_3 可进入的范围。
 
 若声速错误，优先检查 `theta_ref_lu`、`gamma`、f-g energy closure 和压力公式 `p=rho theta`。不得通过改 Phase_1 压力 proxy 来匹配声速。
 
@@ -1291,7 +1291,7 @@ M2 通过需要满足以下门槛：
 
 ### 8.1 Production mapping rule
 
-M2 production pass requires the physical-timestep mapping to pass P2-4 through P2-8, unless `docs/M2_Critical_Decision.md` explicitly approves a lattice-scaling change.
+M2 production pass requires the physical-timestep mapping to pass P2-4 through P2-8, unless `docs/Phase_2/M2/M2_Critical_Decision.md` explicitly approves a lattice-scaling change.
 
 The quadrature-matched mapping is a diagnostic implementation check by default. Passing only the quadrature-matched mapping is not sufficient for `M2 PASSED`. In that case the Phase_2 status must be `GO-RISK` or `NO-GO`, depending on which physical-timestep tests fail and whether an approved lattice-scaling change exists.
 
@@ -1299,7 +1299,7 @@ A report may state that the Hermite/SMRT implementation is internally consistent
 
 ### 8.2 M2-Critical 决策规则
 
-若以下任一条件发生，必须形成 `docs/M2_Critical_Decision.md`：
+若以下任一条件发生，必须形成 `docs/Phase_2/M2/M2_Critical_Decision.md`：
 
 ```text
 Pr error > 5%
@@ -1597,13 +1597,13 @@ run_status = diagnostic_only
 
 ## 13. 自动化运行脚本
 
-### 13.1 `scripts/run_m2_verification.py`
+### 13.1 `scripts/phase2_m2_verification.py`
 
 该脚本应一键运行全部 M2 测试：
 
 ```bash
-python scripts/run_m2_verification.py --config configs/gas_air_10k_physical_timestep.yaml
-python scripts/run_m2_verification.py --config configs/gas_air_10k_quadrature_matched.yaml
+python scripts/phase2_m2_verification.py --config configs/gas_air_10k_physical_timestep.yaml
+python scripts/phase2_m2_verification.py --config configs/gas_air_10k_quadrature_matched.yaml
 ```
 
 输出：
@@ -1615,12 +1615,12 @@ results/m2/<timestamp>/summary.json
 results/m2/<timestamp>/M2_report.md
 ```
 
-### 13.2 `scripts/summarize_m2.py`
+### 13.2 `scripts/phase2_m2_summarize.py`
 
 该脚本读取所有测试结果，生成：
 
 ```text
-docs/M2_Verification_Report.md
+docs/Phase_2/M2/M2_Verification_Report.md
 ```
 
 报告必须包含：
@@ -1740,8 +1740,8 @@ sound speed and gamma pass; attenuation is passed only if the matched linearized
 ```text
 verification/test_galilean_consistency.py
 phase3_interfaces/*.py
-scripts/make_phase3_handoff.py
-docs/M2_Verification_Report.md
+scripts/phase2_phase3_handoff.py
+docs/Phase_2/M2/M2_Verification_Report.md
 ```
 
 退出条件：
@@ -1765,13 +1765,13 @@ docs/Phase_2_Instruction.md
 即本文档或其更新版；v1.1 执行版建议文件名为 `phase2_instruction_v1.1.md`。
 
 ```text
-docs/M2_Verification_Report.md
+docs/Phase_2/M2/M2_Verification_Report.md
 ```
 
 包含全部验证结果、图、表、配置、pass/fail。
 
 ```text
-docs/M2_Critical_Decision.md
+docs/Phase_2/M2/M2_Critical_Decision.md
 ```
 
 仅当触发 M2-Critical 时必需。若未触发，应在 M2 report 中写明：
@@ -1844,7 +1844,7 @@ Phase_1 remains phase1_reference_v1.0. Its pressure reference is used only as a 
 ```text
 Phase_2 M2 status: GO-RISK
 
-The gas-side LBM core passes the main transport tests, but the following risks remain: [...]. These risks do not require Phase_1 rework. If only the quadrature-matched mapping passes while the physical-timestep mapping fails, this status cannot be upgraded to PASSED unless `docs/M2_Critical_Decision.md` approves a lattice-scaling change. Phase_3 may proceed only for Level A/B thermal-boundary tests under the documented restrictions. Level C production is blocked until [...].
+The gas-side LBM core passes the main transport tests, but the following risks remain: [...]. These risks do not require Phase_1 rework. If only the quadrature-matched mapping passes while the physical-timestep mapping fails, this status cannot be upgraded to PASSED unless `docs/Phase_2/M2/M2_Critical_Decision.md` approves a lattice-scaling change. Phase_3 may proceed only for Level A/B thermal-boundary tests under the documented restrictions. Level C production is blocked until [...].
 ```
 
 ### 17.3 不通过模板
@@ -1862,7 +1862,7 @@ The gas-side LBM core fails one or more hard M2 tests under the physical-timeste
 Phase_3 可以启动的最低条件：
 
 ```text
-P2-0 through P2-8 passed under physical-timestep mapping, or lattice-scaling change explicitly approved in `docs/M2_Critical_Decision.md`
+P2-0 through P2-8 passed under physical-timestep mapping, or lattice-scaling change explicitly approved in `docs/Phase_2/M2/M2_Critical_Decision.md`
 P2-9 passed or explicitly accepted as GO-RISK for Level A/B only
 total-energy conservation test passed
 heat flux extraction interface exists and Fourier-law validation passed

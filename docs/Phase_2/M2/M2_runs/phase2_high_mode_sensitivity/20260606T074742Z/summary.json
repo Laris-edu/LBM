@@ -1,0 +1,199 @@
+{
+  "phase": "Phase_2",
+  "run_id": "20260606T074742Z",
+  "timestamp": "20260606T074742Z",
+  "command": [
+    "E:\\Code\\LBM\\.venv\\Scripts\\python.exe",
+    "-m",
+    "scripts.diagnose_phase2_high_mode_sensitivity"
+  ],
+  "config": "configs\\gas_air_10k_physical_timestep.yaml",
+  "config_sha256": "77b88b6f194379d54ee6ceb75e6f20860ec2e7604de08caf545d7499316a5e1f",
+  "python_version": "3.14.2",
+  "numpy_version": "2.4.4",
+  "production_physics_status": "NOT_PASSED",
+  "m2_decision": "GO-RISK / HIGH_MODE_SCALAR_RESCAN_FAILED",
+  "scope": "D2Q21 physical-timestep scalar sensitivity for mode=1/mode=2; diagnostic only, not a production pass",
+  "tolerance": 0.05,
+  "scan_groups": {
+    "regularized_shear_xy_factor": {
+      "rows": [
+        {
+          "parameter": "regularized_shear_xy_factor",
+          "value": 0.85,
+          "direction": "x",
+          "mode1_nu_measured_lu": 0.004554743363948897,
+          "mode1_relative_error": 0.5472588922119397,
+          "mode2_nu_measured_lu": 0.0036484850212052974,
+          "mode2_relative_error": 0.23940043183194826,
+          "joint_status": "FAILED"
+        },
+        {
+          "parameter": "regularized_shear_xy_factor",
+          "value": 0.9,
+          "direction": "x",
+          "mode1_nu_measured_lu": 0.003864285608322945,
+          "mode1_relative_error": 0.31270848690376063,
+          "mode2_nu_measured_lu": 0.002886794018256485,
+          "mode2_relative_error": 0.019348104201618588,
+          "joint_status": "FAILED"
+        },
+        {
+          "parameter": "regularized_shear_xy_factor",
+          "value": 0.965,
+          "direction": "x",
+          "mode1_nu_measured_lu": 0.003012569688149188,
+          "mode1_relative_error": 0.02337823801246297,
+          "mode2_nu_measured_lu": 0.0019465229552602617,
+          "mode2_relative_error": 0.33876077952942274,
+          "joint_status": "FAILED"
+        },
+        {
+          "parameter": "regularized_shear_xy_factor",
+          "value": 1.02,
+          "direction": "x",
+          "mode1_nu_measured_lu": 0.0023294333638688605,
+          "mode1_relative_error": 0.20868505685983496,
+          "mode2_nu_measured_lu": 0.0011918030902498319,
+          "mode2_relative_error": 0.5951412007643884,
+          "joint_status": "FAILED"
+        }
+      ],
+      "summary": {
+        "joint_pass_exists": false,
+        "best_value": 0.9,
+        "best_max_metric": 0.31270848690376063
+      }
+    },
+    "regularized_shear_normal_factor": {
+      "rows": [
+        {
+          "parameter": "regularized_shear_normal_factor",
+          "value": 0.7,
+          "direction": "diagonal",
+          "mode1_nu_measured_lu": 0.005516996233260153,
+          "mode1_relative_error": 0.8741388478166128,
+          "mode2_nu_measured_lu": 0.0010079100827293963,
+          "mode2_relative_error": 0.6576101629793982,
+          "joint_status": "FAILED"
+        },
+        {
+          "parameter": "regularized_shear_normal_factor",
+          "value": 0.78,
+          "direction": "diagonal",
+          "mode1_nu_measured_lu": 0.004075472839917673,
+          "mode1_relative_error": 0.38444937237118415,
+          "mode2_nu_measured_lu": -0.0011230401260288784,
+          "mode2_relative_error": 1.3814998304981327,
+          "joint_status": "FAILED"
+        },
+        {
+          "parameter": "regularized_shear_normal_factor",
+          "value": 0.845,
+          "direction": "diagonal",
+          "mode1_nu_measured_lu": 0.002983547701392653,
+          "mode1_relative_error": 0.013519389008119997,
+          "mode2_nu_measured_lu": -0.002740472624521814,
+          "mode2_relative_error": 1.9309461144872406,
+          "joint_status": "FAILED"
+        },
+        {
+          "parameter": "regularized_shear_normal_factor",
+          "value": 0.92,
+          "direction": "diagonal",
+          "mode1_nu_measured_lu": 0.001803243202814157,
+          "mode1_relative_error": 0.3874333068996494,
+          "mode2_nu_measured_lu": -0.004492046588143787,
+          "mode2_relative_error": 2.5259606244225177,
+          "joint_status": "FAILED"
+        }
+      ],
+      "summary": {
+        "joint_pass_exists": false,
+        "best_value": 0.7,
+        "best_max_metric": 0.8741388478166128
+      }
+    },
+    "regularized_heat_flux_factor": {
+      "rows": [
+        {
+          "parameter": "regularized_heat_flux_factor",
+          "value": -0.7,
+          "direction": "x",
+          "mode1_alpha_measured_lu": -0.007941400212552381,
+          "mode1_alpha_relative_error": 2.9049456406759395,
+          "mode1_heat_flux_ratio_real": 0.8730317310677955,
+          "mode1_heat_flux_relative_error": 0.1273523466019906,
+          "mode2_alpha_measured_lu": -0.04082984098025938,
+          "mode2_alpha_relative_error": 10.794069748795437,
+          "mode2_heat_flux_ratio_real": 2.6844249835545373,
+          "mode2_heat_flux_relative_error": 1.6844249835545373,
+          "joint_status": "FAILED"
+        },
+        {
+          "parameter": "regularized_heat_flux_factor",
+          "value": -0.55,
+          "direction": "x",
+          "mode1_alpha_measured_lu": -8.700672917194837e-05,
+          "mode1_alpha_relative_error": 1.0208707639722776,
+          "mode1_heat_flux_ratio_real": 0.9480509158528728,
+          "mode1_heat_flux_relative_error": 0.05194908414712718,
+          "mode2_alpha_measured_lu": -0.02012970208178393,
+          "mode2_alpha_relative_error": 5.828618027358579,
+          "mode2_heat_flux_ratio_real": 2.784852547293183,
+          "mode2_heat_flux_relative_error": 1.784852547293183,
+          "joint_status": "FAILED"
+        },
+        {
+          "parameter": "regularized_heat_flux_factor",
+          "value": -0.4649237356175009,
+          "direction": "x",
+          "mode1_alpha_measured_lu": 0.004241286925672182,
+          "mode1_alpha_relative_error": 0.017379910805217724,
+          "mode1_heat_flux_ratio_real": 0.9946583821149664,
+          "mode1_heat_flux_relative_error": 0.005341617885033623,
+          "mode2_alpha_measured_lu": -0.007707991980901331,
+          "mode2_alpha_relative_error": 2.8489567745464175,
+          "mode2_heat_flux_ratio_real": 2.8470212478619565,
+          "mode2_heat_flux_relative_error": 1.8470212478619565,
+          "joint_status": "FAILED"
+        },
+        {
+          "parameter": "regularized_heat_flux_factor",
+          "value": -0.35,
+          "direction": "x",
+          "mode1_alpha_measured_lu": 0.010815151599752016,
+          "mode1_alpha_relative_error": 1.5942875742029128,
+          "mode1_heat_flux_ratio_real": 1.0654390084564325,
+          "mode1_heat_flux_relative_error": 0.06543900845643247,
+          "mode2_alpha_measured_lu": 0.01006892980202424,
+          "mode2_alpha_relative_error": 1.4152874076690551,
+          "mode2_heat_flux_ratio_real": 2.9374969091652887,
+          "mode2_heat_flux_relative_error": 1.9374969091652887,
+          "joint_status": "FAILED"
+        },
+        {
+          "parameter": "regularized_heat_flux_factor",
+          "value": -0.2,
+          "direction": "x",
+          "mode1_alpha_measured_lu": 0.020962802434669366,
+          "mode1_alpha_relative_error": 4.028458212086484,
+          "mode1_heat_flux_ratio_real": 1.1745684033668782,
+          "mode1_heat_flux_relative_error": 0.17456840336687818,
+          "mode2_alpha_measured_lu": 0.03552696822025428,
+          "mode2_alpha_relative_error": 7.522041633241718,
+          "mode2_heat_flux_ratio_real": 3.063087718075514,
+          "mode2_heat_flux_relative_error": 2.063087718075514,
+          "joint_status": "FAILED"
+        }
+      ],
+      "summary": {
+        "joint_pass_exists": false,
+        "best_value": -0.35,
+        "best_max_metric": 1.9374969091652887
+      }
+    }
+  },
+  "summary_json_sha256_policy": "sha256 of canonical summary payload before adding this digest field",
+  "summary_json_sha256": "e95062e09e2683f38acc3ca78dc43a2f7a79c5b0332b2470524f3d5dcab2a8bc"
+}

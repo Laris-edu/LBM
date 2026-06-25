@@ -309,7 +309,7 @@ Phase_1 需要可视化封版结果。图集不是论文最终图，而是 Phase
 ### 4.2 推荐位置
 
 ```text
-scripts/plot_phase1_reference.py
+scripts/phase1_plot_reference.py
 figures/phase1/
 ```
 
@@ -741,7 +741,7 @@ project_root/
       Fig_P1_08_10k_y_profiles_LevelC.pdf
 
   scripts/
-    plot_phase1_reference.py
+    phase1_plot_reference.py
 
   verification/
     test_phase1_reference_data_integrity.py
@@ -820,7 +820,7 @@ step transient: 3 C_A values
 - [ ] pressure proxy 说明已记录。
 
 ### 图集
-- [ ] `plot_phase1_reference.py` 已完成。
+- [ ] `phase1_plot_reference.py` 已完成。
 - [ ] Fig_P1_01 至 Fig_P1_07 已生成。
 - [ ] 可选 Fig_P1_08 已生成或明确跳过。
 - [ ] 图中使用 RMS SPL，不混用 peak SPL。

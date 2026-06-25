@@ -6,7 +6,7 @@ from typing import Any
 
 import numpy as np
 
-from core.lattice_d2q21 import make_d2q21
+from core.lattice import make_lattice
 from core.macroscopic import heat_flux_lu
 from core.unit_mapping import (
     create_unit_mapping,
@@ -28,9 +28,29 @@ def normal_heat_flux_lu(q_lu, wall_normal=UPPER_GAS_WALL_NORMAL):
     return np.sum(q * normal, axis=-1)
 
 
-def extract_wall_heat_flux(f, g, wall_normal=UPPER_GAS_WALL_NORMAL, config: dict[str, Any] | None = None, return_physical: bool = False):
+def extract_wall_heat_flux(
+    f,
+    g,
+    wall_normal=UPPER_GAS_WALL_NORMAL,
+    config: dict[str, Any] | None = None,
+    return_physical: bool = False,
+    velocity_set: str | None = None,
+):
+    """Conductive normal heat flux from ``f/g`` for the configured lattice.
+
+    The lattice is taken from ``config`` (``lattice.velocity_set``) so D2Q37
+    populations are handled correctly; an explicit ``velocity_set`` overrides it,
+    and with neither it falls back to ``D2Q21`` for backward compatibility.
+    Passing ``config`` also applies the conductive-flux moment/correction factors
+    so the result matches ``GasSolver2D.get_heat_flux_lu`` (the Phase_3 handoff
+    convention).
+    """
+
     mapping = create_unit_mapping(config) if config is not None else None
-    q = heat_flux_lu(f, g, lattice=make_d2q21(), mapping=mapping)
+    if velocity_set is None:
+        velocity_set = mapping.lattice.velocity_set if mapping is not None else "D2Q21"
+    lattice = make_lattice(velocity_set)
+    q = heat_flux_lu(f, g, lattice=lattice, mapping=mapping)
     q_n = normal_heat_flux_lu(q, wall_normal)
     if return_physical:
         if mapping is None:

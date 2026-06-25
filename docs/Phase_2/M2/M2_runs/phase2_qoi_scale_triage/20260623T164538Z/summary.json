@@ -1,0 +1,236 @@
+{
+  "run_id": "20260623T164538Z",
+  "status": "DIAGNOSTIC_COMPLETE",
+  "config_path": "configs\\gas_air_10k_d2q37_physical_timestep.yaml",
+  "config_sha256": "061bf8b0aaad9f2d743ef86d9d3079874d004d5e46568613124b6867f4a46554",
+  "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "target_frequency_hz": 10000.0,
+  "caliber": "one-step modal eigenvalue (Prony); authoritative, log shown for cross-check (RR doc S8/S12)",
+  "transport_lu": {
+    "alpha_lu": 0.0041688329803125,
+    "nu_lu": 0.0029437499999999998
+  },
+  "physical_scales": {
+    "delta_T_si_m": 2.6603065001186158e-05,
+    "delta_T_cells_at_config_dx": 6.65076625029654,
+    "delta_nu_si_m": 2.2355011100613466e-05,
+    "delta_nu_cells_at_config_dx": 5.588752775153367,
+    "lambda_acoustic_cells_at_config_dx": 8675.0,
+    "abs_m_T_lu_at_config_dx": 0.21263919210963683,
+    "k_thermal_at_config_dx": 0.1503586146867532,
+    "k_thermal_at_config_dx_x_cal": 1.5315402728861713
+  },
+  "level_c_qoi": {
+    "m_T": {
+      "real": 37589.653671688306,
+      "imag": 37589.653671688306,
+      "abs": 53159.79802740921
+    },
+    "inertia_iOmegaCA": {
+      "real": 0.0,
+      "imag": 43.982297150257104,
+      "abs": 43.982297150257104
+    },
+    "gas_load_2kg_mT": {
+      "real": 1977.215783130805,
+      "imag": 1977.215783130805,
+      "abs": 2796.2053762417245
+    },
+    "gas_load_over_inertia": 63.57570107557192,
+    "T_s_hat": {
+      "real": 0.24731817278113583,
+      "imag": -0.2528196569685089,
+      "abs": 0.35367224592477464
+    },
+    "q_g_hat": {
+      "real": 494.4402053608925,
+      "imag": -5.438810682959286,
+      "abs": 494.4701177411701
+    },
+    "q_g_over_half_P": 0.9889402354823402,
+    "p_hat_probe": {
+      "real": -0.40685263814790784,
+      "imag": 0.0044753530371460844,
+      "abs": 0.4068772517021805
+    }
+  },
+  "qoi_sensitivities": {
+    "T_s_hat": {
+      "dln_dln_alpha": 0.49444020701949754,
+      "dln_dln_nu": 0.0
+    },
+    "q_g_hat": {
+      "dln_dln_alpha": -0.005559794646892158,
+      "dln_dln_nu": 0.0
+    },
+    "p_hat_probe": {
+      "dln_dln_alpha": 0.9944402086864423,
+      "dln_dln_nu": 0.0
+    }
+  },
+  "transport_fidelity_fixed_grid_64": {
+    "mode_1": {
+      "x": {
+        "k_lu": 0.09817477042468103,
+        "alpha_ratio_prony": 1.0253848683189095,
+        "alpha_ratio_log": 0.9982192272563636,
+        "fourier_q_rel_err": 0.0009632514391995289,
+        "nu_rel_err": 2.1388110488462786e-05
+      },
+      "y": {
+        "k_lu": 0.09817477042468103,
+        "alpha_ratio_prony": 1.0253859201733513,
+        "alpha_ratio_log": 0.9982192345519787,
+        "fourier_q_rel_err": 0.0009632513286614989,
+        "nu_rel_err": 2.1389374356362012e-05
+      },
+      "diagonal": {
+        "k_lu": 0.13884009181744894,
+        "alpha_ratio_prony": 1.0247260694004428,
+        "alpha_ratio_log": 0.978798630122323,
+        "fourier_q_rel_err": 0.0019396618319797113,
+        "nu_rel_err": 0.0017580044405076656
+      }
+    },
+    "mode_2": {
+      "x": {
+        "k_lu": 0.19634954084936207,
+        "alpha_ratio_prony": 0.9449868451329944,
+        "alpha_ratio_log": 0.930072177275147,
+        "fourier_q_rel_err": 0.006114266019607186,
+        "nu_rel_err": 1.9397560466941441
+      },
+      "y": {
+        "k_lu": 0.19634954084936207,
+        "alpha_ratio_prony": 0.9449876213209035,
+        "alpha_ratio_log": 0.930072180875886,
+        "fourier_q_rel_err": 0.006114266240658141,
+        "nu_rel_err": 1.9397560479595994
+      },
+      "diagonal": {
+        "k_lu": 0.2776801836348979,
+        "alpha_ratio_prony": 0.2691152762103273,
+        "alpha_ratio_log": 0.2769225694460949,
+        "fourier_q_rel_err": 0.8085087854573758,
+        "nu_rel_err": 0.4351866050450004
+      }
+    },
+    "mode_3": {
+      "x": {
+        "k_lu": 0.2945243112740431,
+        "alpha_ratio_prony": 0.11411178600375119,
+        "alpha_ratio_log": 0.12706604785488737,
+        "fourier_q_rel_err": 1.1138440543335575,
+        "nu_rel_err": 5.087140413027
+      },
+      "y": {
+        "k_lu": 0.2945243112740431,
+        "alpha_ratio_prony": 0.1141118364513662,
+        "alpha_ratio_log": 0.12706604788603387,
+        "fourier_q_rel_err": 1.1138440542496255,
+        "nu_rel_err": 5.087140413237435
+      },
+      "diagonal": {
+        "k_lu": 0.4165202754523468,
+        "alpha_ratio_prony": 1.0106824265831582,
+        "alpha_ratio_log": 1.0227531535095689,
+        "fourier_q_rel_err": 2.8838223123520272,
+        "nu_rel_err": 1.1800807998146463
+      }
+    }
+  },
+  "near_wall_fidelity_feature_k_per_dx": [
+    {
+      "dx_um": 4.0,
+      "delta_T_cells": 6.65076625029654,
+      "delta_nu_cells": 5.588752775153367,
+      "k_thermal": 0.1503586146867532,
+      "k_thermal_x_cal": 1.5315402728861713,
+      "k_viscous": 0.17893079909453644,
+      "k_viscous_x_cal": 1.8225741534258115,
+      "thermal_alpha_ratio_prony": -0.36889285109778713,
+      "thermal_alpha_ratio_log": -0.3723668510081183,
+      "thermal_fourier_q_rel_err": 0.816651311543958,
+      "viscous_nu_ratio": 2.498198323264669,
+      "viscous_nu_rel_err": 1.4981983232646692,
+      "near_wall_thermal_clean": false
+    },
+    {
+      "dx_um": 2.6,
+      "delta_T_cells": 10.231948077379291,
+      "delta_nu_cells": 8.59808119254364,
+      "k_thermal": 0.0977330995463896,
+      "k_thermal_x_cal": 0.9955011773760115,
+      "k_viscous": 0.11630501941144869,
+      "k_viscous_x_cal": 1.1846731997267776,
+      "thermal_alpha_ratio_prony": 1.0153782999984764,
+      "thermal_alpha_ratio_log": 1.007839154427032,
+      "thermal_fourier_q_rel_err": 0.001738170111979409,
+      "viscous_nu_ratio": 1.2470183670792734,
+      "viscous_nu_rel_err": 0.24701836707927338,
+      "near_wall_thermal_clean": true
+    },
+    {
+      "dx_um": 1.7999999999999998,
+      "delta_T_cells": 14.779480556214533,
+      "delta_nu_cells": 12.419450611451927,
+      "k_thermal": 0.06766137660903895,
+      "k_thermal_x_cal": 0.6891931227987772,
+      "k_viscous": 0.08051885959254139,
+      "k_viscous_x_cal": 0.8201583690416151,
+      "thermal_alpha_ratio_prony": 1.6619289160988442,
+      "thermal_alpha_ratio_log": 1.6480216253351603,
+      "thermal_fourier_q_rel_err": 0.35142310988438785,
+      "viscous_nu_ratio": 0.800328232903602,
+      "viscous_nu_rel_err": 0.199671767096398,
+      "near_wall_thermal_clean": false
+    }
+  ],
+  "correction_toggle_at_config_dx_thermal_k": {
+    "k_lu": 0.14959965017094254,
+    "rr_default": -0.36889285109778713,
+    "corrections_off": -0.5065738535904678,
+    "filter_off": -0.4036714221482284,
+    "off_calibration_intrinsic_to_base_closure": true
+  },
+  "acoustic_viscous_loss": {
+    "kL_at_probe": 0.038536481185336334,
+    "longitudinal_atten_fraction_over_probe": 2.9989572679183084e-07,
+    "longitudinal_atten_fraction_with_RR_nu_x2": 5.997914535836617e-07,
+    "shear_stokes_layer_excited": false,
+    "note": "Wall-normal (y) acoustic propagation off a planar film -> acoustic particle velocity is normal to the wall, so NO tangential velocity at the wall and the viscous SHEAR Stokes layer (delta_nu) is geometrically not excited in the leading-order p_hat. The only viscous channel is longitudinal attenuation, ~3.00e-07 over the compact probe (~6.00e-07 even at 2x RR nu): negligible vs |p_hat|~0.4. The Phase_1 pressure reference is itself inviscid."
+  },
+  "verdict": {
+    "q_g_hat": {
+      "dominant_scale": "energy-conservation-pinned (q_g ~ P_hat/2), integral",
+      "transport": "alpha (axis), but immune (energy-pinned)",
+      "viscous_stokes_dependent": false,
+      "near_wall_thermal_dependent": false,
+      "config_dx_sufficient": true,
+      "relevant_lever": "none (config dx sufficient)"
+    },
+    "T_s_hat": {
+      "dominant_scale": "near-wall THERMAL layer delta_T (gas-thermal-admittance dominated)",
+      "transport": "alpha (wall-normal axis); NOT nu",
+      "viscous_stokes_dependent": false,
+      "near_wall_thermal_dependent": true,
+      "config_dx_sufficient": false,
+      "relevant_lever": "thermal resolution: dx so k_thermal -> calibration k (option 1); NOT shear/nu re-tune (option 2)"
+    },
+    "p_hat_probe": {
+      "dominant_scale": "near-wall THERMAL source delta_T + acoustically COMPACT radiation (kL~0.04)",
+      "transport": "alpha (thermal source, sensitivity ~1); nu only via negligible longitudinal attenuation",
+      "viscous_stokes_dependent": false,
+      "near_wall_thermal_dependent": true,
+      "config_dx_sufficient": false,
+      "relevant_lever": "thermal resolution: dx so k_thermal -> calibration k (option 1); NOT shear/nu re-tune (option 2)"
+    },
+    "viscous_stokes_layer_irrelevant_to_all_qoi": true,
+    "binding_near_wall_layer_for_qoi": "THERMAL (alpha), not VISCOUS (nu)",
+    "config_dx_sufficient_for_all_qoi": false,
+    "refined_dx_certifies_near_wall_thermal": true,
+    "overall": "The near-wall layer the QoI care about is the THERMAL one (alpha, wall-normal axis), NOT the viscous (Stokes) layer the envelope flagged: q_g/T_s_hat/p_hat have ZERO nu sensitivity and the shear Stokes layer is geometrically not excited (normal propagation). So the RR shear-dispersion regression (option 2) is IRRELEVANT to every QoI. q_g is energy-conservation-pinned (q_g~P/2, alpha-sensitivity ~0.006) -> config dx sufficient. T_s_hat (alpha-sensitivity ~0.5) and p_hat (~1.0) ride the near-wall THERMAL admittance; the RR thermal alpha is clean only near the calibration k~0.098 and is wild off-calibration (intrinsic to the base closure, not the spectral corrections), and the config-dx thermal feature k~0.15 is off-calibration -> config dx is NOT certified for T_s_hat/p_hat. Relevant lever = THERMAL resolution (dx so k_thermal -> calibration k, i.e. dx~2.6um where the feature is verified clean; or re-tune the RR THERMAL dispersion), NOT the shear/nu re-tune. Definitive QoI-level check if config dx is kept: a driven 10 kHz near-wall thermal-layer sim."
+  },
+  "summary_digest": "6b4543767d29a014b614defe47f37d9318b688531ac52fcc0984f7067f6c283e"
+}

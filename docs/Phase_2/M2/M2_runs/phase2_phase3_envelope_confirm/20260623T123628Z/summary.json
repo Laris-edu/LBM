@@ -1,0 +1,70 @@
+{
+  "run_id": "20260623T123628Z",
+  "status": "DIAGNOSTIC_COMPLETE",
+  "config_path": "configs\\gas_air_10k_d2q37_physical_timestep.yaml",
+  "config_sha256": "061bf8b0aaad9f2d743ef86d9d3079874d004d5e46568613124b6867f4a46554",
+  "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "dx_m": 4e-06,
+  "dt_s": 3e-09,
+  "target_frequency_hz": 10000.0,
+  "physical_scales": {
+    "lambda_acoustic_si_m": 0.0347,
+    "lambda_acoustic_cells": 8675.0,
+    "delta_T_si_m": 2.6603065001186158e-05,
+    "delta_T_cells": 6.65076625029654,
+    "delta_nu_si_m": 2.2355011100613466e-05,
+    "delta_nu_cells": 5.588752775153367
+  },
+  "envelope_axes": {
+    "mach": {
+      "operating": "small-signal film acoustics (P2-6 amplitude Mach ~1e-6; driven 10 kHz film Mach << 1e-3)",
+      "envelope_max": 0.05,
+      "within": true,
+      "note": "film velocities are far below the Mach 0.05 envelope edge"
+    },
+    "prandtl": {
+      "operating": 0.7061328707,
+      "envelope_max": 1.0,
+      "within": true
+    },
+    "acoustic_wavenumber": {
+      "k_lu": 0.0007242864907411626,
+      "calibration_k_lu": 0.09817477042468103,
+      "within": true,
+      "note": "acoustic lambda ~ 8675 cells >> gas region: ACOUSTICALLY COMPACT (kL at probe ~ 0.0385 << 1); acoustic does not transport across the gas region, so accuracy at k_acoustic is moot and the diagonal/high-mode attenuation GO-RISK is physically negligible"
+    },
+    "thermal_wavenumber": {
+      "k_lu": 0.1503586146867532,
+      "k_ratio_to_calibration": 1.5315402728861713,
+      "delta_T_cells_at_config_dx": 6.65076625029654,
+      "within": false,
+      "axis_alpha_err_mode1_k0p098": 0.0017807727430303455,
+      "axis_alpha_err_mode2_k0p196": 0.06992782272465992,
+      "dx_for_thermal_on_calibration_m": 2.611749799084318e-06,
+      "delta_T_cells_target": 10.185916357881302,
+      "note": "thermal BL ~6.7 cells -> k_thermal=0.150 (1.53x cal). AXIS (wall-normal) alpha err brackets mode1 0.00178 .. mode2 0.0699; the wall-normal thermal BL is an axis direction (the 72% C3 alpha was the diagonal max), so thermal alpha is ~few-% here -- acceptable-ish"
+    },
+    "viscous_wavenumber": {
+      "k_lu": 0.17893079909453644,
+      "k_ratio_to_calibration": 1.8225741534258115,
+      "delta_nu_cells_at_config_dx": 5.588752775153367,
+      "within": false,
+      "axis_nu_err_mode1_k0p098": 2.1388110488462786e-05,
+      "axis_nu_err_mode2_k0p196": 1.9397560466941441,
+      "dx_for_viscous_on_calibration_m": 2.1946980826439233e-06,
+      "note": "BINDING axis: viscous (Stokes) BL ~5.6 cells -> k_viscous=0.179 (1.82x cal). RR regressed the SHEAR dispersion (RR doc \u00a713): AXIS nu err mode1 2.14e-05 -> mode2 1.94 -- so nu at the viscous-BL k is badly off at the config dx; this is the worst axis (shear regression hits nu, not alpha)"
+    },
+    "resolution": {
+      "calibration_nx": 64,
+      "note": "RR corrections calibrated at nx=64; other resolutions need re-tune (RR doc \u00a713)"
+    }
+  },
+  "within_envelope": false,
+  "interpretation": {
+    "verdict": "Mach (<<0.05) and Pr (0.706<=1) are well inside the envelope. Acoustic is compact (lambda~8675 cells, kL~0.039<<1) so the diagonal/high-mode attenuation GO-RISK is physically negligible. The wall-normal thermal BL is an axis direction so its alpha err at k_thermal=0.150 is only ~few-% (mode1 0.00178 .. mode2 0.0699). BINDING axis = the VISCOUS (Stokes) boundary layer: delta_nu~5.6 cells -> k_viscous=0.179 (1.82x cal), and RR regressed the SHEAR dispersion so axis nu err runs mode1 2.14e-05 -> mode2 1.94: nu at the viscous-BL scale is badly off at the config dx=4.0 um.",
+    "recommendation": "For Level C, resolve BOTH boundary layers onto the calibration k: use dx ~ 2.61 um (delta_T/delta_nu ~ 10 cells each) so thermal AND viscous features sit at k\u22480.098 where RR nu/alpha are validated (~0.2-2%); OR re-tune the RR shear dispersion targets for the strain_rate_isotropic policy (recovers high-k nu). Mach/Pr/acoustic axes need no change. If the Phase_3 quantities of interest are dominated by the full-gas-region scale (~64 cells, k\u22480.098) rather than the near-wall boundary layers, the config dx may already suffice -- confirm which scale drives T_s_hat / q_g / p_hat.",
+    "boundaries": "Diagnostic; baseline unchanged. This is the Level C precondition (M2_Critical_Decision \u00a75.5 item 2): confirm the Phase_3 sim's operating point sits in the accepted compact-air envelope before Level C."
+  },
+  "summary_digest": "86d379cc93d168da23a369986446ba3b5863d4876c2496ba71bd298dd2fe6efe"
+}

@@ -1,0 +1,117 @@
+{
+  "run_id": "20260622T051622Z",
+  "status": "DIAGNOSTIC_COMPLETE",
+  "config_path": "configs\\gas_air_10k_d2q37_physical_timestep.yaml",
+  "config_sha256": "f6b53b2bf343bcc627a82b0ba6c101343897e6a32e5111d70e2516dc09f3f18e",
+  "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "chi_eigen_recalibrated": 1.1052362846829455,
+  "baseline_current_zero": {
+    "axis": {
+      "mode1": {
+        "ratio": 5.970579289143307,
+        "k_mag": 0.09817477042468103,
+        "speed_rel_error": 0.0051502900769535565
+      },
+      "mode2": {
+        "ratio": 7.9135977570928056,
+        "k_mag": 0.19634954084936207,
+        "speed_rel_error": 0.04507664234973663
+      },
+      "mode3": {
+        "ratio": 9.647363308266293,
+        "k_mag": 0.2945243112740431,
+        "speed_rel_error": 0.10876441354213107
+      }
+    },
+    "diagonal": {
+      "mode1": {
+        "ratio": 6.996130315550748,
+        "k_mag": 0.13884009181744894,
+        "speed_rel_error": 0.0005838946719094462
+      },
+      "mode2": {
+        "ratio": 10.871970447833792,
+        "k_mag": 0.2776801836348979,
+        "speed_rel_error": 0.08978457108374882
+      },
+      "mode3": {
+        "ratio": null,
+        "k_mag": 0.4165202754523468,
+        "speed_rel_error": null
+      }
+    }
+  },
+  "rr_chistar": {
+    "axis": {
+      "mode1": {
+        "ratio": 1.0000184775277157,
+        "k_mag": 0.09817477042468103,
+        "speed_rel_error": 0.005388733685416369
+      },
+      "mode2": {
+        "ratio": 5.367728736836146,
+        "k_mag": 0.19634954084936207,
+        "speed_rel_error": 0.046284146543438265
+      },
+      "mode3": {
+        "ratio": 12.274890265033541,
+        "k_mag": 0.2945243112740431,
+        "speed_rel_error": 0.1112659562704239
+      }
+    },
+    "diagonal": {
+      "mode1": {
+        "ratio": 1.265229134322534,
+        "k_mag": 0.13884009181744894,
+        "speed_rel_error": 0.0012066995816786275
+      },
+      "mode2": {
+        "ratio": 6.910657675884212,
+        "k_mag": 0.2776801836348979,
+        "speed_rel_error": 0.09299435114347143
+      },
+      "mode3": {
+        "ratio": null,
+        "k_mag": 0.4165202754523468,
+        "speed_rel_error": null
+      }
+    }
+  },
+  "rr_axis_filter_off": {
+    "mode1": {
+      "ratio": 0.9728804444943044,
+      "k_mag": 0.09817477042468103,
+      "speed_rel_error": 0.005388737469083527
+    },
+    "mode2": {
+      "ratio": 5.25973939296821,
+      "k_mag": 0.19634954084936207,
+      "speed_rel_error": 0.04628414493698285
+    },
+    "mode3": {
+      "ratio": 12.033850990712322,
+      "k_mag": 0.2945243112740431,
+      "speed_rel_error": 0.11126595616182433
+    }
+  },
+  "filter_contribution_axis": {
+    "mode1": 0.027138033033411224,
+    "mode2": 0.10798934386793668,
+    "mode3": 0.24103927432121885
+  },
+  "k2_hyperviscous_fit": {
+    "beta": 1.4151001141202297,
+    "residual": 0.07549061687488753,
+    "form": "ratio = 1 + beta*((k/k1)^2 - 1)"
+  },
+  "interpretation": {
+    "rr_vs_baseline": "RR fixes the LOW mode only (mode1 axis ~6 -> 1.000, diagonal ~7 -> 1.265). At high mode RR does NOT fix the over-damping and its effect is mode-dependent: vs baseline it is better at mode2 (axis 7.9->5.4, diag 10.9->6.9) but worse at mode3 axis (9.6->12.3). The high-mode over-damping (5-12x) persists for both -> it is a separate axis the RR low-mode calibration does not address.",
+    "filter_vs_dispersion": "The high-wavenumber filter contributes only ~0.03/0.11/0.24 to the mode1/2/3 ratio (its per-step damping ~strength*k^4 divided by the equally small NSF reference coeff*k^2); this is small vs the 4-11 dispersion excess, so the high-mode over-damping is closure/lattice DISPERSION, not the filter.",
+    "k_scaling": "RR axis excess(ratio-1) ~ 1.415*((k/k1)^2 - 1) (residual 0.075): the extra acoustic damping is hyperviscous (~k^4 in sigma) and grows with wavenumber.",
+    "speed_correction": "At high mode the phase speed is also off (RR speed_err ~4.6% mode2, ~11% mode3 axis) with the default acoustic_phase_high_mode_factor=1.0. The project's high-mode phase corrections target SPEED/gamma, not attenuation, so even with the speed seed the attenuation stays over-damped.",
+    "physical_relevance": "The 10 kHz thin-film target is acoustically compact (lambda ~ 8675 cells >> film ~ tens of cells), operating in the k->0 limit; high-mode acoustic resonances do not occur in the gas film, so the high-mode over-damping is physically irrelevant for p_hat -- the same compactness argument as decision A, extended to high modes.",
+    "boundaries": "Diagnostic only; baseline unchanged. High-mode acoustic over-damping is a real, RR-independent, dispersion-driven axis; like the diagonal residual it is a bounded GO-RISK boundary, physically irrelevant for the compact 10 kHz target. A production high-mode acoustic-attenuation fix (if ever needed) would require a wavenumber-dependent (spectral/dispersion) mechanism, not a local closure."
+  },
+  "summary_digest": "337bd893f58f84fe83ff9759847c0dcffe23641538d0b0d24d1e7604f2fd5ac4"
+}

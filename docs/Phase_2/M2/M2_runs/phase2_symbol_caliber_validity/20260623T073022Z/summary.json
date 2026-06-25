@@ -1,0 +1,46 @@
+{
+  "run_id": "20260623T073022Z",
+  "status": "DIAGNOSTIC_COMPLETE",
+  "config_path": "configs\\gas_air_10k_d2q37_physical_timestep.yaml",
+  "config_sha256": "061bf8b0aaad9f2d743ef86d9d3079874d004d5e46568613124b6867f4a46554",
+  "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "chi_eigen_recalibrated": 1.1052362846829455,
+  "symbol_vs_dynamic": {
+    "x": {
+      "symbol_eigen_ratio": 1.0000184775277157,
+      "n_acoustic_eigenvalues_in_band": 2,
+      "dynamic_prony_ratio_240": 0.9999959950001241,
+      "dynamic_prony_ratio_480": 0.9999933519209767,
+      "dynamic_prony_ratio_720": 0.9999932068088146,
+      "symbol_minus_dynamic": 2.5270718901015954e-05
+    },
+    "diagonal": {
+      "symbol_eigen_ratio": 1.265229134322534,
+      "n_acoustic_eigenvalues_in_band": 2,
+      "dynamic_prony_ratio_240": 1.3080071588732338,
+      "dynamic_prony_ratio_480": 1.3075569712980804,
+      "dynamic_prony_ratio_720": 1.3073022367915343,
+      "symbol_minus_dynamic": -0.04207310246900042
+    }
+  },
+  "root_cause_corrections_on_off": {
+    "corrections_on": {
+      "symbol_eigen_ratio": 1.265229134322534,
+      "dynamic_prony_ratio_720": 1.3073022367915343,
+      "gap": 0.04207310246900042
+    },
+    "corrections_off": {
+      "symbol_eigen_ratio": 1.875967303256326,
+      "dynamic_prony_ratio_720": 1.8759949049164228,
+      "gap": 2.7601660096854275e-05
+    }
+  },
+  "interpretation": {
+    "x_exact": "x/y: one-step symbol eigenvalue == dynamic Prony exactly (1.000), window-independent.",
+    "diagonal_gap": "diagonal: symbol 1.2652 vs dynamic Prony 1.3073; Prony is window-independent (240/480/720 agree) so NOT a fit artifact, and only two acoustic eigenvalues sit in the band (no 1.307 eigenvalue) so NOT a selection error -- the single-mode one-step operator genuinely differs from the multi-step dynamic for diagonal.",
+    "root_cause": "The periodic FFT corrections drive the gap: corrections ON gap 0.0421, corrections OFF gap 0.0000 (EXACT agreement OFF). The single-mode one-step symbol does not faithfully represent the multi-step action of the global dispersion/acoustic-phase FFT corrections on the diagonal mode; x/y are unaffected.",
+    "conclusion": "Dynamic Prony is AUTHORITATIVE (real multi-step evolution; what production P2-6 reports). The one-step symbol caliber is exact for x/y but ~3% low for diagonal -- use the dynamic value (~1.31) for the diagonal acoustic residual. bounded-production-GO is unchanged: 1.27 vs 1.31 are both bounded ~1.3 and physically negligible under acoustic compactness (kL~0.04)."
+  },
+  "summary_digest": "51aa8970632b5077be04fec0ed408014c6ff0735cf15b2779eb498fa8fb28819"
+}

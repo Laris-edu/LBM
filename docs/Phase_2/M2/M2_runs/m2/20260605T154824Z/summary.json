@@ -1,0 +1,1027 @@
+{
+  "phase": "Phase_2",
+  "run_id": "20260605T154824Z",
+  "config": "configs\\gas_air_10k_physical_timestep.yaml",
+  "config_sha256": "77b88b6f194379d54ee6ceb75e6f20860ec2e7604de08caf545d7499316a5e1f",
+  "timestamp": "20260605T154824Z",
+  "command": [
+    "E:\\Code\\LBM\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "verification/test_phase2_p2_00_unit_mapping.py",
+    "verification/test_phase2_p2_01_lattice_d2q21.py",
+    "verification/test_phase2_p2_02_equilibrium_macro.py",
+    "verification/test_phase2_p2_03_collision_uniform.py",
+    "verification/test_phase2_p2_04_streaming_shear.py",
+    "verification/test_phase2_p2_05_thermal_heat_flux.py",
+    "verification/test_phase2_p2_06_acoustic_gamma.py",
+    "verification/test_phase2_p2_07_prandtl_scan.py",
+    "verification/test_phase2_p2_08_rotational_isotropy.py",
+    "verification/test_phase2_p2_09_galilean_consistency.py",
+    "verification/test_phase2_postprocess_modal_fit.py",
+    "verification/test_phase2_hdf5_metadata.py"
+  ],
+  "returncode": 0,
+  "status": "PASSED",
+  "automation_status": "PASSED",
+  "contract_validation_status": "PASSED",
+  "production_physics_status": "NOT_PASSED",
+  "m2_decision": "GO-RISK / IN-PROGRESS",
+  "validation_level": "CONTRACT",
+  "python_version": "3.14.2",
+  "numpy_version": "2.4.4",
+  "h5py_version": "3.16.0",
+  "stdout": ".....................                                                    [100%]\n21 passed in 0.77s\n",
+  "stderr": "",
+  "raw_hdf5": "results\\m2\\20260605T154824Z\\raw\\uniform_state.h5",
+  "p2_numbering": "P2-0 through P2-9 only; postprocess/HDF5 schema tests are support tests",
+  "bulk_viscosity_policy": "diagnostic_zero",
+  "regularized_heat_flux_factor_policy": "auto_tau32_linear",
+  "regularized_heat_flux_factor": -0.4649237356175009,
+  "regularized_heat_flux_f_fraction": 0.5714285714285714,
+  "conductive_heat_flux_moment_factor_policy": "specified",
+  "conductive_heat_flux_moment_factor": 0.05192359403391186,
+  "conductive_heat_flux_galilean_correction_factor": 0.03272660408381829,
+  "high_wavenumber_filter_enabled": true,
+  "high_wavenumber_filter_strength": 0.0065,
+  "high_wavenumber_filter_passes": 1,
+  "p2_04_shear_wave": {
+    "p2_04_status": "PASSED",
+    "nu_target_lu": 0.0029437499999999998,
+    "nu_measured_lu": 0.003012569688149188,
+    "relative_error": 0.02337824230099983,
+    "baseline_direction": "x",
+    "baseline_relative_error": 0.02337823801246297,
+    "mode_index": 1,
+    "background_velocity_lu": [
+      0.0,
+      0.0
+    ],
+    "fitting_window": {
+      "x": [
+        10,
+        120
+      ],
+      "y": [
+        10,
+        120
+      ],
+      "diagonal": [
+        10,
+        120
+      ]
+    },
+    "residual_norm": 9.260152918487968e-07,
+    "directions": [
+      "x",
+      "y",
+      "diagonal"
+    ],
+    "direction_difference": 0.009858853292879683,
+    "direction_results": {
+      "x": {
+        "direction": "x",
+        "status": "PASSED",
+        "nu_target_lu": 0.0029437499999999998,
+        "nu_measured_lu": 0.003012569688149188,
+        "relative_error": 0.02337823801246297,
+        "mode_index": 1,
+        "background_velocity_lu": [
+          0.0,
+          0.0
+        ],
+        "k2_lu": 0.009638285547938826,
+        "fitting_window": [
+          10,
+          120
+        ],
+        "residual_norm": 9.260152918487968e-07,
+        "fit_sample_count": 111,
+        "sample_count": 121,
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "negative_theta_detected": false,
+        "min_theta_lu": 0.0483786160710109,
+        "max_theta_lu": 0.048378616071990094,
+        "max_rho_drift": 1.0286549390059463e-11,
+        "clipping_used": false
+      },
+      "y": {
+        "direction": "y",
+        "status": "PASSED",
+        "nu_target_lu": 0.0029437499999999998,
+        "nu_measured_lu": 0.0030125697007735677,
+        "relative_error": 0.02337824230099983,
+        "mode_index": 1,
+        "background_velocity_lu": [
+          0.0,
+          0.0
+        ],
+        "k2_lu": 0.009638285547938826,
+        "fitting_window": [
+          10,
+          120
+        ],
+        "residual_norm": 9.260152455021067e-07,
+        "fit_sample_count": 111,
+        "sample_count": 121,
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "negative_theta_detected": false,
+        "min_theta_lu": 0.04837861607101082,
+        "max_theta_lu": 0.04837861607199028,
+        "max_rho_drift": 1.0290435170645651e-11,
+        "clipping_used": false
+      },
+      "diagonal": {
+        "direction": "diagonal",
+        "status": "PASSED",
+        "nu_target_lu": 0.0029437499999999998,
+        "nu_measured_lu": 0.002983547701392653,
+        "relative_error": 0.013519389008119997,
+        "mode_index": 1,
+        "background_velocity_lu": [
+          0.0,
+          0.0
+        ],
+        "k2_lu": 0.019276571095877652,
+        "fitting_window": [
+          10,
+          120
+        ],
+        "residual_norm": 5.422045398123016e-07,
+        "fit_sample_count": 111,
+        "sample_count": 121,
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "negative_theta_detected": false,
+        "min_theta_lu": 0.04837861600557426,
+        "max_theta_lu": 0.04837861614107467,
+        "max_rho_drift": 2.6723878665535494e-10,
+        "clipping_used": false
+      }
+    },
+    "first_invalid_step": null,
+    "nan_detected": false,
+    "negative_theta_detected": false,
+    "clipping_used": false,
+    "acceptance": {
+      "relative_error_max": 0.05,
+      "direction_difference_max": 0.05,
+      "requires_no_nan": true,
+      "requires_no_clipping": true,
+      "requires_positive_theta": true
+    }
+  },
+  "p2_04_status": "PASSED",
+  "nu_target_lu": 0.0029437499999999998,
+  "nu_measured_lu": 0.003012569688149188,
+  "relative_error": 0.02337824230099983,
+  "mode_index": 1,
+  "fitting_window": {
+    "x": [
+      10,
+      120
+    ],
+    "y": [
+      10,
+      120
+    ],
+    "diagonal": [
+      10,
+      120
+    ]
+  },
+  "residual_norm": 9.260152918487968e-07,
+  "directions": [
+    "x",
+    "y",
+    "diagonal"
+  ],
+  "first_invalid_step": null,
+  "nan_detected": false,
+  "clipping_used": false,
+  "p2_05_thermal_diffusion": {
+    "p2_05_status": "PASSED",
+    "alpha_target_lu": 0.0041688329803125,
+    "alpha_measured_lu": 0.004241286925672182,
+    "relative_error": 0.017379910805217724,
+    "baseline_direction": "x",
+    "baseline_relative_error": 0.017379910805217724,
+    "mode_index": 1,
+    "background_velocity_lu": [
+      0.0,
+      0.0
+    ],
+    "fitting_window": {
+      "x": [
+        10,
+        320
+      ],
+      "y": [
+        10,
+        320
+      ]
+    },
+    "residual_norm": 0.000452373002942275,
+    "directions": [
+      "x",
+      "y"
+    ],
+    "direction_difference": 3.091019690496944e-08,
+    "direction_results": {
+      "x": {
+        "direction": "x",
+        "status": "PASSED",
+        "alpha_target_lu": 0.0041688329803125,
+        "alpha_measured_lu": 0.004241286925672182,
+        "relative_error": 0.017379910805217724,
+        "mode_index": 1,
+        "background_velocity_lu": [
+          0.0,
+          0.0
+        ],
+        "k_mag_lu": 0.09817477042468103,
+        "fitting_window": [
+          10,
+          320
+        ],
+        "residual_norm": 0.00045237298828134905,
+        "fit_sample_count": 311,
+        "sample_count": 321,
+        "heat_flux_ratio_real": 0.9946583821149664,
+        "heat_flux_ratio_imag": -4.582354181606679e-11,
+        "heat_flux_relative_error": 0.005341617885033623,
+        "heat_flux_sign_passed": true,
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "negative_theta_detected": false,
+        "min_theta_lu": 0.04837813228526811,
+        "max_theta_lu": 0.048379099857589536,
+        "max_pressure_drift": 1.2264970011832688e-09,
+        "clipping_used": false
+      },
+      "y": {
+        "direction": "y",
+        "status": "PASSED",
+        "alpha_target_lu": 0.0041688329803125,
+        "alpha_measured_lu": 0.004241286796812733,
+        "relative_error": 0.017379879895020878,
+        "mode_index": 1,
+        "background_velocity_lu": [
+          0.0,
+          0.0
+        ],
+        "k_mag_lu": 0.09817477042468103,
+        "fitting_window": [
+          10,
+          320
+        ],
+        "residual_norm": 0.000452373002942275,
+        "fit_sample_count": 311,
+        "sample_count": 321,
+        "heat_flux_ratio_real": 0.99465838257013,
+        "heat_flux_ratio_imag": -1.0519323095064881e-10,
+        "heat_flux_relative_error": 0.00534161742987005,
+        "heat_flux_sign_passed": true,
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "negative_theta_detected": false,
+        "min_theta_lu": 0.04837813228526811,
+        "max_theta_lu": 0.048379099857589536,
+        "max_pressure_drift": 1.2264969317943297e-09,
+        "clipping_used": false
+      }
+    },
+    "heat_flux_relative_error": 0.005341617885033623,
+    "heat_flux_sign_passed": true,
+    "first_invalid_step": null,
+    "nan_detected": false,
+    "negative_theta_detected": false,
+    "clipping_used": false,
+    "acceptance": {
+      "relative_error_max": 0.05,
+      "heat_flux_relative_error_max": 0.05,
+      "requires_no_nan": true,
+      "requires_no_clipping": true,
+      "requires_positive_theta": true,
+      "requires_fourier_sign": true
+    }
+  },
+  "p2_05_status": "PASSED",
+  "alpha_target_lu": 0.0041688329803125,
+  "alpha_measured_lu": 0.004241286925672182,
+  "alpha_relative_error": 0.017379910805217724,
+  "thermal_mode_index": 1,
+  "thermal_fitting_window": {
+    "x": [
+      10,
+      320
+    ],
+    "y": [
+      10,
+      320
+    ]
+  },
+  "thermal_residual_norm": 0.000452373002942275,
+  "thermal_directions": [
+    "x",
+    "y"
+  ],
+  "thermal_first_invalid_step": null,
+  "thermal_nan_detected": false,
+  "thermal_clipping_used": false,
+  "heat_flux_relative_error": 0.005341617885033623,
+  "heat_flux_sign_passed": true,
+  "p2_07_prandtl_scan": {
+    "p2_07_status": "PASSED",
+    "pr_targets": [
+      0.5,
+      0.7061328707,
+      1.0,
+      2.0
+    ],
+    "scan_tolerance": 0.05,
+    "baseline_tolerance": 0.03,
+    "baseline_pr": 0.7061328707,
+    "baseline_pr_measured": 0.7102617655197883,
+    "baseline_pr_relative_error": 0.005847192491825526,
+    "max_pr_relative_error": 0.01178286150411978,
+    "measured_pr_span": 1.5088486950589655,
+    "scan_points": [
+      {
+        "pr_target": 0.5,
+        "pr_measured": 0.49602992574384175,
+        "pr_relative_error": 0.007940148512316503,
+        "point_tolerance": 0.05,
+        "status": "PASSED",
+        "nu_target_lu": 0.0029437499999999998,
+        "nu_measured_lu": 0.0030143443893206555,
+        "nu_relative_error": 0.023981108898736503,
+        "alpha_target_lu": 0.0058874999999999995,
+        "alpha_measured_lu": 0.006076940589421845,
+        "alpha_relative_error": 0.03217674554935801,
+        "tau21": 0.5608481647274428,
+        "tau32": 0.6216963294548856,
+        "regularized_heat_flux_factor": -0.43121018334731354,
+        "regularized_heat_flux_factor_policy": "auto_tau32_linear",
+        "conductive_heat_flux_moment_factor": 0.05192359403391186,
+        "conductive_heat_flux_moment_factor_policy": "specified",
+        "heat_flux_relative_error": 0.014425156180603693,
+        "heat_flux_sign_passed": true,
+        "shear_status": "PASSED",
+        "thermal_status": "PASSED",
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "clipping_used": false,
+        "shear": {
+          "p2_04_status": "PASSED",
+          "nu_target_lu": 0.0029437499999999998,
+          "nu_measured_lu": 0.0030143443893206555,
+          "relative_error": 0.023981108898736503,
+          "baseline_direction": "x",
+          "baseline_relative_error": 0.023981108898736503,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.0,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              240
+            ]
+          },
+          "residual_norm": 6.438820074085707e-07,
+          "directions": [
+            "x"
+          ],
+          "direction_difference": null,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "nu_target_lu": 0.0029437499999999998,
+              "nu_measured_lu": 0.0030143443893206555,
+              "relative_error": 0.023981108898736503,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.0,
+                0.0
+              ],
+              "k2_lu": 0.009638285547938826,
+              "fitting_window": [
+                10,
+                240
+              ],
+              "residual_norm": 6.438820074085707e-07,
+              "fit_sample_count": 231,
+              "sample_count": 241,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837861607056738,
+              "max_theta_lu": 0.04837861607257174,
+              "max_rho_drift": 2.0909940445790198e-11,
+              "clipping_used": false
+            }
+          },
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "relative_error_max": 0.05,
+            "direction_difference_max": 0.05,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true
+          }
+        },
+        "thermal": {
+          "p2_05_status": "PASSED",
+          "alpha_target_lu": 0.0058874999999999995,
+          "alpha_measured_lu": 0.006076940589421845,
+          "relative_error": 0.03217674554935801,
+          "baseline_direction": "x",
+          "baseline_relative_error": 0.03217674554935801,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.0,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              320
+            ]
+          },
+          "residual_norm": 0.0006607920140328548,
+          "directions": [
+            "x"
+          ],
+          "direction_difference": null,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "alpha_target_lu": 0.0058874999999999995,
+              "alpha_measured_lu": 0.006076940589421845,
+              "relative_error": 0.03217674554935801,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.0,
+                0.0
+              ],
+              "k_mag_lu": 0.09817477042468103,
+              "fitting_window": [
+                10,
+                320
+              ],
+              "residual_norm": 0.0006607920140328548,
+              "fit_sample_count": 311,
+              "sample_count": 321,
+              "heat_flux_ratio_real": 1.0144251561806037,
+              "heat_flux_ratio_imag": 1.0889909037625323e-10,
+              "heat_flux_relative_error": 0.014425156180603693,
+              "heat_flux_sign_passed": true,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837813228526811,
+              "max_theta_lu": 0.048379099857589536,
+              "max_pressure_drift": 1.7012396352766856e-09,
+              "clipping_used": false
+            }
+          },
+          "heat_flux_relative_error": 0.014425156180603693,
+          "heat_flux_sign_passed": true,
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "relative_error_max": 0.05,
+            "heat_flux_relative_error_max": 0.05,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true,
+            "requires_fourier_sign": true
+          }
+        }
+      },
+      {
+        "pr_target": 0.7061328707,
+        "pr_measured": 0.7102617655197883,
+        "pr_relative_error": 0.005847192491825526,
+        "point_tolerance": 0.03,
+        "status": "PASSED",
+        "nu_target_lu": 0.0029437499999999998,
+        "nu_measured_lu": 0.003012423800171891,
+        "nu_relative_error": 0.02332867946391226,
+        "alpha_target_lu": 0.00416883298051515,
+        "alpha_measured_lu": 0.0042412867289390414,
+        "alpha_relative_error": 0.017379863564344067,
+        "tau21": 0.5608481647274428,
+        "tau32": 0.586170984601132,
+        "regularized_heat_flux_factor": -0.4649237356135257,
+        "regularized_heat_flux_factor_policy": "auto_tau32_linear",
+        "conductive_heat_flux_moment_factor": 0.05192359403391186,
+        "conductive_heat_flux_moment_factor_policy": "specified",
+        "heat_flux_relative_error": 0.0053416173575563395,
+        "heat_flux_sign_passed": true,
+        "shear_status": "PASSED",
+        "thermal_status": "PASSED",
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "clipping_used": false,
+        "shear": {
+          "p2_04_status": "PASSED",
+          "nu_target_lu": 0.0029437499999999998,
+          "nu_measured_lu": 0.003012423800171891,
+          "relative_error": 0.02332867946391226,
+          "baseline_direction": "x",
+          "baseline_relative_error": 0.02332867946391226,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.0,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              240
+            ]
+          },
+          "residual_norm": 6.42798550578023e-07,
+          "directions": [
+            "x"
+          ],
+          "direction_difference": null,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "nu_target_lu": 0.0029437499999999998,
+              "nu_measured_lu": 0.003012423800171891,
+              "relative_error": 0.02332867946391226,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.0,
+                0.0
+              ],
+              "k2_lu": 0.009638285547938826,
+              "fitting_window": [
+                10,
+                240
+              ],
+              "residual_norm": 6.42798550578023e-07,
+              "fit_sample_count": 231,
+              "sample_count": 241,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.048378616070577835,
+              "max_theta_lu": 0.048378616072561796,
+              "max_rho_drift": 2.086009143198453e-11,
+              "clipping_used": false
+            }
+          },
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "relative_error_max": 0.05,
+            "direction_difference_max": 0.05,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true
+          }
+        },
+        "thermal": {
+          "p2_05_status": "PASSED",
+          "alpha_target_lu": 0.00416883298051515,
+          "alpha_measured_lu": 0.0042412867289390414,
+          "relative_error": 0.017379863564344067,
+          "baseline_direction": "x",
+          "baseline_relative_error": 0.017379863564344067,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.0,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              320
+            ]
+          },
+          "residual_norm": 0.0004523730345954228,
+          "directions": [
+            "x"
+          ],
+          "direction_difference": null,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "alpha_target_lu": 0.00416883298051515,
+              "alpha_measured_lu": 0.0042412867289390414,
+              "relative_error": 0.017379863564344067,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.0,
+                0.0
+              ],
+              "k_mag_lu": 0.09817477042468103,
+              "fitting_window": [
+                10,
+                320
+              ],
+              "residual_norm": 0.0004523730345954228,
+              "fit_sample_count": 311,
+              "sample_count": 321,
+              "heat_flux_ratio_real": 0.9946583826424437,
+              "heat_flux_ratio_imag": -9.732070870369749e-11,
+              "heat_flux_relative_error": 0.0053416173575563395,
+              "heat_flux_sign_passed": true,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837813228526811,
+              "max_theta_lu": 0.048379099857589536,
+              "max_pressure_drift": 1.2264971538389347e-09,
+              "clipping_used": false
+            }
+          },
+          "heat_flux_relative_error": 0.0053416173575563395,
+          "heat_flux_sign_passed": true,
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "relative_error_max": 0.05,
+            "heat_flux_relative_error_max": 0.05,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true,
+            "requires_fourier_sign": true
+          }
+        }
+      },
+      {
+        "pr_target": 1.0,
+        "pr_measured": 1.0117828615041198,
+        "pr_relative_error": 0.01178286150411978,
+        "point_tolerance": 0.05,
+        "status": "PASSED",
+        "nu_target_lu": 0.0029437499999999998,
+        "nu_measured_lu": 0.0030111076754897924,
+        "nu_relative_error": 0.022881588276787213,
+        "alpha_target_lu": 0.0029437499999999998,
+        "alpha_measured_lu": 0.0029760413919380584,
+        "alpha_relative_error": 0.010969474968342663,
+        "tau21": 0.5608481647274428,
+        "tau32": 0.5608481647274428,
+        "regularized_heat_flux_factor": -0.48895509167365675,
+        "regularized_heat_flux_factor_policy": "auto_tau32_linear",
+        "conductive_heat_flux_moment_factor": 0.05192359403391186,
+        "conductive_heat_flux_moment_factor_policy": "specified",
+        "heat_flux_relative_error": 0.018966263588643284,
+        "heat_flux_sign_passed": true,
+        "shear_status": "PASSED",
+        "thermal_status": "PASSED",
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "clipping_used": false,
+        "shear": {
+          "p2_04_status": "PASSED",
+          "nu_target_lu": 0.0029437499999999998,
+          "nu_measured_lu": 0.0030111076754897924,
+          "relative_error": 0.022881588276787213,
+          "baseline_direction": "x",
+          "baseline_relative_error": 0.022881588276787213,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.0,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              240
+            ]
+          },
+          "residual_norm": 6.421197728684578e-07,
+          "directions": [
+            "x"
+          ],
+          "direction_difference": null,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "nu_target_lu": 0.0029437499999999998,
+              "nu_measured_lu": 0.0030111076754897924,
+              "relative_error": 0.022881588276787213,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.0,
+                0.0
+              ],
+              "k2_lu": 0.009638285547938826,
+              "fitting_window": [
+                10,
+                240
+              ],
+              "residual_norm": 6.421197728684578e-07,
+              "fit_sample_count": 231,
+              "sample_count": 241,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.048378616070586015,
+              "max_theta_lu": 0.048378616072553664,
+              "max_rho_drift": 2.078648364545188e-11,
+              "clipping_used": false
+            }
+          },
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "relative_error_max": 0.05,
+            "direction_difference_max": 0.05,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true
+          }
+        },
+        "thermal": {
+          "p2_05_status": "PASSED",
+          "alpha_target_lu": 0.0029437499999999998,
+          "alpha_measured_lu": 0.0029760413919380584,
+          "relative_error": 0.010969474968342663,
+          "baseline_direction": "x",
+          "baseline_relative_error": 0.010969474968342663,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.0,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              320
+            ]
+          },
+          "residual_norm": 0.0003122621029745055,
+          "directions": [
+            "x"
+          ],
+          "direction_difference": null,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "alpha_target_lu": 0.0029437499999999998,
+              "alpha_measured_lu": 0.0029760413919380584,
+              "relative_error": 0.010969474968342663,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.0,
+                0.0
+              ],
+              "k_mag_lu": 0.09817477042468103,
+              "fitting_window": [
+                10,
+                320
+              ],
+              "residual_norm": 0.0003122621029745055,
+              "fit_sample_count": 311,
+              "sample_count": 321,
+              "heat_flux_ratio_real": 0.9810337364113567,
+              "heat_flux_ratio_imag": 9.872511918023746e-11,
+              "heat_flux_relative_error": 0.018966263588643284,
+              "heat_flux_sign_passed": true,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837813228526811,
+              "max_theta_lu": 0.048379099857589536,
+              "max_pressure_drift": 8.999125750142056e-10,
+              "clipping_used": false
+            }
+          },
+          "heat_flux_relative_error": 0.018966263588643284,
+          "heat_flux_sign_passed": true,
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "relative_error_max": 0.05,
+            "heat_flux_relative_error_max": 0.05,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true,
+            "requires_fourier_sign": true
+          }
+        }
+      },
+      {
+        "pr_target": 2.0,
+        "pr_measured": 2.004878620802807,
+        "pr_relative_error": 0.0024393104014035494,
+        "point_tolerance": 0.05,
+        "status": "PASSED",
+        "nu_target_lu": 0.0029437499999999998,
+        "nu_measured_lu": 0.0030095813604126705,
+        "nu_relative_error": 0.022363094832329677,
+        "alpha_target_lu": 0.0014718749999999999,
+        "alpha_measured_lu": 0.0015011289607186062,
+        "alpha_relative_error": 0.01987530239905322,
+        "tau21": 0.5608481647274428,
+        "tau32": 0.5304240823637214,
+        "regularized_heat_flux_factor": -0.5178275458368283,
+        "regularized_heat_flux_factor_policy": "auto_tau32_linear",
+        "conductive_heat_flux_moment_factor": 0.05192359403391186,
+        "conductive_heat_flux_moment_factor_policy": "specified",
+        "heat_flux_relative_error": 0.03484842180788583,
+        "heat_flux_sign_passed": true,
+        "shear_status": "PASSED",
+        "thermal_status": "PASSED",
+        "first_invalid_step": null,
+        "nan_detected": false,
+        "clipping_used": false,
+        "shear": {
+          "p2_04_status": "PASSED",
+          "nu_target_lu": 0.0029437499999999998,
+          "nu_measured_lu": 0.0030095813604126705,
+          "relative_error": 0.022363094832329677,
+          "baseline_direction": "x",
+          "baseline_relative_error": 0.022363094832329677,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.0,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              240
+            ]
+          },
+          "residual_norm": 6.414945889220433e-07,
+          "directions": [
+            "x"
+          ],
+          "direction_difference": null,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "nu_target_lu": 0.0029437499999999998,
+              "nu_measured_lu": 0.0030095813604126705,
+              "relative_error": 0.022363094832329677,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.0,
+                0.0
+              ],
+              "k2_lu": 0.009638285547938826,
+              "fitting_window": [
+                10,
+                240
+              ],
+              "residual_norm": 6.414945889220433e-07,
+              "fit_sample_count": 231,
+              "sample_count": 241,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.048378616070601586,
+              "max_theta_lu": 0.04837861607253525,
+              "max_rho_drift": 2.050537517561679e-11,
+              "clipping_used": false
+            }
+          },
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "relative_error_max": 0.05,
+            "direction_difference_max": 0.05,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true
+          }
+        },
+        "thermal": {
+          "p2_05_status": "PASSED",
+          "alpha_target_lu": 0.0014718749999999999,
+          "alpha_measured_lu": 0.0015011289607186062,
+          "relative_error": 0.01987530239905322,
+          "baseline_direction": "x",
+          "baseline_relative_error": 0.01987530239905322,
+          "mode_index": 1,
+          "background_velocity_lu": [
+            0.0,
+            0.0
+          ],
+          "fitting_window": {
+            "x": [
+              10,
+              320
+            ]
+          },
+          "residual_norm": 0.00015263350787579326,
+          "directions": [
+            "x"
+          ],
+          "direction_difference": null,
+          "direction_results": {
+            "x": {
+              "direction": "x",
+              "status": "PASSED",
+              "alpha_target_lu": 0.0014718749999999999,
+              "alpha_measured_lu": 0.0015011289607186062,
+              "relative_error": 0.01987530239905322,
+              "mode_index": 1,
+              "background_velocity_lu": [
+                0.0,
+                0.0
+              ],
+              "k_mag_lu": 0.09817477042468103,
+              "fitting_window": [
+                10,
+                320
+              ],
+              "residual_norm": 0.00015263350787579326,
+              "fit_sample_count": 311,
+              "sample_count": 321,
+              "heat_flux_ratio_real": 0.9651515781921142,
+              "heat_flux_ratio_imag": 1.507566470743852e-10,
+              "heat_flux_relative_error": 0.03484842180788583,
+              "heat_flux_sign_passed": true,
+              "first_invalid_step": null,
+              "nan_detected": false,
+              "negative_theta_detected": false,
+              "min_theta_lu": 0.04837813228526811,
+              "max_theta_lu": 0.048379099857589536,
+              "max_pressure_drift": 5.199319030868566e-10,
+              "clipping_used": false
+            }
+          },
+          "heat_flux_relative_error": 0.03484842180788583,
+          "heat_flux_sign_passed": true,
+          "first_invalid_step": null,
+          "nan_detected": false,
+          "negative_theta_detected": false,
+          "clipping_used": false,
+          "acceptance": {
+            "relative_error_max": 0.05,
+            "heat_flux_relative_error_max": 0.05,
+            "requires_no_nan": true,
+            "requires_no_clipping": true,
+            "requires_positive_theta": true,
+            "requires_fourier_sign": true
+          }
+        }
+      }
+    ],
+    "first_invalid_step": null,
+    "nan_detected": false,
+    "clipping_used": false,
+    "acceptance": {
+      "baseline_pr_relative_error_max": 0.03,
+      "scan_pr_relative_error_max": 0.05,
+      "requires_p2_04_pass": true,
+      "requires_p2_05_pass": true,
+      "requires_no_nan": true,
+      "requires_no_clipping": true
+    }
+  },
+  "p2_07_status": "PASSED",
+  "pr_targets": [
+    0.5,
+    0.7061328707,
+    1.0,
+    2.0
+  ],
+  "baseline_pr": 0.7061328707,
+  "baseline_pr_measured": 0.7102617655197883,
+  "baseline_pr_relative_error": 0.005847192491825526,
+  "max_pr_relative_error": 0.01178286150411978,
+  "measured_pr_span": 1.5088486950589655,
+  "pr_first_invalid_step": null,
+  "pr_nan_detected": false,
+  "pr_clipping_used": false,
+  "summary_json_sha256_policy": "sha256 of canonical summary payload before adding this digest field",
+  "summary_json_sha256": "0274e1fb55dbd628df3a00789f4dd507180e281b535a59dab6a903ab4fd83406"
+}

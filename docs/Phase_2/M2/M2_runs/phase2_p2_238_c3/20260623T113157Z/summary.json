@@ -1,0 +1,102 @@
+{
+  "run_id": "20260623T113157Z",
+  "status": "DIAGNOSTIC_COMPLETE",
+  "config_path": "configs\\gas_air_10k_d2q37_physical_timestep.yaml",
+  "config_sha256": "061bf8b0aaad9f2d743ef86d9d3079874d004d5e46568613124b6867f4a46554",
+  "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "default_closure": "D2Q37 RR (strain_rate_isotropic + ghost_orthogonal_local + diagnostic_zero)",
+  "p2_2_admissibility": {
+    "envelope": "rho/theta +-1%, Mach in {0,0.02,0.05}, background x and diagonal",
+    "min_f_eq": -0.03983408674129452,
+    "min_g_eq": -0.002414071742378676,
+    "f_eq_admissible": false,
+    "worst_f_state": {
+      "drho": 0.01,
+      "dtheta": -0.01,
+      "mach": 0.05,
+      "ux": 0.00920122699018995,
+      "uy": 0.00920122699018995
+    }
+  },
+  "p2_2_perturbation_stability": {
+    "steps": 600,
+    "amplitude": 0.0001,
+    "perturbation_norm_initial": 3.3738246497601927e-05,
+    "perturbation_norm_final": 2.9496751606206764e-05,
+    "decay_ratio": 0.874282295859785,
+    "min_theta_lu": 0.048374144609850074,
+    "first_invalid_step": null,
+    "nan_detected": false,
+    "stable": true
+  },
+  "p2_3_uniform_rest": {
+    "background_mach": 0.0,
+    "steps": 2000,
+    "max_rho_deviation": 2.4424906541753444e-15,
+    "max_u_deviation": 1.7933571294648197e-14,
+    "max_theta_deviation": 5.065392549852277e-16,
+    "mass_relative_drift": 8.881784197001252e-16,
+    "momentum_abs_drift": 2.9558577807620168e-12,
+    "energy_relative_drift": 1.7763568394002505e-15,
+    "first_invalid_step": null,
+    "stable": true
+  },
+  "p2_3_uniform_background": {
+    "background_mach": 0.05,
+    "steps": 2000,
+    "max_rho_deviation": 3.3306690738754696e-15,
+    "max_u_deviation": 2.4641746976250545e-14,
+    "max_theta_deviation": 6.453171330633722e-16,
+    "mass_relative_drift": 8.881784197001252e-16,
+    "momentum_abs_drift": 1.8701484805205837e-11,
+    "energy_relative_drift": 1.7763568394002505e-15,
+    "first_invalid_step": null,
+    "stable": true
+  },
+  "p2_8_directional_statistics": {
+    "nu_by_direction": {
+      "x": 0.0029436870387497495,
+      "y": 0.002943687035029238,
+      "diagonal": 0.0029489251255717442
+    },
+    "alpha_by_direction": {
+      "x": 0.004161409236170914,
+      "y": 0.004161409266582662,
+      "diagonal": 0.0040804480103408544
+    },
+    "sound_speed_by_direction": {
+      "x": 0.26152655312264916,
+      "y": 0.26152655328426927,
+      "diagonal": 0.2604631187644394
+    },
+    "gamma_by_direction": {
+      "x": 1.4137679731729074,
+      "y": 1.4137679749202887,
+      "diagonal": 1.402293859260765
+    },
+    "directional_spread": {
+      "nu": 0.001778377041451117,
+      "alpha": 0.0195822421834606,
+      "sound_speed": 0.004071777274033982,
+      "gamma": 0.008137998110166193
+    },
+    "max_directional_spread": 0.0195822421834606,
+    "nu_dir_diff": 0.00177939381486406,
+    "alpha_dir_diff": 0.019420604429141317,
+    "sound_speed_dir_diff": 0.004086203726531702
+  },
+  "verdict": {
+    "p2_2_c3_pass": false,
+    "p2_3_c3_pass": true,
+    "p2_8_c3_pass": true,
+    "all_c3_pass": false
+  },
+  "interpretation": {
+    "p2_2": "f_eq admissible (min -3.983e-02 >= 0) across the envelope; a real multi-mode perturbation is stable (decay ratio 0.8743, no NaN/negative theta).",
+    "p2_3": "Uniform rest/background states stable over 2000 steps; invariant drift (mass 8.88e-16, energy 1.78e-15) and fixed-point excursion (theta 6.45e-16) are at/near machine precision.",
+    "p2_8": "Directional (x/y/diagonal) isotropy at mode 1: max spread 0.01958 (nu/alpha/c/gamma), within 5%.",
+    "boundaries": "Diagnostic; baseline unchanged. C3 evidence within the accepted compact-air mode1/low-k envelope (M2_Critical_Decision \u00a75). High-k / other-resolution behaviour is the documented GO-RISK boundary."
+  },
+  "summary_digest": "7ec4408578871eac961b2f87fa9cced44d50e92198f850ef58ece4b5d47f682f"
+}

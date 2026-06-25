@@ -1,0 +1,119 @@
+{
+  "run_id": "20260622T060549Z",
+  "status": "DIAGNOSTIC_COMPLETE",
+  "config_path": "configs\\gas_air_10k_d2q37_physical_timestep.yaml",
+  "config_sha256": "f6b53b2bf343bcc627a82b0ba6c101343897e6a32e5111d70e2516dc09f3f18e",
+  "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "evaluation": "RR_baseline_promotion_EVALUATION_ONLY_no_default_changed",
+  "chi_eigen_recalibrated": 1.1052362846829455,
+  "knobs": {
+    "xy_factor": 0.4763606253137551,
+    "normal_factor": 0.8906391739599911,
+    "chi": 1.1052362846829455
+  },
+  "full_gate": {
+    "p2_04_status": "PASSED",
+    "p2_04_nu_T_over_nu": {
+      "x": 0.9999786118895115,
+      "y": 0.9999786106256436,
+      "diagonal": 1.0017580044405077
+    },
+    "p2_04_direction_difference": 0.00177939381486406,
+    "p2_06_status": "PASSED",
+    "p2_06_sound_speed_relative_error": 0.004905103878075856,
+    "p2_06_gamma_relative_error": 0.009834267800206353,
+    "p2_06_direction_difference": 0.004086203726531702,
+    "p2_06_attenuation_ratio": {
+      "x": 0.8897876797095046,
+      "y": 0.8897874115094493,
+      "diagonal": 1.1267682520998552
+    },
+    "p2_06_first_invalid_step": {
+      "x": null,
+      "y": null,
+      "diagonal": null
+    },
+    "p2_06_negative_theta": {
+      "x": false,
+      "y": false,
+      "diagonal": false
+    },
+    "p2_05_status": "PASSED",
+    "p2_05_alpha_relative_error": {
+      "x": 0.0017807727430303455,
+      "y": 0.0017807654480036517,
+      "diagonal": 0.021201369877144938
+    }
+  },
+  "extended_gate": {
+    "p2_07_status": "FAILED",
+    "p2_07_baseline_pr_relative_error": 0.0017625300129058274,
+    "p2_07_max_pr_relative_error": 0.052406465810852954,
+    "p2_07_scan_tolerance": 0.05,
+    "p2_09_status": "PASSED",
+    "p2_09_max_sound_speed_relative_error": 0.0076604564512198214,
+    "p2_09_max_direction_difference": 0.022436692639602338,
+    "p2_09_dispersion_masking_status": "PASSED"
+  },
+  "long_window": {
+    "multiplier": 3,
+    "steps": {
+      "p2_04": 720,
+      "p2_05": 960,
+      "p2_06": 720
+    },
+    "p2_04_status": "PASSED",
+    "p2_04_nu_relative_error": {
+      "x": 2.139281856627928e-05,
+      "diagonal": 0.00175800141506266
+    },
+    "p2_05_status": "PASSED",
+    "p2_05_alpha_relative_error": {
+      "x": 0.0021999523252604902,
+      "diagonal": 0.0180231984058441
+    },
+    "p2_06_attenuation_ratio": {
+      "x": 0.97829419986603,
+      "diagonal": 1.35446217020361
+    },
+    "p2_06_first_invalid_step": {
+      "x": null,
+      "diagonal": null
+    },
+    "p2_06_negative_theta": {
+      "x": false,
+      "diagonal": false
+    }
+  },
+  "ghost_stability": {
+    "spectral_radius": {
+      "axis_mode1": 0.9999777776199398,
+      "axis_mode2": 0.9998484046762796,
+      "diag_mode1": 0.9999437686440508
+    },
+    "max_spectral_radius": 0.9999777776199398,
+    "stable": true
+  },
+  "baseline_current_zero_pr_scan": {
+    "p2_07_status": "PASSED",
+    "baseline_pr_relative_error": 0.004086470180962198,
+    "max_pr_relative_error": 0.046078897425779974,
+    "scan_tolerance": 0.05
+  },
+  "verdict": {
+    "hard_gates_pass": true,
+    "p2_07_pass": false,
+    "p2_07_regression_vs_baseline": true,
+    "promotion_ready": false,
+    "blockers": [
+      "P2-7 scan FAILED (max 0.0524 > tol 0.05); baseline current_zero scan = 0.0461 (PASSED) -> RR REGRESSES P2-7 across the tol"
+    ]
+  },
+  "interpretation": {
+    "chi_independence": "The hard gates (P2-4 shear isotropy, P2-5 thermal, P2-6 sound speed/gamma, P2-9 Galilean, P2-7) are chi-independent (chi only sets the longitudinal/trace damping = acoustic attenuation). chi* differs from the published chi only in the attenuation diagnostic (x/y eigenvalue 1.0, diag 1.265).",
+    "attenuation": "Acoustic attenuation is diagnostic (accepted GO-RISK boundaries): x/y -> 1.0 (eigenvalue caliber), diagonal 1.265 @45 deg (decision A), high-mode 5-12x (residual #3) -- physically irrelevant for the acoustically-compact 10 kHz target. The production log|p'| 240-window reads x/y ~0.9 at chi* (weak-damping bias); the eigenvalue is the true 1.0.",
+    "recommendation": "RR at chi* fixes the core acoustic blocker (6.27x -> 1.0 x/y) and passes the transport / acoustic-speed / Galilean / ghost / long-window hard gates. The blocker for promotion is P2-7: it is a hard gate and RR sits just over the 5% scan tol at Pr=2 (alpha/heat-flux high-Pr characteristic, RR-decoupled). Recommend NOT flipping the default baseline yet; keep RR as the documented diagnostic candidate and resolve the P2-7 alpha/heat-flux high-Pr issue first, then re-evaluate. If/when promoted, also upgrade the P2-6 diagnostic attenuation to the eigenvalue/Prony caliber and sync core/config/unit-mapping/docs."
+  },
+  "summary_digest": "8c3660c0566819581aa786f120c67e5b18f3f527befabcce14a3d609a2cce034"
+}

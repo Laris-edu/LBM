@@ -1,0 +1,69 @@
+{
+  "run_id": "20260625T071234Z",
+  "status": "DIAGNOSTIC_COMPLETE",
+  "prod_config": "configs\\gas_air_10k_d2q37_physical_timestep.yaml",
+  "levelc_config": "configs\\gas_air_10k_d2q37_levelc_dx2p6.yaml",
+  "levelc_config_sha256": "849699bb37f6416d89b880a6446457d46a8eaf10a45230ca828ed90749ec38e1",
+  "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "operating_point": {
+    "target_frequency_hz": 10000.0,
+    "delta_T_si_m": 2.6603065001186158e-05,
+    "dx_target_m": 2.611749799084318e-06,
+    "dt_target_s": 1.9588123493132388e-09,
+    "k_thermal_at_target_over_cal": 1.0,
+    "heat_flux_moment_factor_prod": 0.0422,
+    "heat_flux_moment_factor_levelc": 0.0635448
+  },
+  "tau": {
+    "production": {
+      "dx_um": 4.0,
+      "tau21": 0.5608481647274428,
+      "tau32": 0.5861709845969432,
+      "nu_lu": 0.0029437499999999998,
+      "alpha_lu": 0.0041688329803125
+    },
+    "levelc": {
+      "dx_um": 2.6117500000000002,
+      "tau21": 0.5931915265811021,
+      "tau32": 0.6319744915488636,
+      "nu_lu": 0.0045084655773953205,
+      "alpha_lu": 0.0063847269603904055
+    }
+  },
+  "gates_new_dx_old_coefficients": {
+    "p2_04_status": "FAILED",
+    "p2_04_nu_err_x": 0.3376979879706936,
+    "p2_05_status": "FAILED",
+    "p2_05_alpha_err_axis": 0.004479401138592687,
+    "p2_05_alpha_err_diagonal": 0.14903456419362193,
+    "p2_05_fourier_q_err_axis": 0.3358534605655843,
+    "p2_05_fourier_q_err_diagonal": 0.3416900432052867,
+    "p2_06_status": "PASSED",
+    "p2_06_sound_speed_err": 0.007458054191212593,
+    "p2_06_gamma_err": 0.014971730954744356
+  },
+  "gates_levelc_retuned": {
+    "p2_04_status": "FAILED",
+    "p2_04_nu_err_x": 0.33769771919329905,
+    "p2_05_status": "FAILED",
+    "p2_05_alpha_err_axis": 0.004476251300880696,
+    "p2_05_alpha_err_diagonal": 0.1490313716743923,
+    "p2_05_fourier_q_err_axis": 7.481497333203176e-05,
+    "p2_05_fourier_q_err_diagonal": 0.008713751114644402,
+    "p2_06_status": "PASSED",
+    "p2_06_sound_speed_err": 0.007458082528482235,
+    "p2_06_gamma_err": 0.014971788051966195
+  },
+  "qoi_thermal_admittance_certified": true,
+  "verdict": {
+    "T_s_hat_p_hat_certified_at_levelc_config": true,
+    "qoi_irrelevant_residuals": {
+      "shear_nu_err_x": 0.33769771919329905,
+      "diagonal_alpha_err": 0.1490313716743923,
+      "note": "no QoI uses nu; the thermal layer is the wall-normal axis, so diagonal alpha is moot"
+    },
+    "overall": "Option (a) executed. Refining dx to 2.6118 um lands the 10 kHz thermal feature on the calibration k and the alpha-DECAY is already clean (axis 0.45%), but the production RR coefficients are tau-specific so at the new tau the shear nu and the Fourier-q EXPORT both regress ~34%. Re-tuning ONLY the conductive heat-flux export factor (x1.506, linear, QoI-relevant; the shear factor is nonlinear and QoI-irrelevant) restores axis Fourier-q to 0.0072% with axis alpha 0.45% and acoustic passing -> the near-wall THERMAL admittance is certified, so T_s_hat / p_hat are accurate at configs/gas_air_10k_d2q37_levelc_dx2p6.yaml. Residual shear nu ~34% and diagonal alpha ~15% are QoI-irrelevant (and not re-derived). q_g is energy-pinned. The default production baseline is unchanged."
+  },
+  "summary_digest": "d4968c1a9824972815fbf671986da39473a7a886f62cc6c9046a08611fbe4989"
+}

@@ -12,7 +12,7 @@
 
 - 几何：2D freestanding CNT 薄膜
 - 气体模型：完全可压缩 Navier–Stokes–Fourier
-- 速度集：D2Q21（Q=9，恢复完整热 NSF）
+- 速度集：D2Q21（21 速）起步，Phase_2 升级 D2Q37（37 速）为默认生产基线，恢复完整热 NSF
 - 平衡态：四阶 Hermite 展开
 - 碰撞模型：SMRT（τ₂、τ₃ 独立弛豫，可调 Pr）
 - 多原子闭合：f-g 双分布（空气 γ=1.4）
@@ -26,15 +26,17 @@
 | `core/` | LBM 核心：速度集、平衡态、碰撞、流步、多原子闭合 |
 | `boundary/` | 边界条件：等温壁、热流壁、特征开边界 |
 | `coupling/` | 固-流耦合：薄膜 ODE、热流提取、共轭耦合 |
+| `phase3_interfaces/` | Phase_3 交接接口：壁面状态、热流提取、复幅值/模态拟合、探针采样 |
 | `reference/` | 参考连续介质模型（1D NSF）+ 解析模型 |
 | `farfield/` | 远场外推：控制面采集、Kirchhoff 积分 |
 | `verification/` | 验证基准测试 |
 | `postproc/` | 后处理：频响分析、非线性分析、可视化 |
+| `scripts/` | 自动化脚本：M2 验证、输运鲁棒性、各专题诊断 |
 | `configs/` | 算例配置文件（YAML） |
 | `data/` | 输入数据（不纳入版本控制） |
 | `results/` | 模拟结果（不纳入版本控制） |
 | `notebooks/` | Jupyter 探索性分析 |
-| `docs/` | 研究计划书、推导笔记、文献笔记 |
+| `docs/` | 研究计划书、推导笔记、文献笔记；按阶段组织（`Phase_0/1/2`，Phase_2 内分 `closure/acoustic/robustness/M2`） |
 | `tests/` | 单元测试 |
 
 ## 环境
@@ -48,9 +50,9 @@ pip install -r requirements.txt
 
 ## 开发阶段
 
-- [ ] Phase 0：物理冻结与无量纲化
-- [ ] Phase 1：参考连续介质模型（1D NSF）
-- [ ] Phase 2：气体侧热 LBM 核心 + 验证
+- [x] Phase 0：物理冻结与无量纲化
+- [x] Phase 1：参考连续介质模型（1D NSF）
+- [x] Phase 2：气体侧热 LBM 核心 + 验证（M2 收尾：紧致空气目标 BOUNDED_PRODUCTION_GO）
 - [ ] Phase 3：固-流界面耦合
 - [ ] Phase 4：开边界与远场外推
 - [ ] Phase 5：物理结果生产

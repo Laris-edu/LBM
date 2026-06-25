@@ -45,6 +45,13 @@ results/
 # ===== VS Code（如果以后用）=====
 .vscode/
 
+# ===== Claude Code（仅忽略个人本地配置，共享的 settings.json 可入库）=====
+.claude/settings.local.json
+
+# ===== Python 工具缓存 =====
+.pytest_cache/
+.ruff_cache/
+
 # ===== 操作系统 =====
 .DS_Store
 Thumbs.db
@@ -55,6 +62,8 @@ desktop.ini
 *.log
 *.bak
 File/Paper/
+.tmp.driveupload/
+.tmp.drivedownload
 
 # ===== 杂项文件夹 =====
 X/

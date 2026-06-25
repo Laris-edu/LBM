@@ -1,0 +1,830 @@
+{
+  "run_id": "20260617T063554Z",
+  "status": "DIAGNOSTIC_COMPLETE",
+  "config_path": "configs\\gas_air_10k_d2q37_physical_timestep.yaml",
+  "config_sha256": "bbc46b6dd23f590153ae240d1c0985d3993dd4ccf0ea2665363e6c2b51f61f8b",
+  "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "trace_candidates": [
+    {
+      "trace_policy": "current_zero",
+      "trace_scale": 1.0
+    }
+  ],
+  "heat_curves": [
+    {
+      "name": "custom_affine",
+      "curve_type": "affine",
+      "coefficients": [
+        -0.504500678278,
+        0.726698353929
+      ]
+    }
+  ],
+  "symbol_rows": [
+    {
+      "trace_policy": "current_zero",
+      "trace_scale": 1.0,
+      "heat_line": "custom_affine",
+      "heat_curve_type": "affine",
+      "heat_curve_coefficients": [
+        -0.504500678278,
+        0.726698353929
+      ],
+      "regularized_heat_flux_factor": -0.4160641559839334,
+      "pr_target": 0.5,
+      "tau32": 0.6216963294548856,
+      "n_equiv": 64,
+      "k_lu": 0.09817477042468103,
+      "acoustic": {
+        "sigma_lu": 0.00012891288202951132,
+        "reference_lu": 2.5535432773570427e-05,
+        "ratio": 5.048392293665693,
+        "signed_relative_error": 4.048392293665693,
+        "phase_speed_lu": 0.2621222798830521,
+        "phase_speed_relative_error": 0.007194159012688051,
+        "lambda_abs": 0.999871095426879,
+        "lambda_angle": -0.025733794650712627
+      },
+      "thermal": {
+        "sigma_lu": 5.717079216466372e-05,
+        "reference_lu": 5.674540616348983e-05,
+        "ratio": 1.0074963953901097,
+        "signed_relative_error": 0.007496395390109711,
+        "phase_speed_lu": 3.089745026751858e-08,
+        "phase_speed_relative_error": 3.033350086721636e-09,
+        "lambda_abs": 0.9999428308420539,
+        "lambda_angle": -3.033350086721636e-09
+      },
+      "thermal_pressure_to_theta": 0.00031445796979530003,
+      "acoustic_pressure_abs": 0.13557927065568845,
+      "low_k_ghost_stability": null
+    },
+    {
+      "trace_policy": "current_zero",
+      "trace_scale": 1.0,
+      "heat_line": "custom_affine",
+      "heat_curve_type": "affine",
+      "heat_curve_coefficients": [
+        -0.504500678278,
+        0.726698353929
+      ],
+      "regularized_heat_flux_factor": -0.4160641559839334,
+      "pr_target": 0.5,
+      "tau32": 0.6216963294548856,
+      "n_equiv": 512,
+      "k_lu": 0.01227184630308513,
+      "acoustic": {
+        "sigma_lu": 1.6838468278856522e-06,
+        "reference_lu": 3.989911370870379e-07,
+        "ratio": 4.220261232314866,
+        "signed_relative_error": 3.220261232314866,
+        "phase_speed_lu": 0.2602781940910866,
+        "phase_speed_relative_error": 0.00010833464394455206,
+        "lambda_abs": 0.9999983161545898,
+        "lambda_angle": -0.003194093993930375
+      },
+      "thermal": {
+        "sigma_lu": 6.806797161062211e-07,
+        "reference_lu": 8.866469713045286e-07,
+        "ratio": 0.7677009431439588,
+        "signed_relative_error": -0.23229905685604124,
+        "phase_speed_lu": -1.081843737923287e-09,
+        "phase_speed_relative_error": 1.3276220075749687e-11,
+        "lambda_abs": 0.9999993193205156,
+        "lambda_angle": 1.3276220075749687e-11
+      },
+      "thermal_pressure_to_theta": 1.5055572787793002e-06,
+      "acoustic_pressure_abs": 0.13361795070018403,
+      "low_k_ghost_stability": null
+    },
+    {
+      "trace_policy": "current_zero",
+      "trace_scale": 1.0,
+      "heat_line": "custom_affine",
+      "heat_curve_type": "affine",
+      "heat_curve_coefficients": [
+        -0.504500678278,
+        0.726698353929
+      ],
+      "regularized_heat_flux_factor": -0.4418803656119162,
+      "pr_target": 0.7061328707,
+      "tau32": 0.586170984601132,
+      "n_equiv": 64,
+      "k_lu": 0.09817477042468103,
+      "acoustic": {
+        "sigma_lu": 0.00013289513184127356,
+        "reference_lu": 2.2222432074446437e-05,
+        "ratio": 5.980224459504124,
+        "signed_relative_error": 4.980224459504124,
+        "phase_speed_lu": -0.26156510657824156,
+        "phase_speed_relative_error": 0.005053243336182511,
+        "lambda_abs": 0.9998671136983256,
+        "lambda_angle": 0.02567909428942609
+      },
+      "thermal": {
+        "sigma_lu": 3.9941868594786e-05,
+        "reference_lu": 4.018040266786991e-05,
+        "ratio": 0.9940634225332277,
+        "signed_relative_error": -0.0059365774667723414,
+        "phase_speed_lu": -4.1368120601188684e-08,
+        "phase_speed_relative_error": 4.061305742922217e-09,
+        "lambda_abs": 0.999960058929071,
+        "lambda_angle": 4.061305742922217e-09
+      },
+      "thermal_pressure_to_theta": 0.00031909125851732964,
+      "acoustic_pressure_abs": 0.13498332041894526,
+      "low_k_ghost_stability": {
+        "spectral_radius_max": 1.000000000961176,
+        "max_k_label": "k0",
+        "unstable_count": 0,
+        "radius_limit": 1.01,
+        "passed": true
+      }
+    },
+    {
+      "trace_policy": "current_zero",
+      "trace_scale": 1.0,
+      "heat_line": "custom_affine",
+      "heat_curve_type": "affine",
+      "heat_curve_coefficients": [
+        -0.504500678278,
+        0.726698353929
+      ],
+      "regularized_heat_flux_factor": -0.4418803656119162,
+      "pr_target": 0.7061328707,
+      "tau32": 0.586170984601132,
+      "n_equiv": 512,
+      "k_lu": 0.01227184630308513,
+      "acoustic": {
+        "sigma_lu": 1.7331105294592106e-06,
+        "reference_lu": 3.472255011632256e-07,
+        "ratio": 4.991311190143551,
+        "signed_relative_error": 3.991311190143551,
+        "phase_speed_lu": -0.26026944187981393,
+        "phase_speed_relative_error": 7.470462944825229e-05,
+        "lambda_abs": 0.9999982668909724,
+        "lambda_angle": 0.0031939865881388243
+      },
+      "thermal": {
+        "sigma_lu": 6.791546493289426e-07,
+        "reference_lu": 6.278187916854674e-07,
+        "ratio": 1.0817685904330085,
+        "signed_relative_error": 0.08176859043300855,
+        "phase_speed_lu": -1.6597964825467425e-09,
+        "phase_speed_relative_error": 2.0368767328214942e-11,
+        "lambda_abs": 0.9999993208455813,
+        "lambda_angle": 2.0368767328214942e-11
+      },
+      "thermal_pressure_to_theta": 1.7843173397006374e-06,
+      "acoustic_pressure_abs": 0.1336086123947199,
+      "low_k_ghost_stability": null
+    },
+    {
+      "trace_policy": "current_zero",
+      "trace_scale": 1.0,
+      "heat_line": "custom_affine",
+      "heat_curve_type": "affine",
+      "heat_curve_coefficients": [
+        -0.504500678278,
+        0.726698353929
+      ],
+      "regularized_heat_flux_factor": -0.46028241713096674,
+      "pr_target": 1.0,
+      "tau32": 0.5608481647274428,
+      "n_equiv": 64,
+      "k_lu": 0.09817477042468103,
+      "acoustic": {
+        "sigma_lu": 0.00013556385907798087,
+        "reference_lu": 1.9860892157221444e-05,
+        "ratio": 6.825668152509941,
+        "signed_relative_error": 5.825668152509941,
+        "phase_speed_lu": 0.26117909851003873,
+        "phase_speed_relative_error": 0.0035700230933282118,
+        "lambda_abs": 0.9998644453292868,
+        "lambda_angle": -0.025641198035948207
+      },
+      "thermal": {
+        "sigma_lu": 2.8179755481600095e-05,
+        "reference_lu": 2.8372703081744915e-05,
+        "ratio": 0.9931995340877844,
+        "signed_relative_error": -0.006800465912215614,
+        "phase_speed_lu": 1.8406446117515399e-09,
+        "phase_speed_relative_error": 1.807048621921336e-10,
+        "lambda_abs": 0.999971820641564,
+        "lambda_angle": -1.807048621921336e-10
+      },
+      "thermal_pressure_to_theta": 0.00032261564331729847,
+      "acoustic_pressure_abs": 0.13457133412419667,
+      "low_k_ghost_stability": null
+    },
+    {
+      "trace_policy": "current_zero",
+      "trace_scale": 1.0,
+      "heat_line": "custom_affine",
+      "heat_curve_type": "affine",
+      "heat_curve_coefficients": [
+        -0.504500678278,
+        0.726698353929
+      ],
+      "regularized_heat_flux_factor": -0.46028241713096674,
+      "pr_target": 1.0,
+      "tau32": 0.5608481647274428,
+      "n_equiv": 512,
+      "k_lu": 0.01227184630308513,
+      "acoustic": {
+        "sigma_lu": 1.65915753175471e-06,
+        "reference_lu": 3.1032643995658507e-07,
+        "ratio": 5.346491043389109,
+        "signed_relative_error": 4.346491043389109,
+        "phase_speed_lu": 0.2602633487468592,
+        "phase_speed_relative_error": 5.129201482856338e-05,
+        "lambda_abs": 0.9999983408438446,
+        "lambda_angle": -0.0031939118141476996
+      },
+      "thermal": {
+        "sigma_lu": 6.809025261395641e-07,
+        "reference_lu": 4.433234856522643e-07,
+        "ratio": 1.535904476474438,
+        "signed_relative_error": 0.5359044764744381,
+        "phase_speed_lu": -1.888821353002948e-09,
+        "phase_speed_relative_error": 2.3179325338037476e-11,
+        "lambda_abs": 0.9999993190977057,
+        "lambda_angle": 2.3179325338037476e-11
+      },
+      "thermal_pressure_to_theta": 0.00025653119775137105,
+      "acoustic_pressure_abs": 0.1336021562282112,
+      "low_k_ghost_stability": null
+    },
+    {
+      "trace_policy": "current_zero",
+      "trace_scale": 1.0,
+      "heat_line": "custom_affine",
+      "heat_curve_type": "affine",
+      "heat_curve_coefficients": [
+        -0.504500678278,
+        0.726698353929
+      ],
+      "regularized_heat_flux_factor": -0.4823915477044834,
+      "pr_target": 2.0,
+      "tau32": 0.5304240823637214,
+      "n_equiv": 64,
+      "k_lu": 0.09817477042468103,
+      "acoustic": {
+        "sigma_lu": 0.00013880618196422323,
+        "reference_lu": 1.702362184904695e-05,
+        "ratio": 8.153739738526568,
+        "signed_relative_error": 7.153739738526568,
+        "phase_speed_lu": -0.26072714876507375,
+        "phase_speed_relative_error": 0.0018334246496587436,
+        "lambda_abs": 0.9998612034511681,
+        "lambda_angle": 0.025596827973492775
+      },
+      "thermal": {
+        "sigma_lu": 1.4080777651731296e-05,
+        "reference_lu": 1.4186351540872458e-05,
+        "ratio": 0.9925580661922137,
+        "signed_relative_error": -0.0074419338077863495,
+        "phase_speed_lu": -3.688073522762546e-08,
+        "phase_speed_relative_error": 3.6207577140655763e-09,
+        "lambda_abs": 0.999985919321482,
+        "lambda_angle": 3.6207577140655763e-09
+      },
+      "thermal_pressure_to_theta": 0.0003242231648543824,
+      "acoustic_pressure_abs": 0.13408982198609903,
+      "low_k_ghost_stability": null
+    },
+    {
+      "trace_policy": "current_zero",
+      "trace_scale": 1.0,
+      "heat_line": "custom_affine",
+      "heat_curve_type": "affine",
+      "heat_curve_coefficients": [
+        -0.504500678278,
+        0.726698353929
+      ],
+      "regularized_heat_flux_factor": -0.4823915477044834,
+      "pr_target": 2.0,
+      "tau32": 0.5304240823637214,
+      "n_equiv": 512,
+      "k_lu": 0.01227184630308513,
+      "acoustic": {
+        "sigma_lu": 1.6724498104147123e-06,
+        "reference_lu": 2.659940913913586e-07,
+        "ratio": 6.287544966380579,
+        "signed_relative_error": 5.287544966380579,
+        "phase_speed_lu": -0.2602562335157736,
+        "phase_speed_relative_error": 2.3952029869489522e-05,
+        "lambda_abs": 0.9999983275515881,
+        "lambda_angle": 0.0031938244971254064
+      },
+      "thermal": {
+        "sigma_lu": 6.794105209379025e-07,
+        "reference_lu": 2.2166174282613215e-07,
+        "ratio": 3.0650779529006096,
+        "signed_relative_error": 2.0650779529006096,
+        "phase_speed_lu": -2.2802753066465886e-09,
+        "phase_speed_relative_error": 2.7983188091887247e-11,
+        "lambda_abs": 0.9999993205897099,
+        "lambda_angle": 2.7983188091887247e-11
+      },
+      "thermal_pressure_to_theta": 2.178038333006788e-05,
+      "acoustic_pressure_abs": 0.13359459143036834,
+      "low_k_ghost_stability": null
+    }
+  ],
+  "candidate_summary": [
+    {
+      "trace_policy": "current_zero",
+      "trace_scale": 1.0,
+      "heat_line": "custom_affine",
+      "heat_curve_type": "affine",
+      "heat_curve_coefficients": [
+        -0.504500678278,
+        0.726698353929
+      ],
+      "symbol_transport_error_max": 0.007496395390109711,
+      "baseline_acoustic_error_n64": 4.980224459504124,
+      "baseline_acoustic_ratio_n512": 4.991311190143551,
+      "low_k_ghost_spectral_radius_max": 1.000000000961176,
+      "low_k_ghost_stability_pass": true,
+      "low_k_ghost_unstable_count": 0,
+      "low_k_ghost_max_k_label": "k0",
+      "symbol_score": 19.920897838016497,
+      "candidate_symbol_pass": false
+    }
+  ],
+  "dynamic_confirmation": [],
+  "nonamplifying_trace_boundary": null,
+  "ghost_orthogonal_projector": {
+    "closure": "ghost_orthogonal_projector",
+    "status": "DYNAMIC_PROJECTOR_EVALUATED",
+    "heat_curve": {
+      "name": "ghost_orthogonal_affine",
+      "curve_type": "affine",
+      "coefficients": [
+        -0.504500678278,
+        0.726698353929
+      ]
+    },
+    "alpha_h_curve": {
+      "curve_type": "affine",
+      "coefficients": [
+        0.699947491657,
+        -1.15260571121
+      ]
+    },
+    "rows": [
+      {
+        "closure": "ghost_orthogonal_projector",
+        "heat_curve_type": "affine",
+        "heat_curve_coefficients": [
+          -0.504500678278,
+          0.726698353929
+        ],
+        "alpha_h_curve_type": "affine",
+        "alpha_h_curve_coefficients": [
+          0.699947491657,
+          -1.15260571121
+        ],
+        "regularized_heat_flux_factor": -0.4160641559839334,
+        "alpha_h": 0.5596796072940051,
+        "hydrodynamic_trace_factor": -0.5596796072940051,
+        "ghost_trace_factor": 0.0,
+        "pr_target": 0.5,
+        "tau32": 0.6216963294548856,
+        "n_equiv": 64,
+        "k_lu": 0.09817477042468103,
+        "acoustic_projector_indices": [
+          1,
+          0
+        ],
+        "acoustic": {
+          "sigma_lu": 2.5373808792062013e-05,
+          "reference_lu": 2.5535432773570427e-05,
+          "ratio": 0.9936705994787095,
+          "signed_relative_error": -0.006329400521290496,
+          "phase_speed_lu": -0.2621416718693344,
+          "phase_speed_relative_error": 0.007268671928277959,
+          "lambda_abs": 0.9999746265131203,
+          "lambda_angle": 0.025735698454513973
+        },
+        "thermal": {
+          "sigma_lu": 5.717079216655121e-05,
+          "reference_lu": 5.674540616348983e-05,
+          "ratio": 1.0074963954233722,
+          "signed_relative_error": 0.007496395423372215,
+          "phase_speed_lu": 3.0897448375745926e-08,
+          "phase_speed_relative_error": 3.0333499009972904e-09,
+          "lambda_abs": 0.999942830842052,
+          "lambda_angle": -3.0333499009972904e-09
+        },
+        "thermal_pressure_to_theta": 0.0003144579698103773,
+        "acoustic_pressure_abs": 0.13565979240775558,
+        "spectral_radius": 0.9999746331319866
+      },
+      {
+        "closure": "ghost_orthogonal_projector",
+        "heat_curve_type": "affine",
+        "heat_curve_coefficients": [
+          -0.504500678278,
+          0.726698353929
+        ],
+        "alpha_h_curve_type": "affine",
+        "alpha_h_curve_coefficients": [
+          0.699947491657,
+          -1.15260571121
+        ],
+        "regularized_heat_flux_factor": -0.4160641559839334,
+        "alpha_h": 0.5596796072940051,
+        "hydrodynamic_trace_factor": -0.5596796072940051,
+        "ghost_trace_factor": 0.0,
+        "pr_target": 0.5,
+        "tau32": 0.6216963294548856,
+        "n_equiv": 512,
+        "k_lu": 0.01227184630308513,
+        "acoustic_projector_indices": [
+          1,
+          0
+        ],
+        "acoustic": {
+          "sigma_lu": 4.7051807384062176e-07,
+          "reference_lu": 3.989911370870379e-07,
+          "ratio": 1.1792694877279457,
+          "signed_relative_error": 0.1792694877279457,
+          "phase_speed_lu": -0.26027868335247567,
+          "phase_speed_relative_error": 0.00011021461085736206,
+          "lambda_abs": 0.9999995294820369,
+          "lambda_angle": 0.0031940999980709433
+        },
+        "thermal": {
+          "sigma_lu": 6.806797142188407e-07,
+          "reference_lu": 8.866469713045286e-07,
+          "ratio": 0.767700941015287,
+          "signed_relative_error": -0.23229905898471304,
+          "phase_speed_lu": -1.0818459223123217e-09,
+          "phase_speed_relative_error": 1.3276246882236188e-11,
+          "lambda_abs": 0.9999993193205174,
+          "lambda_angle": 1.3276246882236188e-11
+        },
+        "thermal_pressure_to_theta": 1.505585773252767e-06,
+        "acoustic_pressure_abs": 0.13361891311861615,
+        "spectral_radius": 0.9999995361014142
+      },
+      {
+        "closure": "ghost_orthogonal_projector",
+        "heat_curve_type": "affine",
+        "heat_curve_coefficients": [
+          -0.504500678278,
+          0.726698353929
+        ],
+        "alpha_h_curve_type": "affine",
+        "alpha_h_curve_coefficients": [
+          0.699947491657,
+          -1.15260571121
+        ],
+        "regularized_heat_flux_factor": -0.4418803656119162,
+        "alpha_h": 0.6006263226651463,
+        "hydrodynamic_trace_factor": -0.6006263226651463,
+        "ghost_trace_factor": 0.0,
+        "pr_target": 0.7061328707,
+        "tau32": 0.586170984601132,
+        "n_equiv": 64,
+        "k_lu": 0.09817477042468103,
+        "acoustic_projector_indices": [
+          2,
+          1
+        ],
+        "acoustic": {
+          "sigma_lu": 2.214781011124125e-05,
+          "reference_lu": 2.2222432074446437e-05,
+          "ratio": 0.9966420433661266,
+          "signed_relative_error": -0.0033579566338733935,
+          "phase_speed_lu": -0.26158182186487744,
+          "phase_speed_relative_error": 0.005117471142660479,
+          "lambda_abs": 0.9999778524351497,
+          "lambda_angle": 0.025680735308854154
+        },
+        "thermal": {
+          "sigma_lu": 3.9941868592787514e-05,
+          "reference_lu": 4.018040266786991e-05,
+          "ratio": 0.9940634224834899,
+          "signed_relative_error": -0.005936577516510111,
+          "phase_speed_lu": -4.1368114393451556e-08,
+          "phase_speed_relative_error": 4.06130513347905e-09,
+          "lambda_abs": 0.999960058929073,
+          "lambda_angle": 4.06130513347905e-09
+        },
+        "thermal_pressure_to_theta": 0.00031909125852459894,
+        "acoustic_pressure_abs": 0.1350648804942771,
+        "spectral_radius": 0.99997785310434
+      },
+      {
+        "closure": "ghost_orthogonal_projector",
+        "heat_curve_type": "affine",
+        "heat_curve_coefficients": [
+          -0.504500678278,
+          0.726698353929
+        ],
+        "alpha_h_curve_type": "affine",
+        "alpha_h_curve_coefficients": [
+          0.699947491657,
+          -1.15260571121
+        ],
+        "regularized_heat_flux_factor": -0.4418803656119162,
+        "alpha_h": 0.6006263226651463,
+        "hydrodynamic_trace_factor": -0.6006263226651463,
+        "ghost_trace_factor": 0.0,
+        "pr_target": 0.7061328707,
+        "tau32": 0.586170984601132,
+        "n_equiv": 512,
+        "k_lu": 0.01227184630308513,
+        "acoustic_projector_indices": [
+          1,
+          0
+        ],
+        "acoustic": {
+          "sigma_lu": 4.241810043581956e-07,
+          "reference_lu": 3.472255011632256e-07,
+          "ratio": 1.2216297562741347,
+          "signed_relative_error": 0.22162975627413473,
+          "phase_speed_lu": -0.2602698679002926,
+          "phase_speed_relative_error": 7.634159574476662e-05,
+          "lambda_abs": 0.9999995758190856,
+          "lambda_angle": 0.003193991816196661
+        },
+        "thermal": {
+          "sigma_lu": 6.791546509942782e-07,
+          "reference_lu": 6.278187916854674e-07,
+          "ratio": 1.081768593085582,
+          "signed_relative_error": 0.08176859308558204,
+          "phase_speed_lu": -1.659790595833171e-09,
+          "phase_speed_relative_error": 2.0368695087370764e-11,
+          "lambda_abs": 0.9999993208455796,
+          "lambda_angle": 2.0368695087370764e-11
+        },
+        "thermal_pressure_to_theta": 1.784306369020029e-06,
+        "acoustic_pressure_abs": 0.13360958536989545,
+        "spectral_radius": 0.9999995761489622
+      },
+      {
+        "closure": "ghost_orthogonal_projector",
+        "heat_curve_type": "affine",
+        "heat_curve_coefficients": [
+          -0.504500678278,
+          0.726698353929
+        ],
+        "alpha_h_curve_type": "affine",
+        "alpha_h_curve_coefficients": [
+          0.699947491657,
+          -1.15260571121
+        ],
+        "regularized_heat_flux_factor": -0.46028241713096674,
+        "alpha_h": 0.6298135494755025,
+        "hydrodynamic_trace_factor": -0.6298135494755025,
+        "ghost_trace_factor": 0.0,
+        "pr_target": 1.0,
+        "tau32": 0.5608481647274428,
+        "n_equiv": 64,
+        "k_lu": 0.09817477042468103,
+        "acoustic_projector_indices": [
+          1,
+          0
+        ],
+        "acoustic": {
+          "sigma_lu": 1.969361055730788e-05,
+          "reference_lu": 1.9860892157221444e-05,
+          "ratio": 0.9915773370808653,
+          "signed_relative_error": -0.008422662919134738,
+          "phase_speed_lu": 0.26119370643194817,
+          "phase_speed_relative_error": 0.0036261534368804416,
+          "lambda_abs": 0.9999803065833606,
+          "lambda_angle": -0.025642632165328045
+        },
+        "thermal": {
+          "sigma_lu": 2.8179755479823688e-05,
+          "reference_lu": 2.8372703081744915e-05,
+          "ratio": 0.9931995340251747,
+          "signed_relative_error": -0.006800465974825309,
+          "phase_speed_lu": 1.8406427126360346e-09,
+          "phase_speed_relative_error": 1.8070467574690485e-10,
+          "lambda_abs": 0.9999718206415658,
+          "lambda_angle": -1.8070467574690485e-10
+        },
+        "thermal_pressure_to_theta": 0.00032261564527101566,
+        "acoustic_pressure_abs": 0.13465335710444268,
+        "spectral_radius": 0.9999803065833606
+      },
+      {
+        "closure": "ghost_orthogonal_projector",
+        "heat_curve_type": "affine",
+        "heat_curve_coefficients": [
+          -0.504500678278,
+          0.726698353929
+        ],
+        "alpha_h_curve_type": "affine",
+        "alpha_h_curve_coefficients": [
+          0.699947491657,
+          -1.15260571121
+        ],
+        "regularized_heat_flux_factor": -0.46028241713096674,
+        "alpha_h": 0.6298135494755025,
+        "hydrodynamic_trace_factor": -0.6298135494755025,
+        "ghost_trace_factor": 0.0,
+        "pr_target": 1.0,
+        "tau32": 0.5608481647274428,
+        "n_equiv": 512,
+        "k_lu": 0.01227184630308513,
+        "acoustic_projector_indices": [
+          1,
+          0
+        ],
+        "acoustic": {
+          "sigma_lu": 2.742104272126225e-07,
+          "reference_lu": 3.1032643995658507e-07,
+          "ratio": 0.8836192857140526,
+          "signed_relative_error": -0.11638071428594743,
+          "phase_speed_lu": 0.2602637724489219,
+          "phase_speed_relative_error": 5.2920072706408305e-05,
+          "lambda_abs": 0.9999997257896104,
+          "lambda_angle": -0.0031939170137542917
+        },
+        "thermal": {
+          "sigma_lu": 6.809025270277432e-07,
+          "reference_lu": 4.433234856522643e-07,
+          "ratio": 1.5359044784778941,
+          "signed_relative_error": 0.5359044784778941,
+          "phase_speed_lu": -1.8888255181744234e-09,
+          "phase_speed_relative_error": 2.317937645238165e-11,
+          "lambda_abs": 0.9999993190977048,
+          "lambda_angle": 2.317937645238165e-11
+        },
+        "thermal_pressure_to_theta": 0.00025653143847603456,
+        "acoustic_pressure_abs": 0.13360313368825105,
+        "spectral_radius": 0.9999997257896103
+      },
+      {
+        "closure": "ghost_orthogonal_projector",
+        "heat_curve_type": "affine",
+        "heat_curve_coefficients": [
+          -0.504500678278,
+          0.726698353929
+        ],
+        "alpha_h_curve_type": "affine",
+        "alpha_h_curve_coefficients": [
+          0.699947491657,
+          -1.15260571121
+        ],
+        "regularized_heat_flux_factor": -0.4823915477044834,
+        "alpha_h": 0.6648805205662512,
+        "hydrodynamic_trace_factor": -0.6648805205662512,
+        "ghost_trace_factor": 0.0,
+        "pr_target": 2.0,
+        "tau32": 0.5304240823637214,
+        "n_equiv": 64,
+        "k_lu": 0.09817477042468103,
+        "acoustic_projector_indices": [
+          0,
+          1
+        ],
+        "acoustic": {
+          "sigma_lu": 1.6852600964829804e-05,
+          "reference_lu": 1.702362184904695e-05,
+          "ratio": 0.9899539072393858,
+          "signed_relative_error": -0.01004609276061419,
+          "phase_speed_lu": -0.26073895304659533,
+          "phase_speed_relative_error": 0.0018787821194823362,
+          "lambda_abs": 0.9999831475410395,
+          "lambda_angle": 0.025597986856121184
+        },
+        "thermal": {
+          "sigma_lu": 1.4080777652286416e-05,
+          "reference_lu": 1.4186351540872458e-05,
+          "ratio": 0.9925580662313441,
+          "signed_relative_error": -0.007441933768655873,
+          "phase_speed_lu": -3.688073485360516e-08,
+          "phase_speed_relative_error": 3.620757677346219e-09,
+          "lambda_abs": 0.9999859193214814,
+          "lambda_angle": 3.620757677346219e-09
+        },
+        "thermal_pressure_to_theta": 0.00032422316470103493,
+        "acoustic_pressure_abs": 0.13417210474803426,
+        "spectral_radius": 0.9999859193214814
+      },
+      {
+        "closure": "ghost_orthogonal_projector",
+        "heat_curve_type": "affine",
+        "heat_curve_coefficients": [
+          -0.504500678278,
+          0.726698353929
+        ],
+        "alpha_h_curve_type": "affine",
+        "alpha_h_curve_coefficients": [
+          0.699947491657,
+          -1.15260571121
+        ],
+        "regularized_heat_flux_factor": -0.4823915477044834,
+        "alpha_h": 0.6648805205662512,
+        "hydrodynamic_trace_factor": -0.6648805205662512,
+        "ghost_trace_factor": 0.0,
+        "pr_target": 2.0,
+        "tau32": 0.5304240823637214,
+        "n_equiv": 512,
+        "k_lu": 0.01227184630308513,
+        "acoustic_projector_indices": [
+          0,
+          1
+        ],
+        "acoustic": {
+          "sigma_lu": 2.443863387187091e-07,
+          "reference_lu": 2.659940913913586e-07,
+          "ratio": 0.9187660426604819,
+          "signed_relative_error": -0.0812339573395181,
+          "phase_speed_lu": -0.26025663813850747,
+          "phase_speed_relative_error": 2.5506776205386217e-05,
+          "lambda_abs": 0.9999997556136911,
+          "lambda_angle": 0.003193829462593407
+        },
+        "thermal": {
+          "sigma_lu": 6.794105201607458e-07,
+          "reference_lu": 2.2166174282613215e-07,
+          "ratio": 3.0650779493945617,
+          "signed_relative_error": 2.0650779493945617,
+          "phase_speed_lu": -2.2802774441187962e-09,
+          "phase_speed_relative_error": 2.798321432261766e-11,
+          "lambda_abs": 0.9999993205897106,
+          "lambda_angle": 2.798321432261766e-11
+        },
+        "thermal_pressure_to_theta": 2.178038474091614e-05,
+        "acoustic_pressure_abs": 0.13359556561504765,
+        "spectral_radius": 0.9999997677909398
+      }
+    ],
+    "summary": {
+      "thermal_error_max_n64": 0.007496395423372215,
+      "acoustic_error_max_n64": 0.01004609276061419,
+      "baseline_acoustic_error_n64": 0.0033579566338733935,
+      "baseline_acoustic_error_n512": 0.22162975627413473,
+      "baseline_acoustic_ratio_n512": 1.2216297562741347,
+      "spectral_radius_max": 0.9999997677909398,
+      "low_k_ghost_stability": {
+        "spectral_radius_max": 1.000000000961176,
+        "max_k_label": "k0",
+        "unstable_count": 0,
+        "radius_limit": 1.01,
+        "passed": true
+      },
+      "candidate_symbol_pass": true,
+      "dynamic_gate_status": "passed"
+    },
+    "interpretation": "The projector separates r_g=0 trace ghost retention from hydrodynamic r_h=-alpha_h(tau32). The dynamic implementation is an explicit diagnostic spectral collision applied to low-k Fourier modes.",
+    "dynamic_confirmation": {
+      "status": "passed",
+      "include_p2_9": true,
+      "include_high_mode": false,
+      "row": {
+        "trace_policy": "ghost_orthogonal_spectral",
+        "trace_scale": 1.0,
+        "heat_curve_type": "affine",
+        "heat_curve_coefficients": [
+          -0.504500678278,
+          0.726698353929
+        ],
+        "alpha_h_curve_type": "affine",
+        "alpha_h_curve_coefficients": [
+          0.699947491657,
+          -1.15260571121
+        ],
+        "trace_bulk_projector_low_laplacian": 0.019261093311212455,
+        "p2_05_status": "PASSED",
+        "alpha_relative_error": 0.019331097376509954,
+        "heat_flux_relative_error": 0.0007502756710722499,
+        "p2_06_status": "PASSED",
+        "sound_speed_relative_error": 0.004638877486868198,
+        "gamma_relative_error": 0.009299274158074411,
+        "attenuation_ratio": 0.881183416878203,
+        "attenuation_relative_error": 0.11881658312179699,
+        "p2_07_status": "PASSED",
+        "baseline_pr_relative_error": 0.014219268031482102,
+        "max_pr_relative_error": 0.017878443262929533,
+        "p2_09_status": "PASSED",
+        "p2_09_max_sound_speed_relative_error": 0.003747380542502343,
+        "p2_09_max_direction_difference": 0.008472909119192634,
+        "p2_09_dispersion_masking_status": "PASSED"
+      }
+    }
+  },
+  "interpretation": {
+    "symbol_candidate_count": 1,
+    "symbol_pass_count": 0,
+    "dynamic_enabled": true,
+    "dynamic_eligible_count": 0,
+    "dynamic_selected_count": 0,
+    "include_p2_9": true,
+    "include_high_mode": false,
+    "derive_nonamplifying_trace_boundary": false,
+    "evaluate_ghost_orthogonal_projector": true,
+    "note": "current_zero is the production trace closure; tau22/calibrated variants are diagnostic candidates. A production fix requires hydrodynamic symbol matching, low-k full-symbol ghost stability, and dynamic P2-5/P2-7/P2-6 confirmation."
+  },
+  "summary_digest": "542cd1378dcabe111aabee1759fd864265891f8e6232d32057c8a4e0132c0f04"
+}
