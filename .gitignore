@@ -47,6 +47,7 @@ results/
 
 # ===== Claude Code（仅忽略个人本地配置，共享的 settings.json 可入库）=====
 .claude/settings.local.json
+CLAUDE.md
 
 # ===== Python 工具缓存 =====
 .pytest_cache/
