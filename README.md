@@ -36,7 +36,7 @@
 | `data/` | 输入数据（不纳入版本控制） |
 | `results/` | 模拟结果（不纳入版本控制） |
 | `notebooks/` | Jupyter 探索性分析 |
-| `docs/` | 研究计划书、推导笔记、文献笔记；按阶段组织（`Phase_0/1/2`，Phase_2 内分 `closure/acoustic/robustness/M2`） |
+| `docs/` | 研究计划书、推导笔记、文献笔记；按阶段组织（`Phase_0/1/2/3`，Phase_2 内分 `closure/acoustic/robustness/M2`，Phase_3 已建立 P3-0 合同/状态/输出导览） |
 | `tests/` | 单元测试 |
 
 ## 环境
@@ -53,7 +53,7 @@ pip install -r requirements.txt
 - [x] Phase 0：物理冻结与无量纲化
 - [x] Phase 1：参考连续介质模型（1D NSF）
 - [x] Phase 2：气体侧热 LBM 核心 + 验证（M2 收尾：紧致空气目标 BOUNDED_PRODUCTION_GO）
-- [ ] Phase 3：固-流界面耦合
+- [ ] Phase 3：固-流界面耦合（当前：P3-2 Level B heat-flux smoke 通过，P3-3 待启动）
 - [ ] Phase 4：开边界与远场外推
 - [ ] Phase 5：物理结果生产
 - [ ] Phase 6：论文撰写

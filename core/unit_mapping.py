@@ -1230,3 +1230,7 @@ def temperature_phys_to_lu(T_phys: np.ndarray, mapping: UnitMapping) -> np.ndarr
 
 def heat_flux_lu_to_phys(q_lu: np.ndarray, mapping: UnitMapping) -> np.ndarray:
     return np.asarray(q_lu) * mapping.heat_flux_scale
+
+
+def heat_flux_phys_to_lu(q_phys: np.ndarray, mapping: UnitMapping) -> np.ndarray:
+    return np.asarray(q_phys) / mapping.heat_flux_scale

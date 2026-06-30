@@ -1,0 +1,61 @@
+case:
+  name: phase3_levela_isothermal_10k
+  phase: Phase_3
+  level: A
+  purpose: P3-1 Level A prescribed wall temperature smoke and contract verification
+  status: implementation_smoke_not_m3_pass
+
+inheritance:
+  gas_config_path: configs/gas_air_10k_d2q37_physical_timestep.yaml
+  phase3_contract: docs/Phase_3/phase3_instruction_v1.0.md
+  m3_smoke_contract: configs/phase3_m3_smoke.yaml
+
+physical:
+  frequency_Hz: 1.0e4
+  T0_K: 300.0
+  wall_temperature_hat_K: 1.0e-2
+
+level_a:
+  wall: bottom
+  wall_domain: upper_half_domain_gas_y_positive
+  wall_normal_convention: n_plus_ey_from_film_to_gas
+  heat_flux_sign_convention: positive_one_sided_gas_flux_qg_equals_minus_k_dTdy_at_0_plus
+  boundary_contract:
+    velocity: no_slip_u_wall_zero
+    temperature: prescribed_T_wall
+  rho_wall_policy: pressure_preserving
+  coupling: one_way_prescribed_temperature
+  theta_q_rule: quadrature_temperature_only_never_wall_temperature
+  phase_convention: x(t)=Re[x_hat exp(i Omega t)]
+
+numerics:
+  nx: 16
+  ny: 16
+  constant_wall_steps: 4
+  sinusoidal_samples: 64
+
+gates:
+  wall_theta_relative_error_lu: 1.0e-6
+  normal_velocity_leakage_lu: 1.0e-8
+  sinusoidal_wall_amplitude_error: 1.0e-10
+  sinusoidal_wall_phase_error_deg: 1.0e-8
+  no_nan: true
+  no_clipping_or_floor: true
+
+references:
+  thermal_admittance_reference: reference/thermal_admittance.py
+  phase_convention_owner: phase3_interfaces/complex_amplitude.py
+  wall_state_owner: phase3_interfaces/wall_state_contract.py
+
+output:
+  results_root: results/phase3_levela_wall_temperature
+  summary_required_fields:
+    - status
+    - level
+    - m3_gate
+    - reference_source
+    - amplitude_errors
+    - phase_errors_deg
+    - stability_flags
+    - known_risk_boundaries
+

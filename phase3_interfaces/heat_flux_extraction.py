@@ -11,6 +11,7 @@ from core.macroscopic import heat_flux_lu
 from core.unit_mapping import (
     create_unit_mapping,
     heat_flux_lu_to_phys,
+    heat_flux_phys_to_lu,
     pressure_lu_to_phys,
     temperature_lu_to_phys,
     temperature_phys_to_lu,
@@ -61,6 +62,10 @@ def extract_wall_heat_flux(
 
 def convert_heat_flux_lu_to_phys(q_lu, config: dict[str, Any]):
     return heat_flux_lu_to_phys(q_lu, create_unit_mapping(config))
+
+
+def convert_heat_flux_phys_to_lu(q_phys, config: dict[str, Any]):
+    return heat_flux_phys_to_lu(q_phys, create_unit_mapping(config))
 
 
 def convert_temperature_phys_to_lu(T_phys, config: dict[str, Any]):

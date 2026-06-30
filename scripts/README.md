@@ -8,7 +8,7 @@
 
 - **运行方式**：在仓库根目录执行 `python -m scripts.<name>`（文档示例均用此式）。
 - **命名**：`phase1_*`（参考模型）、`phase2_<类别>_*`，类别 = `m2`（验证/汇总）/ `acoustic` /
-  `closure` / `robust`（鲁棒性·失败·升级）/ `phase3`（交接·Level C）。
+  `closure` / `robust`（鲁棒性·失败·升级）/ `phase3`（交接·Level C）；Phase_3 正式实现脚本使用 `phase3_*`。
 - **共享工具枢纽**：`phase2_m2_verification.py` 导出 `load_config / sha256_file / summary_payload_digest`，
   几乎所有 `phase2_*` 诊断都从它导入；部分诊断还互相导入
   （`phase2_acoustic_attenuation_caliber`、`phase2_closure_recursive_regularized`、`phase2_acoustic_attenuation_anisotropy`）。
@@ -72,3 +72,10 @@
 | `phase2_phase3_qoi_scale_triage.py` | Level C 分诊：各 QoI 由哪种尺度/输运主导。 |
 | `phase2_phase3_forced_near_wall_thermal.py` | Level C：受迫 10 kHz 近壁热层 sim（气侧 proxy）。 |
 | `phase2_phase3_levelc_dx_recal.py` | Level C 前置：把工作点 dx 拉到标定 k。 |
+
+## Phase 3 — 界面耦合实现（`phase3_*`）
+
+| 脚本 | 用途 |
+|---|---|
+| `phase3_levela_wall_temperature.py` | P3-1 Level A prescribed wall-temperature smoke；验证底壁 no-slip + `theta_wall_lu` clamped macrostate 和复幅值相位约定，输出 `results/phase3_levela_wall_temperature/<timestamp>/`。 |
+| `phase3_levelb_wall_flux.py` | P3-2 Level B prescribed wall heat-flux smoke；验证底壁 no-slip + recovered one-sided `q_g''`、能量审计和复幅值相位约定，输出 `results/phase3_levelb_wall_flux/<timestamp>/`。 |

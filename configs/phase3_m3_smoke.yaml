@@ -1,0 +1,192 @@
+case:
+  name: phase3_m3_smoke
+  phase: Phase_3
+  purpose: P3-0 frozen M3 smoke/meta contract for Level A/B/C ordering, signs, references, and output schema
+  status: contract_only_not_a_run_pass
+
+inheritance:
+  default_gas_baseline: configs/gas_air_10k_d2q37_physical_timestep.yaml
+  levelc_scoped_gas_config: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+  phase3_contract: docs/Phase_3/phase3_instruction_v1.0.md
+  phase3_status: docs/Phase_3/Phase3_STATUS.md
+
+physical:
+  T0_K: 300.0
+  rho0_kg_m3: 1.177
+  Pr: 0.7061328707
+  film_half_width_m: 5.0e-3
+  frequency_Hz: 1.0e4
+  omega_rad_s: 6.283185307179586e4
+  P_bar_W_m2: 0.0
+  P1_W_m2: 1000.0
+  C_A_J_m2K: 7.0e-4
+  two_sided_film: true
+  substrate_conduction: ignored
+  radiation: ignored_small_delta_T_check_required_for_production
+
+contract:
+  wall_domain: upper_half_domain_gas_y_positive
+  wall_location: bottom_wall_y0
+  wall_normal_convention: n_plus_ey_from_film_to_gas
+  heat_flux_sign_convention: positive_one_sided_gas_flux_qg_equals_minus_k_dTdy_at_0_plus
+  q_g_definition: one_sided_gas_heat_flux_W_m2
+  film_energy_equation: C_A_dT_s_dt_equals_P_in_minus_2_q_g_for_two_sided_freestanding_film
+  theta_wall_lu_meaning: lbm_thermodynamic_wall_temperature
+  theta_q_rule: quadrature_temperature_only_never_wall_temperature
+  tau_mapping_owner: core/unit_mapping.py
+  heat_flux_interface: phase3_interfaces/heat_flux_extraction.py
+  wall_state_interface: phase3_interfaces/wall_state_contract.py
+  complex_amplitude_convention: x(t)=Re[x_hat exp(i Omega t)]
+  no_clipping_or_floor_for_pass: true
+
+drive:
+  default:
+    type: sinusoidal_power_density
+    expression: P_in(t)=P_bar+P1*cos(Omega*t)
+  required_types:
+    - sinusoidal_power_density
+    - step_power_density
+    - gaussian_power_density
+
+level_order:
+  sequence:
+    - A_prescribed_wall_temperature
+    - B_prescribed_wall_heat_flux
+    - film_ode_standalone
+    - C_coupled_film_gas
+    - M3_verification_report
+  level_c_requires_level_ab_pass: true
+
+level_a:
+  status: not_started
+  planned_config: configs/phase3_levela_isothermal_10k.yaml
+  fallback_debug_config: configs/gas_air_10k_d2q37_physical_timestep.yaml
+  boundary_contract:
+    velocity: no_slip_u_wall_zero
+    temperature: prescribed_T_wall_or_T_s
+  references:
+    - reference/thermal_admittance.py
+    - reference/continuum_1d_freq.py
+    - phase3_interfaces/complex_amplitude.py
+  gates:
+    wall_theta_relative_error_lu: 1.0e-6
+    normal_velocity_leakage_lu: 1.0e-8
+    thermal_admittance_amplitude_error: 0.05
+    thermal_admittance_phase_error_deg: 5.0
+
+level_b:
+  status: not_started
+  planned_config: configs/phase3_levelb_flux_10k.yaml
+  fallback_debug_config: configs/gas_air_10k_d2q37_physical_timestep.yaml
+  boundary_contract:
+    velocity: no_slip_u_wall_zero
+    heat_flux: prescribed_positive_one_sided_q_wall_from_film_to_gas
+  references:
+    - reference/thermal_admittance.py
+    - reference/continuum_1d_freq.py
+    - phase3_interfaces/heat_flux_extraction.py
+  gates:
+    fourier_heat_flux_amplitude_or_sign_error: 0.05
+    frequency_response_amplitude_error: 0.05
+    frequency_response_phase_error_deg: 5.0
+    periodic_energy_residual: 0.01
+
+film_ode:
+  status: not_started
+  planned_modules:
+    - coupling/film_ode.py
+    - coupling/drive.py
+  required_fixtures:
+    adiabatic_ramp_qg_zero: linear_Ts_ramp
+    linear_leak: exponential_approach
+    sinusoidal_frequency_response: closed_form_or_reference_comparison
+  default_integrator_for_standalone: rk4
+
+level_c:
+  status: not_started
+  coupling_scheme: heun_predictor_corrector_one_picard_correction
+  explicit_lagged_allowed_for_smoke_only: true
+  explicit_lagged_summary_status: DIAGNOSTIC
+  planned_main_config: configs/phase3_levelc_coupled_10k_dx2p6.yaml
+  gas_scoped_config: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+  baseline_qg_sanity_config: configs/gas_air_10k_d2q37_physical_timestep.yaml
+  cases:
+    C0:
+      purpose: coupling_smoke
+      duration_cycles: [1, 2]
+      required: no_nan_no_clipping_energy_sign_correct
+    C1:
+      purpose: linear_steady_10k
+      P1_W_m2: 1000.0
+      config: dx2p6
+      outputs: [T_s_hat, q_g_hat, p_hat]
+    C2:
+      purpose: amplitude_linearity
+      P1_W_m2_values: [100.0, 1000.0, 3000.0]
+      config: dx2p6
+    C3:
+      purpose: coupling_stability_or_time_step
+      config: dx2p6
+      dt_variants: [1x, 0.5x_if_feasible]
+    C4:
+      purpose: baseline_dx4_qg_sanity_only
+      config: dx4_baseline
+  gates:
+    T_s_hat_amplitude_error: 0.05
+    T_s_hat_phase_error_deg: 5.0
+    q_g_hat_amplitude_error: 0.05
+    q_g_hat_phase_error_deg: 5.0
+    p_hat_initial_amplitude_error: 0.10
+    p_hat_target_amplitude_error: 0.05
+    energy_residual: 0.01
+
+m3_references:
+  phase1_manifest: configs/phase1_reference_manifest.yaml
+  phase1_baseline_config: configs/phase1_baseline_10k.yaml
+  continuum_frequency_reference: reference/continuum_1d_freq.py
+  continuum_time_reference: reference/continuum_1d_time.py
+  thermal_admittance_reference: reference/thermal_admittance.py
+  harmonic_fit: postproc/harmonic_fit.py
+  phase_convention_owner: phase3_interfaces/complex_amplitude.py
+  primary_levelc_qoi_config: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+
+output:
+  results_root: results/m3
+  report_path: docs/Phase_3/M3/M3_Verification_Report.md
+  summary_required_fields:
+    - status
+    - level
+    - m3_gate
+    - reference_source
+    - amplitude_errors
+    - phase_errors_deg
+    - energy_residual
+    - stability_flags
+    - known_risk_boundaries
+  hdf5_required_metadata:
+    - phase
+    - level
+    - config_sha256
+    - velocity_set
+    - Q
+    - theta_q_lu
+    - theta_ref_lu
+    - theta_transport_lu
+    - tau21
+    - tau22
+    - tau32
+    - heat_flux_sign_convention
+    - wall_normal_convention
+    - coupling_scheme
+    - dx_si
+    - dt_si
+    - C_A_si
+    - P_in_definition
+
+known_risk_boundaries:
+  - final_M2_unrestricted_production_pass_not_claimed
+  - levelc_dx2p6_is_10k_compact_air_scoped_not_general_production
+  - diagonal_acoustic_attenuation_go_risk
+  - high_mode_acoustic_damping_go_risk
+  - Pr_greater_than_1_robustness_go_risk
+  - no_clipping_floor_or_positivity_repair_for_pass

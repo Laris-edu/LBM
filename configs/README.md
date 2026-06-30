@@ -1,6 +1,6 @@
 # configs/ — 算例与验证配置（YAML）
 
-Phase_1 参考算例、Phase_2 生产/诊断映射与验证模板。`gas_air_10k_d2q37_physical_timestep.yaml`
+Phase_1 参考算例、Phase_2 生产/诊断映射、Phase_3 smoke/meta 配置与验证模板。`gas_air_10k_d2q37_physical_timestep.yaml`
 是当前默认生产基线（2026-06-22 RR 升级后）；`gas_air_10k_physical_timestep.yaml` 为 D2Q21 物理时间步候选。
 
 ## Phase_2 气体侧映射
@@ -12,6 +12,14 @@ Phase_1 参考算例、Phase_2 生产/诊断映射与验证模板。`gas_air_10k
 | `gas_air_10k_d2q37_levelc_dx2p6.yaml` | Level C scoped 配置，`dx≈2.6μm` 把 10 kHz 热 feature 拉到标定 k（`T_s_hat`/`p_hat` 用此配置；默认生产 baseline 不变）。 |
 | `gas_air_10k_physical_timestep.yaml` | D2Q21 10 kHz production mapping，`dx=4 um`、`dt=3 ns`、`theta_ref_lu=c0_lu^2/gamma`。显式记录 stress regularization、filter、`auto_tau32_linear`、conductive heat-flux factor 和 Galilean 修正。 |
 | `gas_air_10k_quadrature_matched.yaml` | quadrature-matched 诊断配置（`theta_ref_lu=theta_q=2/3`），用于诊断 Hermite/SMRT 实现，不自动等价于 production pass。 |
+
+## Phase_3 配置入口
+
+| 文件 | 作用 |
+|---|---|
+| `phase3_m3_smoke.yaml` | P3-0 冻结的 M3 smoke/meta 配置；记录 Level A/B/C 推进顺序、热流符号、壁面法向、单侧/双侧因子、M3 reference 路径、Level C predictor-corrector 策略和 HDF5/summary schema。该文件是合同配置，不表示 M3 已运行或通过。 |
+| `phase3_levela_isothermal_10k.yaml` | P3-1 Level A prescribed wall-temperature smoke 配置；继承 D2Q37/RR 默认气侧配置，约束底壁 no-slip + prescribed `theta_wall_lu`，输出 `results/phase3_levela_wall_temperature/<timestamp>/`。 |
+| `phase3_levelb_flux_10k.yaml` | P3-2 Level B prescribed wall heat-flux smoke 配置；继承 D2Q37/RR 默认气侧配置，约束底壁 no-slip + prescribed one-sided `q_g''`，输出 `results/phase3_levelb_wall_flux/<timestamp>/`。 |
 
 ## 验证模板
 
