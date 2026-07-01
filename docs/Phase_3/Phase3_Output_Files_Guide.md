@@ -1,6 +1,6 @@
 # Phase_3 输出文件导览
 
-**最后更新**：2026-06-30
+**最后更新**：2026-07-01
 **定位**：Phase_3 的目录、文档、配置、运行产物与交付边界总览。
 **维护原则**：新增 Phase_3 文档、报告、脚本、配置、测试、长期归档 run 或交付目录时同步更新本文与相关 README。
 
@@ -21,10 +21,10 @@
 |---|---|---|
 | `phase3_interfaces/` | `phase3_interfaces/README.md` | Phase_2 暴露给 Phase_3 的稳定接口：壁面状态、热流、复幅值、modal fit、probe 采样。 |
 | `configs/` | `configs/README.md` | Phase_3 smoke、Level A、Level B、Level C scoped、默认 D2Q37/RR baseline 和验证模板。 |
-| `verification/` | `verification/README.md` | Phase_3 handoff、P3-1 Level A 与 P3-2 Level B 测试；后续新增 Film ODE、Level C 测试。 |
-| `scripts/` | `scripts/README.md` | P3-1 Level A 与 P3-2 Level B 脚本；后续新增 Level C 运行脚本和 M3 汇总脚本。 |
+| `verification/` | `verification/README.md` | Phase_3 handoff、P3-1 Level A、P3-2 Level B、P3-3 Film ODE 与 P3-4 Level C coupling 测试。 |
+| `scripts/` | `scripts/README.md` | P3-1 Level A、P3-2 Level B 与 P3-4 Level C short smoke 脚本；后续新增 M3 汇总脚本。 |
 | `boundary/` | `boundary/README.md` | Level A wall Dirichlet helper 与 Level B wall Neumann heat-flux helper。 |
-| `coupling/` | 待 P3-3/P3-4 建立 | Film ODE、驱动、共轭耦合和能量审计。 |
+| `coupling/` | `coupling/README.md` | P3-3 Film ODE / drive 与 P3-4 Level C conjugate coupling / energy audit。 |
 | `reference/` | 现有参考实现 | Phase_1/continuum 参考、热导纳与 1D NSF 对齐。 |
 | `postproc/` | 现有后处理 | harmonic fit、复幅值和 M3 summary 支撑。 |
 
@@ -37,7 +37,7 @@
 | `docs/Phase_3/Phase3_STATUS.md` | 阶段状态、验证记录、风险和更新日志 | 当前 |
 | `docs/Phase_3/Phase3_Output_Files_Guide.md` | 本导览 | 当前 |
 | `docs/Phase_3/README.md` | Phase_3 文档目录索引 | 当前 |
-| `docs/Phase_3/M3/M3_Verification_Report.md` | M3 最终/阶段报告 | 待 P3-5 创建 |
+| `docs/Phase_3/M3/M3_Verification_Report.md` | M3 验证报告（P3-5） | 当前（**M3 `NOT PASSED`**，2026-07-01；动态热导纳缺口已定位） |
 | `docs/Phase_3/M3/M3_runs/README.md` | 精选 M3 run 摘要归档说明 | 待需要长期归档 run 时创建 |
 
 ## 4. 配置入口
@@ -49,7 +49,7 @@
 | `configs/gas_air_10k_d2q37_levelc_dx2p6.yaml` | 10 kHz Level C scoped 主线配置；用于 `T_s_hat`、`q_g_hat`、nearfield `p_hat` 主结论。 | Phase_2 继承 |
 | `configs/phase3_levela_isothermal_10k.yaml` | Level A prescribed wall-temperature smoke 配置。 | 当前 |
 | `configs/phase3_levelb_flux_10k.yaml` | Level B prescribed wall heat-flux smoke 配置。 | 当前 |
-| `configs/phase3_levelc_coupled_10k_dx2p6.yaml` | Level C 主工况派生配置。 | 待 P3-4 创建 |
+| `configs/phase3_levelc_coupled_10k_dx2p6.yaml` | P3-4 Level C predictor-corrector short smoke 配置，继承 dx2p6 scoped 气侧配置。 | 当前 |
 
 ## 5. 正式交付与运行产物
 
@@ -62,14 +62,24 @@
 - `configs/phase3_m3_smoke.yaml`
 - `configs/phase3_levela_isothermal_10k.yaml`
 - `configs/phase3_levelb_flux_10k.yaml`
+- `configs/phase3_levelc_coupled_10k_dx2p6.yaml`
 - `boundary/README.md`
 - `boundary/wall_dirichlet.py`
 - `boundary/wall_neumann.py`
+- `coupling/README.md`
+- `coupling/__init__.py`
+- `coupling/drive.py`
+- `coupling/film_ode.py`
+- `coupling/energy_audit.py`
+- `coupling/conjugate.py`
 - `scripts/phase3_levela_wall_temperature.py`
 - `scripts/phase3_levelb_wall_flux.py`
+- `scripts/phase3_levelc_coupled_10k.py`
 - `verification/test_phase3_levela_dirichlet.py`
 - `verification/test_phase3_levelb_neumann.py`
-- 后续 P3-3/P3-5 新增的 `coupling/`、`scripts/phase3_*`、`verification/test_phase3_*`、`docs/Phase_3/M3/*`。
+- `verification/test_phase3_film_ode.py`
+- `verification/test_phase3_levelc_coupling.py`
+- 后续 P3-5 新增的 `scripts/phase3_m3_*`、`docs/Phase_3/M3/*`。
 
 ### 5.2 运行产物 / untracked by default
 
@@ -81,6 +91,8 @@
 - `results/phase3_levela_wall_temperature/<timestamp>/report.md`
 - `results/phase3_levelb_wall_flux/<timestamp>/summary.json`
 - `results/phase3_levelb_wall_flux/<timestamp>/report.md`
+- `results/m3/<timestamp>/summary.json`（P3-4 Level C short smoke 或后续 M3 run）
+- `results/m3/<timestamp>/report.md`
 
 ### 5.3 长期留档规则
 
@@ -92,6 +104,8 @@
 
 - P3-1 只完成 Level A bottom-wall prescribed-temperature smoke，不表示 Level A 动态 thermal admittance M3 gate 已通过。
 - P3-2 只完成 Level B bottom-wall prescribed-heat-flux smoke，不表示 Level B 动态频响或完整 M3 gate 已通过。
+- P3-3 只完成 standalone Film ODE fixtures；linear leak 是人工总有效漏热 fixture，不表示 Level C gas-film coupling 已通过。
+- P3-4 只完成 Level C short coupling smoke；不表示 full-period `T_s_hat/q_g_hat/p_hat` M3 frequency-response gate 已通过。
 - Level C final production claim 保持 `NOT_CLAIMED`；10 kHz dx2p6 只能形成 scoped/bounded 结论。
 - Phase_3 不改写 `core/unit_mapping.py` 的 tau 映射口径，不复制 `phase3_interfaces` 已冻结的热流、复幅值或 modal fit 约定。
 - Phase_3 不提前实现 Kirchhoff 远场主线；只输出近场和 control-surface-ready/probe-ready 数据。

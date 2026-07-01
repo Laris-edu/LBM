@@ -1,0 +1,74 @@
+case:
+  name: phase3_levelc_coupled_10k_dx2p6
+  phase: Phase_3
+  level: C
+  purpose: P3-4 Level C predictor-corrector coupling smoke on dx2p6 scoped gas config
+  status: coupling_smoke_not_m3_pass
+
+inheritance:
+  gas_config_path: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+  phase3_contract: docs/Phase_3/phase3_instruction_v1.0.md
+  m3_smoke_contract: configs/phase3_m3_smoke.yaml
+
+physical:
+  frequency_Hz: 1.0e4
+  T0_K: 300.0
+  C_A_J_m2K: 7.0e-4
+  P_mean_W_m2: 0.0
+  P_hat_W_m2:
+    real: 1000.0
+    imag: 0.0
+
+level_c:
+  wall: bottom
+  wall_domain: upper_half_domain_gas_y_positive
+  wall_normal_convention: n_plus_ey_from_film_to_gas
+  heat_flux_sign_convention: positive_one_sided_gas_flux_qg_equals_minus_k_dTdy_at_0_plus
+  boundary_contract:
+    velocity: no_slip_u_wall_zero
+    temperature: solved_T_s_from_film_ODE
+    heat_flux_feedback: extracted_positive_one_sided_q_g_from_gas
+  coupling_scheme: heun_picard1
+  picard_iterations: 1
+  rho_wall_policy: pressure_preserving
+  q_g_factor: two_sided_freestanding_film_uses_2_q_g_one_sided
+  theta_q_rule: quadrature_temperature_only_never_wall_temperature
+  phase_convention: x(t)=Re[x_hat exp(i Omega t)]
+
+numerics:
+  nx: 64
+  ny: 8
+  steps: 128
+  sample_interval: 1
+  probe:
+    y: 1
+    x: 32
+
+gates:
+  energy_residual_relative: 1.0e-2
+  final_wall_temperature_error_K: 1.0e-8
+  predictor_corrector_delta_warn_K: 1.0e-3
+  no_nan: true
+  no_clipping_or_floor: true
+
+references:
+  heat_flux_interface: phase3_interfaces/heat_flux_extraction.py
+  wall_temperature_interface: boundary/wall_dirichlet.py
+  film_ode_owner: coupling/film_ode.py
+  energy_audit_owner: coupling/energy_audit.py
+  phase_convention_owner: phase3_interfaces/complex_amplitude.py
+  gas_scoped_config: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+
+output:
+  results_root: results/m3
+  summary_required_fields:
+    - status
+    - level
+    - m3_gate
+    - coupling_scheme
+    - reference_source
+    - film
+    - wall
+    - energy_audit
+    - stability_flags
+    - known_risk_boundaries
