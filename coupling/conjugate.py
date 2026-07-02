@@ -12,6 +12,7 @@ from boundary.wall_dirichlet import (
     LEVEL_A_WALL_NORMAL_CONVENTION,
     apply_bottom_dirichlet_wall,
 )
+from boundary.wall_thermal_grad import make_bottom_grad_wall_callback
 from core.solver import GasSolver2D
 from phase3_interfaces.heat_flux_extraction import (
     UPPER_GAS_WALL_NORMAL,
@@ -50,6 +51,8 @@ class LevelCCouplingResult:
     no_clipping_or_floor_used: bool = True
     wall_normal_convention: str = LEVEL_A_WALL_NORMAL_CONVENTION
     heat_flux_sign_convention: str = LEVEL_A_HEAT_FLUX_SIGN_CONVENTION
+    wall_bc: str = "equilibrium_clamp"
+    q_feedback_relax: float = 1.0
 
     @property
     def passed_smoke(self) -> bool:
@@ -158,13 +161,30 @@ def run_levelc_predictor_corrector(
     scheme: LevelCScheme = "heun_picard1",
     energy_tolerance: float = 1.0e-2,
     probe: tuple[int, int] | None = None,
+    wall_bc: str = "equilibrium_clamp",
+    q_feedback_relax: float = 1.0,
+    grad_extrap: str = "linear",
 ) -> LevelCCouplingResult:
-    """Run a short Level C predictor-corrector coupling trajectory."""
+    """Run a Level C predictor-corrector coupling trajectory.
+
+    ``wall_bc`` selects the thermal wall boundary condition:
+    ``"equilibrium_clamp"`` (P3-4 default; static macrostate smoke) or ``"thermal_grad"``
+    (P3-5+ Grad/regularized wet-node wall that resolves the dynamic near-wall admittance).
+    ``q_feedback_relax`` temporally under-relaxes the q_g fed to the film ODE; it damps the
+    step-to-step (Nyquist) coupling instability of ``thermal_grad`` without affecting the
+    physical (10 kHz) signal. ``1.0`` (no relaxation) reproduces the P3-4 clamp behaviour;
+    ``thermal_grad`` needs a small value (~0.02). ``grad_extrap`` is the near-wall
+    non-equilibrium extrapolation for the Grad wall (``"linear"`` or ``"row1"``).
+    """
 
     if n_steps < 1:
         raise ValueError("n_steps must be positive")
     if scheme not in {"heun_picard1", "heun", "explicit_lagged"}:
         raise ValueError(f"unsupported Level C scheme: {scheme}")
+    if wall_bc not in {"equilibrium_clamp", "thermal_grad"}:
+        raise ValueError(f"unsupported wall_bc: {wall_bc}")
+    if not 0.0 < q_feedback_relax <= 1.0:
+        raise ValueError("q_feedback_relax must be in (0, 1]")
     if row != BOTTOM_WALL_ROW:
         raise ValueError("P3-4 supports the bottom wall row only")
 
@@ -205,65 +225,60 @@ def run_levelc_predictor_corrector(
 
     picard_iterations = 1 if scheme == "heun_picard1" else 0
 
+    def _theta_wall_lu(T_wall_K: float) -> float:
+        return float(wall_state_from_temperature(T_wall_K, solver.config)["theta_wall_lu"])
+
+    def _advance(T_wall_K: float) -> float:
+        """Advance the gas one step imposing the wall at ``T_wall_K``; return theta_wall_lu."""
+        if wall_bc == "thermal_grad":
+            theta_w = _theta_wall_lu(T_wall_K)
+            solver.step(1, boundary_callback=make_bottom_grad_wall_callback(
+                theta_w, rho_policy=rho_policy, extrap=grad_extrap, fill_deep_links=False))
+            return theta_w
+        _apply_wall_temperature(solver, T_wall_K=T_wall_K, rho_policy=rho_policy, row=row)
+        solver.step(1)
+        return _apply_wall_temperature(solver, T_wall_K=T_wall_K, rho_policy=rho_policy, row=row)
+
+    def _reimpose(T_wall_K: float) -> float:
+        """Picard-corrector wall re-imposition. For ``thermal_grad`` the wall is already
+        imposed inside the streaming step; re-reconstructing row 0 here would retroactively
+        alter the near-wall state (inconsistent with the predictor advance, and it detaches
+        Level C from the isolated Level A admittance), so it is a no-op that only reports
+        theta_wall_lu. For ``equilibrium_clamp`` it re-clamps row 0 (P3-4 behaviour)."""
+        if wall_bc == "thermal_grad":
+            return _theta_wall_lu(T_wall_K)
+        return _apply_wall_temperature(solver, T_wall_K=T_wall_K, rho_policy=rho_policy, row=row)
+
+    q_fb = float(q_g[0])  # under-relaxed q_g fed to the film ODE
+
     for i in range(int(n_steps)):
         t_n = float(t[i])
         t_np1 = float(t[i + 1])
         T_n = float(T_s[i])
-        q_n = float(q_g[i])
-        rhs_n = film_rhs(T_n, t_n, params=params, drive=drive, q_g_one_sided_si=q_n)
+        rhs_n = film_rhs(T_n, t_n, params=params, drive=drive, q_g_one_sided_si=q_fb)
 
         if scheme == "explicit_lagged":
             T_next = T_n + dt * rhs_n
-            theta_next = _apply_wall_temperature(
-                solver,
-                T_wall_K=T_next,
-                rho_policy=rho_policy,
-                row=row,
-            )
-            solver.step(1)
-            theta_next = _apply_wall_temperature(
-                solver,
-                T_wall_K=T_next,
-                rho_policy=rho_policy,
-                row=row,
-            )
-            q_next = extract_bottom_wall_heat_flux_si(solver, row=row)
+            theta_next = _advance(T_next)
+            q_raw = extract_bottom_wall_heat_flux_si(solver, row=row)
+            q_fb = (1.0 - q_feedback_relax) * q_fb + q_feedback_relax * q_raw
         else:
             T_predict = T_n + dt * rhs_n
-            _apply_wall_temperature(
-                solver,
-                T_wall_K=T_predict,
-                rho_policy=rho_policy,
-                row=row,
-            )
-            solver.step(1)
-            _apply_wall_temperature(
-                solver,
-                T_wall_K=T_predict,
-                rho_policy=rho_policy,
-                row=row,
-            )
-            q_end = extract_bottom_wall_heat_flux_si(solver, row=row)
-            rhs_end = film_rhs(T_predict, t_np1, params=params, drive=drive, q_g_one_sided_si=q_end)
+            theta_next = _advance(T_predict)
+            q_raw = extract_bottom_wall_heat_flux_si(solver, row=row)
+            q_fb = (1.0 - q_feedback_relax) * q_fb + q_feedback_relax * q_raw
+            rhs_end = film_rhs(T_predict, t_np1, params=params, drive=drive, q_g_one_sided_si=q_fb)
             T_next = T_n + 0.5 * dt * (rhs_n + rhs_end)
             delta_pc[i + 1] = T_next - T_predict
             for _ in range(picard_iterations):
-                _apply_wall_temperature(
-                    solver,
-                    T_wall_K=T_next,
-                    rho_policy=rho_policy,
-                    row=row,
-                )
-                q_end = extract_bottom_wall_heat_flux_si(solver, row=row)
-                rhs_end = film_rhs(T_next, t_np1, params=params, drive=drive, q_g_one_sided_si=q_end)
+                theta_next = _reimpose(T_next)
+                rhs_end = film_rhs(T_next, t_np1, params=params, drive=drive, q_g_one_sided_si=q_fb)
                 T_next = T_n + 0.5 * dt * (rhs_n + rhs_end)
-            theta_next = _apply_wall_temperature(
-                solver,
-                T_wall_K=T_next,
-                rho_policy=rho_policy,
-                row=row,
-            )
-            q_next = extract_bottom_wall_heat_flux_si(solver, row=row)
+            theta_next = _reimpose(T_next)
+        # Record the q_g the film ODE actually integrated (q_fb): for equilibrium_clamp with
+        # q_feedback_relax=1.0 this equals the raw extraction (unchanged); for thermal_grad it
+        # keeps the integrated energy audit self-consistent with the under-relaxed feedback.
+        q_next = q_fb
 
         T_s[i + 1] = T_next
         P_in[i + 1] = evaluate_drive(drive, t_np1)
@@ -309,6 +324,8 @@ def run_levelc_predictor_corrector(
         predictor_corrector_delta_K=delta_pc,
         wall_temperature_error_K=wall_error,
         finite=finite,
+        wall_bc=wall_bc,
+        q_feedback_relax=q_feedback_relax,
     )
 
 

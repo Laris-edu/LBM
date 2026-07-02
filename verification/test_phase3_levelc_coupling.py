@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import numpy as np
+import pytest
 
 from core.solver import GasSolver2D
 from core.unit_mapping import d2q37_physical_timestep_config
@@ -122,3 +123,44 @@ def test_levelc_energy_audit_detects_tampered_trajectory():
         tolerance=1.0e-2,
     )
     assert not audit.passed
+
+
+def test_levelc_thermal_grad_wall_is_stable_and_audited():
+    # P3-5+ Grad regularized wall through the coupler: stable, self-consistent integrated
+    # energy audit (film integrates the under-relaxed q_fb, which is recorded), real
+    # gas->film feedback (nonzero near-wall q_g), and records the wall_bc/relax metadata.
+    solver = _small_solver()
+    params = FilmOdeParams(C_A_si=7.0e-4, T_ref_K=300.0)
+    result = run_levelc_predictor_corrector(
+        solver=solver,
+        params=params,
+        drive=ConstantDrive(power_density_si=1000.0),
+        n_steps=64,
+        energy_tolerance=1.0e-2,
+        wall_bc="thermal_grad",
+        q_feedback_relax=0.02,
+    )
+    assert result.wall_bc == "thermal_grad"
+    assert result.q_feedback_relax == 0.02
+    assert result.finite
+    assert result.energy_audit.passed
+    assert np.max(np.abs(result.q_g_one_sided_si)) > 1.0  # real near-wall flux, not ~1e-5 clamp artifact
+    # Coupling is active: T_s deviates strongly from the adiabatic (q_g=0) ramp.
+    adiabatic = 1000.0 * (result.t_si[-1] - result.t_si[0]) / params.C_A_si
+    assert abs((result.T_s_K[-1] - result.T_s_K[0]) - adiabatic) > 0.3 * adiabatic
+    assert np.isfinite(solver.f).all() and np.isfinite(solver.g).all()
+
+
+def test_levelc_rejects_unknown_wall_bc_and_bad_relax():
+    solver = _small_solver()
+    params = FilmOdeParams(C_A_si=7.0e-4, T_ref_K=300.0)
+    with pytest.raises(ValueError):
+        run_levelc_predictor_corrector(
+            solver=solver, params=params, drive=ConstantDrive(power_density_si=1000.0),
+            n_steps=2, wall_bc="nonsense",
+        )
+    with pytest.raises(ValueError):
+        run_levelc_predictor_corrector(
+            solver=solver, params=params, drive=ConstantDrive(power_density_si=1000.0),
+            n_steps=2, q_feedback_relax=0.0,
+        )

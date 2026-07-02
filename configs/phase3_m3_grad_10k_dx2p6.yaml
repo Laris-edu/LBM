@@ -1,0 +1,62 @@
+# Phase_3 P3-5+ full-period Level C M3 verification with the Grad regularized thermal
+# wall (boundary/wall_thermal_grad.py via coupling/conjugate.py wall_bc="thermal_grad").
+# Root cause of the M3 admittance gap was the equilibrium-clamp thermal wall BC; this
+# config drives the full-period 10 kHz dx2p6 coupled run that measures T_s_hat/q_g_hat.
+# Scoped outcome: phase gate PASS at both Level A/C; amplitude at the <5% boundary
+# (near-wall resolution limit, see docs/Phase_3/M3/M3_Verification_Report.md §9).
+case:
+  name: phase3_m3_grad_10k_dx2p6
+  phase: Phase_3
+  level: C
+  purpose: P3-5+ full-period Level C M3 verification with Grad regularized thermal wall
+  status: m3_phase_pass_amplitude_boundary
+
+inheritance:
+  gas_config_path: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+  phase3_contract: docs/Phase_3/phase3_instruction_v1.0.md
+  m3_smoke_contract: configs/phase3_m3_smoke.yaml
+
+physical:
+  frequency_Hz: 1.0e4
+  T0_K: 300.0
+  C_A_J_m2K: 7.0e-4
+  P_mean_W_m2: 0.0
+  P_hat_W_m2:
+    real: 1000.0
+    imag: 0.0
+  # analytic half-space gas admittance reference Y_g = k_g sqrt(i Omega / alpha_g)
+  kg_W_mK: 0.0263
+  alpha0_m2_s: 2.2233775895e-5
+
+level_c:
+  wall_bc: thermal_grad
+  q_feedback_relax: 0.02   # temporal under-relaxation of q_g fed to the film (damps Nyquist coupling instability)
+  grad_extrap: linear
+  coupling_scheme: heun_picard1
+  rho_wall_policy: pressure_preserving
+  gas_flux_factor: 2.0     # freestanding double-sided film uses 2*q_g one-sided
+  phase_convention: x(t)=Re[x_hat exp(i Omega t)]
+
+numerics:
+  nx: 8
+  ny: 48                   # half-infinite near-wall thermal layer (~4.7 delta_T at 10 kHz)
+  periods: 2               # settle 1 + fit last 1
+  probe:
+    y: 1
+    x: 4
+
+gates:
+  T_s_hat_amplitude_relative_error: 0.05
+  T_s_hat_phase_error_deg: 5.0
+  energy_residual_relative: 1.0e-2
+  no_nan: true
+  no_clipping_or_floor: true
+
+references:
+  wall_bc_owner: boundary/wall_thermal_grad.py
+  coupler_owner: coupling/conjugate.py
+  phase_convention_owner: phase3_interfaces/complex_amplitude.py
+  gas_scoped_config: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+
+output:
+  results_root: results/m3

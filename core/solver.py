@@ -1068,7 +1068,20 @@ class GasSolver2D:
         p0 = self.mapping.lattice.rho_ref_lu * self.mapping.theta_ref_lu
         return -pressure_material_derivative / (self.mapping.physical.gamma * p0)
 
-    def step(self, n_steps: int = 1) -> None:
+    def step(self, n_steps: int = 1, boundary_callback=None) -> None:
+        """Advance ``n_steps`` collide->stream->correct steps.
+
+        ``boundary_callback`` is an optional non-periodic boundary hook invoked right
+        after streaming and before the global (periodic) acoustic/filter corrections:
+
+            f_stream, g_stream = boundary_callback(
+                solver=self, f_post=..., g_post=..., f_stream=..., g_stream=...)
+
+        ``f_post``/``g_post`` are the post-collision pre-streaming populations (needed to
+        reconstruct wall-incoming populations, e.g. bounce-back / anti-bounce-back).
+        Default ``None`` preserves the fully-periodic behaviour used by Phase_2.
+        """
+
         for _ in range(int(n_steps)):
             f, g = self._require_state()
             trace_bulk_pressure_divergence = self._pressure_memory_trace_divergence(f, g)
@@ -1085,7 +1098,16 @@ class GasSolver2D:
                 f_post,
                 g_post,
             )
-            self.f, self.g = pull_stream_fg(f_post, g_post, lattice=self.lattice, y_axis=0, x_axis=1)
+            f_stream, g_stream = pull_stream_fg(f_post, g_post, lattice=self.lattice, y_axis=0, x_axis=1)
+            if boundary_callback is not None:
+                f_stream, g_stream = boundary_callback(
+                    solver=self,
+                    f_post=f_post,
+                    g_post=g_post,
+                    f_stream=f_stream,
+                    g_stream=g_stream,
+                )
+            self.f, self.g = f_stream, g_stream
             self.f, self.g = self._apply_diagonal_acoustic_phase_correction(self.f, self.g)
             self.f, self.g = self._apply_high_mode_acoustic_phase_correction(self.f, self.g)
             for _ in range(self.high_wavenumber_filter_passes):

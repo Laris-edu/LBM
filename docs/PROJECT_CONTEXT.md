@@ -27,7 +27,7 @@
 
 ## 2. 当前阶段与状态
 
-**当前阶段：Phase_3 P3-5 M3 verification 已完成；M3 `NOT PASSED`。** 契约级 plumbing（边界实现/单位·符号·相位约定/能量记账/Film ODE 闭式解/Level C 耦合稳定性）已验证；但全周期 Level C 动态测量 `T_s_hat +61%`、气侧动态热导纳 `−38%`，M3 动态频响 gate 未达标。根因已定位为 **equilibrium-clamp 热壁 BC**（近壁温度梯度一致偏平 ~5.8×），且**分辨率被数据排除**（更细 dx 更差）；修复方向=**anti-bounce-back 热壁 BC**（未做、payoff 不确定）。详见 `docs/Phase_3/M3/M3_Verification_Report.md`。P3-1/P3-2 只声明 Level A/B 壁面 smoke，P3-3 只声明 standalone ODE fixtures，P3-4 只声明 short coupling smoke，均不等于 M3 动态频响 pass。
+**当前阶段：Phase_3 P3-5+ 热壁 BC 修复完成；M3『相位达标、幅值边界（分辨限）』。** 契约级 plumbing（边界实现/单位·符号·相位约定/能量记账/Film ODE 闭式解/Level C 耦合稳定性）已验证；P3-5 原始全周期 Level C（旧 clamp）测得 `T_s_hat +61%`、气侧动态热导纳 `−38%`，M3 动态频响 gate 未达标。根因已定位为 **equilibrium-clamp 热壁 BC**（近壁温度梯度一致偏平 ~5.8×），且**分辨率被数据排除**（更细 dx 更差）。**P3-5+ 修复进行中、未完成**：已建 `solver` 边界钩子 + `boundary/wall_common.py`（可复用）；解决方案文档两条预案均经验否决——thermal ABB 消除近壁棋盘但过量注热（近壁 T 1.57×、相位 −41°）、moment min-norm 精确施加 θ_w 但激发动量 ghost 模数值发散。**Grad/regularized wet-node 壁面（`boundary/wall_thermal_grad.py`，超 §5.3/§5.4 预案）成功**：首个稳定、精确施加 θ_w，Level A 动态导纳**相位 clamp `+6.67°`→`+2.20°`（过 `<5°`）、幅值 `−38.6%`→`−5.3%`（门附近）**。Level C 全周期复核（Grad 壁面 + q_g 反馈欠松弛，relax 0.02/0.01/0.005 收敛一致）：**`T_s_hat` +61%→`+5.4%/−1.9°`**——**相位门 PASS（两级）、幅值门在边界（+5.4%，门外 0.4pp）**，`q_g_hat −0.05%`，`Y_eff` 与 Level A 自洽。**根因（equilibrium-clamp 热壁 BC）与修复（Grad 正则化壁面）端到端坐实。** **已正式接入 `coupling/conjugate.py`**（`wall_bc="thermal_grad"` + `q_feedback_relax`；`equilibrium_clamp`+relax=1.0 与 P3-4 逐字节等价）+ 提交 `scripts/phase3_m3_verification.py`、`configs/phase3_m3_grad_10k_dx2p6.yaml`、2 回归；Phase_3 27 测试绿。多频诊断（10/20/40 kHz）判定幅值残差是**近壁热梯度分辨极限、非调参可过**（`Y_row1` 随频漂移 −5%/+2%/+9%，温度梯度 Y 一致 ~−36%）；频率鲁棒 `<5%` 需更细近壁分辨（会动 dx2p6 的 10kHz 标定，属另一大块）。M3 记『相位达标、幅值边界』（非清晰 `<5%` PASS）。详见 `docs/Phase_3/M3/M3_Verification_Report.md` §9 与 `docs/Phase_3/Phase3_STATUS.md` §4/§6。P3-1/P3-2 只声明 Level A/B 壁面 smoke，P3-3 只声明 standalone ODE fixtures，P3-4 只声明 short coupling smoke，均不等于 M3 动态频响 pass。
 
 | 层级 | 状态 |
 |---|---|
@@ -37,10 +37,10 @@
 | Final M2 production pass（无差别 / 论文级） | `NOT YET CLAIMED` |
 | Phase_3 P3-0 contract freeze | `PASSED` |
 | Phase_3 framework / Level A+B + Film ODE + Level C short smoke | `IN_PROGRESS / PASSED` |
-| Level A dynamic admittance M3 gate | `MEASURED_FAIL`（隔离测得 −38.6%/+6.7°；根因=热壁 BC） |
+| Level A dynamic admittance M3 gate | `PHASE_PASS_AMP_BOUNDARY`（Grad 壁面 `−5.3%/+2.2°`；clamp 曾 −38.6%/+6.7°） |
 | Level B dynamic frequency-response M3 gate | `NOT_CLAIMED`（未运行） |
-| Film ODE / Level C | `FILM_ODE_PASSED / LEVEL_C_SHORT_SMOKE_PASSED；full-period T_s_hat +61% FAIL` |
-| M3 gate | `NOT PASSED`（P3-5 已验证；动态热导纳缺口，见 M3 报告） |
+| Film ODE / Level C | `FILM_ODE_PASSED / LEVEL_C：Grad full-period T_s_hat +5.4%/−1.9°`（clamp 曾 +61%） |
+| M3 gate | `相位达标；幅值边界（分辨限）`（Grad 修复后；清晰 <5% 需更细近壁分辨） |
 | Final production claim | `NOT_CLAIMED` |
 
 **Phase_2 继承声明**：对紧致空气薄膜目标（10 kHz、`kL≈0.04<<1`、空气 `Pr<1`、薄膜法向=点阵轴），气体核硬物理相关门全过；剩余残差有界且对该目标物理无关：对角声衰减约 1.31、high-mode 5-12x 过阻尼、Pr=2 鲁棒性。该结论满足进入 Phase_3 的条件，但不等价于 unrestricted/final production pass。
@@ -82,14 +82,15 @@
 - Level C 配置、脚本与测试已建立：`configs/phase3_levelc_coupled_10k_dx2p6.yaml`、`scripts/phase3_levelc_coupled_10k.py`、`verification/test_phase3_levelc_coupling.py`。
 - 当前 smoke 验证 dx2p6 scoped 气侧配置下 `heun_picard1` 短时耦合：按 handoff 口径从**近壁气体行**提取单侧 `q_g''`（非夹平衡壁行），耦合真实生效（短窗口 q_g ≈0→~494 W/m²、`T_s` 偏离绝热），薄膜 integrated energy audit 通过；run digest `4f3277ff…` 为 `PASSED/NOT_CLAIMED`，不声明 full-period `T_s_hat/q_g_hat/p_hat` M3 频响误差。壁温一致性是 clamp-readback 自洽量；气侧 CV 能量审计未提供（clamp 未计量 + y 向周期），留到 P3-4+/P3-5。
 
-**Phase_3 P3-5 当前口径（M3 verification 完成，M3 `NOT PASSED`）**：
+**Phase_3 P3-5 / P3-5+ 当前口径（M3 verification + 热壁修复完成，M3『相位达标、幅值边界』）**：
 
 - 交付 `docs/Phase_3/M3/M3_Verification_Report.md`（按合同 §12/§15 覆盖 Level A/B/C amplitude/phase/审计 + known risks + 契约通过/scoped GO/剩余风险三分）。
 - **契约级通过**：边界/约定/能量记账/Film ODE 闭式解/Level C 耦合稳定性已验证。
 - **M3 未达成**：全周期 Level C 测得 `T_s_hat +61%`、气侧动态导纳 `−38%`/`+6.7°`；`q_g_hat −0.9%` 是 `2q_g≈P_in` 能量守恒强制、非气侧验证；`p_hat` 仅诊断（紧致+周期无远场）。
 - **根因定位**（三探测，scratchpad 可复现）：缺口在气侧近壁；非耦合（隔离 Level A 复现同值）、非提取（温度梯度修法更差 −80%）、**非分辨率**（频扫 −39%/−31%/−24% 反相关，更细 dx 更差）；系 **equilibrium-clamp 热壁 BC** 致近壁梯度 ~5.8× 偏平。
-- **修复方向**：anti-bounce-back 热 Dirichlet BC（core/boundary 级、未做、能否到 `<5%/<5°` 不确定）。
-- Level C scoped bounded GO：**无**。M3 保持 `NOT PASSED`。
+- **P3-5+ 修复（已完成）**：**Grad 正则化 wet-node 壁面**（`boundary/wall_thermal_grad.py`）——ABB 过量注热、moment min-norm 动量 ghost 发散均否；Grad 首个稳定、精确钉 θ_w。已接入 `coupling/conjugate.py`（`wall_bc="thermal_grad"` + `q_feedback_relax` 压 Nyquist 耦合失稳，`equilibrium_clamp`+relax=1.0 与 P3-4 逐字节等价）+ 提交 `scripts/phase3_m3_verification.py`/`configs/phase3_m3_grad_10k_dx2p6.yaml`。**Level A `−5.3%/+2.2°`、Level C `T_s_hat +5.4%/−1.9°`：相位门两级 PASS、幅值门 +5.4% 在边界**（Phase_3 27 测试绿）。
+- **幅值边界=近壁热梯度分辨极限**：多频诊断（`Y_row1` 随频漂移 −5%/+2%/+9%、温度梯度 Y 一致 ~−36%）判定非调参可过；频率鲁棒 `<5%` 需更细近壁分辨（动 dx2p6 标定，属另一大块）。
+- Level C scoped bounded GO：**无**（幅值未清晰 `<5%`）。M3 记『相位达标、幅值边界（分辨限）』，非清晰 PASS。
 
 ## 3. 不可误判规则
 

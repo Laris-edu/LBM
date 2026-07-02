@@ -66,6 +66,9 @@
 - `boundary/README.md`
 - `boundary/wall_dirichlet.py`
 - `boundary/wall_neumann.py`
+- `boundary/wall_common.py`（P3-5+ 底壁 stencil）
+- `boundary/wall_thermal_grad.py`（P3-5+ Grad 正则化热壁，M3 修复有效方案）
+- `boundary/wall_thermal_abb.py`、`boundary/wall_thermal_moment.py`（P3-5+ 负结果留档）
 - `coupling/README.md`
 - `coupling/__init__.py`
 - `coupling/drive.py`
@@ -75,6 +78,8 @@
 - `scripts/phase3_levela_wall_temperature.py`
 - `scripts/phase3_levelb_wall_flux.py`
 - `scripts/phase3_levelc_coupled_10k.py`
+- `scripts/phase3_m3_verification.py`（P3-5+ 全周期 M3 验证，Grad 壁面经 conjugate.py）
+- `configs/phase3_m3_grad_10k_dx2p6.yaml`（P3-5+ M3 Grad 全周期配置）
 - `verification/test_phase3_levela_dirichlet.py`
 - `verification/test_phase3_levelb_neumann.py`
 - `verification/test_phase3_film_ode.py`

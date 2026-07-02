@@ -80,3 +80,4 @@
 | `phase3_levela_wall_temperature.py` | P3-1 Level A prescribed wall-temperature smoke；验证底壁 no-slip + `theta_wall_lu` clamped macrostate 和复幅值相位约定，输出 `results/phase3_levela_wall_temperature/<timestamp>/`。 |
 | `phase3_levelb_wall_flux.py` | P3-2 Level B prescribed wall heat-flux smoke；验证底壁 no-slip + recovered one-sided `q_g''`、能量审计和复幅值相位约定，输出 `results/phase3_levelb_wall_flux/<timestamp>/`。 |
 | `phase3_levelc_coupled_10k.py` | P3-4 Level C predictor-corrector short smoke；复用 dx2p6 scoped 气侧配置、冻结热流接口、Film ODE 和 integrated energy audit，输出 `results/m3/<timestamp>/`，不声明 M3 pass。 |
+| `phase3_m3_verification.py` | P3-5+ 全周期 Level C M3 验证；经 `coupling/conjugate.py` 的 `wall_bc="thermal_grad"`（Grad 正则化热壁）跑满周期、拟合 `T_s_hat/q_g_hat` 对解析导纳，输出 `results/m3/<timestamp>/`。scoped 10kHz：相位门 PASS、幅值门边界（分辨限），见 `docs/Phase_3/M3/M3_Verification_Report.md` §9。 |

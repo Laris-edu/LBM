@@ -146,3 +146,40 @@
 3. 通过后再跑全周期 Level C，复核 `T_s_hat/q_g_hat`；`p_hat` 需配合探针位置/远场（Phase_4）另议。
 4. 将探测固化为 `phase3_m3_verification.py` / `phase3_m3_summarize.py` + HDF5 全 metadata 落盘。
 5. 在此之前，**M3 保持 `NOT PASSED`**，不得将任何静态/构造 smoke 或 `q_g` 能量守恒自洽等同于 M3 动态频响 pass。
+
+---
+
+## 9. M3+ 修复验证（2026-07-01，热壁 BC 修复）
+
+按 `E:\Note_LBM\LBM\Phase\Phase_3\Phase3_M3_Thermal_BC_Solution.md` 执行热壁 BC 修复。新增 `core.solver` `boundary_callback` 钩子 + `boundary/wall_common.py`（可复用基础设施）。
+
+**壁面 BC 试验（三条）**：
+
+| 壁面 BC | 稳定性 | Level A 导纳幅值 | Level A 导纳相位 | 判定 |
+|---|---|---|---|---|
+| equilibrium-clamp（旧） | 稳 | `−38.6%` | `+6.67°` | M3 fail（根因） |
+| thermal ABB（§5.3） | 稳 | `−33%` | `−41°` | 否（polyatomic 过量注热、近壁 T 1.57×） |
+| moment min-norm（§5.4） | **发散** | — | — | 否（动量 ghost 模、~84–95 步爆） |
+| **Grad regularized wet-node（`wall_thermal_grad.py`，超预案）** | **稳** | **`−5.3%`** | **`+2.20°`** | **有效** |
+
+Grad 壁面：`f0=feq(ρ_w,0,θ_w)+`内部物理非平衡 copy（取自 RR 内部态→无 ghost 注入→稳定）+ `g` 均匀能量修正精确钉 `θ_w`；`fill_deep_links=False`（避免奇偶模）；近壁 neq 线性外推。
+
+**Level C 全周期复核**（Grad 壁面接入 predictor-corrector + q_g 反馈时间欠松弛以压 Nyquist 耦合失稳）：
+
+| 量 | LBM（收敛） | 参考 | 误差 | gate |
+|---|---:|---:|---:|---|
+| `T_s_hat` | `0.373 @ −47.5°` | `0.354 @ −45.6°` | **`+5.4% / −1.9°`** | 相位✅ 幅值边界 |
+| `q_g_hat` | `494 @ −0.3°` | `494 @ −0.6°` | `−0.05% / +0.3°` | ✅（能量守恒锚） |
+| `Y_eff=q_g/T_s` | `1324 @ 47.2°` | `1398 @ 45°` | `−5.3% / +2.2°` | 与 Level A 自洽 |
+
+`T_s_hat` **relax 收敛验证**（0.02/0.01/0.005 均 `+5.4%`；0.05 的 +159% 为近失稳离群）→ 结果可信、非调参 artifact。
+
+**结论**：热壁 BC 是根因，Grad 正则化壁面是有效修复——**相位门在 Level A/C 两级 PASS，判别量 `T_s_hat` 从 `+61%` 收到 `+5.4%`（恰在 `<5%` 门外 0.4pp）**。残差同源于近壁 neq 外推标定（0 阶 `+51.8%`→线性 `−5.3%`）。
+
+**M3 当前判定：相位达标、幅值边界（非清晰 `<5%` PASS）。**
+
+**转正进度**：① **已接入 `coupling/conjugate.py`**——`wall_bc="thermal_grad"` + `q_feedback_relax` 参数，`_advance`/`_reimpose` 分支 + q_fb 线程化（`equilibrium_clamp`+relax=1.0 与 P3-4 逐字节等价），记录 `q_g=q_fb` 使 thermal_grad 能量审计自洽；新增 2 回归、Phase_3 合计 27 passed（5 clamp Level C 保真）。提交 `scripts/phase3_m3_verification.py` + `configs/phase3_m3_grad_10k_dx2p6.yaml`。**注**：首次经 conjugate.py 复跑暴露 Picard `_reimpose` 对 grad 步间追溯重写 row0 会污染近壁通量（`T_s_hat −8.31%`）；改 `_reimpose` 为 thermal_grad 空操作后修正。**canonical committed run**（经 conjugate.py 全周期）：`T_s_hat +5.38%/−1.90°`、`q_g_hat −0.11%`、`Y_eff −5.21%/+1.89°`（与 Level A `−5.3%/+2.2°` 三方自洽）、energy audit `1.9e-14`、`m3_gate=PHASE_PASS_AMPLITUDE_BOUNDARY`、physics-core digest `26be2fde3cc2c72d5f9db7f0753ea5d5e338bbba5acf3a0e7bf2f8fe6ed132dd`。
+
+清晰 PASS 前仍需：② **幅值清晰压进 `<5%`——多频诊断（10/20/40 kHz）判定为近壁分辨极限、非可调掉的提取偏差**：Grad+linear 的 `Y_row1` 随频漂移（`−5.3%/+2.2%/+9.0%`，截断误差 ∝`(dx/δ_T)²`），调外推/提取命中 10kHz 即单频过拟合;`Y_row0`(≈−44%) 与温度梯度 Y(≈−36%) 频率无关，说明近壁热梯度本身仍一致偏浅 ~−36%。故频率鲁棒的 `<5%` 幅值需**更细近壁分辨**（会动 dx2p6 的 10kHz 标定），属另一大块;③ 固化全周期 `scripts/phase3_m3_verification.py`/`summarize.py` + HDF5 全 metadata（当前以 `scratchpad/levelc_grad_fullperiod.py` 为验证参考）。
+
+**scoped 10kHz 判定**：相位门两级 PASS;幅值 `Y −5.3%`/`T_s_hat +5.4%` 在 `<5%` 门边界（分辨限）。M3 由 clamp 的『未达成（+61%）』推进到『相位达标、幅值边界』。
