@@ -25,12 +25,19 @@ from coupling.conjugate import run_levelc_predictor_corrector
 from coupling.drive import SinusoidalDrive
 from coupling.film_ode import FilmOdeParams
 from phase3_interfaces.complex_amplitude import complex_amplitude
+from phase3_interfaces.run_hdf5 import (
+    PHASE3_COMPLEX_CONVENTION,
+    phase3_hdf5_metadata,
+    write_phase3_run_hdf5,
+)
 from scripts.phase2_m2_verification import load_config, sha256_file, summary_payload_digest
 
 
 DEFAULT_CONFIG = Path("configs/phase3_m3_grad_10k_dx2p6.yaml")
 DEFAULT_OUTPUT_ROOT = Path("results/m3")
-VOLATILE_DIGEST_KEYS = ("run_id", "python", "platform", "config_path", "gas_config_path")
+# "artifacts" (HDF5 filename) is volatile so the physics-core digest anchor recorded in
+# Phase3_STATUS.md (26be2fde...) is unchanged by the contract §9 HDF5 addition.
+VOLATILE_DIGEST_KEYS = ("run_id", "python", "platform", "config_path", "gas_config_path", "artifacts")
 
 
 def _json_safe(value: Any) -> Any:
@@ -202,6 +209,71 @@ def run_m3_verification(*, config_path: Path, output_root: Path) -> dict[str, An
     digest_core = {k: v for k, v in safe.items() if k not in VOLATILE_DIGEST_KEYS}
     safe["summary_digest"] = summary_payload_digest(digest_core)
     safe["summary_digest_scope"] = "physics_core; excludes " + ", ".join(VOLATILE_DIGEST_KEYS)
+
+    # Contract §9 HDF5: full time series + wall/film/coupling metadata. p_hat is fitted
+    # here as a diagnostic only (compact source + periodic domain, no far field) and is
+    # deliberately kept out of the summary payload so the physics-core digest anchor of
+    # the T_s_hat/q_g_hat verdict is unchanged.
+    p_probe = result.pressure_probe_Pa
+    p_hat = complex_amplitude(t[mask], p_probe[mask] - float(np.mean(p_probe[mask])), f)
+    dx_m = float(solver.mapping.lattice.dx_m)
+    h5_path = out_dir / "timeseries.h5"
+    meta = phase3_hdf5_metadata(
+        solver.mapping,
+        case_name=str(cfg.get("case", {}).get("name", "phase3_m3_grad_10k_dx2p6")),
+        level="C",
+        pass_fail=m3_gate,
+        config_sha256=safe["config_sha256"],
+        extra={
+            "coupling_scheme": result.coupling_scheme,
+            "wall_bc": result.wall_bc,
+            "q_feedback_relax": float(result.q_feedback_relax),
+            "grad_extrap": str(level_c.get("grad_extrap", "linear")),
+            "C_A_si": C_A,
+            "frequency_Hz": f,
+            "probes_recorded": "pressure,temperature (velocity/heat-flux probes not sampled by the Level C coupler)",
+        },
+    )
+    write_phase3_run_hdf5(
+        h5_path,
+        meta=meta,
+        time_si=t,
+        groups={
+            "film": {
+                "T_s_si": result.T_s_K,
+                "P_in_si": result.P_in_si,
+                "q_g_one_sided_si": result.q_g_one_sided_si,
+                "dT_s_dt_si": result.dT_s_dt_K_s,
+                "energy_residual_si": result.energy_audit.residual_si,
+            },
+            "wall": {
+                "theta_wall_lu": result.theta_wall_lu,
+                "T_wall_si": result.T_wall_K,
+                "q_wall_extracted_si": result.q_g_one_sided_si,
+                "wall_temperature_error_K": result.wall_temperature_error_K,
+                "q_wall_extracted_note": "recorded series is the under-relaxed feedback q_fb the film "
+                                         "actually integrated (coupling/conjugate.py)",
+            },
+            "probes": {
+                "x_si": np.asarray([probe[1] * dx_m]),
+                "y_si": np.asarray([probe[0] * dx_m]),
+                "pressure_si": result.pressure_probe_Pa[:, None],
+                "temperature_si": result.temperature_probe_K[:, None],
+            },
+            "harmonic": {
+                "Omega_si": omega,
+                "T_s_hat_si": complex(Ts_hat),
+                "q_g_hat_si": complex(qg_hat),
+                "T_s_hat_ref_si": complex(Ts_ref),
+                "q_g_hat_ref_si": complex(qg_ref),
+                "p_hat_si": complex(p_hat),
+                "p_hat_note": "diagnostic only: compact source + periodic domain, no far field (Phase_4)",
+                "fit_window": "last period",
+                "convention": PHASE3_COMPLEX_CONVENTION,
+            },
+        },
+    )
+    safe["artifacts"] = {"hdf5": h5_path.name}
     (out_dir / "summary.json").write_text(json.dumps(safe, indent=2, ensure_ascii=False), encoding="utf-8")
     (out_dir / "report.md").write_text(_render_report(safe), encoding="utf-8")
     return safe

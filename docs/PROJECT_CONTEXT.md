@@ -1,6 +1,6 @@
 # LBM 项目上下文入口
 
-**最后更新**：2026-06-30
+**最后更新**：2026-07-03
 **用途**：新会话第一份必读文档，用于快速恢复项目阶段、读取路线、不可误判规则和下一步优先级。
 **定位**：全项目生命周期唯一上下文入口，不是某个阶段的专属文档。
 **维护原则**：只保留压缩摘要和入口索引；阶段流水、run 细节、完整数值和推导证据由对应 `PhaseN_STATUS.md`、M 报告和专项诊断报告维护，本文不复制。
@@ -20,14 +20,15 @@
 推荐新会话提示词：
 
 ```text
-请先阅读 docs/PROJECT_CONTEXT.md 和 docs/Phase_3/Phase3_STATUS.md，
-然后按 docs/Phase_3/phase3_instruction_v1.0.md 继续 Phase_3 P3-5 M3 verification/report 工作。
+请先阅读 docs/PROJECT_CONTEXT.md 和 docs/Phase_3/Phase3_STATUS.md。
+P3-6「M3 收尾」已完成（M3：相位三级达标、幅值边界）；下一步二选一见 Phase3_STATUS.md §5
+（(a) 接受 scoped 结论进入 Phase_4 准备，或 (b) 立项 k 鲁棒导出/tau 鲁棒壁重构研究）。
 回答和文档均使用中文。
 ```
 
 ## 2. 当前阶段与状态
 
-**当前阶段：Phase_3 P3-5+ 热壁 BC 修复完成；M3『相位达标、幅值边界（分辨限）』。** 契约级 plumbing（边界实现/单位·符号·相位约定/能量记账/Film ODE 闭式解/Level C 耦合稳定性）已验证；P3-5 原始全周期 Level C（旧 clamp）测得 `T_s_hat +61%`、气侧动态热导纳 `−38%`，M3 动态频响 gate 未达标。根因已定位为 **equilibrium-clamp 热壁 BC**（近壁温度梯度一致偏平 ~5.8×），且**分辨率被数据排除**（更细 dx 更差）。**P3-5+ 修复进行中、未完成**：已建 `solver` 边界钩子 + `boundary/wall_common.py`（可复用）；解决方案文档两条预案均经验否决——thermal ABB 消除近壁棋盘但过量注热（近壁 T 1.57×、相位 −41°）、moment min-norm 精确施加 θ_w 但激发动量 ghost 模数值发散。**Grad/regularized wet-node 壁面（`boundary/wall_thermal_grad.py`，超 §5.3/§5.4 预案）成功**：首个稳定、精确施加 θ_w，Level A 动态导纳**相位 clamp `+6.67°`→`+2.20°`（过 `<5°`）、幅值 `−38.6%`→`−5.3%`（门附近）**。Level C 全周期复核（Grad 壁面 + q_g 反馈欠松弛，relax 0.02/0.01/0.005 收敛一致）：**`T_s_hat` +61%→`+5.4%/−1.9°`**——**相位门 PASS（两级）、幅值门在边界（+5.4%，门外 0.4pp）**，`q_g_hat −0.05%`，`Y_eff` 与 Level A 自洽。**根因（equilibrium-clamp 热壁 BC）与修复（Grad 正则化壁面）端到端坐实。** **已正式接入 `coupling/conjugate.py`**（`wall_bc="thermal_grad"` + `q_feedback_relax`；`equilibrium_clamp`+relax=1.0 与 P3-4 逐字节等价）+ 提交 `scripts/phase3_m3_verification.py`、`configs/phase3_m3_grad_10k_dx2p6.yaml`、2 回归；Phase_3 27 测试绿。多频诊断（10/20/40 kHz）判定幅值残差是**近壁热梯度分辨极限、非调参可过**（`Y_row1` 随频漂移 −5%/+2%/+9%，温度梯度 Y 一致 ~−36%）；频率鲁棒 `<5%` 需更细近壁分辨（会动 dx2p6 的 10kHz 标定，属另一大块）。M3 记『相位达标、幅值边界』（非清晰 `<5%` PASS）。详见 `docs/Phase_3/M3/M3_Verification_Report.md` §9 与 `docs/Phase_3/Phase3_STATUS.md` §4/§6。P3-1/P3-2 只声明 Level A/B 壁面 smoke，P3-3 只声明 standalone ODE fixtures，P3-4 只声明 short coupling smoke，均不等于 M3 动态频响 pass。
+**当前阶段：Phase_3 P3-6「M3 收尾」完成（2026-07-02）；M3 终态（Phase_3 范围）：相位门三级 PASS、幅值边界（近壁读出/重构 (tau,k) 点标定极限）。** 历程：P3-5 定位根因（equilibrium-clamp 热壁 BC，Level C `T_s_hat +61%`）→ P3-5+ Grad 正则化壁面修复（`boundary/wall_thermal_grad.py` 经 `coupling/conjugate.py` 接入）→ P3-6 四项收尾全部完成：④ physics-core digest `26be2fde…` run_id 无关复现（补合同 §9 HDF5 后不变）；③ HDF5 全 metadata（`timeseries.h5`）+ `phase3_m3_summarize.py` + Level A 动态导纳提交脚本（canonical `Y −5.32%/+2.20°`、digest `02cea11e…` 复现）；② **首个 Level B 动态频响**（矩通量积分伺服）`Z +5.47%/−2.24°`（relax 收敛一致；FD 梯度控制器被数据否决——矩通量超发 ~2.5×）；① finer-dx 三重否证（传导 q 导出比是 (tau,k) 窄带点标定 `0.505@k/2`；dx1p3 特征 k 重标可行但 **Grad 壁重构在 dx1p3 tau 失稳**）。**三级自洽**：A `Y −5.32%/+2.20°`、B `Z +5.47%/−2.24°`、C `T_s_hat +5.38%/−1.90°`——同一近壁物理、同一幅值边界；`q_g_hat −0.11%`（能量守恒锚）。合同 §15 七项全覆盖；Phase_3 测试 39 绿。清晰 `<5%` 需 k 鲁棒导出或 tau 鲁棒壁重构（研究级，超出 Phase_3）。详见 `docs/Phase_3/M3/M3_Verification_Report.md` §9/§10 与 `Phase3_STATUS.md` §1/§3/§5。P3-1/P3-2 只声明壁面 smoke、P3-3 只声明 ODE fixtures、P3-4 只声明 short smoke，均不等于动态门。
 
 | 层级 | 状态 |
 |---|---|
@@ -36,11 +37,11 @@
 | Phase_2 production physics validation | `BOUNDED_PRODUCTION_GO`（仅紧致空气 Phase_3 目标；2026-06-22 APPROVED） |
 | Final M2 production pass（无差别 / 论文级） | `NOT YET CLAIMED` |
 | Phase_3 P3-0 contract freeze | `PASSED` |
-| Phase_3 framework / Level A+B + Film ODE + Level C short smoke | `IN_PROGRESS / PASSED` |
-| Level A dynamic admittance M3 gate | `PHASE_PASS_AMP_BOUNDARY`（Grad 壁面 `−5.3%/+2.2°`；clamp 曾 −38.6%/+6.7°） |
-| Level B dynamic frequency-response M3 gate | `NOT_CLAIMED`（未运行） |
-| Film ODE / Level C | `FILM_ODE_PASSED / LEVEL_C：Grad full-period T_s_hat +5.4%/−1.9°`（clamp 曾 +61%） |
-| M3 gate | `相位达标；幅值边界（分辨限）`（Grad 修复后；清晰 <5% 需更细近壁分辨） |
+| Phase_3 framework（Level A/B/C + Film ODE + M3 verification/HDF5/summarize） | `COMPLETE (P3-6)` |
+| Level A dynamic admittance M3 gate | `PHASE_PASS_AMP_BOUNDARY`（`Y −5.32%/+2.20°`，digest `02cea11e…`） |
+| Level B dynamic frequency-response M3 gate | `PHASE_PASS_AMP_BOUNDARY`（`Z +5.47%/−2.24°`，矩通量伺服，digest `0ca7b8ad…`） |
+| Film ODE / Level C | `FILM_ODE_PASSED / LEVEL_C：T_s_hat +5.38%/−1.90°`（digest `26be2fde…`） |
+| M3 gate | `相位达标（三级）；幅值边界（(tau,k) 点标定极限）`（清晰 <5% 需研究级路线，见 STATUS §5） |
 | Final production claim | `NOT_CLAIMED` |
 
 **Phase_2 继承声明**：对紧致空气薄膜目标（10 kHz、`kL≈0.04<<1`、空气 `Pr<1`、薄膜法向=点阵轴），气体核硬物理相关门全过；剩余残差有界且对该目标物理无关：对角声衰减约 1.31、high-mode 5-12x 过阻尼、Pr=2 鲁棒性。该结论满足进入 Phase_3 的条件，但不等价于 unrestricted/final production pass。
@@ -90,7 +91,14 @@
 - **根因定位**（三探测，scratchpad 可复现）：缺口在气侧近壁；非耦合（隔离 Level A 复现同值）、非提取（温度梯度修法更差 −80%）、**非分辨率**（频扫 −39%/−31%/−24% 反相关，更细 dx 更差）；系 **equilibrium-clamp 热壁 BC** 致近壁梯度 ~5.8× 偏平。
 - **P3-5+ 修复（已完成）**：**Grad 正则化 wet-node 壁面**（`boundary/wall_thermal_grad.py`）——ABB 过量注热、moment min-norm 动量 ghost 发散均否；Grad 首个稳定、精确钉 θ_w。已接入 `coupling/conjugate.py`（`wall_bc="thermal_grad"` + `q_feedback_relax` 压 Nyquist 耦合失稳，`equilibrium_clamp`+relax=1.0 与 P3-4 逐字节等价）+ 提交 `scripts/phase3_m3_verification.py`/`configs/phase3_m3_grad_10k_dx2p6.yaml`。**Level A `−5.3%/+2.2°`、Level C `T_s_hat +5.4%/−1.9°`：相位门两级 PASS、幅值门 +5.4% 在边界**（Phase_3 27 测试绿）。
 - **幅值边界=近壁热梯度分辨极限**：多频诊断（`Y_row1` 随频漂移 −5%/+2%/+9%、温度梯度 Y 一致 ~−36%）判定非调参可过；频率鲁棒 `<5%` 需更细近壁分辨（动 dx2p6 标定，属另一大块）。
-- Level C scoped bounded GO：**无**（幅值未清晰 `<5%`）。M3 记『相位达标、幅值边界（分辨限）』，非清晰 PASS。
+- Level C scoped bounded GO：**无**（幅值未清晰 `<5%`）。M3 记『相位达标、幅值边界』，非清晰 PASS。
+
+**Phase_3 P3-6 当前口径（M3 收尾完成，2026-07-02）**：
+
+- 交付：`phase3_interfaces/run_hdf5.py`（合同 §9 写入器）、`scripts/phase3_levela_admittance.py`、`scripts/phase3_levelb_admittance.py`（矩通量伺服）、`scripts/phase3_m3_summarize.py`（生成 `docs/Phase_3/M3/M3_Run_Summaries.md`）、3 个机制回归文件（39 测试绿）、诊断探测配置 `*_dx1p3_probe.yaml`（非生产）。
+- **Level B 物理门 = 阻抗 `Z=T_wall_hat/q_moment_hat` 对 `1/Y_g`**（自由测量、与伺服滞后无关；relax 0.02/0.01 验证 Z 不变）；`q_tracking_hat` 是控制目标（按构造+已知滞后 ∝1/relax），非物理验证；FD 梯度→壁温转换是**已否决控制器**（矩通量超发 ~2.5×）。
+- **幅值边界机制精化**：传导 q 导出比是 (tau,k) 窄带点标定（dx2p6 窗 `0.505@k=0.049→1.000@0.098→1.518@0.131→0.977@0.196`）；Grad 壁重构只在 dx2p6 tau 稳定（dx1p3 tau 恒温壁 ~1280 步失稳）→ finer-dx 判死，残差=「近壁读出/重构链 (tau,k) 点标定极限」。
+- 下一步二选一（用户决策，见 `Phase3_STATUS.md` §5）：(a) 接受 scoped 边界结论进入 Phase_4 准备；(b) 立项 k 鲁棒导出 / tau 鲁棒壁重构研究。
 
 ## 3. 不可误判规则
 
@@ -99,7 +107,11 @@
 - 不把 P3-2 Level B heat-flux smoke 写成 Level B 动态频响或 M3 pass；当前只验证 wall-row prescribed `q_g''` readback、符号和能量审计。
 - 不把 P3-3 Film ODE standalone fixtures 写成 Level C gas-film coupling、动态热导纳或 M3 pass；人工 `linear_leak_conductance_si` 只用于指数解 fixture。
 - 不把 P3-4 Level C short coupling smoke 写成 full-period Level C frequency-response、`T_s_hat/q_g_hat/p_hat` scoped GO 或 M3 pass；当前只验证短时稳定性、壁温一致性和 integrated energy audit。
-- 不把 P3-5 M3 报告本身写成 M3 pass：M3 实测 `NOT PASSED`（`T_s_hat +61%`、动态导纳 −38%）。缺口已**定位**（equilibrium-clamp 热壁 BC）但**未修复**；诊断 ≠ 修复。`q_g_hat` 对齐参考是能量守恒强制、不得当作气侧动态验证；`finer dx` 已被数据排除、不是修法。
+- 不把 M3『相位达标、幅值边界』写成清晰 M3 PASS：幅值三级一致在 ±5.3–5.5% 边界（`<5%` 门外），是 (tau,k) 点标定极限、非调参可过。`q_g_hat` 对齐参考是能量守恒强制、不得当作气侧动态验证。
+- 不把 Level B `q_tracking_hat` 当作气侧动态验证：它是矩通量伺服的控制目标（按构造+已知有限带宽滞后）；Level B 物理门是 `Z=T_wall_hat/q_moment_hat` 对 `1/Y_g`。
+- 不把 FD 温度梯度→壁温转换（`neumann_theta_wall_lu`）当作可用 Level B 控制器：已被数据否决（近壁温度梯度一致偏浅，钉 FD 梯度使矩通量超发 ~2.5×）；仅公式留档。
+- 不把 `*_dx1p3_probe.yaml` 当作生产配置：finer-dx 路线已三重否证（导出 (tau,k) 窄带点标定 + Grad 壁在 dx1p3 tau 失稳）；其导出因子标定在特征 k≈0.049、与 legacy k≈0.098 不通用。
+- 不把 10 kHz@dx2p6 的导出/壁面标定外推到其它 (tau,k)：传导 q 导出比在标定点外快速崩坏（k/2 处 ~0.50）。
 - 不把 automation / contract `PASSED` 写成 final M2/M3 production pass。
 - 不把 Level C dx2p6 的 10 kHz scoped 结论写成全频、全波数、全 Pr 或 unrestricted production pass。
 - 不绕过 Level A/B 验证直接声明 Level C。
@@ -121,6 +133,7 @@
 
 ## 4. 当前关键决策
 
+- **P3-6 M3 收尾（2026-07-02）**：四项全部完成——digest 复现锚（`26be2fde…`/`02cea11e…`/`0ca7b8ad…`）、合同 §9 HDF5+summarize、Level A/B 动态门提交脚本（B 用矩通量伺服、Z 为物理门）、finer-dx 三重否证。M3 终态（Phase_3 范围）『相位三级达标、幅值边界（(tau,k) 点标定极限）』；清晰 `<5%` 的两条路线（k 鲁棒导出 / tau 鲁棒壁重构）为研究级，去留待用户决策。
 - **P3-4 Level C short coupling smoke（2026-06-30；含耦合退化修复）**：`coupling/conjugate.py`、`coupling/energy_audit.py`、`configs/phase3_levelc_coupled_10k_dx2p6.yaml`、`scripts/phase3_levelc_coupled_10k.py` 和 `verification/test_phase3_levelc_coupling.py` 已建立。`q_g''` 改为从近壁气体行提取（原从夹平衡壁行提取导致 q_g≈0、耦合退化，已修复并加非退化回归）；修复后 q_g ≈0→~494 W/m²、`T_s` 偏离绝热、薄膜 integrated audit `1.08e-12` 通过，digest `4f3277ff…`，但 M3 仍 `NOT_CLAIMED`。
 - **P3-3 Film ODE standalone（2026-06-30）**：`coupling/drive.py`、`coupling/film_ode.py`、`coupling/README.md` 和 `verification/test_phase3_film_ode.py` 已建立；adiabatic ramp、linear-leak exponential 与 sinusoidal reference fixtures 通过但 Level C/M3 仍 `NOT_CLAIMED`。
 - **P3-2 Level B smoke（2026-06-30）**：`boundary/wall_neumann.py`、`configs/phase3_levelb_flux_10k.yaml`、`scripts/phase3_levelb_wall_flux.py` 和 `verification/test_phase3_levelb_neumann.py` 已建立；recovered `q_g''`、能量审计和复幅值 smoke 通过但 `m3_gate=NOT_CLAIMED`。
@@ -135,12 +148,11 @@
 - **array layout 冻结**：`c=(Q,D)`、`w=(Q,)`、`f/g=(...,Q)`、`u/q_lu=(...,D)`；周期验证用 pull streaming，速度轴始终最后一维。
 - **D2Q21 边界**：保留 `central_moment_closure=second_order` 作低模态 C2+ baseline，`fourth_order` 仅 diagnostic。
 
-## 5. 下一步优先级（Phase_3）
+## 5. 下一步优先级（Phase_3 收尾后，二选一待用户决策）
 
-1. **P3-5：M3 verification 与报告**。生成 summary/report，明确 Level A/B contract pass、Level C scoped GO/GO-RISK 和 remaining production risks。
-2. **P3-5 前置 full-period Level C 频响**。若要声明 `T_s_hat/q_g_hat/p_hat`，需运行 10 kHz dx2p6 足够长时间窗并记录误差；P3-4 short smoke 不满足该声明。
-3. **P3-1+/P3-2+：Level A/B 动态收紧**。若 M3 前需要把 Level A/B 频响硬门前置，补动态 LBM thermal admittance / wall-flux 长时脚本或测试；当前 P3-1/P3-2 smoke 不声明这些门。
-4. **延后项**：非紧致/高 k/`Pr>1`、RR high-mode 输运重标、RR 热 dispersion 泛化、Phase_4 Kirchhoff 远场。
+1. **(a) 接受 scoped 边界结论、进入 Phase_4 准备**：10 kHz dx2p6 紧致空气目标下三 QoI 已有『相位达标+幅值边界』的三级自洽认证（`q_g_hat` 亚百分级）；Kirchhoff 远场（`p_hat` 主线）本就是 Phase_4 范围。
+2. **(b) 立项清晰 `<5%` 幅值研究**：优先 k 鲁棒传导导出（同时解释多频漂移、不动壁 BC），其次 tau 鲁棒 Grad 壁重构；两者均为 Phase_2/BC 层研究项（证据见 `Phase3_STATUS.md` §5 与 M3 报告 §10.4）。
+3. **延后项**：非紧致/高 k/`Pr>1`、RR high-mode 输运重标、RR 热 dispersion 泛化、Phase_4 Kirchhoff 远场。
 
 ## 6. 详细事实入口
 
@@ -148,6 +160,8 @@
 
 - Phase_3 当前状态：`docs/Phase_3/Phase3_STATUS.md`
 - Phase_3 冻结合同：`docs/Phase_3/phase3_instruction_v1.0.md`
+- M3 验证报告（P3-5/P3-5+/P3-6）：`docs/Phase_3/M3/M3_Verification_Report.md`
+- M3 运行汇总（生成型）：`docs/Phase_3/M3/M3_Run_Summaries.md`
 - Phase_3 输出导览：`docs/Phase_3/Phase3_Output_Files_Guide.md`
 - Phase_3 文档目录索引：`docs/Phase_3/README.md`
 - M3 smoke/meta 配置：`configs/phase3_m3_smoke.yaml`

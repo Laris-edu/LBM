@@ -1,0 +1,72 @@
+# Phase_3 P3-6 Level B dynamic frequency response: prescribed one-sided heat flux
+# q_g''(t) = Re[q_hat exp(i Omega t)] imposed by an integral servo that drives the wall
+# temperature of the validated Grad Dirichlet wall (boundary/wall_thermal_grad.py) until
+# the CERTIFIED flux measure -- the row-1 conduction-moment extraction shared with Level
+# A/C -- tracks the prescribed q. The measured response T_wall_hat is fitted against the
+# analytic reference q_hat / Y_g with Y_g = k_g sqrt(i Omega / alpha_g). Contract §15
+# item 2: the first dynamic Level B gate (P3-2 was a construction-type readback smoke).
+# NOTE: pinning the one-sided FD temperature gradient instead (neumann_theta_wall_lu)
+# is a REFUTED controller -- the near-wall gradient reads shallow, so it over-delivers
+# the moment flux ~2.5x (run digest 2566fe52..., Phase3_STATUS.md).
+case:
+  name: phase3_levelb_admittance_10k_dx2p6
+  phase: Phase_3
+  level: B
+  purpose: P3-6 Level B dynamic wall-flux frequency response (Grad Neumann variant) vs analytic reference
+
+inheritance:
+  gas_config_path: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+  phase3_contract: docs/Phase_3/phase3_instruction_v1.0.md
+
+physical:
+  frequency_Hz: 1.0e4
+  T0_K: 300.0
+  q_wall_hat_W_m2:
+    real: 500.0                 # linear response: amplitude choice does not affect the gate; matches Level C q_g scale
+    imag: 0.0
+  q_wall_mean_W_m2: 0.0
+  # analytic half-space gas admittance reference Y_g = k_g sqrt(i Omega / alpha_g)
+  kg_W_mK: 0.0263
+  alpha0_m2_s: 2.2233775895e-5
+
+level_b:
+  wall_bc: thermal_grad         # Grad Dirichlet wall; the flux is imposed by the script-side servo
+  controller: moment_flux_servo # theta_w += relax*(q_target - q_moment)/g_nom, g_nom = 3 k_g/(2 dx)
+  grad_extrap: linear           # near-wall non-equilibrium extrapolation (matches Level A/C)
+  # Servo integral gain (per-step under-relaxation): direct/large gains are step-to-step
+  # (Nyquist) unstable (same origin as the Level C q_feedback_relax; FD-architecture scan:
+  # >=0.2 diverges, <=0.1 stable). 0.02 matches the Level C convention; at 10 kHz
+  # production the loop lag on the delivered flux is ~0.35 deg (2*pi/(51051*0.02)),
+  # absorbed by reporting q tracking explicitly.
+  theta_relax: 0.02
+  # Measurement EMA before the integral: the raw per-step moment response to a wall
+  # change is sign-inverted and ~45x over-strong at the lattice Nyquist frequency (row0->
+  # row1 arrival transient), which an unfiltered integral loop pumps into a growing 2-step
+  # alternation (production divergence at ~180 steps). beta=0.02 attenuates Nyquist ~100x
+  # and costs ~0.35 deg at 10 kHz (inside the reported tracking diagnostic).
+  q_measurement_filter: 0.02
+  rho_wall_policy: pressure_preserving
+  phase_convention: x(t)=Re[x_hat exp(i Omega t)]
+
+numerics:
+  nx: 8
+  ny: 48                        # half-infinite near-wall thermal layer (~4.7 delta_T at 10 kHz)
+  periods: 2                    # settle 1 + fit last 1
+
+# The gate quantity is the impedance Z = T_wall_hat / q_moment_hat vs 1/Y_g: both are
+# free measurements, so the finite-bandwidth servo tracking lag (reported separately as
+# q_tracking_hat) does not pollute the physics verdict.
+gates:
+  impedance_amplitude_relative_error: 0.05
+  impedance_phase_error_deg: 5.0
+  no_nan: true
+  no_clipping_or_floor: true
+
+references:
+  wall_bc_owner: boundary/wall_thermal_grad.py
+  heat_flux_extraction_owner: coupling/conjugate.py (extract_bottom_wall_heat_flux_si, row 1)
+  admittance_reference_owner: reference/thermal_admittance.py
+  phase_convention_owner: phase3_interfaces/complex_amplitude.py
+
+output:
+  results_root: results/phase3_levelb_admittance

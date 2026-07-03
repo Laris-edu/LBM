@@ -22,8 +22,8 @@
 | `phase3_interfaces/` | `phase3_interfaces/README.md` | Phase_2 暴露给 Phase_3 的稳定接口：壁面状态、热流、复幅值、modal fit、probe 采样。 |
 | `configs/` | `configs/README.md` | Phase_3 smoke、Level A、Level B、Level C scoped、默认 D2Q37/RR baseline 和验证模板。 |
 | `verification/` | `verification/README.md` | Phase_3 handoff、P3-1 Level A、P3-2 Level B、P3-3 Film ODE 与 P3-4 Level C coupling 测试。 |
-| `scripts/` | `scripts/README.md` | P3-1 Level A、P3-2 Level B 与 P3-4 Level C short smoke 脚本；后续新增 M3 汇总脚本。 |
-| `boundary/` | `boundary/README.md` | Level A wall Dirichlet helper 与 Level B wall Neumann heat-flux helper。 |
+| `scripts/` | `scripts/README.md` | P3-1/P3-2 smoke、P3-4 Level C short smoke、P3-5+ M3 verification、P3-6 Level A/B 动态导纳与 M3 summarize 脚本。 |
+| `boundary/` | `boundary/README.md` | Level A/B smoke helper、P3-5+ 热壁 BC（Grad 有效方案 + ABB/moment 负结果留档）与底壁 stencil 基础设施。 |
 | `coupling/` | `coupling/README.md` | P3-3 Film ODE / drive 与 P3-4 Level C conjugate coupling / energy audit。 |
 | `reference/` | 现有参考实现 | Phase_1/continuum 参考、热导纳与 1D NSF 对齐。 |
 | `postproc/` | 现有后处理 | harmonic fit、复幅值和 M3 summary 支撑。 |
@@ -37,7 +37,8 @@
 | `docs/Phase_3/Phase3_STATUS.md` | 阶段状态、验证记录、风险和更新日志 | 当前 |
 | `docs/Phase_3/Phase3_Output_Files_Guide.md` | 本导览 | 当前 |
 | `docs/Phase_3/README.md` | Phase_3 文档目录索引 | 当前 |
-| `docs/Phase_3/M3/M3_Verification_Report.md` | M3 验证报告（P3-5） | 当前（**M3 `NOT PASSED`**，2026-07-01；动态热导纳缺口已定位） |
+| `docs/Phase_3/M3/M3_Verification_Report.md` | M3 验证报告（P3-5/P3-5+/P3-6） | 当前（M3『相位达标、幅值边界（分辨限）』） |
+| `docs/Phase_3/M3/M3_Run_Summaries.md` | 生成型运行汇总（`python -m scripts.phase3_m3_summarize`） | 当前（只聚合本机 results/，不构成判定） |
 | `docs/Phase_3/M3/M3_runs/README.md` | 精选 M3 run 摘要归档说明 | 待需要长期归档 run 时创建 |
 
 ## 4. 配置入口
@@ -50,6 +51,10 @@
 | `configs/phase3_levela_isothermal_10k.yaml` | Level A prescribed wall-temperature smoke 配置。 | 当前 |
 | `configs/phase3_levelb_flux_10k.yaml` | Level B prescribed wall heat-flux smoke 配置。 | 当前 |
 | `configs/phase3_levelc_coupled_10k_dx2p6.yaml` | P3-4 Level C predictor-corrector short smoke 配置，继承 dx2p6 scoped 气侧配置。 | 当前 |
+| `configs/phase3_m3_grad_10k_dx2p6.yaml` | P3-5+ 全周期 M3 验证配置（Grad 热壁经 conjugate.py）。 | 当前 |
+| `configs/phase3_levela_admittance_10k_dx2p6.yaml` | P3-6 Level A 动态热导纳配置（Grad 壁面）。 | 当前 |
+| `configs/phase3_levelb_admittance_10k_dx2p6.yaml` | P3-6 Level B 动态频响配置（矩通量伺服）。 | 当前 |
+| `configs/gas_air_10k_d2q37_levelc_dx1p3_probe.yaml` · `configs/phase3_levela_admittance_10k_dx1p3_probe.yaml` | P3-6 item 1 finer-dx 重评估探测配置（诊断，非生产）。 | 诊断 |
 
 ## 5. 正式交付与运行产物
 
@@ -78,13 +83,19 @@
 - `scripts/phase3_levela_wall_temperature.py`
 - `scripts/phase3_levelb_wall_flux.py`
 - `scripts/phase3_levelc_coupled_10k.py`
-- `scripts/phase3_m3_verification.py`（P3-5+ 全周期 M3 验证，Grad 壁面经 conjugate.py）
+- `scripts/phase3_m3_verification.py`（P3-5+ 全周期 M3 验证，Grad 壁面经 conjugate.py；P3-6 起输出合同 §9 `timeseries.h5`）
 - `configs/phase3_m3_grad_10k_dx2p6.yaml`（P3-5+ M3 Grad 全周期配置）
+- `scripts/phase3_levela_admittance.py` + `configs/phase3_levela_admittance_10k_dx2p6.yaml`（P3-6 Level A 动态导纳）
+- `scripts/phase3_levelb_admittance.py` + `configs/phase3_levelb_admittance_10k_dx2p6.yaml`（P3-6 Level B 动态频响，矩通量伺服）
+- `scripts/phase3_m3_summarize.py`（生成 `docs/Phase_3/M3/M3_Run_Summaries.md`）
+- `phase3_interfaces/run_hdf5.py`（合同 §9 HDF5 写入器）
+- `configs/gas_air_10k_d2q37_levelc_dx1p3_probe.yaml`、`configs/phase3_levela_admittance_10k_dx1p3_probe.yaml`（P3-6 item 1 诊断探测）
 - `verification/test_phase3_levela_dirichlet.py`
 - `verification/test_phase3_levelb_neumann.py`
 - `verification/test_phase3_film_ode.py`
 - `verification/test_phase3_levelc_coupling.py`
-- 后续 P3-5 新增的 `scripts/phase3_m3_*`、`docs/Phase_3/M3/*`。
+- `verification/test_phase3_levela_admittance.py`、`verification/test_phase3_levelb_admittance.py`、`verification/test_phase3_m3_verification_script.py`（P3-6 机制回归）
+- `docs/Phase_3/M3/M3_Run_Summaries.md`（生成型运行汇总）。
 
 ### 5.2 运行产物 / untracked by default
 
@@ -98,6 +109,9 @@
 - `results/phase3_levelb_wall_flux/<timestamp>/report.md`
 - `results/m3/<timestamp>/summary.json`（P3-4 Level C short smoke 或后续 M3 run）
 - `results/m3/<timestamp>/report.md`
+- `results/m3/<timestamp>/timeseries.h5`（P3-6 起：合同 §9 全 metadata 时序）
+- `results/phase3_levela_admittance/<timestamp>/`（P3-6 Level A 动态导纳：summary/report/timeseries.h5）
+- `results/phase3_levelb_admittance/<timestamp>/`（P3-6 Level B 动态频响：summary/report/timeseries.h5）
 
 ### 5.3 长期留档规则
 
