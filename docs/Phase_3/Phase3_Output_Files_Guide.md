@@ -37,7 +37,7 @@
 | `docs/Phase_3/Phase3_STATUS.md` | 阶段状态、验证记录、风险和更新日志 | 当前 |
 | `docs/Phase_3/Phase3_Output_Files_Guide.md` | 本导览 | 当前 |
 | `docs/Phase_3/README.md` | Phase_3 文档目录索引 | 当前 |
-| `docs/Phase_3/M3/M3_Verification_Report.md` | M3 验证报告（P3-5/P3-5+/P3-6） | 当前（M3『相位达标、幅值边界（分辨限）』） |
+| `docs/Phase_3/M3/M3_Verification_Report.md` | M3 验证报告（P3-5/P3-5+/P3-6，§10.5 含导出窗机理闭环） | 当前（M3『相位达标、幅值边界（(tau,k) 点标定极限）』） |
 | `docs/Phase_3/M3/M3_Run_Summaries.md` | 生成型运行汇总（`python -m scripts.phase3_m3_summarize`） | 当前（只聚合本机 results/，不构成判定） |
 | `docs/Phase_3/M3/M3_runs/README.md` | 精选 M3 run 摘要归档说明 | 待需要长期归档 run 时创建 |
 

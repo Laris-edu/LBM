@@ -50,6 +50,7 @@
 |---|---|
 | `phase2_closure_recursive_regularized.py` | 本地 recursive-regularized（RR）D2Q37 闭合诊断。 |
 | `phase2_closure_high_order.py` | D2Q21 四阶 central-moment 闭合诊断。 |
+| `phase2_closure_export_k_window.py` | 传导热流**导出 k 窗**诊断（P3-6 幅值边界机理）：逐 k 测导出比、解析谱修正乘子并反卷积 raw 形状、平衡-streaming 伪影分解（`M_art`/`M_eq0`）。输出 `results/phase2_export_window/<timestamp>/summary.json`（physics-core digest）；机理与路线判定见 `docs/Phase_2/closure/Phase2_Conductive_Export_K_Window.md`。诊断脚本，无 pass/fail 门。 |
 
 ## Phase 2 — 鲁棒性 / 敏感性 / 升级（`phase2_robust_*`）
 

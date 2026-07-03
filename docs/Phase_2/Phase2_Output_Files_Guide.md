@@ -10,7 +10,7 @@ Phase_2 阶段结束后（2026-06-25 整理），本目录按主题归类：
 | 子目录 | 内容 |
 |---|---|
 | （顶层） | `phase2_instruction_v1.1.md` 控制合同、`Phase2_STATUS.md` 阶段状态、`Phase2_Output_Files_Guide.md` 本总览 |
-| `closure/` | 闭合推导链：regularized stress note、low-k closure、heat-flux/τ32、ghost-orthogonal trace、recursive-regularized |
+| `closure/` | 闭合推导链：regularized stress note、low-k closure、heat-flux/τ32、ghost-orthogonal trace、recursive-regularized、conductive export k-window |
 | `acoustic/` | 声学/声衰减：matched target 推导、D2Q37 声衰减诊断、high-mode 本征支、物理体积黏性诊断 |
 | `robustness/` | 鲁棒性/失败诊断报告：输运、D2Q37 专项、失败定位、high-mode 敏感性、高阶闭合 |
 | `M2/` | M2 里程碑：`M2_Critical_Decision.md`、`M2_Verification_Report.md`、`M2_runs/`（规范 run 摘要归档，见其 `README.md`） |
@@ -41,6 +41,7 @@ Phase_2 阶段结束后（2026-06-25 整理），本目录按主题归类：
 | `docs/Phase_2/robustness/Phase2_D2Q37_Failure_Diagnosis_Report.md` | 当前 D2Q37 鲁棒性失败诊断报告，记录短窗口/长窗口、低 k/较高 k、filter 开关和 D2Q21 对照；当前 `20260607T073921Z` 判定为 `D2Q37_WAVENUMBER_WINDOW_DEPENDENT_CLOSURE`。 |
 | `docs/Phase_2/closure/Phase2_D2Q37_LowK_Closure_Derivation.md` | D2Q37 低 k 长窗口 closure 推导报告，记录新 stress projection、`auto_d2q37_tau32_linear`、conductive scale、Galilean heat-flux correction 和低 k 验证结果。 |
 | `docs/Phase_2/closure/Phase2_Heat_Flux_Tau32_Closure.md` | heat-flux collision 与 `tau32` 的 projection closure 复核报告，记录 `alpha_lu <-> tau32` 单入口、D2Q21/D2Q37 conductive scale、Galilean correction 和 D2Q37 high-mode spectral correction。 |
+| `docs/Phase_2/closure/Phase2_Conductive_Export_K_Window.md` | 传导热流导出 k 窗机理笔记（2026-07-03）：raw 矩由平衡-streaming 伪影主导（∝k²、α 无关）、窗形=raw 超线性×谱修正悬崖、k 鲁棒导出无廉价工程解的路线判定；复现 `scripts/phase2_closure_export_k_window.py`。 |
 | `docs/Phase_2/acoustic/Phase2_Acoustic_Attenuation_Target_Derivation.md` | P2-6 声衰减 matched target 推导报告，记录 `D=2, S=3`、`diagnostic_zero` 和 D2Q37 conductive heat-flux convention 下的 linearized NSF target，以及当前 over-damping GO-RISK 判读。 |
 | `docs/Phase_2/robustness/Phase2_High_Mode_Sensitivity_Report.md` | 当前 high-mode 标量敏感性诊断报告，记录当前 D2Q21 physical-timestep baseline 下单个 stress/heat-flux 经验标量是否可同时保住 mode=1 并修复 mode=2。 |
 | `docs/Phase_2/robustness/Phase2_High_Order_Closure_Report.md` | 当前 D2Q21 四阶高阶闭合诊断报告，记录 `central_moment_closure=fourth_order` 与多个 `high_order_relaxation` 下的 low-mode / mode=2 输运失败。 |
@@ -70,6 +71,7 @@ Phase_2 阶段结束后（2026-06-25 整理），本目录按主题归类：
 - `docs/Phase_2/robustness/Phase2_D2Q37_Failure_Diagnosis_Report.md`
 - `docs/Phase_2/closure/Phase2_D2Q37_LowK_Closure_Derivation.md`
 - `docs/Phase_2/closure/Phase2_Heat_Flux_Tau32_Closure.md`
+- `docs/Phase_2/closure/Phase2_Conductive_Export_K_Window.md`
 - `docs/Phase_2/acoustic/Phase2_Acoustic_Attenuation_Target_Derivation.md`
 - `docs/Phase_2/robustness/Phase2_High_Mode_Sensitivity_Report.md`
 - `docs/Phase_2/robustness/Phase2_High_Order_Closure_Report.md`
