@@ -37,7 +37,8 @@
 | `docs/Phase_3/Phase3_STATUS.md` | 阶段状态、验证记录、风险和更新日志 | 当前 |
 | `docs/Phase_3/Phase3_Output_Files_Guide.md` | 本导览 | 当前 |
 | `docs/Phase_3/README.md` | Phase_3 文档目录索引 | 当前 |
-| `docs/Phase_3/M3/M3_Verification_Report.md` | M3 验证报告（P3-5/P3-5+/P3-6，§10.5 含导出窗机理闭环） | 当前（M3『相位达标、幅值边界（(tau,k) 点标定极限）』） |
+| `docs/Phase_3/M3/M3_Verification_Report.md` | M3 验证报告（P3-5/P3-5+/P3-6，§10.5 含导出窗机理闭环、§11 指向收尾决策） | 当前（M3『相位达标、幅值边界（(tau,k) 点标定极限）』） |
+| `docs/Phase_3/M3/M3_Closure_Decision.md` | M3 收尾决策记录（方案 (a) APPROVED）：Phase_3 转维护态、Phase_4 启动授权与边界、停放项重启条件的权威出处 | 当前（2026-07-03） |
 | `docs/Phase_3/M3/M3_Run_Summaries.md` | 生成型运行汇总（`python -m scripts.phase3_m3_summarize`） | 当前（只聚合本机 results/，不构成判定） |
 | `docs/Phase_3/M3/M3_runs/README.md` | 精选 M3 run 摘要归档说明 | 待需要长期归档 run 时创建 |
 
@@ -95,7 +96,8 @@
 - `verification/test_phase3_film_ode.py`
 - `verification/test_phase3_levelc_coupling.py`
 - `verification/test_phase3_levela_admittance.py`、`verification/test_phase3_levelb_admittance.py`、`verification/test_phase3_m3_verification_script.py`（P3-6 机制回归）
-- `docs/Phase_3/M3/M3_Run_Summaries.md`（生成型运行汇总）。
+- `docs/Phase_3/M3/M3_Run_Summaries.md`（生成型运行汇总）
+- `docs/Phase_3/M3/M3_Closure_Decision.md`（M3 收尾决策，Phase_4 启动授权权威出处）。
 
 ### 5.2 运行产物 / untracked by default
 
