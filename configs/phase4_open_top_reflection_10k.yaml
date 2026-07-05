@@ -1,0 +1,71 @@
+# P4-1 open-top boundary reflection measurement: 10 kHz normal incidence, gate |R|<0.05
+# (contract docs/Phase_4/phase4_instruction_v1.0.md §6). Derived from the frozen dx2p6
+# Level C gas config -- dx/dt/tau/collision/filter untouched (M3 closure §3 boundary);
+# only ny is enlarged (contract §2.1 authorizes ny growth) and source / probe /
+# open-boundary blocks are added. The acoustic source is THERMOACOUSTIC EMISSION from
+# the production thermal_grad wall with an oscillating theta_w (Phase_3 Level A pattern;
+# the only bottom BC that is seed-stable against the open top -- four velocity-piston
+# fixtures were refuted, see Phase4_STATUS.md 2026-07-04).
+case:
+  name: phase4_open_top_reflection_10k
+  phase: Phase_4
+  p4_stage: P4-1
+  purpose: normal-incidence 10 kHz reflection coefficient of the LODI open-top boundary (boundary/open_cbc.py)
+
+inheritance:
+  gas_config_path: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+  phase4_contract: docs/Phase_4/phase4_instruction_v1.0.md
+  m3_closure_decision: docs/Phase_3/M3/M3_Closure_Decision.md
+  m3_decision_state: SCOPED_ACCEPTED_route_a_2026-07-03
+  inherited_m3_amp_error_band: 0.054
+
+physical:
+  frequency_Hz: 1.0e4
+  c0_m_s: 347.0                       # ideal decomposition wavenumber k=Omega/c0; sensitivity reported below
+  rho0_kg_m3: 1.177
+  alpha0_m2_s: 2.2233775895e-5        # for the half-space thermoacoustic amplitude anchor (delta_T)
+  wall_temperature_hat_K: 0.354       # Level A amplitude; thermoacoustic emission ~0.57 Pa (89 dB), linear
+
+open_boundary:
+  type: open_cbc                      # boundary_y_top=open_cbc (algebraic characteristic impedance, w-=0, full-strip per-row delays)
+  mean_pressure_relax: 0.0            # pressure-release blend diagnostic knob (|R|~relax/2); 0 = pure matched impedance (k=0 vent is built in)
+  w_lowpass_periods: 0.01             # EMA on the sampled w+ (fraction of the drive period); REQUIRED >0 for long runs -- the unfiltered sampled loop is weakly active (seed saturation ~1.4e-2 u_lu)
+
+collision_overrides: {}
+  # P4-1b route b': four seam-aware operator designs were iterated and ALL refuted on
+  # the (open-rig injection ~ 0) AND (sealed-box injection <= frozen) constraint pair --
+  # see docs/Phase_4/M4/P4_1b_Seam_Detrend_Project.md sections 6-7. The seam_aware_*
+  # scalars stay available (zero defaults = frozen behavior) as the experimental
+  # surface; no working enable exists yet, so the certification keeps overrides empty.
+
+numerics:
+  nx: 4                               # x-uniform normal incidence (kx=0 only): all solver operators are diagonal in kx, so nx=4 is exact; halves wall clock vs nx=8
+  ny: 512                             # 1.34 mm column; sub-wavelength (lambda(10 kHz)=34.7 mm)
+  ramp_periods: 0.5                   # cosine-smooth wall-temperature switch-on
+  settle_periods: 0.25
+  fit_periods: 1.25
+  sample_interval_steps: 64           # ~800 samples per period at dt=1.95881e-9 s
+
+probes:
+  row_start: 64                       # above the wall thermal layer (>= 6 delta_T; delta_T ~ 10 rows)
+  row_stop: 448                       # inclusive stop; 61 rows below the top reconstruction rows ny-1..ny-3
+  row_step: 8
+
+decomposition:
+  wave_model: "p_hat(y) = A_inc exp(-i k y) + A_ref exp(+i k y), k = Omega/c0, y from row-0 center"
+  k_sensitivity_rel: [0.99, 1.01]     # measured sound speed within 0.75% (P2-6); report R_abs shift
+
+gates:
+  reflection_abs: 0.05                # P4-1 hard gate, normal incidence 10 kHz
+  mass_relative_drift_max: 1.0e-3     # open-system sanity bound, not a conservation claim
+  no_nan: true
+  no_clipping_or_floor: true
+
+references:
+  open_boundary_owner: boundary/open_cbc.py
+  thermal_drive_owner: scripts/phase4_open_boundary_reflection.py (wraps boundary/wall_thermal_grad.py, Level A pattern)
+  phase_convention_owner: phase3_interfaces/complex_amplitude.py
+  hdf5_writer: phase3_interfaces/run_hdf5.py (reused with phase=Phase_4 metadata)
+
+output:
+  results_root: results/m4

@@ -109,6 +109,12 @@ class CollisionScales:
     dispersion_correction_enabled: bool = False
     dispersion_correction_low_laplacian: float = 0.0
     dispersion_correction_high_laplacian: float = 0.0
+    # P4-1b (route b') opt-in: seam-aware windowing of the global periodic operators
+    # (docs/Phase_4/M4/P4_1b_Seam_Detrend_Project.md section 6). All-zero defaults keep
+    # every frozen Phase_2/3 config bit-identical; only Phase_4 derived configs enable it.
+    seam_aware_bottom_rows: int = 0
+    seam_aware_top_rows: int = 0
+    seam_aware_taper_rows: int = 0
     regularized_shear_xy_factor: float = 1.0
     regularized_shear_normal_factor: float = 1.0
     regularized_shear_xy_dispersion_target: float = 1.0
@@ -226,6 +232,9 @@ class UnitMapping:
             "tau32": self.tau32,
             "heat_flux_tau32_relation": HEAT_FLUX_TAU32_RELATION,
             "dispersion_correction_enabled": self.collision.dispersion_correction_enabled,
+            "seam_aware_bottom_rows": self.collision.seam_aware_bottom_rows,
+            "seam_aware_top_rows": self.collision.seam_aware_top_rows,
+            "seam_aware_taper_rows": self.collision.seam_aware_taper_rows,
             "dispersion_correction_low_laplacian": self.collision.dispersion_correction_low_laplacian,
             "dispersion_correction_high_laplacian": self.collision.dispersion_correction_high_laplacian,
             "regularized_shear_xy_factor": self.collision.regularized_shear_xy_factor,
@@ -479,6 +488,9 @@ def _collision_from_config(config: dict[str, Any] | None) -> CollisionScales:
         dispersion_correction_enabled=bool(collision.get("dispersion_correction_enabled", False)),
         dispersion_correction_low_laplacian=float(collision.get("dispersion_correction_low_laplacian", 0.0)),
         dispersion_correction_high_laplacian=float(collision.get("dispersion_correction_high_laplacian", 0.0)),
+        seam_aware_bottom_rows=int(collision.get("seam_aware_bottom_rows", 0)),
+        seam_aware_top_rows=int(collision.get("seam_aware_top_rows", 0)),
+        seam_aware_taper_rows=int(collision.get("seam_aware_taper_rows", 0)),
         regularized_shear_xy_factor=float(collision.get("regularized_shear_xy_factor", 1.0)),
         regularized_shear_normal_factor=float(collision.get("regularized_shear_normal_factor", 1.0)),
         regularized_shear_xy_dispersion_target=float(

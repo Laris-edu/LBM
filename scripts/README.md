@@ -8,7 +8,7 @@
 
 - **运行方式**：在仓库根目录执行 `python -m scripts.<name>`（文档示例均用此式）。
 - **命名**：`phase1_*`（参考模型）、`phase2_<类别>_*`，类别 = `m2`（验证/汇总）/ `acoustic` /
-  `closure` / `robust`（鲁棒性·失败·升级）/ `phase3`（交接·Level C）；Phase_3 正式实现脚本使用 `phase3_*`。
+  `closure` / `robust`（鲁棒性·失败·升级）/ `phase3`（交接·Level C）；Phase_3 正式实现脚本使用 `phase3_*`，Phase_4（开边界/远场）使用 `phase4_*`。
 - **共享工具枢纽**：`phase2_m2_verification.py` 导出 `load_config / sha256_file / summary_payload_digest`，
   几乎所有 `phase2_*` 诊断都从它导入；部分诊断还互相导入
   （`phase2_acoustic_attenuation_caliber`、`phase2_closure_recursive_regularized`、`phase2_acoustic_attenuation_anisotropy`）。
@@ -85,3 +85,10 @@
 | `phase3_levela_admittance.py` | P3-6 Level A 动态热导纳（Grad 壁面、无耦合）：规定正弦壁温、row1 传导矩提取 `q_g''`（与 Level C 同口径）、末周期拟合 `Y=q_hat/T_hat` 对解析半空间参考。scratchpad 探测的提交版；输出 `results/phase3_levela_admittance/<timestamp>/`（含合同 §9 HDF5）。支持 `--frequency-hz` 诊断覆盖（标记 `frequency_overridden`）。 |
 | `phase3_levelb_admittance.py` | P3-6 Level B 动态频响（Grad 类 Neumann 变体）：规定正弦单侧热流经二阶单侧差分转壁温（`theta_relax` 压 Nyquist 反馈失稳）、复用 Grad 重构，拟合 `T_wall_hat` 对 `q_hat/Y_g`；另报 `q` readback 与 `Z=T/q_readback` 一致性诊断。输出 `results/phase3_levelb_admittance/<timestamp>/`（含合同 §9 HDF5）。支持 `--frequency-hz`/`--theta-relax` 诊断覆盖。 |
 | `phase3_m3_summarize.py` | 聚合 `results/m3` 与 Level A/B 导纳 run 的 summary.json 到生成型文档 `docs/Phase_3/M3/M3_Run_Summaries.md`；只读聚合，不构成判定。 |
+
+## Phase 4 — 开边界 / 远场（`phase4_*`）
+
+| 脚本 | 用途 |
+|---|---|
+| `phase4_open_boundary_reflection.py` | P4-1 开顶边界反射测量（终态）：底部**生产 thermal_grad 振荡壁温**热声源（4 个速度活塞 fixture 均被种子稳定性否决、docstring 留档），顶部 `boundary/open_cbc.py` 全条带特征阻抗边界；探针带同时谐波拟合 `p̂` 与 `v̂`，主观测量=**特征分解反射计**（`Â_inc=(p̂+Z₀v̂)/2`、`Â_ref=(p̂−Z₀v̂)/2` 逐行代数拆分，每行良态），纯压力两波 LS 降级为交叉核对（亚波长下病态：刚性盖对照读出非物理 `\|R\|=1.23`）。报告 `R_complex/R_abs`、行间散布、k 敏感性、热声发射锚，对 P4-1 门 `\|R\|<0.05`。输出 `results/m4/<timestamp>/`（summary/report + `timeseries.h5`，meta 带 M3 授权边界）。`--max-steps` 截断诊断（自动 `DIAGNOSTIC`/`NOT_CLAIMED`，防短窗假 pass）。**P4-1 终态 FAILED**：门失败根因是体积注入底板（见 `phase4_volume_injection_probe.py` 与 `docs/Phase_4/M4/P4_1_Open_Boundary_Diagnostic_Report.md`），非边界实现。导出 `characteristic_split_reflection`/`decompose_incident_reflected`/`make_thermal_drive_wall_callback`/`expected_thermoacoustic_pressure_pa` 供测试复用。 |
+| `phase4_volume_injection_probe.py` | **P4-1 终态诊断探针（可复现证据链）**：三个判决实验——① 有缝本征（全周期高柱+thermal_grad 壁缝，首穿越窗口 `w⁻/w⁺` 以 ~1.1e-4/步增长）；② 算子消融（`dispersion off` 增长 ×0.25 为主导项；`acoustic_phase off`/`trace current_zero` 逐位无差）；③ 无缝对照（平滑高斯 w⁺ 脉冲全程 ≤1e-4 干净）。结论：全局周期 FFT 修正把边界缝谱泄漏转为离域波注入，有界柱稳态 `\|R\|≈0.2–0.3` 体积底板，任何局部顶边界不可击穿（合同 §13.2 降级依据）。DIAGNOSTIC-only；探针内配置开关不动生产配置。 |

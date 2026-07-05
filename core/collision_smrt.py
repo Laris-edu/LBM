@@ -17,6 +17,13 @@ from core.dispersion_correction import (
     apply_periodic_diagonal_low_mode_correction,
     apply_periodic_spectral_correction,
 )
+
+
+def _seam_rows(mapping):
+    c = mapping.collision
+    if c.seam_aware_bottom_rows <= 0 and c.seam_aware_top_rows <= 0:
+        return None
+    return (int(c.seam_aware_bottom_rows), int(c.seam_aware_top_rows))
 from core.hermite import monomial_exponents
 from core.lattice import Lattice, make_lattice
 from core.macroscopic import ENERGY_CLOSURE_DEFINITION, central_energy_flux_lu, recover_macro
@@ -415,6 +422,7 @@ def _regularized_f_collision(
         target=mapping.collision.regularized_shear_xy_dispersion_target,
         low_laplacian=mapping.collision.dispersion_correction_low_laplacian,
         high_laplacian=mapping.collision.dispersion_correction_high_laplacian,
+        boundary_rows=_seam_rows(mapping),
     )
     stress_dev = apply_periodic_spectral_correction(
         stress[..., 0, 0] - stress[..., 1, 1],
@@ -422,6 +430,7 @@ def _regularized_f_collision(
         target=mapping.collision.regularized_shear_normal_dispersion_target,
         low_laplacian=mapping.collision.dispersion_correction_low_laplacian,
         high_laplacian=mapping.collision.dispersion_correction_high_laplacian,
+        boundary_rows=_seam_rows(mapping),
     )
     omega_shear = 1.0 / mapping.tau21
     shear_factor = 1.0 - omega_shear
@@ -532,12 +541,14 @@ def _regularized_heat_flux_collision(
         target=mapping.collision.regularized_heat_flux_dispersion_target,
         low_laplacian=mapping.collision.dispersion_correction_low_laplacian,
         high_laplacian=mapping.collision.dispersion_correction_high_laplacian,
+        boundary_rows=_seam_rows(mapping),
     )
     total_heat_flux = apply_periodic_diagonal_low_mode_correction(
         total_heat_flux,
         enabled=mapping.collision.dispersion_correction_enabled,
         target=mapping.collision.regularized_heat_flux_diagonal_low_mode_target,
         low_laplacian=mapping.collision.dispersion_correction_low_laplacian,
+        boundary_rows=_seam_rows(mapping),
     )
     target_heat_flux = heat_flux_factor * total_heat_flux
     f_fraction = mapping.collision.regularized_heat_flux_f_fraction

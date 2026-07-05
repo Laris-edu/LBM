@@ -1,0 +1,120 @@
+# P4-0 frozen M4 smoke/meta contract: stage ordering, inherited M3 authorization
+# boundary, open-boundary / control-surface / Kirchhoff conventions, per-stage gates,
+# and output schema. Contract config only -- its existence does NOT mean any Phase_4
+# run has been executed or passed (mirrors configs/phase3_m3_smoke.yaml's P3-0 role).
+case:
+  name: phase4_m4_smoke
+  phase: Phase_4
+  purpose: P4-0 frozen M4 smoke/meta contract for open boundary, control surface, Kirchhoff farfield, and M4 gates
+  status: contract_only_not_a_run_pass
+
+inheritance:
+  phase4_contract: docs/Phase_4/phase4_instruction_v1.0.md
+  phase4_status: docs/Phase_4/Phase4_STATUS.md
+  m3_closure_decision: docs/Phase_3/M3/M3_Closure_Decision.md
+  m3_decision_state: SCOPED_ACCEPTED_route_a_2026-07-03
+  inherited_m3_amp_error_band: 0.054
+  levelc_scoped_gas_config: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+  levelc_m3_config: configs/phase3_m3_grad_10k_dx2p6.yaml
+  wall_bc: thermal_grad
+  q_feedback_relax: 0.02
+  phase3_maintenance_baseline: 39_tests_green_digests_26be2fde_02cea11e_0ca7b8ad
+
+physical:
+  T0_K: 300.0
+  rho0_kg_m3: 1.177
+  c0_m_s: 347.0
+  frequency_Hz: 1.0e4
+  omega_rad_s: 6.283185307179586e4
+  delta_T_m: 2.66e-5              # 10 kHz air thermal decay length sqrt(2*alpha/Omega)
+  control_surface_y_c_m: 2.13e-4  # ~8 delta_T (Phase_0 freeze); row = round(y_c/dx_m), never hardcoded
+  open_boundary_reflection_target_abs: 0.05
+
+contract:
+  authorization_boundary_owner: docs/Phase_3/M3/M3_Closure_Decision.md#3
+  frequency_scope: 10kHz_single_point_only_no_frequency_sweep
+  forbidden_changes:
+    - dx_m_dt_s_tau21_tau22_tau32
+    - conductive_heat_flux_moment_factor
+    - grad_wall_reconstruction_policy
+    - tau_transport_mapping
+    - m3_amplitude_gate_conclusion
+  domain: upper_half_gas_y_positive_bottom_film_wall
+  top_boundary: open_or_nonreflecting_required_before_farfield
+  x_boundary: periodic_initially_finite_width_radiation_not_certified
+  complex_amplitude_convention: x(t)=Re[x_hat exp(i Omega t)]
+  kirchhoff_green_convention: to_be_pinned_by_manufactured_fixture_P4-4  # exp(+iOmega t) outgoing Hankel kind + prefactor fixed by fixture only, never end-to-end tuning
+  control_surface_placement_rules:
+    - row_from_y_c_and_dx_not_hardcoded
+    - outside_thermal_buffer_and_sponge_and_open_boundary_rows
+  no_clipping_or_floor_for_pass: true
+  error_band_propagation: farfield_reports_must_carry_inherited_m3_amp_band_0.054
+
+stage_order:
+  sequence:
+    - P4-0_contract_freeze
+    - P4-1_open_top_boundary_and_reflection
+    - P4-2_gas_cv_energy_audit_diagnostic
+    - P4-3_control_surface_sampling
+    - P4-4_kirchhoff_2d_kernel_manufactured
+    - P4-5_end_to_end_m4_verification
+    - P4-6_m4_report_and_doc_sync
+  p4_1_gate_blocks_downstream: true   # no control-surface/Kirchhoff mainline before |R|<0.05
+
+gates:
+  p4_1_reflection_abs: 0.05
+  p4_4_kirchhoff_manufactured_amplitude_error: 0.02
+  p4_4_kirchhoff_manufactured_phase_error_deg: 2.0
+  p4_5_end_to_end_farfield_amplitude_error: 0.10
+  p4_5_farfield_phase_error_deg_recommended: 10.0
+  control_surface_location_sensitivity_recommended: 0.05
+  derivative_channel_crosscheck_max: 0.10  # dpdn_fd vs dpdn_velocity; >10%/10deg -> debug, not prefactor tuning
+
+references:
+  farfield_reference_levels:
+    R0: manufactured_kirchhoff_field
+    R1: compact_thermophone_farfield_formula
+    R2: control_surface_self_consistency
+  phase1_role: nearfield_thermal_trend_only_never_final_farfield_SPL_truth
+  harmonic_fit: postproc/harmonic_fit.py
+  phase_convention_owner: phase3_interfaces/complex_amplitude.py
+  unit_mapping_owner: core/unit_mapping.py
+
+output:
+  results_root: results/m4
+  report_path: docs/Phase_4/M4/M4_Verification_Report.md
+  summary_required_fields:
+    - status
+    - phase
+    - p4_stage
+    - m4_gate
+    - open_boundary
+    - control_surface
+    - kirchhoff
+    - farfield
+    - inherited_m3
+    - known_risk_boundaries
+  hdf5_required_metadata:
+    - phase
+    - inherited_m3_decision
+    - inherited_m3_error_band_amp
+    - frequency_Hz
+    - config_source
+    - dx_m_dt_s_tau21_tau22_tau32
+    - wall_bc
+    - open_boundary_type
+    - open_boundary_reflection_target
+    - control_surface_kind
+    - control_surface_y_m
+    - kirchhoff_green_convention
+    - complex_convention
+    - no_clipping_or_floor_used
+
+known_risk_boundaries:
+  - m3_scoped_accepted_not_clear_pass_and_m4_pass_not_final_production_pass
+  - single_frequency_10kHz_only_no_sweep_authorized
+  - x_periodic_finite_width_edge_radiation_not_certified_unless_side_open_implemented
+  - phase1_nearfield_reference_is_not_farfield_SPL_truth
+  - hankel_time_convention_must_be_pinned_by_P4-4_fixture_not_end_to_end
+  - gas_cv_audit_must_be_honest_diagnostic_or_not_available_never_fake_pass
+  - parked_items_k_robust_export_tau_robust_wall_clear_5pct_gate_stay_parked

@@ -12,6 +12,7 @@ import h5py
 import numpy as np
 
 from core.collision_smrt import collide_fg
+from core.dispersion_correction import seam_aware_boundary_window
 from core.equilibrium import equilibrium_fg
 from core.lattice import Lattice, make_lattice
 from core.macroscopic import ENERGY_CLOSURE_DEFINITION, MacroState, heat_flux_lu, recover_macro
@@ -111,12 +112,31 @@ def _periodic_central_velocity_divergence(u: np.ndarray) -> np.ndarray:
     return dux_dx + duy_dy
 
 
-def conservative_biharmonic_filter(field: np.ndarray, strength: float) -> np.ndarray:
-    """Damp grid-scale periodic content while preserving global moments."""
+def conservative_biharmonic_filter(
+    field: np.ndarray,
+    strength: float,
+    boundary_window: np.ndarray | None = None,
+) -> np.ndarray:
+    """Damp grid-scale periodic content while preserving global moments.
+
+    ``boundary_window`` (P4-1b seam-aware mode, default None = frozen behavior) tapers
+    the imposed boundary strips out of the periodic stencil and masks the damping delta
+    back with exact per-population moment conservation -- the filter's wrap terms
+    otherwise couple the bottom wall rows to the top boundary strip and feed the P4-1
+    volume-injection floor (~17% share; docs/Phase_4/M4/P4_1b_Seam_Detrend_Project.md §6).
+    """
 
     if strength == 0.0:
         return field
-    return field - strength * _periodic_laplacian(_periodic_laplacian(field))
+    if boundary_window is None:
+        return field - strength * _periodic_laplacian(_periodic_laplacian(field))
+    w = boundary_window.reshape((field.shape[0],) + (1,) * (field.ndim - 1))
+    mean = np.mean(field, axis=(0, 1), keepdims=True)
+    psi = mean + w * (field - mean)
+    delta = -strength * (w * _periodic_laplacian(_periodic_laplacian(psi)))
+    total = np.sum(delta, axis=(0, 1), keepdims=True)
+    delta = delta - w * (total / (np.sum(boundary_window) * field.shape[1]))
+    return field + delta
 
 
 _GHOST_PROJECTOR_OPERATOR_CACHE: dict[tuple[Any, ...], np.ndarray] = {}
@@ -554,6 +574,19 @@ class GasSolver2D:
         self._acoustic_phase_modes_cache: dict[tuple[int, int, float], list[tuple[int, int, float, float]]] = {}
         self._acoustic_phase_high_modes_cache: dict[tuple[int, int, float, str], list[tuple[int, int, float, float]]] = {}
         self._previous_pressure_for_trace: np.ndarray | None = None
+        # P4-1b seam-aware filter window: TOP-ONLY by design. The filter's seam share is
+        # its wrap coupling (bottom wall rows <-> top strip), which top-side tapering
+        # already severs; bottom-side tapering would cut the grid-scale damping exactly
+        # where the Grad-wall loop relies on it (the bottom-windowed Level A diagnostic
+        # went NaN) and would perturb the M3-calibrated near-wall environment. The FFT
+        # corrections keep the full two-sided window (built inside the collision from
+        # the same mapping scalars) -- they are accuracy operators, not local dampers.
+        self._filter_seam_window = seam_aware_boundary_window(
+            self.ny,
+            0,
+            self.mapping.collision.seam_aware_top_rows,
+            self.mapping.collision.seam_aware_taper_rows,
+        )
 
     def initialize_from_macro(self, rho: np.ndarray | float, u: np.ndarray, theta: np.ndarray | float) -> None:
         rho_arr = np.broadcast_to(np.asarray(rho, dtype=float), (self.ny, self.nx))
@@ -1111,8 +1144,12 @@ class GasSolver2D:
             self.f, self.g = self._apply_diagonal_acoustic_phase_correction(self.f, self.g)
             self.f, self.g = self._apply_high_mode_acoustic_phase_correction(self.f, self.g)
             for _ in range(self.high_wavenumber_filter_passes):
-                self.f = conservative_biharmonic_filter(self.f, self.high_wavenumber_filter_strength)
-                self.g = conservative_biharmonic_filter(self.g, self.high_wavenumber_filter_strength)
+                self.f = conservative_biharmonic_filter(
+                    self.f, self.high_wavenumber_filter_strength, self._filter_seam_window
+                )
+                self.g = conservative_biharmonic_filter(
+                    self.g, self.high_wavenumber_filter_strength, self._filter_seam_window
+                )
             self.t_lu += 1
 
     def get_macro(self) -> MacroState:

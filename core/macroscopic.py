@@ -10,6 +10,13 @@ from core.dispersion_correction import (
     apply_periodic_diagonal_low_mode_correction,
     apply_periodic_spectral_correction,
 )
+
+
+def _seam_rows(mapping):
+    c = mapping.collision
+    if c.seam_aware_bottom_rows <= 0 and c.seam_aware_top_rows <= 0:
+        return None
+    return (int(c.seam_aware_bottom_rows), int(c.seam_aware_top_rows))
 from core.lattice import Lattice, make_lattice
 from core.unit_mapping import UnitMapping, heat_flux_lu_to_phys, pressure_lu_to_phys, temperature_lu_to_phys
 
@@ -148,12 +155,14 @@ def heat_flux_lu(
         target=mapping.collision.conductive_heat_flux_dispersion_target,
         low_laplacian=mapping.collision.dispersion_correction_low_laplacian,
         high_laplacian=mapping.collision.dispersion_correction_high_laplacian,
+        boundary_rows=_seam_rows(mapping),
     )
     q_raw = apply_periodic_diagonal_low_mode_correction(
         q_raw,
         enabled=mapping.collision.dispersion_correction_enabled,
         target=mapping.collision.conductive_heat_flux_diagonal_low_mode_target,
         low_laplacian=mapping.collision.dispersion_correction_low_laplacian,
+        boundary_rows=_seam_rows(mapping),
     )
     q_conductive = q_raw * mapping.collision.conductive_heat_flux_moment_factor
     correction_factor = mapping.collision.conductive_heat_flux_galilean_correction_factor
