@@ -148,7 +148,9 @@ Phase_4 主线阻塞中，待用户在报告 §6 的路线 (a)/(b)/(c) 间决策
 
 ## 4. 当前关键决策
 
-- **P4-1b 路线 (b)→(b′) 两轮授权执行完毕、五个算子设计全部判负（2026-07-04/05，暂停待再决策）**：wrap-去趋势（×0.66 不足）→ 用户批准范围升级 (b′) → 窗化（W1/W2：开域平坦 0.0102 但密闭箱 Level A NaN）与替换（S1：wrap 通道回基线；S2：大 J 锯齿注入爆表）。**核心产出=可行性约束对**：「开域注入≈0」∧「密闭周期箱注入≤冻结水平」（Level A NaN 是注入累积、非阻尼损失；冻结栈在 M3 rig 本就有标定内壁缝注入）。完整地图 `docs/Phase_4/M4/P4_1b_Seam_Detrend_Project.md` §5-§7。代码保留（seam_aware 默认全零=冻结逐位、121 测试绿）；**(b″) 继续研究（宽桥/频率分裂/注入谱对齐）vs (a) 降级待用户决策**。
+- **P4-D3 立项（2026-07-05，用户批准，执行中）**：多分辨率双域声学外推——不动 M3 热区,外接独立粗网格声学域(无 dispersion→无注入底板)+ 界面耦合。立项文档 `docs/Phase_4/M4/P4_D3_Multidomain_Acoustic_Project.md`(D3-0 冻结)。**D3-1 声学介质门通过**(`verification/test_phase4_d3_acoustic.py` 3 绿)。**D3-2 执行中：稳定已解决、认证未闭合**（立项 §7）——① **稳定攻克**：y-Neumann 局部 filter 0.03×6（种子 1e-8 零增长、声波存活 89%），filter 可局部化**避开 D1 墙**；② 开边界 sponge（扰动衰减，`boundary/open_sponge.py`）**|R|=0.0015<门 有希望但认证未闭合**——非退化测试（对 sponge 强度不敏感）无法区分"sponge 极好"vs"filter 耗散反射"，**反自欺机制拦下一次可能误报**，决定性刚性盖对照撞 heat-flux gram 崩；③ 瓶颈=heat-flux 正则化脆弱，下一步=**声学域简化碰撞**（改 `collide_fg` 加声学开关默认 off，立项 §1 预见）一次解锁。阶段 D3-1(过)→D3-2(认证未闭合,做简化碰撞)→D3-3(界面耦合,最大风险)→D3-4(端到端)。回滚:任一门失败无廉价修复→落 (a)。
+- **P4-1b D1/D3 判决（2026-07-05）**：**D1（局部化修正）判死**（dispersion 是热门必需 + 近阶跃 plateau 不可 FIR 局部化）；**D3 核心正面**（粗网格无-dispersion 声学回散射 0.002，注入底板消失）→ 立项 D3（上条）。探针 `scripts/phase4_d1_dispersion_locality_probe.py`/`phase4_d3_coarse_acoustic_probe.py`，地图 `P4_1b_Seam_Detrend_Project.md` §8/§9。
+- **P4-1b 路线 (b)→(b′) 五算子设计判负（2026-07-04/05）**：wrap-去趋势（×0.66 不足）→ 窗化 W1/W2（密闭箱 Level A NaN）→ 替换 S1/S2（wrap 通道/大 J 锯齿）。**可行性约束对**：「开域注入≈0」∧「密闭周期箱注入≤冻结水平」。seam_aware 代码保留（默认全零=冻结逐位、121 测试绿）。
 - **P4-1 终态 FAILED（2026-07-04，合同 §13.2 降级路径）**：开顶边界四交付物 + 判决探针 + 诊断报告全部交付；门失败根因=体积注入底板（dispersion 修正 × 边界缝，机理与 `Phase2_Conductive_Export_K_Window.md` 的平衡-streaming 伪影同族）；测量方法学确立特征分解反射计。经用户决策转入 P4-1b（上条）。
 - **P4-0 合同冻结（2026-07-03）**：`docs/Phase_4/phase4_instruction_v1.0.md` 冻结为 Phase_4 权威合同（阶段顺序 P4-0…P4-6、P4-1 反射门 `|R|<0.05` 阻塞下游、Kirchhoff kernel manufactured `<2%/<2°`、M4 端到端幅值 `<10%`+误差预算分解）；`configs/phase4_m4_smoke.yaml` 为 meta 合同配置。冻结时已知风险：Hankel/时间约定（`e^{+iΩt}` 下出射 Green 为 `(−i/4)H_0^{(2)}`）由 P4-4 fixture 锚定；控制面 `y_c≈8δ_T`→域高需扩 `ny`（数值项、非标定项）；x 周期限制有限宽认证。详见 `Phase4_STATUS.md` §4。
 - **M3 收尾决策（2026-07-03，方案 (a) APPROVED）**：接受 M3 scoped 边界终态（相位三级 PASS、幅值边界 ±5.3–5.5%、`q_g_hat −0.11%`）、**不追认 clear PASS**；Phase_3 转维护态（39 测试 + digest 锚为维护基线）；**授权启动 Phase_4**（下一步 P4-0 合同冻结）。授权边界（单频 10 kHz、dx2p6 配置不换 dx/tau、幅值 ±5.4% 误差带、远场前置开顶/无反射边界）与停放项重启条件见 `docs/Phase_3/M3/M3_Closure_Decision.md`。镜像 2026-06-22 `BOUNDED_PRODUCTION_GO` 先例。
@@ -180,7 +182,7 @@ Phase_4 主线阻塞中，待用户在报告 §6 的路线 (a)/(b)/(c) 间决策
 
 - Phase_4 当前状态：`docs/Phase_4/Phase4_STATUS.md`
 - **P4-1 开边界诊断报告（终态 FAILED、机理链、路线选项）**：`docs/Phase_4/M4/P4_1_Open_Boundary_Diagnostic_Report.md`
-- P4-1 判决实验可复现探针：`scripts/phase4_volume_injection_probe.py`
+- P4-1 判决实验可复现探针：`scripts/phase4_volume_injection_probe.py`（体积注入底板）、`scripts/phase4_d1_dispersion_locality_probe.py`（D1 局部化判死）、`scripts/phase4_d3_coarse_acoustic_probe.py`（D3 粗网格声学正面）
 - Phase_4 冻结合同：`docs/Phase_4/phase4_instruction_v1.0.md`
 - Phase_4 输出导览：`docs/Phase_4/Phase4_Output_Files_Guide.md`
 - Phase_4 文档目录索引：`docs/Phase_4/README.md`
