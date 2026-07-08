@@ -14,7 +14,7 @@
 | `equilibrium.py` | 构造 `f_eq` 和 `g_eq`。`f_eq` 采用四阶矩匹配，`g_eq` 至少恢复二阶矩；`theta_q` 只作为求积温度，`theta_lu` 才是热力学温度。 |
 | `macroscopic.py` | 从 `f/g` 恢复宏观量：`rho`、`u`、`theta`、`p=rho theta`、`gamma`、Mach、中心总能量和热流。这里区分 raw central energy flux 与导热 `q_lu`：collision 使用 raw moment，`GasSolver2D`/HDF5/Phase_3 handoff 使用带 `conductive_heat_flux_moment_factor` 的导热热流。 |
 | `polyatomic_fg.py` | 多原子气体自由度工具，负责 `S = 2/(gamma-1)-D` 和 `gamma = 1+2/(D+S)` 的代数检查。空气默认 `D=2, S=3, gamma=1.4`。 |
-| `collision_smrt.py` | Phase_2 碰撞模块。当前 D2Q21 baseline 为 `central_moment_closure=second_order`，已从 raw population scaffold 升级为 regularized central-Hermite/binomial stress/heat-flux collision：`f` 保留二阶非平衡应力，并投影三阶中心平动能量通量；`g` 投影一阶中心内部能量通量，并通过逐 cell 零阶矩修正保证选定总能量守恒。`central_moment_closure=fourth_order` 已实现为 diagnostic-only 路径，但 `20260606T083915Z` 未能达标。 |
+| `collision_smrt.py` | Phase_2 碰撞模块。当前 D2Q21 baseline 为 `central_moment_closure=second_order`，已从 raw population scaffold 升级为 regularized central-Hermite/binomial stress/heat-flux collision：`f` 保留二阶非平衡应力，并投影三阶中心平动能量通量；`g` 投影一阶中心内部能量通量，并通过逐 cell 零阶矩修正保证选定总能量守恒。`central_moment_closure=fourth_order` 已实现为 diagnostic-only 路径，但 `20260606T083915Z` 未能达标。**P4-D3 声学简化碰撞**：`CollisionScales.acoustic_simplified_collision`（默认 off）令 `collide_fg` 跳过 heat-flux 正则化（`g→g_eq`，总能量仍逐 cell 守恒），数值等价 `regularized_heat_flux_factor==0` 快路，仅供声学域派生配置启用；默认 off 使全部冻结配置逐位不变。 |
 | `streaming.py` | 周期边界 pull streaming。公式为 `f_new[y,x,a] = f_post[y-cy[a], x-cx[a], a]`，`g` 同理；速度轴固定为最后一维。 |
 | `solver.py` | 最小 `GasSolver2D` 外壳，支持初始化、步进、宏观量读取、压力/温度/热流读取、probe 采样和 HDF5 输出。当前支持配置化 conservative high-wavenumber biharmonic population filter；该 filter 不做 clipping、floor 或 positivity repair。 |
 | `__init__.py` | 包入口，导出 Phase_2 常用对象。该文件同时修复了原先仅含 UTF-16 BOM、会影响 `import core.*` 的问题。 |

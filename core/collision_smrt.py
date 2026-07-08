@@ -528,7 +528,20 @@ def _regularized_heat_flux_collision(
     carries the first-order central internal-energy flux.  The split is stored
     in :mod:`core.unit_mapping` so the collision implementation does not hide a
     transport mapping decision.
+
+    P4-D3 acoustic simplified collision: when ``acoustic_simplified_collision`` is
+    set the whole heat-flux moment reconstruction is skipped (``g`` relaxes fully
+    to ``g_eq``; total energy is still conserved per cell by the downstream
+    ``delta_G`` correction in :func:`collide_fg`).  The coarse acoustic subdomain
+    carries sound only and does not resolve heat, so it does not need -- and is
+    destabilised by -- the min-norm heat-flux Gram solve (singular at large tuned
+    viscosity / coarse grids / under reflected-energy accumulation).  This is the
+    numerically identical fast path to ``regularized_heat_flux_factor == 0.0`` but
+    driven by an explicit, policy-independent, auditable acoustic switch.
     """
+
+    if mapping.collision.acoustic_simplified_collision:
+        return f_post, g_eq.copy()
 
     heat_flux_factor = mapping.collision.regularized_heat_flux_factor
     if heat_flux_factor == 0.0:

@@ -1,6 +1,6 @@
 # Phase_4 输出文件导览
 
-**最后更新**：2026-07-03
+**最后更新**：2026-07-08
 **定位**：Phase_4（开边界 / 控制面 / Kirchhoff 远场，M4）的跨目录总览：结构、配置入口、运行产物与归档约定。逐文件说明由各目录 `README.md` 维护（分层混合架构，见 `docs/Doc_Architecture.md`）。
 
 ## 1. 分层混合架构位置
@@ -12,15 +12,16 @@
 | 本导览 | `docs/Phase_4/Phase4_Output_Files_Guide.md` | 跨目录结构 + 产物/归档约定 |
 | 原始输出 | `results/m4/<timestamp>/` | HDF5、summary JSON、报告，默认不入库 |
 
-## 2. 代码、配置与测试目录（P4-1 时点；逐文件说明见各目录 README）
+## 2. 代码、配置与测试目录（P4-D3 简化碰撞 core 步时点；逐文件说明见各目录 README）
 
 | 目录 | README | Phase_4 内容 |
 |---|---|---|
-| `boundary/` | `boundary/README.md` | **已交付**：`open_cbc.py`（全条带特征阻抗开顶边界终态 + `compose_boundary_callbacks`；12 变体否证留档）。`open_sponge.py` 未实现（体积底板下无意义，见诊断报告）。 |
-| `farfield/` | 待主线解锁创建 | 待 P4-3/P4-4（阻塞中）：`control_surface.py`、`kirchhoff_2d.py`、`README.md`。 |
-| `configs/` | `configs/README.md` | 现有：`phase4_m4_smoke.yaml`（P4-0 meta 合同）、`phase4_open_top_reflection_10k.yaml`（P4-1 认证配置，保留作复现/重启入口）。 |
-| `scripts/` | `scripts/README.md` | **已交付**：`phase4_open_boundary_reflection.py`（反射测量，特征分解反射计）、`phase4_volume_injection_probe.py`（终态判决实验探针）。待主线解锁：`phase4_control_surface_smoke.py` 等。 |
-| `verification/` | `verification/README.md` | **已交付**：`test_phase4_open_boundary.py`（6 绿）。待主线解锁：`test_phase4_control_surface.py` 等。 |
+| `core/` | `core/README.md` | **P4-D3 core 步**：`unit_mapping.py` + `collision_smrt.py` 增 `acoustic_simplified_collision`（默认 off，on 时 `collide_fg` 跳过 heat-flux 正则化；逐位等价 `heat_flux_factor==0`；冻结配置逐位不变）。 |
+| `boundary/` | `boundary/README.md` | **已交付**：`open_cbc.py`（全条带特征阻抗开顶边界终态 + `compose_boundary_callbacks`；12 变体否证留档，P4-1）。`open_sponge.py`（**D3-2 生产 sponge**：顶部扰动衰减吸收层，80 行/σ_max=0.5 达 `\|R\|=0.0004`，静止注入 7e-17）。 |
+| `farfield/` | 待主线解锁创建 | 待 D3-4 / P4-3/P4-4：`control_surface.py`、`kirchhoff_2d.py`、`README.md`。 |
+| `configs/` | `configs/README.md` | 现有：`phase4_m4_smoke.yaml`（P4-0 meta 合同）、`phase4_open_top_reflection_10k.yaml`（P4-1，保留作复现/重启入口）、`phase4_acoustic_coarse_dx334.yaml`（**P4-D3 粗声学域，简化碰撞 core 步**）。 |
+| `scripts/` | `scripts/README.md` | **已交付**：`phase4_open_boundary_reflection.py`（P4-1 反射测量）、`phase4_volume_injection_probe.py`（P4-1 判决探针）、`phase4_d1_dispersion_locality_probe.py`（D1 判死）、`phase4_d3_coarse_acoustic_probe.py`（D3-1 介质门）、`phase4_d3_acoustic_collision_probe.py`（D3 简化碰撞 core 步）、`phase4_d3_reflection_probe.py`（D3-2 脉冲反射计）。 |
+| `verification/` | `verification/README.md` | **已交付**：`test_phase4_open_boundary.py`（6 绿）、`test_phase4_d3_acoustic.py`（G-D3-1，3 绿）、`test_phase4_d3_acoustic_collision.py`（简化碰撞 core 步，8 绿）、`test_phase4_d3_reflection.py`（G-D3-2，3 绿）。 |
 
 ## 3. 阶段文档与报告
 
@@ -30,7 +31,8 @@
 | `docs/Phase_4/Phase4_STATUS.md` | 阶段状态 | 当前 |
 | `docs/Phase_4/Phase4_Output_Files_Guide.md` | 本导览 | 当前 |
 | `docs/Phase_4/README.md` | 目录索引 | 当前 |
-| `docs/Phase_4/M4/P4_1_Open_Boundary_Diagnostic_Report.md` | **P4-1 终态诊断报告（合同 §13.2 交付物）**：体积注入底板机理链、12 变体否证、run 记录、路线选项 | 当前（2026-07-04，待路线决策） |
+| `docs/Phase_4/M4/P4_1_Open_Boundary_Diagnostic_Report.md` | **P4-1 终态诊断报告（合同 §13.2 交付物）**：体积注入底板机理链、12 变体否证、run 记录、路线选项 | 历史（2026-07-04，P4-1 单网格终态） |
+| `docs/Phase_4/M4/P4_D3_Multidomain_Acoustic_Project.md` | **P4-D3 多域声学外推立项**（当前路线）：授权边界、架构、G-D3-1..4 门、§7 D3-2 诊断、§8 简化碰撞 core 步（+ 对 §7 归因的诚实修正）、**§9 D3-2 开边界反射门认证（G-D3-2 PASS，非退化）** | 当前（2026-07-08，D3-2 PASS，进 D3-3） |
 | `docs/Phase_4/M4/M4_Verification_Report.md` | M4 验证报告 | 阻塞（待路线决策与主线解锁） |
 | `docs/Phase_4/M4/M4_Run_Summaries.md` | 生成型运行汇总 | 阻塞 |
 

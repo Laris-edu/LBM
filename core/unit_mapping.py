@@ -115,6 +115,14 @@ class CollisionScales:
     seam_aware_bottom_rows: int = 0
     seam_aware_top_rows: int = 0
     seam_aware_taper_rows: int = 0
+    # P4-D3 acoustic simplified collision (docs/Phase_4/M4/P4_D3_Multidomain_Acoustic_Project.md
+    # sections 1/7): the coarse acoustic subdomain carries sound only and does NOT resolve heat,
+    # so it disables the fragile heat-flux min-norm regularization (its Gram goes singular / the
+    # field destabilizes at large tuned viscosity, coarse grids, or under reflected-energy
+    # accumulation). g then relaxes fully to g_eq (energy still conserved per cell by the final
+    # delta_G correction). Default False keeps every frozen Phase_2/3 config bit-identical; only
+    # Phase_4 acoustic-domain derived configs enable it.
+    acoustic_simplified_collision: bool = False
     regularized_shear_xy_factor: float = 1.0
     regularized_shear_normal_factor: float = 1.0
     regularized_shear_xy_dispersion_target: float = 1.0
@@ -235,6 +243,7 @@ class UnitMapping:
             "seam_aware_bottom_rows": self.collision.seam_aware_bottom_rows,
             "seam_aware_top_rows": self.collision.seam_aware_top_rows,
             "seam_aware_taper_rows": self.collision.seam_aware_taper_rows,
+            "acoustic_simplified_collision": self.collision.acoustic_simplified_collision,
             "dispersion_correction_low_laplacian": self.collision.dispersion_correction_low_laplacian,
             "dispersion_correction_high_laplacian": self.collision.dispersion_correction_high_laplacian,
             "regularized_shear_xy_factor": self.collision.regularized_shear_xy_factor,
@@ -491,6 +500,7 @@ def _collision_from_config(config: dict[str, Any] | None) -> CollisionScales:
         seam_aware_bottom_rows=int(collision.get("seam_aware_bottom_rows", 0)),
         seam_aware_top_rows=int(collision.get("seam_aware_top_rows", 0)),
         seam_aware_taper_rows=int(collision.get("seam_aware_taper_rows", 0)),
+        acoustic_simplified_collision=bool(collision.get("acoustic_simplified_collision", False)),
         regularized_shear_xy_factor=float(collision.get("regularized_shear_xy_factor", 1.0)),
         regularized_shear_normal_factor=float(collision.get("regularized_shear_normal_factor", 1.0)),
         regularized_shear_xy_dispersion_target=float(

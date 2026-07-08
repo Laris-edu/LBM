@@ -1,6 +1,6 @@
 # LBM 项目上下文入口
 
-**最后更新**：2026-07-05
+**最后更新**：2026-07-08
 **用途**：新会话第一份必读文档，用于快速恢复项目阶段、读取路线、不可误判规则和下一步优先级。
 **定位**：全项目生命周期唯一上下文入口，不是某个阶段的专属文档。
 **维护原则**：只保留压缩摘要和入口索引；阶段流水、run 细节、完整数值和推导证据由对应 `PhaseN_STATUS.md`、M 报告和专项诊断报告维护，本文不复制。
@@ -22,15 +22,15 @@
 
 ```text
 请先阅读 docs/PROJECT_CONTEXT.md 和 docs/Phase_4/Phase4_STATUS.md，
-再读 docs/Phase_4/M4/P4_1_Open_Boundary_Diagnostic_Report.md。
-P4-1 开顶边界已 FAILED（体积注入底板，合同 §13.2 降级路径），
-Phase_4 主线阻塞中，待用户在报告 §6 的路线 (a)/(b)/(c) 间决策后再行动。
+再读 docs/Phase_4/M4/P4_D3_Multidomain_Acoustic_Project.md（多域声学外推立项，
+D3-1 声学介质门过、D3-2 认证未闭合、§8 简化碰撞 core 步已执行）。
+P4-1 单网格开边界已 FAILED（体积注入底板，合同 §13.2），现走 D3 多域绕行路线。
 回答和文档均使用中文。
 ```
 
 ## 2. 当前阶段与状态
 
-**当前阶段：Phase_4 P4-1 终态 FAILED（2026-07-04，合同 §13.2 降级路径），主线阻塞待路线决策。Phase_3 维护态**（M3 收尾决策方案 (a) APPROVED，`docs/Phase_3/M3/M3_Closure_Decision.md`）。P4-1 结论：开顶边界实现（全条带特征阻抗，种子稳定）与测量（特征分解反射计）均交付，但 10 kHz `|R|<0.05` 在冻结栈上不可达——根因是**体积注入底板**（全局周期 FFT dispersion 修正 × 边界行必然制造的 y-缝，~1.1e-4/步离域波注入，有界柱稳态 `|R|≈0.2–0.3`，与顶边界实现无关；无缝平滑场完全干净）；12 个边界变体否证与判决实验见 `docs/Phase_4/M4/P4_1_Open_Boundary_Diagnostic_Report.md`（可复现探针 `scripts/phase4_volume_injection_probe.py`）。路线三选一待用户决策（报告 §6）：(a) 接受降级、论文收缩为近场方法学；(b) 触发停放项重启流程做修正栈缝感知化（唯一通向过门的路）；(c) 有界接受底板（不可行）。Phase_4 唯一主线：解除 y 向周期（开顶边界，门槛 `|R|<0.05`）→ 控制面采集 → 2D Kirchhoff 频域外推 → 远场 `p_hat`/SPL（M4 端到端幅值门 `<10%`，报告携带 M3 ±5.4% 误差带）；不做频扫/参数景观（Phase_5）。权威合同 `docs/Phase_4/phase4_instruction_v1.0.md`。M3 终态（Phase_3 范围）：相位门三级 PASS、幅值边界（近壁读出/重构 (tau,k) 点标定极限）——**scoped 接受、不追认 clear PASS**。 历程：P3-5 定位根因（equilibrium-clamp 热壁 BC，Level C `T_s_hat +61%`）→ P3-5+ Grad 正则化壁面修复（`boundary/wall_thermal_grad.py` 经 `coupling/conjugate.py` 接入）→ P3-6 四项收尾全部完成：④ physics-core digest `26be2fde…` run_id 无关复现（补合同 §9 HDF5 后不变）；③ HDF5 全 metadata（`timeseries.h5`）+ `phase3_m3_summarize.py` + Level A 动态导纳提交脚本（canonical `Y −5.32%/+2.20°`、digest `02cea11e…` 复现）；② **首个 Level B 动态频响**（矩通量积分伺服）`Z +5.47%/−2.24°`（relax 收敛一致；FD 梯度控制器被数据否决——矩通量超发 ~2.5×）；① finer-dx 三重否证（传导 q 导出比是 (tau,k) 窄带点标定 `0.505@k/2`；dx1p3 特征 k 重标可行但 **Grad 壁重构在 dx1p3 tau 失稳**）。**三级自洽**：A `Y −5.32%/+2.20°`、B `Z +5.47%/−2.24°`、C `T_s_hat +5.38%/−1.90°`——同一近壁物理、同一幅值边界；`q_g_hat −0.11%`（能量守恒锚）。合同 §15 七项全覆盖；Phase_3 测试 39 绿。清晰 `<5%` 需 k 鲁棒导出或 tau 鲁棒壁重构（研究级，超出 Phase_3）；**导出窗机理已闭环（2026-07-03）**——raw 矩由平衡-streaming 伪影主导（∝k²、α 无关）、k 鲁棒导出无廉价工程解、唯一真路=碰撞/闭合层建模 neq k² 通道，「特征钉标定 k」的 scoped 运行模式由此获得机理正当性（`docs/Phase_2/closure/Phase2_Conductive_Export_K_Window.md`）。详见 `docs/Phase_3/M3/M3_Verification_Report.md` §9/§10 与 `Phase3_STATUS.md` §1/§3/§5。P3-1/P3-2 只声明壁面 smoke、P3-3 只声明 ODE fixtures、P3-4 只声明 short smoke，均不等于动态门。
+**当前阶段：Phase_4 走 P4-D3 多域声学外推路线（P4-1 单网格开边界终态 FAILED→架构级绕行）；D3 三连过——D3-1 声学介质门 PASS、简化碰撞 core 步 DONE（§4/立项 §8）、D3-2 开边界反射门 PASS（G-D3-2 非退化，2026-07-08，立项 §9）；下一步 D3-3 界面耦合（最大风险）。Phase_3 维护态**（M3 收尾决策方案 (a) APPROVED，`docs/Phase_3/M3/M3_Closure_Decision.md`）。P4-1 结论：开顶边界实现（全条带特征阻抗，种子稳定）与测量（特征分解反射计）均交付，但 10 kHz `|R|<0.05` 在冻结栈上不可达——根因是**体积注入底板**（全局周期 FFT dispersion 修正 × 边界行必然制造的 y-缝，~1.1e-4/步离域波注入，有界柱稳态 `|R|≈0.2–0.3`，与顶边界实现无关；无缝平滑场完全干净）；12 个边界变体否证与判决实验见 `docs/Phase_4/M4/P4_1_Open_Boundary_Diagnostic_Report.md`（可复现探针 `scripts/phase4_volume_injection_probe.py`）。路线三选一待用户决策（报告 §6）：(a) 接受降级、论文收缩为近场方法学；(b) 触发停放项重启流程做修正栈缝感知化（唯一通向过门的路）；(c) 有界接受底板（不可行）。Phase_4 唯一主线：解除 y 向周期（开顶边界，门槛 `|R|<0.05`）→ 控制面采集 → 2D Kirchhoff 频域外推 → 远场 `p_hat`/SPL（M4 端到端幅值门 `<10%`，报告携带 M3 ±5.4% 误差带）；不做频扫/参数景观（Phase_5）。权威合同 `docs/Phase_4/phase4_instruction_v1.0.md`。M3 终态（Phase_3 范围）：相位门三级 PASS、幅值边界（近壁读出/重构 (tau,k) 点标定极限）——**scoped 接受、不追认 clear PASS**。 历程：P3-5 定位根因（equilibrium-clamp 热壁 BC，Level C `T_s_hat +61%`）→ P3-5+ Grad 正则化壁面修复（`boundary/wall_thermal_grad.py` 经 `coupling/conjugate.py` 接入）→ P3-6 四项收尾全部完成：④ physics-core digest `26be2fde…` run_id 无关复现（补合同 §9 HDF5 后不变）；③ HDF5 全 metadata（`timeseries.h5`）+ `phase3_m3_summarize.py` + Level A 动态导纳提交脚本（canonical `Y −5.32%/+2.20°`、digest `02cea11e…` 复现）；② **首个 Level B 动态频响**（矩通量积分伺服）`Z +5.47%/−2.24°`（relax 收敛一致；FD 梯度控制器被数据否决——矩通量超发 ~2.5×）；① finer-dx 三重否证（传导 q 导出比是 (tau,k) 窄带点标定 `0.505@k/2`；dx1p3 特征 k 重标可行但 **Grad 壁重构在 dx1p3 tau 失稳**）。**三级自洽**：A `Y −5.32%/+2.20°`、B `Z +5.47%/−2.24°`、C `T_s_hat +5.38%/−1.90°`——同一近壁物理、同一幅值边界；`q_g_hat −0.11%`（能量守恒锚）。合同 §15 七项全覆盖；Phase_3 测试 39 绿。清晰 `<5%` 需 k 鲁棒导出或 tau 鲁棒壁重构（研究级，超出 Phase_3）；**导出窗机理已闭环（2026-07-03）**——raw 矩由平衡-streaming 伪影主导（∝k²、α 无关）、k 鲁棒导出无廉价工程解、唯一真路=碰撞/闭合层建模 neq k² 通道，「特征钉标定 k」的 scoped 运行模式由此获得机理正当性（`docs/Phase_2/closure/Phase2_Conductive_Export_K_Window.md`）。详见 `docs/Phase_3/M3/M3_Verification_Report.md` §9/§10 与 `Phase3_STATUS.md` §1/§3/§5。P3-1/P3-2 只声明壁面 smoke、P3-3 只声明 ODE fixtures、P3-4 只声明 short smoke，均不等于动态门。
 
 | 层级 | 状态 |
 |---|---|
@@ -46,7 +46,8 @@ Phase_4 主线阻塞中，待用户在报告 §6 的路线 (a)/(b)/(c) 间决策
 | M3 gate | `相位达标（三级）；幅值边界（(tau,k) 点标定极限）`（清晰 <5% 需研究级路线，已停放） |
 | M3 收尾决策 | `方案 (a) SCOPED_ACCEPTED`（2026-07-03 APPROVED；Phase_3 维护态、Phase_4 授权启动，边界见 `M3_Closure_Decision.md` §3） |
 | Phase_4 P4-0 contract freeze | `FROZEN`（2026-07-03） |
-| Phase_4 open boundary（P4-1，硬前置） | **`FAILED`（2026-07-04，体积注入底板；实现稳定、门不可达；§13.2 诊断报告已交付；下游主线阻塞，路线待决策）** |
+| Phase_4 open boundary（P4-1，单网格） | **`FAILED`（2026-07-04，体积注入底板；实现稳定、门不可达；§13.2 诊断报告已交付）→ 转 P4-D3 多域绕行** |
+| P4-D3 多域声学外推 | D3-1 声学介质门 `PASS`；简化碰撞 core 步 `DONE`（§8）；**D3-2 开边界反射门 `PASS`（G-D3-2，非退化，2026-07-08，135 绿）**；D3-3 界面耦合 / D3-4 端到端待建 |
 | M4 gate | `NOT_CLAIMED` |
 | Final production claim | `NOT_CLAIMED` |
 
@@ -124,6 +125,8 @@ Phase_4 主线阻塞中，待用户在报告 §6 的路线 (a)/(b)/(c) 间决策
 - 不把 P4-1 FAILED 的体积注入底板误读为开边界实现缺陷或 M2/M3 数值不可信：底板来自「全局周期 FFT 修正 × 边界缝」组合（无缝平滑场干净 ≤1e-4；Phase_3 全部 QoI 是近壁热物理、不依赖行波长程传输保真度，39 测试绿）；也不得把 P4-1 FAILED 写成 Phase_4 已终止——路线 (a)/(b)/(c) 待决策。
 - 不在亚波长域用纯压力两波 LS 分解声明反射系数（病态，刚性盖对照读出非物理 `\|R\|=1.23`）；P4-1 权威观测量是特征分解反射计（`Â_±=(p̂±Z₀v̂)/2` 逐行拆分）；紧凑诊断 rig（短窗、小域）读数只可用于检测-吸收对比、不可读门。
 - 不把 `boundary/open_cbc.py` 的种子稳定或钳制对照一致写成 `\|R\|` 过门；也不复活其 docstring 已否证的 12 个变体（含一切部分链接手术与采样式无 EMA 变体）。
+- 不把 P4-D3 简化碰撞 core 步写成"反射控制稳定性修法"：2×2 消融证明反射能量累积的稳定性由**强局部 filter** 决定、非 heat-flux 去除（§7"heat-flux gram 奇异崩"是失稳症状位置非根因）；开关真实价值是更纯声学域 + 除 heat-flux gram 混淆。也不把简化碰撞声学域的声速写成达标：关 heat-flux 使声速物理性 −5%（filter 无辜），是标定项、归 D3-4 端到端幅值预算；其 backscatter/稳定过门、声速不过门。`acoustic_simplified_collision` 默认 off、仅声学域派生配置启用，冻结配置逐位不变。
+- 不把 D3-2 反射门 `PASS` 越界写成通用无反射边界或单网格开边界可行：G-D3-2 是**声学域（无 dispersion、粗网格、简化碰撞）+ 80 行扰动衰减 sponge** 的法向出射 `|R|<0.05`，非退化由刚性盖对照（`|R|=1.26`，rig 看得见反射）+ thickness 单调证；不推翻 P4-1 单网格注入底板结论（D3 是绕行、非修复）。刚性盖 `|R|>1` 是 bounce-back 过反射的**非退化对照**、不得当作标定 `|R|=1` 参考；脉冲带宽 `|R|` 只因声学域无 dispersion 才代表 10 kHz。x 周期只认证法向出射，不声明有限宽 directivity。
 - 不在 y 向周期域上计算 Kirchhoff 远场并声明有效；x 向周期时不得声明有限宽条带 directivity 认证。
 - 不把 Phase_1 近场 `p_hat` 当作远场 SPL 真值；Kirchhoff Green convention/prefactor 只能由 manufactured fixture 锚定，不得用端到端热声结果反调。
 - Phase_4 不得为过远场门更换 `dx/tau`、热流导出 factor 或 Grad 壁重构（触发即回 M3 决策 §4 停放项重启流程）。
@@ -148,7 +151,9 @@ Phase_4 主线阻塞中，待用户在报告 §6 的路线 (a)/(b)/(c) 间决策
 
 ## 4. 当前关键决策
 
-- **P4-D3 立项（2026-07-05，用户批准，执行中）**：多分辨率双域声学外推——不动 M3 热区,外接独立粗网格声学域(无 dispersion→无注入底板)+ 界面耦合。立项文档 `docs/Phase_4/M4/P4_D3_Multidomain_Acoustic_Project.md`(D3-0 冻结)。**D3-1 声学介质门通过**(`verification/test_phase4_d3_acoustic.py` 3 绿)。**D3-2 执行中：稳定已解决、认证未闭合**（立项 §7）——① **稳定攻克**：y-Neumann 局部 filter 0.03×6（种子 1e-8 零增长、声波存活 89%），filter 可局部化**避开 D1 墙**；② 开边界 sponge（扰动衰减，`boundary/open_sponge.py`）**|R|=0.0015<门 有希望但认证未闭合**——非退化测试（对 sponge 强度不敏感）无法区分"sponge 极好"vs"filter 耗散反射"，**反自欺机制拦下一次可能误报**，决定性刚性盖对照撞 heat-flux gram 崩；③ 瓶颈=heat-flux 正则化脆弱，下一步=**声学域简化碰撞**（改 `collide_fg` 加声学开关默认 off，立项 §1 预见）一次解锁。阶段 D3-1(过)→D3-2(认证未闭合,做简化碰撞)→D3-3(界面耦合,最大风险)→D3-4(端到端)。回滚:任一门失败无廉价修复→落 (a)。
+- **P4-D3 D3-2 开边界反射门通过（2026-07-08，G-D3-2，非退化）**：core 步（下条）解锁刚性盖对照后，用**脉冲特征反射计**（`|R|=peak|w⁻|/peak|w⁺|` 探针行，良态特征分解、非病态纯压力 LS）在同一 rig 跑三组对照闭合认证。**生产 80 行扰动衰减 sponge（`boundary/open_sponge.py`）`|R|=0.0004≪门 0.05`**；非退化三判据全过：刚性盖对照 `|R|=1.26`（rig 看得见反射→§7"filter 在到探针前耗散反射波"退化顾虑**否证**）、thickness 单调响应 `0.066→0.013→0.0025→0.0004`（rig 读吸收强度、非固定底板→§7"对 sponge 强度不敏感"红旗证伪）、周期底噪 0.0075。交付 `scripts/phase4_d3_reflection_probe.py` + `verification/test_phase4_d3_reflection.py`（3 绿，全套 135 绿）。口径：脉冲带宽 `|R|` 代表 10 kHz（声学域无 dispersion→频率无关）；刚性盖 `|R|>1` 是 bounce-back 过反射的非退化对照、非标定参考；法向出射、x 周期、粗声学域不认证热物理。**下一步 D3-3 界面耦合（最大风险）**。详见立项 §9。
+- **P4-D3 立项（2026-07-05，用户批准，执行中）**：多分辨率双域声学外推——不动 M3 热区,外接独立粗网格声学域(无 dispersion→无注入底板)+ 界面耦合。立项文档 `docs/Phase_4/M4/P4_D3_Multidomain_Acoustic_Project.md`(D3-0 冻结)。**D3-1 声学介质门通过**(`verification/test_phase4_d3_acoustic.py` 3 绿)。**D3-2 反射门 PASS**（立项 §9，非退化）。阶段 D3-1(过)→core 步(§8)→D3-2(反射门 PASS)→D3-3(界面耦合,最大风险)→D3-4(端到端)。回滚:任一门失败无廉价修复→落 (a)。
+- **P4-D3 简化碰撞 core 步执行完成（2026-07-08，含对立项 §7 归因的诚实修正）**：core 开关 `CollisionScales.acoustic_simplified_collision`（默认 off；`core/unit_mapping.py`+`core/collision_smrt.py`，on 时 `collide_fg` 跳过 heat-flux 正则化、逐位等价 `regularized_heat_flux_factor==0`）+ 声学域配置 `configs/phase4_acoustic_coarse_dx334.yaml`（简化碰撞 + dispersion/acoustic_phase off + 强 filter 0.03×6）+ 探针 `scripts/phase4_d3_acoustic_collision_probe.py` + 测试 `verification/test_phase4_d3_acoustic_collision.py`（8 绿，全套 132 绿，冻结配置逐位不变、digest 安全）。**诚实修正**：反射能量累积的稳定性由**强局部 filter** 决定、**非 heat-flux 去除**（2×2 消融：strong→两碰撞都存活、weak→都崩、simple+weak 崩得最快；§7"heat-flux gram 奇异崩"是失稳症状位置非根因）；关 heat-flux 使声速物理性 **−5%**（filter 无辜），声速标定项归 D3-4 端到端幅值预算（与无量纲反射门解耦）；core 步价值=更纯声学域（不带 dx2p6 tau32 标定 heat-flux 闭合）+ 为 D3-2 反射认证除 heat-flux gram 混淆，**本身非稳定性修法**。详见立项文档 §8。
 - **P4-1b D1/D3 判决（2026-07-05）**：**D1（局部化修正）判死**（dispersion 是热门必需 + 近阶跃 plateau 不可 FIR 局部化）；**D3 核心正面**（粗网格无-dispersion 声学回散射 0.002，注入底板消失）→ 立项 D3（上条）。探针 `scripts/phase4_d1_dispersion_locality_probe.py`/`phase4_d3_coarse_acoustic_probe.py`，地图 `P4_1b_Seam_Detrend_Project.md` §8/§9。
 - **P4-1b 路线 (b)→(b′) 五算子设计判负（2026-07-04/05）**：wrap-去趋势（×0.66 不足）→ 窗化 W1/W2（密闭箱 Level A NaN）→ 替换 S1/S2（wrap 通道/大 J 锯齿）。**可行性约束对**：「开域注入≈0」∧「密闭周期箱注入≤冻结水平」。seam_aware 代码保留（默认全零=冻结逐位、121 测试绿）。
 - **P4-1 终态 FAILED（2026-07-04，合同 §13.2 降级路径）**：开顶边界四交付物 + 判决探针 + 诊断报告全部交付；门失败根因=体积注入底板（dispersion 修正 × 边界缝，机理与 `Phase2_Conductive_Export_K_Window.md` 的平衡-streaming 伪影同族）；测量方法学确立特征分解反射计。经用户决策转入 P4-1b（上条）。
@@ -169,20 +174,23 @@ Phase_4 主线阻塞中，待用户在报告 §6 的路线 (a)/(b)/(c) 间决策
 - **array layout 冻结**：`c=(Q,D)`、`w=(Q,)`、`f/g=(...,Q)`、`u/q_lu=(...,D)`；周期验证用 pull streaming，速度轴始终最后一维。
 - **D2Q21 边界**：保留 `central_moment_closure=second_order` 作低模态 C2+ baseline，`fourth_order` 仅 diagnostic。
 
-## 5. 下一步优先级（P4-1 FAILED 后，2026-07-04）
+## 5. 下一步优先级（P4-D3 D3-2 反射门通过后，2026-07-08）
 
-1. **用户路线决策（阻塞项）**：在 `P4_1_Open_Boundary_Diagnostic_Report.md` §6 的 (a) 接受降级（论文收缩为近场方法学）/(b) 立项修正栈缝感知化（触发 M3 决策 §4 停放项重启流程；与 k 鲁棒导出停放项同源可合并）之间决策；(c) 有界接受底板不可行。决策前不进 P4-2…P4-6 主线。
-2. **决策后**：(a) 路线→更新路线图/合同状态、Phase_4 收尾归档；(b) 路线→立项文档 + dispersion 修正缝感知设计（y 向去趋势/加窗或模式表带限）+ Phase_2 门全量重验计划。
-3. **停放项（条件重启，见 `M3_Closure_Decision.md` §4）**：k 鲁棒传导导出、tau 鲁棒 Grad 壁重构、Level A/B/C 清晰 `<5%` 幅值门——(b) 路线立项时与本次发现合并评估。
-4. **延后项**：频扫/功率扫/参数景观（Phase_5）、非紧致/高 k/`Pr>1`、RR high-mode 输运重标、RR 热 dispersion 泛化。
+1. **D3-3 界面耦合（当前主线，最大风险，D3 死活判决点）**：细热区（dx2p6）↔粗声域（dx334）界面 `f` 的 rescale（tau 相关 neq）+ 宏观匹配 + 通量守恒（`<1%`）+ 界面伪反射 `|R_iface|<0.05`。**最小界面 fixture 先判死活**（不必等完整栈）；不可压门内→D3 悬，落 (a)。
+2. **D3-4 端到端**：M3 源→界面→声学域→D3-2 开边界→控制面/Kirchhoff→远场；**含声学域声速 re-tune**（补回 core 步 −5%，声学域独立 tuned 参数）；M4 幅值 `<10%`、携带 ±5.4% 误差带。
+3. **回滚/收尾 (a)**：任一 G-D3 门失败无廉价修复 → 落合同 §13.2 降级，D1死/b′死/D3 部分正面合成方法学地图。
+4. **停放项（条件重启，见 `M3_Closure_Decision.md` §4）**：k 鲁棒传导导出、tau 鲁棒 Grad 壁重构、Level A/B/C 清晰 `<5%` 幅值门。
+5. **延后项**：频扫/功率扫/参数景观（Phase_5）、非紧致/高 k/`Pr>1`、RR high-mode 输运重标、RR 热 dispersion 泛化。
 
 ## 6. 详细事实入口
 
 ### Phase_4
 
 - Phase_4 当前状态：`docs/Phase_4/Phase4_STATUS.md`
+- **P4-D3 多域声学外推立项（当前路线，D3-1 过 / core 步 §8 / D3-2 认证未闭合）**：`docs/Phase_4/M4/P4_D3_Multidomain_Acoustic_Project.md`
+- P4-D3 声学域配置 / 探针 / 测试：`configs/phase4_acoustic_coarse_dx334.yaml`、`scripts/phase4_d3_coarse_acoustic_probe.py`（D3-1 介质门）、`scripts/phase4_d3_acoustic_collision_probe.py`（简化碰撞 core 步）、`scripts/phase4_d3_reflection_probe.py`（D3-2 反射门）、`boundary/open_sponge.py`（生产 sponge）、`verification/test_phase4_d3_acoustic.py`、`verification/test_phase4_d3_acoustic_collision.py`、`verification/test_phase4_d3_reflection.py`
 - **P4-1 开边界诊断报告（终态 FAILED、机理链、路线选项）**：`docs/Phase_4/M4/P4_1_Open_Boundary_Diagnostic_Report.md`
-- P4-1 判决实验可复现探针：`scripts/phase4_volume_injection_probe.py`（体积注入底板）、`scripts/phase4_d1_dispersion_locality_probe.py`（D1 局部化判死）、`scripts/phase4_d3_coarse_acoustic_probe.py`（D3 粗网格声学正面）
+- P4-1 判决实验可复现探针：`scripts/phase4_volume_injection_probe.py`（体积注入底板）、`scripts/phase4_d1_dispersion_locality_probe.py`（D1 局部化判死）
 - Phase_4 冻结合同：`docs/Phase_4/phase4_instruction_v1.0.md`
 - Phase_4 输出导览：`docs/Phase_4/Phase4_Output_Files_Guide.md`
 - Phase_4 文档目录索引：`docs/Phase_4/README.md`
