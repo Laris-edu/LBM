@@ -5,7 +5,8 @@
 # Phase_3 Level C gas config gas_air_10k_d2q37_levelc_dx2p6.yaml by:
 #   (1) coarsening dx 2.6118 um -> 334 um (10 kHz air wavelength 34.7 mm -> lambda/dx ~ 104,
 #       domain height 512*dx ~ 5 wavelengths), dt scaled by the frozen sound-speed ratio
-#       (dt/dx = 1.95881e-9/2.61175e-6) so c_lu and theta_ref_lu are UNCHANGED;
+#       (dt/dx = 1.95881e-9/2.61175e-6); c_lu/theta_ref_lu then shift slightly via the (iv)
+#       c0 calibration knob below (they are acoustic-medium design values, not M3 keys);
 #   (2) using a tuned artificial acoustic viscosity nu0/alpha0 x100 (Pr preserved) so tau21 ~ 0.573
 #       -- sound is inviscid at leading order, the tuned tau only sets numerical dissipation;
 #   (3) SIMPLIFIED COLLISION (the D3 core step): dispersion correction OFF, acoustic-phase
@@ -27,7 +28,13 @@ physical:
   T0_K: 300.0
   p0_Pa: 101325.0
   rho0_kg_m3: 1.177
-  c0_m_s: 347.0
+  # (iv) sound-speed calibration (project section 12.3): the simplified-collision medium
+  # propagates 10 kHz at 1.020836 x its design speed (monochromatic phase-slope measurement,
+  # G1-linear so a stable medium constant). c0_m_s here is an ARTIFICIAL-MEDIUM KNOB (like
+  # nu0 x100), set to 347.0/1.020836 so the REALIZED SI phase velocity lands on air c0=347.0
+  # (P2-6 wording <2%, certified at the single authorized 10 kHz point). Scripts must use
+  # TRUE air constants (347.0 etc.) for source physics / SI certification, never this knob.
+  c0_m_s: 339.9174829695851
   gamma: 1.4
   cp_J_kgK: 1005.0
   kg_W_mK: 0.0263
@@ -41,7 +48,7 @@ lattice:
   D: 2
   S: 3
   dx_m: 334.0e-6              # coarse: 10 kHz lambda 34.7 mm -> lambda/dx ~ 104
-  dt_s: 2.5049968029099264e-07 # dx * (1.95881e-9/2.61175e-6): keeps c_lu and theta_ref_lu unchanged
+  dt_s: 2.5049968029099264e-07 # dx * (1.95881e-9/2.61175e-6); c_lu follows the calibrated c0 knob above
   theta_q_lu: 0.6979533220196852
   theta_ref_policy: physical_sound_speed
   theta_transport_policy: theta_ref_lu
