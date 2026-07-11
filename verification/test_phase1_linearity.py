@@ -18,11 +18,10 @@ def test_level_C_linear_power_scaling():
         for P in powers
     ]
 
-    Ts_ratios = [r.T_s_hat / P for r, P in zip(results, powers)]
-    q_ratios = [r.q_g_hat / P for r, P in zip(results, powers)]
-    p_ratios = [r.p_at(8.0) / P for r, P in zip(results, powers)]
+    Ts_ratios = [r.T_s_hat / P for r, P in zip(results, powers, strict=True)]
+    q_ratios = [r.q_g_hat / P for r, P in zip(results, powers, strict=True)]
+    p_ratios = [r.p_at(8.0) / P for r, P in zip(results, powers, strict=True)]
 
     assert _relative_variation(Ts_ratios) < 5.0e-3
     assert _relative_variation(q_ratios) < 5.0e-3
     assert _relative_variation(p_ratios) < 5.0e-3
-

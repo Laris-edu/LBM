@@ -76,6 +76,12 @@ def _cmp(a: complex, b: complex) -> dict[str, float]:
     }
 
 
+def m3_exit_code(m3_gate: str) -> int:
+    """Return a machine-readable CLI result for the scoped M3 verdict."""
+
+    return 0 if m3_gate in {"PASSED", "PHASE_PASS_AMPLITUDE_BOUNDARY"} else 1
+
+
 def run_m3_verification(*, config_path: Path, output_root: Path) -> dict[str, Any]:
     cfg = load_config(config_path)
     gas_config, gas_config_path = _solver_config(cfg)
@@ -136,9 +142,18 @@ def run_m3_verification(*, config_path: Path, output_root: Path) -> dict[str, An
     amp_pass = bool(abs(ts_cmp["amp_rel_err"]) < amp_gate)
     finite = bool(result.finite)
     audit_pass = bool(result.energy_audit.passed)
-    if phase_pass and amp_pass and finite and audit_pass:
+    wall_error_max = float(np.max(np.abs(result.wall_temperature_error_K)))
+    wall_error_gate = float(gates.get("wall_temperature_error_K", 1.0e-2))
+    wall_temperature_pass = bool(wall_error_max < wall_error_gate)
+    if phase_pass and amp_pass and finite and audit_pass and wall_temperature_pass:
         m3_gate = "PASSED"
-    elif phase_pass and finite and audit_pass and abs(ts_cmp["amp_rel_err"]) < 0.10:
+    elif (
+        phase_pass
+        and finite
+        and audit_pass
+        and wall_temperature_pass
+        and abs(ts_cmp["amp_rel_err"]) < 0.10
+    ):
         m3_gate = "PHASE_PASS_AMPLITUDE_BOUNDARY"
     else:
         m3_gate = "NOT_PASSED"
@@ -148,7 +163,7 @@ def run_m3_verification(*, config_path: Path, output_root: Path) -> dict[str, An
     out_dir.mkdir(parents=True, exist_ok=True)
     payload: dict[str, Any] = {
         "run_id": run_id,
-        "status": "PASSED" if (phase_pass and finite and audit_pass) else "FAILED",
+        "status": "PASSED" if m3_exit_code(m3_gate) == 0 else "FAILED",
         "level": "C",
         "m3_gate": m3_gate,
         "scope": "P3-5+_M3_FULL_PERIOD_GRAD_WALL_DX2P6",
@@ -184,11 +199,22 @@ def run_m3_verification(*, config_path: Path, output_root: Path) -> dict[str, An
             "max_relative": result.energy_audit.max_relative_residual,
             "passed": audit_pass,
         },
-        "gates": {"T_s_hat_amp<5%": amp_pass, "T_s_hat_phase<5deg": phase_pass},
+        "wall_temperature": {
+            "max_error_K": wall_error_max,
+            "error_gate_K": wall_error_gate,
+            "passed": wall_temperature_pass,
+            "recorded_quantity": "recovered mean wall temperature",
+        },
+        "gates": {
+            "T_s_hat_amp<5%": amp_pass,
+            "T_s_hat_phase<5deg": phase_pass,
+            "wall_temperature_error": wall_temperature_pass,
+        },
         "stability_flags": {
             "no_nan": finite,
             "no_clipping_or_floor_used": bool(result.no_clipping_or_floor_used),
             "energy_audit_passed": audit_pass,
+            "wall_temperature_error_passed": wall_temperature_pass,
         },
         "reference_source": {
             "gas_admittance": "Y_g = k_g sqrt(i Omega / alpha_g) (analytic half-space)",
@@ -313,7 +339,7 @@ def _render_report(p: dict[str, Any]) -> str:
     ])
 
 
-def main() -> None:
+def main() -> int:
     parser = argparse.ArgumentParser(description="Phase_3 P3-5+ M3 verification (Grad wall, full period).")
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     parser.add_argument("--output-root", type=Path, default=DEFAULT_OUTPUT_ROOT)
@@ -324,7 +350,8 @@ def main() -> None:
         f"phase={payload['T_s_hat']['phase_deg_err']:+.2f}deg; "
         f"wrote {args.output_root / payload['run_id']}; digest={payload['summary_digest']}"
     )
+    return m3_exit_code(str(payload["m3_gate"]))
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

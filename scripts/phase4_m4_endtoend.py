@@ -39,7 +39,6 @@ from __future__ import annotations
 
 import argparse
 import cmath
-import hashlib
 import json
 import math
 from datetime import datetime, timezone
@@ -107,6 +106,18 @@ def _kirchhoff_from_control_row(p_c: complex, dpdn_c: complex, y_c_m: float,
         green_convention=GREEN_OUTGOING)
 
 
+def evaluate_m4_gates(gates: dict[str, float]) -> bool:
+    """Evaluate every declared E2/R2/control-channel threshold."""
+
+    return bool(
+        gates["E2_amp_rel_err_max"] < 0.10
+        and gates["E2_phase_err_deg_max"] < 10.0
+        and gates["R2_control_surface_sensitivity"] < 0.05
+        and abs(gates["channel_diff_amp_primary"]) < 0.10
+        and abs(gates["channel_diff_phase_deg_primary"]) < 10.0
+    )
+
+
 def run_m4_endtoend(base_cfg: dict, *, control_row_primary: int = 246,
                     control_row_check: int = 318) -> dict[str, Any]:
     omega = 2.0 * math.pi * F_HZ
@@ -129,6 +140,7 @@ def run_m4_endtoend(base_cfg: dict, *, control_row_primary: int = 246,
     p_band = np.asarray(r["p_band_Pa"])
     v_band = np.asarray(r["v_band_m_s"])
     y_ref_m = float(rows[0]) * dx                     # G-reference plane (band row 150)
+    observer_y_m = y_ref_m + np.asarray(OBSERVER_HEIGHTS_WAVELENGTHS) * lam
 
     def _expected_at(y_m: float) -> complex:
         return dp_phys * cmath.exp(-1j * k_air * (y_m - y_ref_m))
@@ -159,10 +171,9 @@ def run_m4_endtoend(base_cfg: dict, *, control_row_primary: int = 246,
         dpdn_v = complex(dpdn_from_velocity(v_c, omega_rad_s=omega, rho0_kg_m3=AIR_RHO0))
         dpdn_p = -1j * k_air * p_c                    # outgoing-plane-wave channel (cross-check)
         channel_ratio = dpdn_v / dpdn_p
-        obs_y = y_c_m + np.asarray(OBSERVER_HEIGHTS_WAVELENGTHS) * lam
-        p_ff = _kirchhoff_from_control_row(p_c, dpdn_v, y_c_m, obs_y)
+        p_ff = _kirchhoff_from_control_row(p_c, dpdn_v, y_c_m, observer_y_m)
         entries = []
-        for oy, pf in zip(obs_y, p_ff):
+        for oy, pf in zip(observer_y_m, p_ff, strict=True):
             ref = _expected_at(float(oy))
             ratio = complex(pf / ref)
             entries.append({
@@ -182,7 +193,10 @@ def run_m4_endtoend(base_cfg: dict, *, control_row_primary: int = 246,
     prim = results_ff["primary"]; chk = results_ff["check"]
     e2_amp_max = max(abs(e["amp_rel_err"]) for e in prim["farfield"])
     e2_phase_max = max(abs(e["phase_err_deg"]) for e in prim["farfield"])
-    r2_amp = abs(prim["farfield"][0]["p_ff_abs_Pa"] / chk["farfield"][0]["p_ff_abs_Pa"] - 1.0)
+    r2_amp = max(
+        abs(primary["p_ff_abs_Pa"] / check["p_ff_abs_Pa"] - 1.0)
+        for primary, check in zip(prim["farfield"], chk["farfield"], strict=True)
+    )
 
     return {
         "crash": False,
@@ -207,6 +221,7 @@ def run_m4_endtoend(base_cfg: dict, *, control_row_primary: int = 246,
             "E2_phase_err_deg_max": e2_phase_max,   # suggested gate: < 10 deg
             "R2_control_surface_sensitivity": r2_amp,   # suggested gate: < 5%
             "channel_diff_amp_primary": prim["channel_diff_amp"],   # contract sec.6: < 10%
+            "channel_diff_phase_deg_primary": prim["channel_diff_phase_deg"],  # < 10 deg
         },
         "spl_farfield_db": prim["farfield"][0]["spl_db"],
         "error_budget": {
@@ -224,7 +239,7 @@ def run_m4_endtoend(base_cfg: dict, *, control_row_primary: int = 246,
     }
 
 
-def main() -> None:
+def main() -> int:
     ap = argparse.ArgumentParser(description="P4-5 E2: M4 end-to-end far-field verification.")
     ap.add_argument("--acoustic-config", type=Path, default=ACOUSTIC_CONFIG)
     ap.add_argument("--out-root", type=Path, default=Path("results/m4"))
@@ -233,7 +248,8 @@ def main() -> None:
 
     r = run_m4_endtoend(base)
     if r.get("crash"):
-        print("E2: CRASH"); return
+        print("E2: CRASH")
+        return 1
     print("M4 end-to-end (D3 one-way architecture; R1 = compact thermophone plane-wave formula)\n")
     print(f"source: T_s_hat = {r['T_s_hat']['abs_K']:.5f} K @ {r['T_s_hat']['phase_deg']:+.2f} deg "
           f"(M3 canonical, digest 26be2fde) -> u_src = {r['u_src_m_s']['abs']:.4e} m/s -> "
@@ -256,17 +272,16 @@ def main() -> None:
     print(f"\nE2 amp err max = {g['E2_amp_rel_err_max']:.4f} (hard gate <0.10)   "
           f"E2 phase err max = {g['E2_phase_err_deg_max']:.2f} deg (<10)")
     print(f"R2 control-surface sensitivity = {g['R2_control_surface_sensitivity']:.4f} (<0.05)   "
-          f"channel diff = {g['channel_diff_amp_primary']:+.4f} (<0.10)")
-    passed = (g["E2_amp_rel_err_max"] < 0.10 and g["E2_phase_err_deg_max"] < 10.0
-              and g["R2_control_surface_sensitivity"] < 0.05
-              and abs(g["channel_diff_amp_primary"]) < 0.10)
+          f"channel diff = {g['channel_diff_amp_primary']:+.4f} / "
+          f"{g['channel_diff_phase_deg_primary']:+.2f} deg (<0.10/<10 deg)")
+    passed = evaluate_m4_gates(g)
     print(f"\nE2 verdict: {'PASSED' if passed else 'FAILED'} "
           "(M4 gate wording stays PASSED_WITH_SCOPED_RISK; see M4 report)")
 
     run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     payload = {"run_id": run_id, "scope": "P4-5_E2_D3_ONEWAY_10KHZ_NORMAL_EMISSION",
                "e2_passed": passed, **r}
-    safe = json.loads(json.dumps(payload, default=lambda o: str(o)))
+    safe = json.loads(json.dumps(payload, default=str))
     digest_core = {k: v for k, v in safe.items() if k not in VOLATILE_DIGEST_KEYS}
     safe["summary_digest"] = summary_payload_digest(digest_core)
     safe["summary_digest_scope"] = "physics_core; excludes " + ", ".join(VOLATILE_DIGEST_KEYS)
@@ -274,7 +289,8 @@ def main() -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "summary.json").write_text(json.dumps(safe, indent=2), encoding="utf-8")
     print(f"wrote {out_dir / 'summary.json'}  digest {safe['summary_digest'][:12]}")
+    return 0 if passed else 1
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

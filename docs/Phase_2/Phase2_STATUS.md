@@ -1,9 +1,11 @@
 # Phase_2 阶段状态
 
-**最后更新**：2026-07-03
+**最后更新**：2026-07-11
 **阶段名称**：Phase_2 — Gas-side thermal/compressible LBM core  
 **参考合同**：`docs/Phase_2/phase2_instruction_v1.1.md`  
 **状态口径**：合同级框架已通过；生产级物理验证仍在推进
+
+**维护修订（2026-07-11，不改 Phase_2 物理结论）**：M2 runner 现在对非 diagnostic 配置要求 P2-4/5/6/7/9 全部为 `PASSED` 才成功退出；`config_sha256` 改为递归 include 后的有效配置摘要，另保留 source-file hash；summary digest 排除时间、路径、版本和 stdout/stderr 等易变字段。防止“pytest 绿但配置物理门失败”被自动化误判。
 
 ## 1. 当前结论
 
@@ -651,6 +653,7 @@ D2Q37 失败诊断 run `20260607T073921Z` 已对 `20260606T142620Z` 暴露的问
 
 | 日期         | 更新内容                                                                                                                                                                                                                                                                                        |
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-07-11 | 审查维护：M2 runner 总判决纳入配置物理测量状态，失败返回非零；配置 digest 覆盖递归 include 的有效 payload，summary digest 改 physics-core 口径。新增有效配置 hash 与物理门组合回归；不改变 `BOUNDED_PRODUCTION_GO`/final-not-claimed 口径。 |
 | 2026-06-01 | 新建 Phase_2 阶段状态文档；记录当前框架与合同级验证已通过、生产级物理验证待深化；写入 M2 报告运行批次、baseline `diagnostic_zero` 策略和后续任务。                                                                                                                                                                                               |
 | 2026-06-02 | 按评审建议拆分 `PASSED` 语义；加入四层状态口径、P2 成熟度分层、Phase_1 reference 使用边界、M2-Critical 触发阈值和 Phase_3 Level A/B/Level C 启动口径。                                                                                                                                                                              |
 | 2026-06-02 | 生成新的 physical-timestep M2 自动化 run `20260602T133432Z`；记录其 automation/contract 通过、production physics 未通过、M2 决策为 GO-RISK / IN-PROGRESS。                                                                                                                                                        |

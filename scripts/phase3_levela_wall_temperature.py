@@ -269,7 +269,7 @@ def _render_report(payload: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-def main() -> None:
+def main() -> int:
     parser = argparse.ArgumentParser(description="Phase_3 P3-1 Level A wall-temperature smoke.")
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     parser.add_argument("--output-root", type=Path, default=DEFAULT_OUTPUT_ROOT)
@@ -279,8 +279,8 @@ def main() -> None:
         f"{payload['status']}; m3_gate={payload['m3_gate']}; "
         f"wrote {args.output_root / payload['run_id']}; digest={payload['summary_digest']}"
     )
+    return 0 if payload["status"] == "PASSED" else 1
 
 
 if __name__ == "__main__":
-    main()
-
+    raise SystemExit(main())

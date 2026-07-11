@@ -275,7 +275,7 @@ def integrate_film_ode(
                 drive=drive,
                 q_g_one_sided_si=q_g_one_sided_si,
             )
-            for T_value, t_value in zip(T, t)
+            for T_value, t_value in zip(T, t, strict=True)
         ],
         dtype=float,
     )

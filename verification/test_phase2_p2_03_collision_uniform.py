@@ -72,6 +72,27 @@ def test_p2_3_d2q37_uniform_state_has_no_drift_over_periodic_steps():
     assert np.max(np.abs(after.theta - before.theta)) < 1.0e-12
 
 
+def test_initialize_from_macro_starts_a_fresh_solver_run():
+    config = d2q37_physical_timestep_config()
+    config["numerics"] = {"nx": 6, "ny": 4}
+    solver = GasSolver2D(config)
+    solver.initialize_from_macro(1.0, np.zeros(2), solver.mapping.theta_ref_lu)
+    assert solver.f is not None and solver.g is not None
+    first_reference = solver._ghost_projector_reference_state(solver.f, solver.g)
+    solver.step(2)
+
+    solver.initialize_from_macro(
+        0.9,
+        np.asarray([0.01, -0.005]),
+        1.1 * solver.mapping.theta_ref_lu,
+    )
+    assert solver.t_lu == 0
+    assert solver._ghost_projector_reference is None
+    assert solver.f is not None and solver.g is not None
+    second_reference = solver._ghost_projector_reference_state(solver.f, solver.g)
+    assert second_reference != first_reference
+
+
 def test_p2_3_d2q37_pressure_memory_trace_policy_uniform_state_has_no_drift():
     config = d2q37_physical_timestep_config()
     config["collision"]["trace_bulk_policy"] = TRACE_BULK_POLICY_GHOST_ORTHOGONAL_LOCAL_PRESSURE_MEMORY

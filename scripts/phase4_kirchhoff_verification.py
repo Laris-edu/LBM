@@ -137,7 +137,25 @@ def run_convergence(cfg: dict) -> dict[str, Any]:
     return {"series": errs}
 
 
-def main() -> None:
+def convergence_passes(series: list[dict[str, float]], amp_gate: float, phase_gate: float) -> bool:
+    """Require improvement until the fixture reaches its accepted truncation floor."""
+
+    if len(series) < 2:
+        return False
+    samples = [entry["samples_per_wavelength"] for entry in series]
+    if any(current <= previous for previous, current in zip(samples[:-1], samples[1:], strict=True)):
+        return False
+    for key, gate in (("amp_err_max", amp_gate), ("phase_err_deg_max", phase_gate)):
+        values = [entry[key] for entry in series]
+        for previous, current in zip(values[:-1], values[1:], strict=True):
+            if current > previous and not (previous < gate and current < gate):
+                return False
+        if values[-1] >= gate:
+            return False
+    return True
+
+
+def main() -> int:
     ap = argparse.ArgumentParser(description="P4-4 Kirchhoff kernel manufactured-fixture verification.")
     ap.add_argument("--config", type=Path, default=FIXTURE_CONFIG)
     ap.add_argument("--out", type=Path, default=None)
@@ -160,7 +178,7 @@ def main() -> None:
           f"{ctr['reconstruction_error']:.3f} (must be > {gates['counterexample_min_error']})")
     ok = (cyl["amp_err_max"] < amp_gate and cyl["phase_err_deg_max"] < ph_gate
           and pw["amp_err"] < amp_gate and pw["phase_err_deg"] < ph_gate
-          and conv["series"][-1]["amp_err_max"] < conv["series"][0]["amp_err_max"]
+          and convergence_passes(conv["series"], amp_gate, ph_gate)
           and ctr["reconstruction_error"] > float(gates["counterexample_min_error"]))
     print(f"\nK0 kernel gate: {'PASSED' if ok else 'FAILED'}")
     if args.out:
@@ -168,7 +186,8 @@ def main() -> None:
             {"cylindrical": cyl, "plane_wave": pw, "counterexample": ctr,
              "convergence": conv, "k0_passed": ok}, indent=2), encoding="utf-8")
         print(f"wrote {args.out}")
+    return 0 if ok else 1
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

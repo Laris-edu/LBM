@@ -5,7 +5,7 @@
 - M1 status: passed
 - Decision: proceed to Phase_2
 - Risk status: GO-RISK
-- Reference version: phase1_reference_v1.0
+- Reference version: phase1_reference_v1.1
 
 ## 2. 有效声明
 
@@ -36,6 +36,7 @@
 - 压力参考为 compact McDonald/Lim-like 受迫波代理，适合 Phase_2/3 早期对齐，但不应用作最终文献逐项复现。
 - 阶跃瞬态采用 first-order effective thermal-network proxy，压力为 10 kHz small-signal derivative proxy。
 - Phase_3 若出现热变量已对齐但压力偏差仍大，应优先检查压力参考模型和 LBM 声学边界，而不是直接否定 LBM。
+- 2026-07-11 修正半空间速度参考：热扩散支与出射声学支分别按动量方程求速度，恢复壁面 `u_hat(0)=0`；压力、温度、热流及 M1 状态不变，四个含速度列的频域 CSV 重生成并由 manifest v1.1 锁定。
 
 ## 5. Phase_2 使用原则
 
@@ -52,4 +53,3 @@ Phase_2 不应使用 Phase_1 数据验证：
 - Kirchhoff 远场；
 - 非线性谐波；
 - 完整启动瞬态声压。
-

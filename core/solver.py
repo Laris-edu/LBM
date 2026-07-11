@@ -85,9 +85,8 @@ def minimum_hdf5_metadata(mapping: UnitMapping, case_name: str, pass_fail: str =
 
 def write_metadata(group: h5py.Group, metadata: dict[str, Any]) -> None:
     for key, value in metadata.items():
-        if value is None:
-            value = ""
-        group.attrs[key] = value
+        attr_value = "" if value is None else value
+        group.attrs[key] = attr_value
 
 
 def _periodic_laplacian(field: np.ndarray) -> np.ndarray:
@@ -597,6 +596,8 @@ class GasSolver2D:
         else:
             u_arr = np.broadcast_to(u_arr, (self.ny, self.nx, 2))
         self.f, self.g = equilibrium_fg(rho_arr, u_arr, theta_arr, self.mapping.lattice.S, self.lattice)
+        self.t_lu = 0
+        self._ghost_projector_reference = None
         self._previous_pressure_for_trace = None
 
     def _require_state(self) -> tuple[np.ndarray, np.ndarray]:

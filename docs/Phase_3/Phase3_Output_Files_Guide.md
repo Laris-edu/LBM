@@ -52,7 +52,7 @@
 | `configs/phase3_levela_isothermal_10k.yaml` | Level A prescribed wall-temperature smoke 配置。 | 当前 |
 | `configs/phase3_levelb_flux_10k.yaml` | Level B prescribed wall heat-flux smoke 配置。 | 当前 |
 | `configs/phase3_levelc_coupled_10k_dx2p6.yaml` | P3-4 Level C predictor-corrector short smoke 配置，继承 dx2p6 scoped 气侧配置。 | 当前 |
-| `configs/phase3_m3_grad_10k_dx2p6.yaml` | P3-5+ 全周期 M3 验证配置（Grad 热壁经 conjugate.py）。 | 当前 |
+| `configs/phase3_m3_grad_10k_dx2p6.yaml` | P3-5+ 全周期 M3 验证配置（Grad 热壁经 conjugate.py）；2026-07-11 增恢复壁温误差 `<0.01 K` 门，不改物理参数。 | 当前 |
 | `configs/phase3_levela_admittance_10k_dx2p6.yaml` | P3-6 Level A 动态热导纳配置（Grad 壁面）。 | 当前 |
 | `configs/phase3_levelb_admittance_10k_dx2p6.yaml` | P3-6 Level B 动态频响配置（矩通量伺服）。 | 当前 |
 | `configs/gas_air_10k_d2q37_levelc_dx1p3_probe.yaml` · `configs/phase3_levela_admittance_10k_dx1p3_probe.yaml` | P3-6 item 1 finer-dx 重评估探测配置（诊断，非生产）。 | 诊断 |
@@ -80,7 +80,7 @@
 - `coupling/drive.py`
 - `coupling/film_ode.py`
 - `coupling/energy_audit.py`
-- `coupling/conjugate.py`
+- `coupling/conjugate.py`（薄膜/气体单步时钟一致；输出实际恢复壁温及相对薄膜设定值的最大误差）
 - `scripts/phase3_levela_wall_temperature.py`
 - `scripts/phase3_levelb_wall_flux.py`
 - `scripts/phase3_levelc_coupled_10k.py`

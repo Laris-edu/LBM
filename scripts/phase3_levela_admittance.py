@@ -105,7 +105,6 @@ def run_levela_admittance(
     f = float(frequency_hz_override if frequency_hz_override else physical["frequency_Hz"])
     frequency_overridden = frequency_hz_override is not None
     omega = 2.0 * math.pi * f
-    T0 = float(physical["T0_K"])
     T_hat = complex(float(physical["wall_temperature_hat_K"]))
     kg = float(physical["kg_W_mK"])
     alpha0 = float(physical["alpha0_m2_s"])
@@ -320,7 +319,7 @@ def _render_report(p: dict[str, Any]) -> str:
     ])
 
 
-def main() -> None:
+def main() -> int:
     parser = argparse.ArgumentParser(description="Phase_3 P3-6 Level A dynamic thermal admittance (Grad wall).")
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     parser.add_argument("--output-root", type=Path, default=DEFAULT_OUTPUT_ROOT)
@@ -341,7 +340,8 @@ def main() -> None:
         f"phase={payload['Y_measured']['phase_deg_err']:+.2f}deg; "
         f"wrote {args.output_root / payload['run_id']}; digest={payload['summary_digest']}"
     )
+    return 0 if payload["m3_gate"] in {"PASSED", "PHASE_PASS_AMPLITUDE_BOUNDARY"} else 1
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

@@ -3,6 +3,32 @@ import numpy as np
 
 from core.solver import GasSolver2D
 from core.unit_mapping import d2q37_physical_timestep_config, physical_timestep_config
+from scripts.phase2_m2_verification import (
+    load_config,
+    measurement_statuses_passed,
+    resolved_config_sha256,
+)
+
+
+def test_effective_config_digest_changes_when_an_included_file_changes(tmp_path):
+    parent = tmp_path / "parent.yaml"
+    child = tmp_path / "child.yaml"
+    parent.write_text("physical:\n  c0_m_s: 347.0\n", encoding="utf-8")
+    child.write_text("include: parent.yaml\ncase:\n  name: digest-test\n", encoding="utf-8")
+
+    first = resolved_config_sha256(load_config(child))
+    parent.write_text("physical:\n  c0_m_s: 348.0\n", encoding="utf-8")
+    second = resolved_config_sha256(load_config(child))
+
+    assert first != second
+
+
+def test_measurement_gate_requires_every_physical_status_to_pass():
+    passed = ({"p2_04_status": "PASSED"}, "p2_04_status")
+    failed = ({"p2_05_status": "FAILED"}, "p2_05_status")
+
+    assert measurement_statuses_passed(passed)
+    assert not measurement_statuses_passed(passed, failed)
 
 
 def test_hdf5_metadata_minimum_schema(tmp_path):

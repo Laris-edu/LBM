@@ -34,6 +34,7 @@ answers (anti-self-calibration, same discipline as the Kirchhoff fixture rule)."
 from __future__ import annotations
 
 import argparse
+import cmath
 import copy
 import json
 import math
@@ -42,7 +43,6 @@ from typing import Any
 
 import numpy as np
 
-from boundary.open_cbc import compose_boundary_callbacks
 from boundary.open_sponge import make_top_sponge_callback
 from core.equilibrium import equilibrium_fg
 from core.macroscopic import recover_macro
@@ -174,7 +174,44 @@ def run_chain(base_cfg: dict, *, T_s_hat_K: complex = 10.0, ny: int = 512,
     }
 
 
-def main() -> None:
+def evaluate_chain_runs(a: dict[str, Any], b: dict[str, Any]) -> tuple[bool, dict[str, Any]]:
+    """Apply the same explicit gates as the committed D3-4 chain tests."""
+
+    if a.get("crash", True) or b.get("crash", True):
+        return False, {"crash_free": False}
+    linearity_amp = abs(a["G_abs"] / b["G_abs"] - 1.0)
+    linearity_phase = abs(
+        math.degrees(
+            cmath.phase(
+                cmath.exp(1j * math.radians(a["G_phase_deg"] - b["G_phase_deg"]))
+            )
+        )
+    )
+    gates = {
+        "crash_free": True,
+        "G_linearity_amp": linearity_amp,
+        "G_linearity_phase_deg": linearity_phase,
+        "mass_rel_drift_max": max(a["mass_rel_drift"], b["mass_rel_drift"]),
+        "onewayness_max": max(a["onewayness"], b["onewayness"]),
+        "band_flatness_max": max(a["band_flatness"], b["band_flatness"]),
+        "phase_fit_resid_rad_max": max(a["phase_fit_resid_rad"], b["phase_fit_resid_rad"]),
+        "sound_speed_error_max": max(
+            abs(a["c_si_over_air"] - 1.0), abs(b["c_si_over_air"] - 1.0)
+        ),
+    }
+    passed = bool(
+        linearity_amp < 0.01
+        and linearity_phase < 0.5
+        and gates["mass_rel_drift_max"] < 1.0e-4
+        and gates["onewayness_max"] < 0.05
+        and gates["band_flatness_max"] < 0.02
+        and gates["phase_fit_resid_rad_max"] < 0.02
+        and gates["sound_speed_error_max"] < 0.02
+    )
+    return passed, gates
+
+
+def main() -> int:
     ap = argparse.ArgumentParser(description="P4-D3 D3-4(iii) map->injection->coarse-propagation chain smoke.")
     ap.add_argument("--acoustic-config", type=Path, default=ACOUSTIC_CONFIG)
     ap.add_argument("--out", type=Path, default=None)
@@ -198,16 +235,18 @@ def main() -> None:
               f"{r['c_si_over_air']:.4f} x air 347.0  (gate <2%);  phase-fit resid "
               f"{r['phase_fit_resid_rad']:.4f} rad", flush=True)
     a, b = results.get("T_s=10K", {}), results.get("T_s=1K", {})
-    if not (a.get("crash", True) or b.get("crash", True)):
-        lin = abs(a["G_abs"] / b["G_abs"] - 1.0)
-        dph = abs(a["G_phase_deg"] - b["G_phase_deg"])
-        print(f"\nG1 linearity across 10x drive: |G| ratio dev = {lin:.4f}, phase dev = {dph:.2f} deg")
-        print("VERDICT: chain link is linear/one-way/clean-propagating; G is the documented injection "
-              "constant; c_si_over_air is the (iv) certification number (calibrated medium).")
+    passed, gates = evaluate_chain_runs(a, b)
+    if gates.get("crash_free"):
+        print(f"\nG1 linearity across 10x drive: |G| ratio dev = {gates['G_linearity_amp']:.4f}, "
+              f"phase dev = {gates['G_linearity_phase_deg']:.2f} deg")
+    print(f"VERDICT: {'PASSED' if passed else 'FAILED'} -- "
+          "linearity/one-wayness/phase/flatness/mass/sound-speed gates evaluated.")
     if args.out:
-        args.out.write_text(json.dumps(results, indent=2), encoding="utf-8")
+        args.out.write_text(json.dumps(
+            {"runs": results, "gates": gates, "chain_passed": passed}, indent=2), encoding="utf-8")
         print(f"wrote {args.out}")
+    return 0 if passed else 1
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

@@ -39,8 +39,15 @@ def pressure_profile_from_exponential_temperature(
     source = k * k * (params.p0 / params.T0) * T_s_hat
     particular = source / (m_T * m_T + k * k)
     outgoing = 1j * (m_T / k) * particular
-    p_hat = particular * np.exp(-m_T * y) + outgoing * np.exp(-1j * k * y)
-    u_hat = p_hat / (params.rho0 * params.c0)
+    thermal_branch = particular * np.exp(-m_T * y)
+    acoustic_branch = outgoing * np.exp(-1j * k * y)
+    p_hat = thermal_branch + acoustic_branch
+    # With exp(+i Omega t), i Omega rho0 u = -dp/dy.  The acoustic impedance
+    # relation applies only to the outgoing acoustic branch; applying it to the
+    # diffusive thermal branch violates the no-penetration condition at y=0.
+    u_thermal = -1j * m_T * thermal_branch / (Omega * params.rho0)
+    u_acoustic = acoustic_branch / (params.rho0 * params.c0)
+    u_hat = u_thermal + u_acoustic
     return np.asarray(p_hat, dtype=np.complex128), np.asarray(u_hat, dtype=np.complex128)
 
 
@@ -115,4 +122,3 @@ __all__ = [
     "pressure_profile_from_exponential_temperature",
     "thermal_admittance_halfspace",
 ]
-

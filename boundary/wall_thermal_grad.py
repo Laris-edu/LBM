@@ -71,6 +71,9 @@ def _grad_reconstruct_bottom_row(
         feq_j, geq_j = equilibrium_fg(m.rho, m.u, m.theta, S, lattice)
         return f_stream[j:j + 1] - feq_j, g_stream[j:j + 1] - geq_j  # (1,nx,q)
 
+    if extrap not in {"linear", "row1"}:
+        raise ValueError(f"unsupported non-equilibrium extrapolation: {extrap}")
+
     f1n, g1n = interior_neq(1)
     if extrap == "linear" and solver.ny >= 3:
         f2n, g2n = interior_neq(2)

@@ -20,7 +20,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from scripts.phase2_m2_verification import load_config
-from scripts.phase4_m4_endtoend import run_m4_endtoend
+from scripts.phase4_m4_endtoend import evaluate_m4_gates, run_m4_endtoend
 
 ACOUSTIC_CONFIG = Path("configs/phase4_acoustic_coarse_dx334.yaml")
 
@@ -33,4 +33,20 @@ def test_e2_end_to_end_farfield_gates():
     assert g["E2_phase_err_deg_max"] < 10.0          # suggested phase gate
     assert g["R2_control_surface_sensitivity"] < 0.05
     assert abs(g["channel_diff_amp_primary"]) < 0.10  # contract section 6 threshold
+    assert abs(g["channel_diff_phase_deg_primary"]) < 10.0
+    assert evaluate_m4_gates(g)
     assert abs(r["handoff_plane"]["amp_rel_err"]) < 0.05   # frozen G applied blind
+    primary_observers = [item["observer_y_m"] for item in r["control_surface"]["primary"]["farfield"]]
+    check_observers = [item["observer_y_m"] for item in r["control_surface"]["check"]["farfield"]]
+    assert primary_observers == check_observers
+
+
+def test_e2_gate_rejects_channel_phase_failure():
+    gates = {
+        "E2_amp_rel_err_max": 0.01,
+        "E2_phase_err_deg_max": 1.0,
+        "R2_control_surface_sensitivity": 0.01,
+        "channel_diff_amp_primary": 0.01,
+        "channel_diff_phase_deg_primary": 11.0,
+    }
+    assert not evaluate_m4_gates(gates)

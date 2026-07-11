@@ -43,6 +43,20 @@ P2_TESTS = [
     "verification/test_phase2_d2q37_fallback.py",
 ]
 
+M2_VOLATILE_DIGEST_KEYS = (
+    "run_id",
+    "timestamp",
+    "config",
+    "config_source_sha256",
+    "command",
+    "python_version",
+    "numpy_version",
+    "h5py_version",
+    "stdout",
+    "stderr",
+    "raw_hdf5",
+)
+
 
 def load_config(path: Path) -> dict:
     with path.open("r", encoding="utf-8") as fh:
@@ -68,10 +82,26 @@ def summary_payload_digest(payload: dict) -> str:
     return hashlib.sha256(encoded).hexdigest()
 
 
-def status_layers(config_path: Path, config: dict, passed: bool) -> dict[str, str]:
+def resolved_config_sha256(config: dict) -> str:
+    """Hash the effective config after recursively resolving ``include`` entries."""
+
+    return summary_payload_digest(_json_safe(config))
+
+
+def measurement_statuses_passed(*results: tuple[dict, str]) -> bool:
+    """Return whether every configured physical measurement reports ``PASSED``."""
+
+    return all(result.get(status_key) == "PASSED" for result, status_key in results)
+
+
+def _is_diagnostic_config(config_path: Path, config: dict) -> bool:
     theta_policy = str(config.get("lattice", {}).get("theta_ref_policy", ""))
+    return "quadrature" in str(config_path).lower() or theta_policy == "quadrature_matched"
+
+
+def status_layers(config_path: Path, config: dict, passed: bool) -> dict[str, str]:
     velocity_set = str(config.get("lattice", {}).get("velocity_set", "D2Q21")).upper()
-    is_diagnostic = "quadrature" in str(config_path).lower() or theta_policy == "quadrature_matched"
+    is_diagnostic = _is_diagnostic_config(config_path, config)
     if not passed:
         return {
             "automation_status": "FAILED",
@@ -139,21 +169,36 @@ def main(argv: list[str] | None = None) -> int:
 
     command = [sys.executable, "-m", "pytest", "-q", *P2_TESTS]
     result = subprocess.run(command, text=True, capture_output=True, check=False)
-    passed = result.returncode == 0
+    pytest_passed = result.returncode == 0
     p2_04 = measure_shear_wave(config)
     p2_05 = measure_thermal_diffusion(config)
     p2_06 = measure_acoustic_wave(config)
     p2_07 = measure_prandtl_scan(config)
     p2_09 = measure_galilean_consistency(config)
+    measurements_passed = measurement_statuses_passed(
+        (p2_04, "p2_04_status"),
+        (p2_05, "p2_05_status"),
+        (p2_06, "p2_06_status"),
+        (p2_07, "p2_07_status"),
+        (p2_09, "p2_09_status"),
+    )
+    measurement_gate_required = not _is_diagnostic_config(config_path, config)
+    passed = pytest_passed and (measurements_passed or not measurement_gate_required)
     layered_status = status_layers(config_path, config, passed)
     summary = {
         "phase": "Phase_2",
         "run_id": timestamp,
         "config": str(config_path),
-        "config_sha256": sha256_file(config_path),
+        "config_sha256": resolved_config_sha256(config),
+        "config_sha256_policy": "sha256 of effective config payload after recursive includes",
+        "config_source_sha256": sha256_file(config_path),
         "timestamp": timestamp,
         "command": command,
-        "returncode": result.returncode,
+        "returncode": 0 if passed else 1,
+        "pytest_returncode": result.returncode,
+        "pytest_status": "PASSED" if pytest_passed else "FAILED",
+        "measurement_gate_required": measurement_gate_required,
+        "measurement_gate_status": "PASSED" if measurements_passed else "FAILED",
         "status": layered_status["automation_status"],
         **layered_status,
         "python_version": platform.python_version(),
@@ -288,8 +333,11 @@ def main(argv: list[str] | None = None) -> int:
         "p2_09_nan_detected": p2_09["nan_detected"],
         "p2_09_clipping_used": p2_09["clipping_used"],
     }
-    summary["summary_json_sha256_policy"] = "sha256 of canonical summary payload before adding this digest field"
-    summary["summary_json_sha256"] = summary_payload_digest(summary)
+    digest_core = {key: value for key, value in summary.items() if key not in M2_VOLATILE_DIGEST_KEYS}
+    summary["summary_json_sha256_policy"] = (
+        "sha256 of physics-core summary payload; excludes " + ", ".join(M2_VOLATILE_DIGEST_KEYS)
+    )
+    summary["summary_json_sha256"] = summary_payload_digest(digest_core)
     summary_path = out_dir / "summary.json"
     summary_path.write_text(json.dumps(summary, indent=2, ensure_ascii=False), encoding="utf-8")
     report_path = out_dir / "M2_report.md"
@@ -300,6 +348,8 @@ def main(argv: list[str] | None = None) -> int:
                 "",
                 f"- 配置：`{config_path}`",
                 f"- 自动化状态：`{summary['automation_status']}`",
+                f"- Pytest 状态：`{summary['pytest_status']}`",
+                f"- 配置物理测量门：`{summary['measurement_gate_status']}`（required={summary['measurement_gate_required']}）",
                 f"- 合同级验证状态：`{summary['contract_validation_status']}`",
                 f"- 生产级物理验证状态：`{summary['production_physics_status']}`",
                 f"- M2 决策：`{summary['m2_decision']}`",
@@ -348,7 +398,8 @@ def main(argv: list[str] | None = None) -> int:
                 f"- conductive_heat_flux_galilean_correction_factor：`{summary['conductive_heat_flux_galilean_correction_factor']}`",
                 f"- high_wavenumber_filter：`enabled={summary['high_wavenumber_filter_enabled']}, strength={summary['high_wavenumber_filter_strength']}, passes={summary['high_wavenumber_filter_passes']}`",
                 f"- HDF5 输出：`{h5_path}`",
-                f"- config_sha256：`{summary['config_sha256']}`",
+                f"- effective config_sha256：`{summary['config_sha256']}`",
+                f"- source config_sha256：`{summary['config_source_sha256']}`",
                 f"- summary_json_sha256：`{summary['summary_json_sha256']}`",
                 "",
                 "## Pytest 输出",
@@ -364,7 +415,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     print(f"Wrote {summary_path}")
     print(f"Wrote {report_path}")
-    return result.returncode
+    return 0 if passed else 1
 
 
 if __name__ == "__main__":

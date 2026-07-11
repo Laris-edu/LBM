@@ -110,6 +110,14 @@ def _wall_temperature_error_K(solver: GasSolver2D, row: int, target_T_K: float) 
     return float(np.max(np.abs(recovered_T - float(target_T_K))))
 
 
+def _wall_temperature_state(solver: GasSolver2D, row: int) -> tuple[float, float]:
+    """Return the recovered mean wall temperature in lattice and SI units."""
+
+    theta = np.asarray(solver.get_temperature_lu()[row], dtype=float)
+    theta_mean = float(np.mean(theta))
+    return theta_mean, theta_mean * float(solver.mapping.temperature_scale)
+
+
 def _apply_wall_temperature(
     solver: GasSolver2D,
     *,
@@ -183,14 +191,21 @@ def run_levelc_predictor_corrector(
         raise ValueError(f"unsupported Level C scheme: {scheme}")
     if wall_bc not in {"equilibrium_clamp", "thermal_grad"}:
         raise ValueError(f"unsupported wall_bc: {wall_bc}")
+    if grad_extrap not in {"linear", "row1"}:
+        raise ValueError(f"unsupported grad_extrap: {grad_extrap}")
     if not 0.0 < q_feedback_relax <= 1.0:
         raise ValueError("q_feedback_relax must be in (0, 1]")
     if row != BOTTOM_WALL_ROW:
         raise ValueError("P3-4 supports the bottom wall row only")
 
-    dt = float(solver.mapping.lattice.dt_s if dt_si is None else dt_si)
+    gas_dt = float(solver.mapping.lattice.dt_s)
+    dt = float(gas_dt if dt_si is None else dt_si)
     if dt <= 0.0:
         raise ValueError("dt_si must be positive")
+    if not np.isclose(dt, gas_dt, rtol=1.0e-12, atol=0.0):
+        raise ValueError(
+            "dt_si must equal the LBM time step; gas subcycling is not implemented"
+        )
     T0 = float(params.T_ref_K if T_initial_K is None else T_initial_K)
     probe_loc = probe or (min(max(row + 1, 0), solver.ny - 1), solver.nx // 2)
 
@@ -217,8 +232,7 @@ def run_levelc_predictor_corrector(
     P_in[0] = evaluate_drive(drive, float(t[0]))
     q_g[0] = extract_bottom_wall_heat_flux_si(solver, row=row)
     dTdt[0] = film_rhs(T_s[0], float(t[0]), params=params, drive=drive, q_g_one_sided_si=q_g[0])
-    theta_wall[0] = wall_state_from_temperature(T_s[0], solver.config)["theta_wall_lu"]
-    T_wall[0] = T_s[0]
+    theta_wall[0], T_wall[0] = _wall_temperature_state(solver, row)
     pressure_probe[0] = _pressure_probe_pa(solver, probe_loc)
     temperature_probe[0] = _temperature_probe_K(solver, probe_loc)
     wall_error[0] = _wall_temperature_error_K(solver, row, T_s[0])
@@ -228,26 +242,26 @@ def run_levelc_predictor_corrector(
     def _theta_wall_lu(T_wall_K: float) -> float:
         return float(wall_state_from_temperature(T_wall_K, solver.config)["theta_wall_lu"])
 
-    def _advance(T_wall_K: float) -> float:
-        """Advance the gas one step imposing the wall at ``T_wall_K``; return theta_wall_lu."""
+    def _advance(T_wall_K: float) -> None:
+        """Advance the gas one step while imposing the requested wall temperature."""
         if wall_bc == "thermal_grad":
             theta_w = _theta_wall_lu(T_wall_K)
             solver.step(1, boundary_callback=make_bottom_grad_wall_callback(
                 theta_w, rho_policy=rho_policy, extrap=grad_extrap, fill_deep_links=False))
-            return theta_w
+            return
         _apply_wall_temperature(solver, T_wall_K=T_wall_K, rho_policy=rho_policy, row=row)
         solver.step(1)
-        return _apply_wall_temperature(solver, T_wall_K=T_wall_K, rho_policy=rho_policy, row=row)
+        _apply_wall_temperature(solver, T_wall_K=T_wall_K, rho_policy=rho_policy, row=row)
 
-    def _reimpose(T_wall_K: float) -> float:
+    def _reimpose(T_wall_K: float) -> None:
         """Picard-corrector wall re-imposition. For ``thermal_grad`` the wall is already
         imposed inside the streaming step; re-reconstructing row 0 here would retroactively
         alter the near-wall state (inconsistent with the predictor advance, and it detaches
-        Level C from the isolated Level A admittance), so it is a no-op that only reports
-        theta_wall_lu. For ``equilibrium_clamp`` it re-clamps row 0 (P3-4 behaviour)."""
+        Level C from the isolated Level A admittance), so it is a no-op. For
+        ``equilibrium_clamp`` it re-clamps row 0 (P3-4 behaviour)."""
         if wall_bc == "thermal_grad":
-            return _theta_wall_lu(T_wall_K)
-        return _apply_wall_temperature(solver, T_wall_K=T_wall_K, rho_policy=rho_policy, row=row)
+            return
+        _apply_wall_temperature(solver, T_wall_K=T_wall_K, rho_policy=rho_policy, row=row)
 
     q_fb = float(q_g[0])  # under-relaxed q_g fed to the film ODE
 
@@ -259,22 +273,22 @@ def run_levelc_predictor_corrector(
 
         if scheme == "explicit_lagged":
             T_next = T_n + dt * rhs_n
-            theta_next = _advance(T_next)
+            _advance(T_next)
             q_raw = extract_bottom_wall_heat_flux_si(solver, row=row)
             q_fb = (1.0 - q_feedback_relax) * q_fb + q_feedback_relax * q_raw
         else:
             T_predict = T_n + dt * rhs_n
-            theta_next = _advance(T_predict)
+            _advance(T_predict)
             q_raw = extract_bottom_wall_heat_flux_si(solver, row=row)
             q_fb = (1.0 - q_feedback_relax) * q_fb + q_feedback_relax * q_raw
             rhs_end = film_rhs(T_predict, t_np1, params=params, drive=drive, q_g_one_sided_si=q_fb)
             T_next = T_n + 0.5 * dt * (rhs_n + rhs_end)
             delta_pc[i + 1] = T_next - T_predict
             for _ in range(picard_iterations):
-                theta_next = _reimpose(T_next)
+                _reimpose(T_next)
                 rhs_end = film_rhs(T_next, t_np1, params=params, drive=drive, q_g_one_sided_si=q_fb)
                 T_next = T_n + 0.5 * dt * (rhs_n + rhs_end)
-            theta_next = _reimpose(T_next)
+            _reimpose(T_next)
         # Record the q_g the film ODE actually integrated (q_fb): for equilibrium_clamp with
         # q_feedback_relax=1.0 this equals the raw extraction (unchanged); for thermal_grad it
         # keeps the integrated energy audit self-consistent with the under-relaxed feedback.
@@ -284,8 +298,7 @@ def run_levelc_predictor_corrector(
         P_in[i + 1] = evaluate_drive(drive, t_np1)
         q_g[i + 1] = q_next
         dTdt[i + 1] = (T_s[i + 1] - T_s[i]) / dt
-        theta_wall[i + 1] = theta_next
-        T_wall[i + 1] = T_s[i + 1]
+        theta_wall[i + 1], T_wall[i + 1] = _wall_temperature_state(solver, row)
         pressure_probe[i + 1] = _pressure_probe_pa(solver, probe_loc)
         temperature_probe[i + 1] = _temperature_probe_K(solver, probe_loc)
         wall_error[i + 1] = _wall_temperature_error_K(solver, row, T_s[i + 1])

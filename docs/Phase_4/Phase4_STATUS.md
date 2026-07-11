@@ -1,9 +1,12 @@
 # Phase_4 阶段状态
 
-**最后更新**：2026-07-09
+**最后更新**：2026-07-11
 **阶段名称**：Phase_4 — 开边界、控制面与 Kirchhoff 远场外推（M4）
 **参考合同**：`docs/Phase_4/phase4_instruction_v1.0.md`（P4-0 已冻结为权威合同）
+> 谱系说明：下一行保留 2026-07-09 状态长摘要；其 E2/R2/digest 已由随后 2026-07-11 审查修订覆盖，当前引用以后者为准。
 **状态口径（2026-07-09）**：**M4 gate = `PASSED_WITH_SCOPED_RISK`（E2 幅值 +2.28%<10%，SPL 86.6 dB ±0.46 dB[M3]，digest `cbcf7d738ede`；M4 报告 `docs/Phase_4/M4/M4_Verification_Report.md`）——P4-D3 多域声学外推主线 D3-0→D3-4 全部闭合**（P4-1 单网格开边界终态 FAILED→架构级绕行；立项 `docs/Phase_4/M4/P4_D3_Multidomain_Acoustic_Project.md`）。非 clear PASS、非 final production、不授权 Phase_5（入口决策属用户）。历程：D3-1 声学介质门 PASS → 简化碰撞 core 步 DONE（§8）→ D3-2 开边界反射门 G-D3-2 PASS（§9，非退化）→ D3-3 双向界面判死活（§10：稳定已解但 sharp-patch 反射 ~0.5 不可压门）→ **用户决策 (b) 单向 near→far 重构 → G-D3-3 one-way PASS（§11，非退化：注入单向性 0.009、注入边界 sponge `|R|=0.001`、刚性底对照 0.80）**。架构真正绕开 P4-1（远场开边界在干净粗声域）。**D3-4 源侧 + 链路落地（立项 §12/§12.1/§12.2）：细域辐射提取判死（注入淹没 31-57×）→ compact-source 映射固化 + 10 kHz MAP CHECK 1.001@+5.3°（源侧预算 ~±8%）→ (iii) 映射→软源→粗域链路 smoke 全绿 → (iv) 介质标定（§12.3）→ (v) Kirchhoff K0 PASSED（§12.4）→ **端到端 E2 PASSED（§13，2026-07-09：幅值 +2.28%<10%、SPL 86.6 dB ±0.46 dB[M3]、digest `cbcf7d738ede`）→ M4 gate = `PASSED_WITH_SCOPED_RISK`**（M4 报告已交付；非 clear PASS、非 final production、不授权 Phase_5）。**D3 主线 D3-0→D3-4 全部闭合**。全套 148 测试绿；Phase_3 维护基线（39 绿）不动；所有产出携带 M3 授权边界。详见 §5。以下为 P4-1 单网格历史结论（不变）：**P4-1 终态 FAILED（2026-07-04，合同 §13.2）**——10 kHz 法向出射门 `|R|<0.05` 在冻结栈上不可达（根因**体积注入底板**：全局周期 FFT 修正 × 边界缝，稳态 `|R|≈0.2–0.3`），诊断报告 `P4_1_Open_Boundary_Diagnostic_Report.md` 已交付。D3 正是绕过该单网格底板（声学域无 dispersion→无注入底板）。
+
+**审查修订（2026-07-11，覆盖上行旧 E2 数值）**：修复 R2 观察点定义（两控制面共享同一绝对观察点、取三点最大值）并把导数通道相位 `<10°` 纳入机器 gate。权威 run 更新为 `results/m4/20260711T063735Z` / digest `d69bf24d881e`：E2 幅值 1.62%<10%、相位 0.92°<10°、R2 2.63%<5%、通道差 −0.36%/−0.07°、SPL 86.67 dB ±0.46 dB[M3]；**全量 158 测试绿**。M4 标签仍为 `PASSED_WITH_SCOPED_RISK`；旧 R2=0.18% 已废止。
 
 ## 1. 当前结论
 
@@ -17,10 +20,10 @@
 | **P4-D3 简化碰撞 core 步** | **`DONE`（§8）** | `acoustic_simplified_collision` 默认 off、逐位安全；诚实修正 §7（filter 才是稳定键）。 |
 | **P4-D3 开边界反射（D3-2）** | **`PASS`（G-D3-2，非退化）** | 生产 sponge `\|R\|=0.0004≪0.05`；刚性盖对照 1.26 看得见反射、thickness 单调；§7 退化顾虑否证。 |
 | P4-D3 界面耦合（D3-3） | **`ONE-WAY PASS`（G-D3-3，非退化）** | 双向 sharp-patch 反射 ~0.5 不可压门（§10）→ 用户决策 (b) 单向重构：注入单向性 0.009、注入边界 sponge `\|R\|=0.001`、刚性底对照 0.80（§11）。 |
-| P4-D3 端到端（D3-4/P4-5，E2） | **`E2 PASSED`（2026-07-09，立项 §13）** | 幅值 +2.28%<10%（4.4×）、相位 1.21°、R2 0.18%、通道差 −0.36%；SPL 86.6 dB ±0.46 dB[M3]；digest `cbcf7d738ede`。 |
+| P4-D3 端到端（D3-4/P4-5，E2） | **`E2 PASSED`（2026-07-11 审查修订，立项 §13）** | 幅值 +1.62%<10%、相位 0.92°、R2 2.63%（同一绝对观察点/三点最大）、通道差 −0.36%/−0.07°；SPL 86.67 dB ±0.46 dB[M3]；digest `d69bf24d881e`。 |
 | **M4 gate** | **`PASSED_WITH_SCOPED_RISK`** | 硬门 1–4 全过 + 预算交付；(b) 清偿后：#2 CV→`DIAGNOSTIC_QUANTIFIED`、#3 源相位→已定性；#1 E1 架构替代/#4 范围/#5 为声明性保留（`M4_Verification_Report.md` §7）。**非 clear PASS、非 final production、不授权 Phase_5**。 |
 | Gas CV energy audit（P4-2） | **`DIAGNOSTIC_QUANTIFIED`**（(b) 清偿，2026-07-09） | 粗域声能通量审计：带内闭合 ~1%（I_start=4.496e-4 W/m²、−1.08% 倾斜与 1.1% 单向性干涉一致、平坦 0.32%）；细域开域审计在 D3 下 moot（M3 film 审计继承）。按合同 §7 保持 DIAGNOSTIC 措辞、不写 PASSED。 |
-| Control surface（P4-3） | **`DELIVERED`（D3 路线）** | 控制面在**校准粗声域**（row 246/318，双通道 −0.36%/−0.07°，R2 0.18%）；P4-1 时代"细域控制面被底板威胁"的顾虑随 D3 架构消解（M4 报告 §3）。 |
+| Control surface（P4-3） | **`DELIVERED`（D3 路线）** | 控制面在**校准粗声域**（row 246/318，双通道 −0.36%/−0.07°，固定绝对观察点 R2 2.63%）；P4-1 时代"细域控制面被底板威胁"的顾虑随 D3 架构消解（M4 报告 §3）。 |
 | Kirchhoff 2D kernel（P4-4） | **`K0 PASSED`（2026-07-09，立项 §12.4）** | `farfield/kirchhoff_2d.py`：约定钉死（`e^{+iΩt}` 下 `(−i/4)H₀^{(2)}`）、四类 manufactured fixture 大余量过 `<2%/<2°`（圆柱 0.08%/0.03°、错核反例 104%）；prefactor 冻结不得端到端反调。 |
 | End-to-end M4 报告（P4-6） | **`DELIVERED`** | `M4_Verification_Report.md`（合同 §11.2 七节）+ `M4_Run_Summaries.md`。 |
 | Final production claim | `NOT_CLAIMED` | M4 `PASSED_WITH_SCOPED_RISK` ≠ final production；Phase_5 入口决策属用户。 |
@@ -41,6 +44,8 @@
 | 2026-07-03 | P4-0 文档/配置创建（合同冻结、STATUS、Output Guide、README、`phase4_m4_smoke.yaml`） | `FROZEN` | 本目录 + `configs/phase4_m4_smoke.yaml` |
 | 2026-07-03 | `python -c "import yaml; ...(configs/phase4_*.yaml)"` | `PASSED` | `phase4_m4_smoke.yaml` 可被 PyYAML 解析 |
 | 2026-07-03 | `python C:/Users/Laris/.codex/skills/project-execution-governance/scripts/validate_project_docs.py --root .` | `PASSED` | governance OK（exit 0） |
+| 2026-07-11 | `python -m scripts.phase4_m4_endtoend`（修正 R2/通道相位门） | `E2 PASSED` | `results/m4/20260711T063735Z`，digest `d69bf24d881e`；1.62%/0.92°/R2 2.63%/通道 −0.36%−0.07° |
+| 2026-07-11 | `python -m pytest -q` | `158 passed` | 838.94 s；3 个 warning 均来自反射稳定性反例的非有限/溢出路径，无测试失败 |
 | 2026-07-04 | 10 kHz 认证 #1（继承式 Euler-LODI + 零梯度活塞） | `FAILED` | `results/m4/20260704T024300Z`，digest `f850d434…`：质量漂移 +104%、漂移斜坡假 `R=1.006`（k-不敏感、A_inc≈A_ref≈13.5 kPa vs 物理波 2 Pa） |
 | 2026-07-04 | 20k 步漂移诊断（代数阻抗单行 + 锚定活塞） | `DIAGNOSTIC` | `results/m4/20260704T030530Z`，digest `c9ce892b…`：漂移 5.7%/20k 步（活塞 θ 棘轮主导） |
 | 2026-07-04 | 10 kHz 认证 #2（+传输延迟） | 中断 | `ρ_b>0` 守卫触发（>8k 步）；超前有源性单独不致命但采样环路仍活性 |
@@ -104,6 +109,7 @@
 - **D3-4 端到端：E2 PASSED → M4 `PASSED_WITH_SCOPED_RISK`（2026-07-09，立项 §13，D3 主线闭合）**：交付 `scripts/phase4_m4_endtoend.py` + `verification/test_phase4_m4_endtoend.py`（E2 门 1 绿，全套 148 绿）+ **`M4_Verification_Report.md`**（合同 §11.2 七节）+ `M4_Run_Summaries.md`。链全冻结零调参：`T̂_s` canonical（digest 26be2fde）→ 映射 → `dp̂_phys=0.5997 Pa` → **G 盲用**（handoff 重现 +1.18%/+0.12°，反自标定活证）→ 校准粗域 → 控制面双通道（−0.36%）→ K0 kernel → 远场。**E2 vs R1：幅值 max +2.28%<10%（4.4×）、相位 1.21°<10°、R2 0.18%<5%**；SPL **86.6 dB ±0.46 dB[M3 ±5.4%]**；权威 run `results/m4/20260709T121241Z`（digest `cbcf7d738ede`）。M4 措辞=合同 §10.4 `PASSED_WITH_SCOPED_RISK`（scoped 风险见报告 §7；#2/#3 后经 (b) 清偿——见上条日志）。
 - **D3-4(v) Kirchhoff kernel：P4-4 K0 PASSED（2026-07-09，立项 §12.4）**：合同 §9 四件套交付（`farfield/kirchhoff_2d.py` + `scripts/phase4_kirchhoff_verification.py` + `verification/test_phase4_kirchhoff.py` 4 绿 + `configs/phase4_kirchhoff_fixture.yaml`）。**约定一次钉死**（P4-0 冻结风险项闭账）：`e^{+iΩt}` 下出射 Green=`(−i/4)H₀^{(2)}(kR)`，积分式 `p̂=∮[p̂∂G/∂n−G∂p̂/∂n]dS`（n=辐射侧）；速度通道 `∂p/∂n=−iΩρ₀v̂_n`（链路同款输入）在 fixture 内认证。K0 全过大余量；错核反例 104% 证判别力。**M4 端到端所需全部部件就绪**：源（§12.1 MAP CHECK 1.001）+ 注入（G=0.1580@+152.4°）+ 介质（c_SI +0.17%、|R|=0.0004）+ kernel（K0 <2%/<2°）。
 - **D3-4(iv) 声速决断完成（2026-07-09，立项 §12.3）**：**决断=介质标定（config-only 微调 re-tune），不走预算吸收**——理由：立项 §1 冻结声学域认证项「声速 <2%」（+2.08% 在门外，吸收=认证失守）；单频授权→单点标定正当；G1 线性证偏差为介质稳定常数。**实施**：`configs/phase4_acoustic_coarse_dx334.yaml` 的 `c0_m_s` 旋钮 347.0→**339.9175**（=347/1.020836；自此为人工介质旋钮非空气真值，源物理/SI 认证一律用 AIR 常数——smoke 已重构并修掉 α/100 hack）。**结果**：`c_SI=347.60 m/s（+0.17%）`，门 `<2%` 余量 12×，不二次迭代（伪精度）；**G 重锁 0.1580@+152.4°**（远场前、非回调）；单向/平坦/相位残差门内不变。**校准介质全量重验**：受影响 4 文件 15 测试绿（collision/reflection/oneway/map_chain），全套 143 绿。远场相位漂移 38°/5λ→~3°/5λ（报告项）。
+- **E2 审查修订（2026-07-11）**：R2 改为 primary/check 共享以 G 参考面定义的 +20/+50/+100λ 绝对观察点，并取三点幅值敏感性最大值；通道相位 `<10°` 进入 verdict。新权威 run `20260711T063735Z` / `d69bf24d881e`：E2 1.62%/0.92°、R2 2.63%、通道 −0.36%/−0.07°，全部过门；旧 R2 0.18% 废止，M4 标签不变。
 
 维持：M3 维护态（基线 39+115 绿未动）、seam_aware/声学开关默认 off、探针与门测试可复现留档。
 
@@ -111,6 +117,7 @@
 
 | 日期 | 更新 |
 |---|---|
+| 2026-07-11 | **代码审查修复并重新认证 E2**：固定绝对观察点 R2、三点最大值、通道相位门、验证 CLI 非零失败退出、Kirchhoff 收敛至门内截断底板规则；新 run `20260711T063735Z` / digest `d69bf24d881e`，E2 1.62%/0.92°、R2 2.63%、通道 −0.36%/−0.07°；全量 158 绿，M4 保持 `PASSED_WITH_SCOPED_RISK`。 |
 | 2026-07-09 | **M4 收尾决策 (b)：scoped 风险 #2/#3 清偿**：① **#3 源相位**——`fit_compact_source_y0_scan`（T 剖面残差判据，反自标定）证明 MAP CHECK 对 y 原点**严格不变**（1.0006@+5.335°，y0*=1.50 两频率一致），+5.335° 改判为真实栈↔映射相位偏移（只进绝对相位声明）、源幅值实现收紧至 ±~3%（立项 §12.1.1）；② **#2 CV 审计**——E2 runner 加粗域声能通量审计（`I(y)=½Re[p̂v̂*]`，带内闭合 ~1%），P4-2 → `DIAGNOSTIC_QUANTIFIED`。E2 重跑门数值逐位复现，权威 run/digest 更新为 `20260709T121241Z`/`cbcf7d738ede`（谱系留档）；绝对 SPL 总带 ±8%→±7%。M4 标签保持 `PASSED_WITH_SCOPED_RISK`（#1/#4/#5 为声明性；改判属用户决策）。 |
 | 2026-07-09 | **端到端 E2 PASSED → M4 gate = `PASSED_WITH_SCOPED_RISK`（立项 §13，D3 主线闭合）**：`scripts/phase4_m4_endtoend.py` + E2 门测试（148 绿）+ `M4_Verification_Report.md` + `M4_Run_Summaries.md`。E2 幅值 +2.28%<10%、相位 1.21°、R2 0.18%、通道差 −0.36%；SPL 86.6 dB ±0.46 dB[M3]；digest `cbcf7d738ede`。链全冻结零调参（G 盲用重现 +1.18%）。表格行更新：P4-3 DELIVERED（D3 路线）、P4-2 DIAGNOSTIC、P4-5 E2 PASSED、P4-6 DELIVERED。 |
 | 2026-07-09 | **D3-4(v) Kirchhoff kernel：P4-4 K0 门 PASSED（立项 §12.4）**：按合同 §9 精确交付 `farfield/kirchhoff_2d.py`（API 逐字合规、§2.4 metadata 固化、约定一次钉死：`e^{+iΩt}` 下出射=`(−i/4)H₀^{(2)}`=计划书 `hankel1` 简写的本约定映射）+ 脚本 + 测试（4 绿）+ fixture 配置。四类 fixture：圆柱 0.08%/0.03°（24×/59× 余量）、离散收敛（欠采样 164% 必须烂）、速度通道 0.49%/0.50°、错核反例 104%（判别力）。全套 147 绿。prefactor 冻结、不得端到端反调。 |

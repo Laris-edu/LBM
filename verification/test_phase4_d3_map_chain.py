@@ -21,7 +21,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from scripts.phase2_m2_verification import load_config
-from scripts.phase4_d3_map_chain_smoke import run_chain
+from scripts.phase4_d3_map_chain_smoke import evaluate_chain_runs, run_chain
 
 ACOUSTIC_CONFIG = Path("configs/phase4_acoustic_coarse_dx334.yaml")
 KW = dict(ny=384, total_periods=8.0, fit_periods=3.0)
@@ -41,6 +41,8 @@ def test_chain_linear_oneway_clean():
         assert r["phase_fit_resid_rad"] < 0.02  # linear phase = clean traveling wave
     assert abs(a["G_abs"] / b["G_abs"] - 1.0) < 0.01      # G is a rig constant (linearity)
     assert abs(a["G_phase_deg"] - b["G_phase_deg"]) < 0.5
+    passed, _gates = evaluate_chain_runs(a, b)
+    assert passed
 
 
 def test_chain_operating_point_sound_speed_certified():
@@ -51,3 +53,20 @@ def test_chain_operating_point_sound_speed_certified():
     r = run_chain(base, T_s_hat_K=10.0, **KW)
     assert not r.get("crash")
     assert abs(r["c_si_over_air"] - 1.0) < 0.02
+
+
+def test_chain_verdict_rejects_a_failed_physical_gate():
+    good = {
+        "crash": False,
+        "G_abs": 0.158,
+        "G_phase_deg": 152.4,
+        "mass_rel_drift": 1.0e-6,
+        "onewayness": 0.01,
+        "band_flatness": 0.001,
+        "phase_fit_resid_rad": 0.001,
+        "c_si_over_air": 1.0,
+    }
+    bad = {**good, "onewayness": 0.2}
+    passed, gates = evaluate_chain_runs(good, bad)
+    assert not passed
+    assert gates["onewayness_max"] == 0.2

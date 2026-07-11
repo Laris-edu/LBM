@@ -19,6 +19,7 @@ from pathlib import Path
 
 from scripts.phase2_m2_verification import load_config
 from scripts.phase4_kirchhoff_verification import (
+    convergence_passes,
     run_convergence,
     run_counterexample,
     run_cylindrical,
@@ -48,9 +49,22 @@ def test_k0_discrete_convergence():
 
     cfg = _cfg()
     series = run_convergence(cfg)["series"]
-    assert series[-1]["amp_err_max"] < series[0]["amp_err_max"]
+    assert convergence_passes(
+        series,
+        float(cfg["gates"]["amplitude_rel_max"]),
+        float(cfg["gates"]["phase_deg_max"]),
+    )
     assert series[0]["amp_err_max"] > 0.5          # 1.5 samples/lambda must fail hard
     assert series[-1]["amp_err_max"] < float(cfg["gates"]["amplitude_rel_max"])
+
+
+def test_k0_convergence_rejects_a_refinement_regression_above_the_gate():
+    series = [
+        {"samples_per_wavelength": 1.0, "amp_err_max": 1.0, "phase_err_deg_max": 20.0},
+        {"samples_per_wavelength": 2.0, "amp_err_max": 0.01, "phase_err_deg_max": 1.0},
+        {"samples_per_wavelength": 4.0, "amp_err_max": 0.2, "phase_err_deg_max": 8.0},
+    ]
+    assert not convergence_passes(series, 0.02, 2.0)
 
 
 def test_k0_phase_convention_velocity_channel():

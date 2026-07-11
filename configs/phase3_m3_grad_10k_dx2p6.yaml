@@ -48,6 +48,7 @@ numerics:
 gates:
   T_s_hat_amplitude_relative_error: 0.05
   T_s_hat_phase_error_deg: 5.0
+  wall_temperature_error_K: 1.0e-2
   energy_residual_relative: 1.0e-2
   no_nan: true
   no_clipping_or_floor: true

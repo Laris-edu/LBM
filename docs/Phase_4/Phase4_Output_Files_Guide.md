@@ -1,6 +1,6 @@
 # Phase_4 输出文件导览
 
-**最后更新**：2026-07-09
+**最后更新**：2026-07-11
 **定位**：Phase_4（开边界 / 控制面 / Kirchhoff 远场，M4）的跨目录总览：结构、配置入口、运行产物与归档约定。逐文件说明由各目录 `README.md` 维护（分层混合架构，见 `docs/Doc_Architecture.md`）。
 
 ## 1. 分层混合架构位置
@@ -20,8 +20,8 @@
 | `boundary/` | `boundary/README.md` | **已交付**：`open_cbc.py`（全条带特征阻抗开顶边界终态 + `compose_boundary_callbacks`；12 变体否证留档，P4-1）。`open_sponge.py`（**D3-2 生产 sponge**：顶部扰动衰减吸收层，80 行/σ_max=0.5 达 `\|R\|=0.0004`，静止注入 7e-17）。 |
 | `farfield/` | `farfield/README.md` | **已启用**：`compact_source.py`（D3-4 handoff 映射，MAP CHECK 1.001）、`kirchhoff_2d.py`（**P4-4 K0 PASSED**：约定钉死 `(−i/4)H₀^{(2)}`、fixture `<2%/<2°` 大余量、prefactor 冻结）。待建：控制面采集工具（端到端）。 |
 | `configs/` | `configs/README.md` | 现有：`phase4_m4_smoke.yaml`（P4-0 meta 合同）、`phase4_open_top_reflection_10k.yaml`（P4-1，保留作复现/重启入口）、`phase4_acoustic_coarse_dx334.yaml`（**P4-D3 粗声学域：简化碰撞 + (iv) c₀ 介质标定旋钮 339.9175**，c_SI +0.17%）、`phase4_kirchhoff_fixture.yaml`（P4-4 K0 fixture 参数）。 |
-| `scripts/` | `scripts/README.md` | **已交付**：`phase4_open_boundary_reflection.py`（P4-1 反射测量）、`phase4_volume_injection_probe.py`（P4-1 判决探针）、`phase4_d1_dispersion_locality_probe.py`（D1 判死）、`phase4_d3_coarse_acoustic_probe.py`（D3-1 介质门）、`phase4_d3_acoustic_collision_probe.py`（D3 简化碰撞 core 步）、`phase4_d3_reflection_probe.py`（D3-2 脉冲反射计）、`phase4_d3_interface_probe.py`（D3-3 双向界面诊断，门未过）、`phase4_d3_oneway_probe.py`（D3-3 单向注入，过门）、`phase4_d3_source_extraction_probe.py`（D3-4 源提取三 rig 判定 + RIG1 compact-source 拟合：辐射提取判死、10 kHz MAP CHECK 1.001）、`phase4_d3_map_chain_smoke.py`（D3-4(iii)/(iv) 链路 smoke：G 常数、c_SI 认证量）、`phase4_kirchhoff_verification.py`（P4-4 K0 fixture 验证）、`phase4_m4_endtoend.py`（**P4-5/E2 端到端**，digest `cbcf7d738ede`）。 |
-| `verification/` | `verification/README.md` | **已交付**：`test_phase4_open_boundary.py`（6 绿）、`test_phase4_d3_acoustic.py`（G-D3-1，3 绿）、`test_phase4_d3_acoustic_collision.py`（简化碰撞 core 步，8 绿）、`test_phase4_d3_reflection.py`（G-D3-2，3 绿）、`test_phase4_d3_oneway.py`（G-D3-3 one-way，2 绿）、`test_phase4_d3_compact_source.py`（映射 fixtures，4 绿）、`test_phase4_d3_map_chain.py`（D3-4(iii)/(iv) 链路门，2 绿）、`test_phase4_kirchhoff.py`（P4-4 K0，4 绿）、`test_phase4_m4_endtoend.py`（P4-5 E2，1 绿）。 |
+| `scripts/` | `scripts/README.md` | **已交付**：`phase4_open_boundary_reflection.py`（P4-1 反射测量）、`phase4_volume_injection_probe.py`（P4-1 判决探针）、`phase4_d1_dispersion_locality_probe.py`（D1 判死）、`phase4_d3_coarse_acoustic_probe.py`（D3-1 介质门）、`phase4_d3_acoustic_collision_probe.py`（D3 简化碰撞 core 步）、`phase4_d3_reflection_probe.py`（D3-2 脉冲反射计）、`phase4_d3_interface_probe.py`（D3-3 双向界面诊断，门未过）、`phase4_d3_oneway_probe.py`（D3-3 单向注入，过门）、`phase4_d3_source_extraction_probe.py`（D3-4 源提取三 rig 判定 + RIG1 compact-source 拟合：辐射提取判死、10 kHz MAP CHECK 1.001）、`phase4_d3_map_chain_smoke.py`（D3-4(iii)/(iv) 链路 smoke：G 常数、c_SI 认证量）、`phase4_kirchhoff_verification.py`（P4-4 K0 fixture 验证）、`phase4_m4_endtoend.py`（**P4-5/E2 端到端**，digest `d69bf24d881e`；固定绝对观察点 R2 + 通道相位门）。 |
+| `verification/` | `verification/README.md` | **已交付**：open boundary 6、D3 acoustic 3、collision 8、reflection 3、one-way 3、compact source 4、map chain 3、Kirchhoff 5、M4 E2 2 项；新增反例覆盖假成功、收敛回退与通道相位漏门。 |
 
 ## 3. 阶段文档与报告
 
@@ -33,7 +33,7 @@
 | `docs/Phase_4/README.md` | 目录索引 | 当前 |
 | `docs/Phase_4/M4/P4_1_Open_Boundary_Diagnostic_Report.md` | **P4-1 终态诊断报告（合同 §13.2 交付物）**：体积注入底板机理链、12 变体否证、run 记录、路线选项 | 历史（2026-07-04，P4-1 单网格终态） |
 | `docs/Phase_4/M4/P4_D3_Multidomain_Acoustic_Project.md` | **P4-D3 多域声学外推立项**（当前路线）：授权边界、架构、G-D3-1..4 门、§8 简化碰撞 core 步、§9 D3-2 反射门（G-D3-2 PASS 非退化）、**§10 D3-3 双向界面判死活（反射 ~0.5 不可压门）、§11 D3-3 单向 near→far 重构（G-D3-3 one-way PASS，非退化）、**§12 D3-4 第一刀（辐射提取判死）、§12.1 源侧落地（MAP CHECK 1.001）、§12.2 链路 smoke（G 常数）、§12.3 (iv) 介质标定（c_SI +0.17%）、§12.4 (v) Kirchhoff K0 PASSED、**§13 端到端 E2 PASSED → M4 `PASSED_WITH_SCOPED_RISK`** | 当前（2026-07-09，**D3 主线闭合**） |
-| `docs/Phase_4/M4/M4_Verification_Report.md` | **M4 验证报告**（合同 §11.2 七节：M3 继承边界/开边界/控制面 schema/kernel/端到端/误差预算/scoped 风险与 Phase_5 入口） | 当前（M4 `PASSED_WITH_SCOPED_RISK`，digest `cbcf7d738ede`） |
+| `docs/Phase_4/M4/M4_Verification_Report.md` | **M4 验证报告**（合同 §11.2 七节：M3 继承边界/开边界/控制面 schema/kernel/端到端/误差预算/scoped 风险与 Phase_5 入口） | 当前（M4 `PASSED_WITH_SCOPED_RISK`，digest `d69bf24d881e`） |
 | `docs/Phase_4/M4/M4_Run_Summaries.md` | M4 权威 run 索引（E2 门数值 + 冻结常数链 + 复现命令） | 当前 |
 
 ## 4. 配置入口

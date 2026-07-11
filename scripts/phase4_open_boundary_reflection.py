@@ -553,7 +553,7 @@ def _render_report(p: dict[str, Any]) -> str:
     ])
 
 
-def main() -> None:
+def main() -> int:
     parser = argparse.ArgumentParser(description="Phase_4 P4-1 open-top boundary reflection measurement.")
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     parser.add_argument("--output-root", type=Path, default=None)
@@ -575,7 +575,8 @@ def main() -> None:
         f"(gate {ob['gate_threshold_abs']:g}); wrote results/.../{payload['run_id']}; "
         f"digest={payload['summary_digest']}"
     )
+    return 0 if ob["gate"] == "PASSED" else 1
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

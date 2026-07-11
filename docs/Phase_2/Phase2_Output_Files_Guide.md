@@ -90,7 +90,7 @@ Phase_2 阶段结束后（2026-06-25 整理），本目录按主题归类：
 - `results/m2/<timestamp>/raw/*.h5`
 - `results/m2/<timestamp>/figures/*`
 - `results/phase2_*/<timestamp>/summary.json`
-- `results/m2/<timestamp>/summary.json` 可包含 D2Q37 diagnostic run；即使 automation 通过，也不代表 D2Q37 production pass。
+- `results/m2/<timestamp>/summary.json` 可包含 D2Q37 diagnostic run；非 diagnostic 配置的 automation success 现在同时要求 pytest 与 P2-4/5/6/7/9 配置物理门通过，但仍不等价 final production pass。`config_sha256` 哈希递归 include 后的有效配置，source-file hash 另列。
 
 ### 3.3 需要长期留档时
 

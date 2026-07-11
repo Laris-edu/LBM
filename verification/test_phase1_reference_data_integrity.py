@@ -79,7 +79,7 @@ def test_phase1_reference_files_exist_rows_columns_and_hashes():
 
 def test_manifest_top_level_contract():
     manifest = load_manifest()
-    assert manifest["reference_version"] == "phase1_reference_v1.0"
+    assert manifest["reference_version"] == "phase1_reference_v1.1"
     assert manifest["m1_status"] == "passed"
     assert manifest["decision"] == "proceed_to_phase_2"
     assert manifest["risk_status"] == "GO-RISK"
@@ -99,6 +99,7 @@ def test_baseline_levels_and_energy_residual():
     rows = rows_by_name("baseline_10k.csv")
     assert {row["level"] for row in rows} == {"A", "B", "C"}
     assert np.max(np.abs(as_float(rows, "energy_residual_rel"))) < 1e-12
+    assert np.max(np.abs(as_complex(rows, "u_hat_y_0"))) < 1e-14
 
 
 def test_frequency_sweep_contract():

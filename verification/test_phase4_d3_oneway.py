@@ -18,7 +18,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from scripts.phase2_m2_verification import load_config
-from scripts.phase4_d3_oneway_probe import run_injection, run_bottom_reflection
+from scripts.phase4_d3_oneway_probe import evaluate_oneway_gate, run_injection, run_bottom_reflection
 
 ACOUSTIC_CONFIG = Path("configs/phase4_acoustic_coarse_dx334.yaml")
 NY = 256
@@ -44,3 +44,10 @@ def test_injection_boundary_nonreflecting_and_nondegenerate():
     assert rigid["crash_step"] is None and sponge["crash_step"] is None
     assert rigid["R_abs"] > 0.3        # non-degeneracy: the rig sees reflection
     assert sponge["R_abs"] < 0.05      # the injection boundary is non-reflecting
+
+
+def test_oneway_verdict_rejects_a_reflecting_injection_boundary():
+    injection = {"crash": False, "onewayness": 0.01}
+    rigid = {"crash_step": None, "R_abs": 0.8}
+    sponge = {"crash_step": None, "R_abs": 0.2}
+    assert not evaluate_oneway_gate(injection, rigid, sponge)

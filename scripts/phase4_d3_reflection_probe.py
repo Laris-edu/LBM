@@ -156,7 +156,6 @@ def main() -> None:
         print(f"    sponge n_sponge={n_sp:3d}  {v}")
 
     rigid = next((x for x in results if x["top"] == "rigid"), None)
-    periodic = next((x for x in results if x["top"] == "periodic"), None)
     sponge = [x for x in results if x["top"] == "sponge" and x["R_abs"] is not None]
     thin = min(sponge, key=lambda x: x["n_sponge"]) if sponge else None    # fewest sponge rows
     thick = max(sponge, key=lambda x: x["n_sponge"]) if sponge else None   # most sponge rows (production)

@@ -54,7 +54,7 @@ pip install -r requirements.txt
 - [x] Phase 1：参考连续介质模型（1D NSF）
 - [x] Phase 2：气体侧热 LBM 核心 + 验证（M2 收尾：紧致空气目标 BOUNDED_PRODUCTION_GO）
 - [x] Phase 3：固-流界面耦合（M3 收尾：相位三级 PASS、幅值边界 SCOPED_ACCEPTED；维护态，见 `docs/Phase_3/M3/M3_Closure_Decision.md`）
-- [ ] Phase 4：开边界与远场外推（当前：**P4-1 终态 FAILED**——体积注入底板，合同 §13.2 降级路径已触发；主线阻塞待路线决策，见 `docs/Phase_4/M4/P4_1_Open_Boundary_Diagnostic_Report.md`）
+- [x] Phase 4：开边界与远场外推（P4-1 单网格路线历史 `FAILED` 后由 D3 多域架构绕行；D3-0→D3-4 已闭合，M4=`PASSED_WITH_SCOPED_RISK`，2026-07-11 审查复验 E2 1.62%/R2 2.63%，非 final production、不自动授权 Phase 5）
 - [ ] Phase 5：物理结果生产
 - [ ] Phase 6：论文撰写
 

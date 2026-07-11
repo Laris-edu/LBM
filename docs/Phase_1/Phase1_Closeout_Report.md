@@ -5,7 +5,7 @@
 - M1：已通过
 - Phase_2 入口：已批准
 - 状态：GO-RISK
-- 参考数据版本：phase1_reference_v1.0
+- 参考数据版本：phase1_reference_v1.1
 
 ## 2. 已完成交付物
 
@@ -41,6 +41,8 @@ sha256_of_raw_file_bytes_no_newline_normalization
 ```
 
 所有数据路径均为仓库相对路径。如果后续重新生成任何 CSV，必须同步更新 manifest、数据完整性测试和本封版报告。
+
+2026-07-11 维护修订：修正半空间近壁速度公式，使热支与声支在不可穿透壁面严格抵消；重生成 baseline/frequency/`C_A`/power 四个频域 CSV 并更新 manifest。压力、温度、热流、能量残差和 M1 决策不变。
 
 ## 5. 剩余风险
 

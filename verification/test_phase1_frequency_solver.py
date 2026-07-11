@@ -2,7 +2,10 @@ import math
 
 import numpy as np
 
-from reference.analytical_models import mcdonald_wetsel_like
+from reference.analytical_models import (
+    mcdonald_wetsel_like,
+    pressure_profile_from_exponential_temperature,
+)
 from reference.continuum_1d_freq import (
     solve_level_A_frequency,
     solve_level_B_frequency,
@@ -51,3 +54,15 @@ def test_pressure_temperature_coupling_level_A_B_C():
         )
         _assert_pressure_matches(result, reference)
 
+
+def test_halfspace_velocity_satisfies_impermeable_wall():
+    params = default_params()
+    p_hat, u_hat = pressure_profile_from_exponential_temperature(
+        10_000.0,
+        1.0 + 0.0j,
+        np.asarray([0.0]),
+        params,
+    )
+
+    assert abs(p_hat[0]) > 0.0
+    assert abs(u_hat[0]) < 1.0e-14

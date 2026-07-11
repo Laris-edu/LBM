@@ -144,7 +144,7 @@ def run_rest_stability(base: dict, mode: str, ny: int = 256, nsteps: int = 3000,
                 A.f, A.g = flt(fAs), flt(gAs); B.f, B.g = flt(fBs), flt(gBs)
                 if not (np.isfinite(A.f).all() and np.isfinite(B.f).all()):
                     return {"mode": mode, "crash": s, "growth": None}
-    except LinAlgError as e:
+    except LinAlgError:
         return {"mode": mode, "crash": "LinAlgError", "growth": None}
     mA = A.get_macro(); mB = B.get_macro()
     amp = max(float(np.max(np.abs(mA.rho - rho0))), float(np.max(np.abs(mB.rho - rho0))))

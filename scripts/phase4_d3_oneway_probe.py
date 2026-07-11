@@ -167,7 +167,20 @@ def run_bottom_reflection(base: dict, *, ny: int = 512, n_abs: int = 60, bottom:
     return {"bottom": bottom, "crash_step": None, "R_abs": float(wp_after / max(wm_peak, 1e-300))}
 
 
-def main() -> None:
+def evaluate_oneway_gate(injection: dict, rigid: dict, sponge: dict) -> bool:
+    return bool(
+        not injection.get("crash", True)
+        and injection["onewayness"] < 0.05
+        and rigid.get("crash_step") is None
+        and sponge.get("crash_step") is None
+        and rigid.get("R_abs") is not None
+        and rigid["R_abs"] > 0.3
+        and sponge.get("R_abs") is not None
+        and sponge["R_abs"] < 0.05
+    )
+
+
+def main() -> int:
     ap = argparse.ArgumentParser(description="P4-D3 D3-3 one-way soft-source injection (diagnostic).")
     ap.add_argument("--acoustic-config", type=Path, default=ACOUSTIC_CONFIG)
     ap.add_argument("--ny", type=int, default=512)
@@ -183,15 +196,18 @@ def main() -> None:
               f"{inj['onewayness']:.4f}  (gate <0.05)")
 
     print("\n(2) injection-boundary non-reflection (downward test pulse) + rigid control:")
+    reflection = {}
     for bottom in ("rigid", "sponge"):
         r = run_bottom_reflection(base, ny=args.ny, bottom=bottom)
+        reflection[bottom] = r
         v = f"CRASH@{r['crash_step']}" if r["R_abs"] is None else f"|R|={r['R_abs']:.4f}"
         print(f"    bottom={bottom:7s} {v}")
 
-    print("\nVERDICT: one-way soft-source injection radiates a clean upward wave (one-wayness << gate) and "
-          "the injection boundary is non-reflecting (sponge |R| << rigid control). D3-3 one-way viable; "
-          "amplitude calibration -> D3-4.")
+    passed = evaluate_oneway_gate(inj, reflection["rigid"], reflection["sponge"])
+    print(f"\nVERDICT: {'PASSED' if passed else 'FAILED'} -- one-wayness, sponge reflection, and "
+          "rigid non-degeneracy gates evaluated.")
+    return 0 if passed else 1
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

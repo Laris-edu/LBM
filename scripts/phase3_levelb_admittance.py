@@ -115,7 +115,6 @@ def run_levelb_admittance(
     f = float(frequency_hz_override if frequency_hz_override else physical["frequency_Hz"])
     frequency_overridden = frequency_hz_override is not None
     omega = 2.0 * math.pi * f
-    T0 = float(physical["T0_K"])
     q_hat = complex(
         float(physical["q_wall_hat_W_m2"]["real"]), float(physical["q_wall_hat_W_m2"]["imag"])
     )
@@ -387,7 +386,7 @@ def _render_report(p: dict[str, Any]) -> str:
     ])
 
 
-def main() -> None:
+def main() -> int:
     parser = argparse.ArgumentParser(description="Phase_3 P3-6 Level B dynamic wall-flux response (Grad Neumann).")
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     parser.add_argument("--output-root", type=Path, default=DEFAULT_OUTPUT_ROOT)
@@ -417,7 +416,8 @@ def main() -> None:
         f"q_tracking amp={payload['q_tracking_hat']['amp_rel_err']:+.4f}; "
         f"wrote {args.output_root / payload['run_id']}; digest={payload['summary_digest']}"
     )
+    return 0 if payload["m3_gate"] in {"PASSED", "PHASE_PASS_AMPLITUDE_BOUNDARY"} else 1
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

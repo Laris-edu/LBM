@@ -18,7 +18,7 @@ import pytest
 
 from core.unit_mapping import create_unit_mapping
 from scripts.phase2_m2_verification import load_config
-from scripts.phase3_m3_verification import run_m3_verification
+from scripts.phase3_m3_verification import m3_exit_code, run_m3_verification
 
 
 GAS_CONFIG = Path("configs/gas_air_10k_d2q37_physical_timestep.yaml")
@@ -61,6 +61,7 @@ numerics:
 gates:
   T_s_hat_amplitude_relative_error: 0.05
   T_s_hat_phase_error_deg: 5.0
+  wall_temperature_error_K: 1.0e-2
   energy_residual_relative: 1.0e-2
 """
     path = tmp_path / "m3_machinery_test.yaml"
@@ -83,6 +84,13 @@ def test_m3_script_is_finite_and_audited(payload_and_dir):
     assert payload["stability_flags"]["energy_audit_passed"]
     assert payload["m3_gate"] in {"PASSED", "PHASE_PASS_AMPLITUDE_BOUNDARY", "NOT_PASSED"}
     assert np.isfinite(payload["T_s_hat"]["amp_rel_err"])
+    assert payload["wall_temperature"]["passed"]
+
+
+def test_m3_exit_code_rejects_not_passed():
+    assert m3_exit_code("PASSED") == 0
+    assert m3_exit_code("PHASE_PASS_AMPLITUDE_BOUNDARY") == 0
+    assert m3_exit_code("NOT_PASSED") == 1
 
 
 def test_m3_script_writes_contract_hdf5(payload_and_dir):

@@ -98,7 +98,7 @@ def test_levelc_sinusoidal_drive_uses_phase3_drive_convention():
     assert result.finite
     assert result.energy_audit.passed
     assert result.P_in_si[0] == 1000.0
-    assert result.T_wall_K[-1] == result.T_s_K[-1]
+    assert result.T_wall_K[-1] == pytest.approx(result.T_s_K[-1], abs=1.0e-10)
 
 
 def test_levelc_energy_audit_detects_tampered_trajectory():
@@ -145,6 +145,8 @@ def test_levelc_thermal_grad_wall_is_stable_and_audited():
     assert result.finite
     assert result.energy_audit.passed
     assert np.max(np.abs(result.q_g_one_sided_si)) > 1.0  # real near-wall flux, not ~1e-5 clamp artifact
+    assert np.all(np.abs(result.T_wall_K - result.T_s_K) <= result.wall_temperature_error_K + 1.0e-12)
+    assert np.max(np.abs(result.T_wall_K - result.T_s_K)) > 0.0
     # Coupling is active: T_s deviates strongly from the adiabatic (q_g=0) ramp.
     adiabatic = 1000.0 * (result.t_si[-1] - result.t_si[0]) / params.C_A_si
     assert abs((result.T_s_K[-1] - result.T_s_K[0]) - adiabatic) > 0.3 * adiabatic
@@ -163,4 +165,22 @@ def test_levelc_rejects_unknown_wall_bc_and_bad_relax():
         run_levelc_predictor_corrector(
             solver=solver, params=params, drive=ConstantDrive(power_density_si=1000.0),
             n_steps=2, q_feedback_relax=0.0,
+        )
+    with pytest.raises(ValueError, match="grad_extrap"):
+        run_levelc_predictor_corrector(
+            solver=solver, params=params, drive=ConstantDrive(power_density_si=1000.0),
+            n_steps=2, grad_extrap="typo",
+        )
+
+
+def test_levelc_rejects_a_film_clock_that_differs_from_the_gas_clock():
+    solver = _small_solver()
+    params = FilmOdeParams(C_A_si=7.0e-4, T_ref_K=300.0)
+    with pytest.raises(ValueError, match="subcycling"):
+        run_levelc_predictor_corrector(
+            solver=solver,
+            params=params,
+            drive=ConstantDrive(power_density_si=1000.0),
+            n_steps=2,
+            dt_si=2.0 * solver.mapping.lattice.dt_s,
         )

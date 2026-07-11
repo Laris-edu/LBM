@@ -70,7 +70,7 @@ docs/phase1/Phase1_STATUS.md
 - M1 status: passed
 - Decision: proceed to Phase_2
 - Risk status: GO-RISK
-- Reference version: phase1_reference_v1.0
+- Reference version: phase1_reference_v1.1
 
 ## 2. 有效声明
 
@@ -156,10 +156,10 @@ configs/phase1_reference_manifest.yaml
 
 | 文件 | 行数 | 列数 | SHA256 |
 |---|---:|---:|---|
-| `baseline_10k.csv` | 3 | 92 | `a5b1b87ec1b477225c52f66b11cca068f7cb5269c4326c3d2f529e71fd217b5f` |
-| `frequency_sweep_levelC.csv` | 20 | 92 | `018de583244002e0990ab197ae5ed7dd2ee245d06d453ddc48a9a3ab40acf8b7` |
-| `CA_sweep_levelC.csv` | 100 | 92 | `b141b12270d2ec14cbbb29ddef59c7cd4e70806fcd87480aa5c3b7a18d0831bd` |
-| `power_sweep_levelC.csv` | 10 | 92 | `ee70dc7f6f780a59897fdaa2b60e49c16ac6ddc8105dc368fe69c83dea7bac5c` |
+| `baseline_10k.csv` | 3 | 92 | `740014618e9b41e80ed5157fd1c10e5112d8ca097da1f1ec7a7096048b83eb94` |
+| `frequency_sweep_levelC.csv` | 20 | 92 | `227577c9870ed5c263d6a4f5ad3e185d13f009ce4334d09eb9b5777603761366` |
+| `CA_sweep_levelC.csv` | 100 | 92 | `ec386de77bef9c233f58283ceea473160a09b0dd2f322783d972d5de74864273` |
+| `power_sweep_levelC.csv` | 10 | 92 | `2bac256e02a42c11ff743f0cd4a366d2458323f9f2cd18753951ba632b405d62` |
 | `step_summary_levelC.csv` | 3 | 9 | `eaf6675e3702ceec283032182cb68e0744df2cb5a91bd2bc1535581844b372a4` |
 | `step_transient_CA_1e-05.csv` | 1000 | 10 | `ea933475e38d8a53778367be401b0ddad6f09b44cca6b17470b6a56d35d57eb8` |
 | `step_transient_CA_0.0007.csv` | 1000 | 10 | `6131fac3db0502fd57f522dbfb4c77de3dbe4897636f6ff8f6d425110677b990` |
@@ -169,7 +169,7 @@ configs/phase1_reference_manifest.yaml
 
 ```yaml
 phase: Phase_1
-reference_version: phase1_reference_v1.0
+reference_version: phase1_reference_v1.1
 m1_status: passed
 decision: proceed_to_phase_2
 risk_status: GO-RISK
@@ -201,7 +201,7 @@ files:
   - path: results/phase1_reference/baseline_10k.csv
     rows: 3
     columns: 92
-    sha256: a5b1b87ec1b477225c52f66b11cca068f7cb5269c4326c3d2f529e71fd217b5f
+    sha256: 740014618e9b41e80ed5157fd1c10e5112d8ca097da1f1ec7a7096048b83eb94
     role: "Level A/B/C 10 kHz baseline"
     use_for_m1: true
     use_for_phase2: true
@@ -209,7 +209,7 @@ files:
   - path: results/phase1_reference/frequency_sweep_levelC.csv
     rows: 20
     columns: 92
-    sha256: 018de583244002e0990ab197ae5ed7dd2ee245d06d453ddc48a9a3ab40acf8b7
+    sha256: 227577c9870ed5c263d6a4f5ad3e185d13f009ce4334d09eb9b5777603761366
     role: "Level C frequency response, 1-100 kHz"
     use_for_m1: true
     use_for_phase2: true
@@ -217,7 +217,7 @@ files:
   - path: results/phase1_reference/CA_sweep_levelC.csv
     rows: 100
     columns: 92
-    sha256: b141b12270d2ec14cbbb29ddef59c7cd4e70806fcd87480aa5c3b7a18d0831bd
+    sha256: ec386de77bef9c233f58283ceea473160a09b0dd2f322783d972d5de74864273
     role: "C_A x frequency landscape"
     use_for_m1: true
     use_for_phase2: true
@@ -226,7 +226,7 @@ files:
   - path: results/phase1_reference/power_sweep_levelC.csv
     rows: 10
     columns: 92
-    sha256: ee70dc7f6f780a59897fdaa2b60e49c16ac6ddc8105dc368fe69c83dea7bac5c
+    sha256: 2bac256e02a42c11ff743f0cd4a366d2458323f9f2cd18753951ba632b405d62
     role: "linear proportionality reference, P_hat=100-10000 W/m^2"
     use_for_m1: true
     use_for_phase2: true
@@ -427,10 +427,10 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "results" / "phase1_reference"
 
 EXPECTED = {
-    "baseline_10k.csv": (3, "a5b1b87ec1b477225c52f66b11cca068f7cb5269c4326c3d2f529e71fd217b5f"),
-    "frequency_sweep_levelC.csv": (20, "018de583244002e0990ab197ae5ed7dd2ee245d06d453ddc48a9a3ab40acf8b7"),
-    "CA_sweep_levelC.csv": (100, "b141b12270d2ec14cbbb29ddef59c7cd4e70806fcd87480aa5c3b7a18d0831bd"),
-    "power_sweep_levelC.csv": (10, "ee70dc7f6f780a59897fdaa2b60e49c16ac6ddc8105dc368fe69c83dea7bac5c"),
+    "baseline_10k.csv": (3, "740014618e9b41e80ed5157fd1c10e5112d8ca097da1f1ec7a7096048b83eb94"),
+    "frequency_sweep_levelC.csv": (20, "227577c9870ed5c263d6a4f5ad3e185d13f009ce4334d09eb9b5777603761366"),
+    "CA_sweep_levelC.csv": (100, "ec386de77bef9c233f58283ceea473160a09b0dd2f322783d972d5de74864273"),
+    "power_sweep_levelC.csv": (10, "2bac256e02a42c11ff743f0cd4a366d2458323f9f2cd18753951ba632b405d62"),
     "step_summary_levelC.csv": (3, "eaf6675e3702ceec283032182cb68e0744df2cb5a91bd2bc1535581844b372a4"),
     "step_transient_CA_1e-05.csv": (1000, "ea933475e38d8a53778367be401b0ddad6f09b44cca6b17470b6a56d35d57eb8"),
     "step_transient_CA_0.0007.csv": (1000, "6131fac3db0502fd57f522dbfb4c77de3dbe4897636f6ff8f6d425110677b990"),
