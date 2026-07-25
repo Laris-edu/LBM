@@ -1,12 +1,14 @@
 # Phase_4 阶段状态
 
-**最后更新**：2026-07-11
+**最后更新**：2026-07-20
 **阶段名称**：Phase_4 — 开边界、控制面与 Kirchhoff 远场外推（M4）
 **参考合同**：`docs/Phase_4/phase4_instruction_v1.0.md`（P4-0 已冻结为权威合同）
 > 谱系说明：下一行保留 2026-07-09 状态长摘要；其 E2/R2/digest 已由随后 2026-07-11 审查修订覆盖，当前引用以后者为准。
 **状态口径（2026-07-09）**：**M4 gate = `PASSED_WITH_SCOPED_RISK`（E2 幅值 +2.28%<10%，SPL 86.6 dB ±0.46 dB[M3]，digest `cbcf7d738ede`；M4 报告 `docs/Phase_4/M4/M4_Verification_Report.md`）——P4-D3 多域声学外推主线 D3-0→D3-4 全部闭合**（P4-1 单网格开边界终态 FAILED→架构级绕行；立项 `docs/Phase_4/M4/P4_D3_Multidomain_Acoustic_Project.md`）。非 clear PASS、非 final production、不授权 Phase_5（入口决策属用户）。历程：D3-1 声学介质门 PASS → 简化碰撞 core 步 DONE（§8）→ D3-2 开边界反射门 G-D3-2 PASS（§9，非退化）→ D3-3 双向界面判死活（§10：稳定已解但 sharp-patch 反射 ~0.5 不可压门）→ **用户决策 (b) 单向 near→far 重构 → G-D3-3 one-way PASS（§11，非退化：注入单向性 0.009、注入边界 sponge `|R|=0.001`、刚性底对照 0.80）**。架构真正绕开 P4-1（远场开边界在干净粗声域）。**D3-4 源侧 + 链路落地（立项 §12/§12.1/§12.2）：细域辐射提取判死（注入淹没 31-57×）→ compact-source 映射固化 + 10 kHz MAP CHECK 1.001@+5.3°（源侧预算 ~±8%）→ (iii) 映射→软源→粗域链路 smoke 全绿 → (iv) 介质标定（§12.3）→ (v) Kirchhoff K0 PASSED（§12.4）→ **端到端 E2 PASSED（§13，2026-07-09：幅值 +2.28%<10%、SPL 86.6 dB ±0.46 dB[M3]、digest `cbcf7d738ede`）→ M4 gate = `PASSED_WITH_SCOPED_RISK`**（M4 报告已交付；非 clear PASS、非 final production、不授权 Phase_5）。**D3 主线 D3-0→D3-4 全部闭合**。全套 148 测试绿；Phase_3 维护基线（39 绿）不动；所有产出携带 M3 授权边界。详见 §5。以下为 P4-1 单网格历史结论（不变）：**P4-1 终态 FAILED（2026-07-04，合同 §13.2）**——10 kHz 法向出射门 `|R|<0.05` 在冻结栈上不可达（根因**体积注入底板**：全局周期 FFT 修正 × 边界缝，稳态 `|R|≈0.2–0.3`），诊断报告 `P4_1_Open_Boundary_Diagnostic_Report.md` 已交付。D3 正是绕过该单网格底板（声学域无 dispersion→无注入底板）。
 
 **审查修订（2026-07-11，覆盖上行旧 E2 数值）**：修复 R2 观察点定义（两控制面共享同一绝对观察点、取三点最大值）并把导数通道相位 `<10°` 纳入机器 gate。权威 run 更新为 `results/m4/20260711T063735Z` / digest `d69bf24d881e`：E2 幅值 1.62%<10%、相位 0.92°<10°、R2 2.63%<5%、通道差 −0.36%/−0.07°、SPL 86.67 dB ±0.46 dB[M3]；**全量 158 测试绿**。M4 标签仍为 `PASSED_WITH_SCOPED_RISK`；旧 R2=0.18% 已废止。
+
+**阶段转态（2026-07-20）**：用户决策 **Phase_5 立项**（权威合同 `docs/Phase_5/Phase5_instruct_v1.2.md` v1.2，状态 `docs/Phase_5/Phase5_STATUS.md`），**Phase_4 自此转维护态**。维护基线=全量 158 测试绿 + M4 权威 digest `d69bf24d881e`；任何 core/config 变更须全量重验。M4 标签保持 `PASSED_WITH_SCOPED_RISK`（非 clear PASS、非 final production；Phase_5 立项系用户决策、非 M4 自动授权）；本文其余「入口决策属用户 / 不授权 Phase_5」表述为历史快照，自此由本段收账。
 
 ## 1. 当前结论
 
@@ -26,7 +28,7 @@
 | Control surface（P4-3） | **`DELIVERED`（D3 路线）** | 控制面在**校准粗声域**（row 246/318，双通道 −0.36%/−0.07°，固定绝对观察点 R2 2.63%）；P4-1 时代"细域控制面被底板威胁"的顾虑随 D3 架构消解（M4 报告 §3）。 |
 | Kirchhoff 2D kernel（P4-4） | **`K0 PASSED`（2026-07-09，立项 §12.4）** | `farfield/kirchhoff_2d.py`：约定钉死（`e^{+iΩt}` 下 `(−i/4)H₀^{(2)}`）、四类 manufactured fixture 大余量过 `<2%/<2°`（圆柱 0.08%/0.03°、错核反例 104%）；prefactor 冻结不得端到端反调。 |
 | End-to-end M4 报告（P4-6） | **`DELIVERED`** | `M4_Verification_Report.md`（合同 §11.2 七节）+ `M4_Run_Summaries.md`。 |
-| Final production claim | `NOT_CLAIMED` | M4 `PASSED_WITH_SCOPED_RISK` ≠ final production；Phase_5 入口决策属用户。 |
+| Final production claim | `NOT_CLAIMED` | M4 `PASSED_WITH_SCOPED_RISK` ≠ final production；Phase_5 已于 2026-07-20 立项（用户决策），Phase_4 转维护态。 |
 
 ## 2. P4-0 冻结合同要点（指针，不复制合同正文）
 
@@ -117,6 +119,7 @@
 
 | 日期 | 更新 |
 |---|---|
+| 2026-07-20 | **Phase_4 转维护态**：用户决策 Phase_5 立项（合同 `docs/Phase_5/Phase5_instruct_v1.2.md` v1.2、WP0 冻结）；维护基线=158 绿 + digest `d69bf24d881e`；M4 标签与全部结论不变。 |
 | 2026-07-11 | **代码审查修复并重新认证 E2**：固定绝对观察点 R2、三点最大值、通道相位门、验证 CLI 非零失败退出、Kirchhoff 收敛至门内截断底板规则；新 run `20260711T063735Z` / digest `d69bf24d881e`，E2 1.62%/0.92°、R2 2.63%、通道 −0.36%/−0.07°；全量 158 绿，M4 保持 `PASSED_WITH_SCOPED_RISK`。 |
 | 2026-07-09 | **M4 收尾决策 (b)：scoped 风险 #2/#3 清偿**：① **#3 源相位**——`fit_compact_source_y0_scan`（T 剖面残差判据，反自标定）证明 MAP CHECK 对 y 原点**严格不变**（1.0006@+5.335°，y0*=1.50 两频率一致），+5.335° 改判为真实栈↔映射相位偏移（只进绝对相位声明）、源幅值实现收紧至 ±~3%（立项 §12.1.1）；② **#2 CV 审计**——E2 runner 加粗域声能通量审计（`I(y)=½Re[p̂v̂*]`，带内闭合 ~1%），P4-2 → `DIAGNOSTIC_QUANTIFIED`。E2 重跑门数值逐位复现，权威 run/digest 更新为 `20260709T121241Z`/`cbcf7d738ede`（谱系留档）；绝对 SPL 总带 ±8%→±7%。M4 标签保持 `PASSED_WITH_SCOPED_RISK`（#1/#4/#5 为声明性；改判属用户决策）。 |
 | 2026-07-09 | **端到端 E2 PASSED → M4 gate = `PASSED_WITH_SCOPED_RISK`（立项 §13，D3 主线闭合）**：`scripts/phase4_m4_endtoend.py` + E2 门测试（148 绿）+ `M4_Verification_Report.md` + `M4_Run_Summaries.md`。E2 幅值 +2.28%<10%、相位 1.21°、R2 0.18%、通道差 −0.36%；SPL 86.6 dB ±0.46 dB[M3]；digest `cbcf7d738ede`。链全冻结零调参（G 盲用重现 +1.18%）。表格行更新：P4-3 DELIVERED（D3 路线）、P4-2 DIAGNOSTIC、P4-5 E2 PASSED、P4-6 DELIVERED。 |

@@ -1,6 +1,6 @@
 # configs/ — 算例与验证配置（YAML）
 
-Phase_1 参考算例、Phase_2 生产/诊断映射、Phase_3 smoke/meta 配置与验证模板。`gas_air_10k_d2q37_physical_timestep.yaml`
+Phase_1 参考算例、Phase_2 生产/诊断映射、Phase_3/Phase_4 smoke/meta 配置与验证模板；Phase_5 配置在 `phase5/` 子目录（唯一子目录制目录，见 `phase5/README.md`）。`gas_air_10k_d2q37_physical_timestep.yaml`
 是当前默认生产基线（2026-06-22 RR 升级后）；`gas_air_10k_physical_timestep.yaml` 为 D2Q21 物理时间步候选。
 
 ## Phase_2 气体侧映射
@@ -29,6 +29,12 @@ Phase_1 参考算例、Phase_2 生产/诊断映射、Phase_3 smoke/meta 配置�
 | `phase4_open_top_reflection_10k.yaml` | P4-1 开顶边界反射测量配置（终态）：10 kHz 法向出射、全条带特征阻抗开边界（`boundary/open_cbc.py`，`w_lowpass_periods=0.01` EMA 必开）+ 底部 thermal_grad 振荡壁温热声源 + 探针带特征分解反射计；从 dx2p6 派生（dx/dt/tau/collision/filter 全不动，仅按合同 §2.1 增 `ny=512`；x-uniform 下 `nx=4` 与 `nx=8` 精确等价）；`scripts/phase4_open_boundary_reflection.py` 用；门槛法向出射 `\|R\|<0.05`——**P4-1 终态 FAILED（体积注入底板，见诊断报告），配置保留作复现/重启入口**。 |
 | `phase4_kirchhoff_fixture.yaml` | **P4-4 K0 manufactured fixture 配置**（合同 §9.2 交付件）：纯 Helmholtz fixture 参数（10 kHz 空气味标度但 scale-free）——控制线孔径 600λ/12 采样每 λ、圆柱源深 10λ、5 观察点（含离轴）、平面波速度通道臂、收敛序列 1.5/3/6/12 每 λ、门 `<2%/<2°` + 反例阈 0.5。`scripts/phase4_kirchhoff_verification.py` 与 `verification/test_phase4_kirchhoff.py` 共用。 |
 | `phase4_acoustic_coarse_dx334.yaml` | **P4-D3 独立粗声学域配置**（简化碰撞 + (iv) 介质标定）：dx→334 µm（λ/dx≈104、域高 5λ）、tuned 人为粘性 nu0/alpha0 ×100、`dispersion/acoustic_phase off` + **`acoustic_simplified_collision: true`** + 强局部 filter 0.03×6；**`c0_m_s=339.9175` 是 (iv) 介质标定旋钮**（=347/1.020836，立项 §12.3——介质 10 kHz 相速度超设计 2.08%，旋钮回拉使 **c_SI 落位 +0.17%**、过声学域 P2-6 口径 `<2%` 门；**非空气真值**，源物理/SI 认证一律用 AIR 常数）。**只认证声学**（10 kHz 单频：稳定、backscatter<0.05、`|R|=0.0004` 开边界、c_SI +0.17%）；**不认证热物理**。D3 各门测试在校准介质上全量重验（143 绿）。冻结生产/Level C 配置不受影响（独立文件）。 |
+
+## Phase_5 配置入口（子目录制）
+
+| 位置 | 作用 |
+|---|---|
+| `phase5/README.md` | Phase_5 配置目录与命名规范（合同 §17 子目录制：每 Gate/算例族一个子目录；当前尚无配置文件）。一律从冻结 `gas_air_10k_d2q37_levelc_dx2p6.yaml` 派生（不换 dx/dt/tau）；`q_feedback_relax`/拟合窗/去趋势/滤波按算例族预注册（合同 §0.4）。 |
 
 ## 验证模板
 

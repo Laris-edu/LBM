@@ -31,6 +31,10 @@ class ThermalDiffusionSettings:
     relative_tolerance: float = DEFAULT_RELATIVE_TOLERANCE
     heat_flux_tolerance: float = DEFAULT_HEAT_FLUX_TOLERANCE
     background_velocity_lu: tuple[float, float] = (0.0, 0.0)
+    # Phase_5 G0 (contract §5.1): uniform non-reference background on the SAME
+    # frozen mapping. None -> theta_ref (behaviour identical to Phase_2).
+    background_theta_lu: float | None = None
+    background_path: str = "isobaric"  # "isobaric": rho_b=rho_ref*theta_ref/theta_b | "equal_density"
 
 
 def _settings_from_config(config: dict[str, Any]) -> ThermalDiffusionSettings:
@@ -60,7 +64,28 @@ def _settings_from_config(config: dict[str, Any]) -> ThermalDiffusionSettings:
         relative_tolerance=float(p2.get("relative_tolerance", DEFAULT_RELATIVE_TOLERANCE)),
         heat_flux_tolerance=float(p2.get("heat_flux_tolerance", DEFAULT_HEAT_FLUX_TOLERANCE)),
         background_velocity_lu=_velocity_pair(p2.get("background_velocity_lu", (0.0, 0.0))),
+        background_theta_lu=(
+            None if p2.get("background_theta_lu") is None else float(p2["background_theta_lu"])
+        ),
+        background_path=str(p2.get("background_path", "isobaric")),
     )
+
+
+def _background_state(mapping: Any, settings: Any) -> tuple[float, float]:
+    """Uniform background (theta_b, rho_b) in LU on the frozen mapping (G0 §5.1)."""
+
+    theta_ref = float(mapping.theta_ref_lu)
+    rho_ref = float(mapping.lattice.rho_ref_lu)
+    theta_b = theta_ref if settings.background_theta_lu is None else float(settings.background_theta_lu)
+    if theta_b <= 0.0:
+        raise ValueError("background_theta_lu must be positive")
+    if settings.background_path == "isobaric":
+        rho_b = rho_ref * theta_ref / theta_b
+    elif settings.background_path == "equal_density":
+        rho_b = rho_ref
+    else:
+        raise ValueError(f"unknown background_path: {settings.background_path}")
+    return theta_b, rho_b
 
 
 def _velocity_pair(value: Any) -> tuple[float, float]:
@@ -131,10 +156,10 @@ def _initialize_isobaric_thermal_wave(
     direction: str,
 ) -> float:
     phase, _, k_mag = _direction_phase_and_unit(direction, solver.ny, solver.nx, settings.mode_index)
-    theta0 = solver.mapping.theta_ref_lu
-    theta = theta0 * (1.0 + settings.amplitude * np.sin(phase))
-    p0 = solver.mapping.lattice.rho_ref_lu * theta0
-    rho = p0 / theta
+    theta_b, rho_b = _background_state(solver.mapping, settings)
+    theta = theta_b * (1.0 + settings.amplitude * np.sin(phase))
+    p_b = rho_b * theta_b
+    rho = p_b / theta  # locally isobaric perturbation around the uniform background
     u = np.broadcast_to(np.asarray(settings.background_velocity_lu, dtype=float), (solver.ny, solver.nx, 2)).copy()
     solver.initialize_from_macro(rho, u, theta)
     return k_mag
@@ -202,8 +227,8 @@ def measure_thermal_diffusion_direction(
     max_theta = -np.inf
     max_pressure_drift = 0.0
 
-    theta0 = solver.mapping.theta_ref_lu
-    p0 = solver.mapping.lattice.rho_ref_lu * theta0
+    theta0, rho_bg = _background_state(solver.mapping, settings)
+    p0 = rho_bg * theta0
     _, unit, _ = _direction_phase_and_unit(direction, solver.ny, solver.nx, settings.mode_index)
 
     for step in range(settings.steps + 1):
@@ -269,6 +294,9 @@ def measure_thermal_diffusion_direction(
         "relative_error": float(relative_error) if np.isfinite(relative_error) else np.nan,
         "mode_index": settings.mode_index,
         "background_velocity_lu": list(settings.background_velocity_lu),
+        "background_theta_lu": float(theta0),
+        "background_rho_lu": float(rho_bg),
+        "background_path": settings.background_path,
         "k_mag_lu": k_mag,
         "fitting_window": fit["fitting_window"],
         "residual_norm": fit["residual_norm"],

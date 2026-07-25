@@ -1,4 +1,4 @@
-# verification/ — Phase_2 验证测试与测量 helper
+# verification/ — 验证测试与测量 helper（Phase_1–4 扁平 + Phase_5 子包）
 
 P2 编号冻结为 P2-0…P2-9；后处理和 HDF5 schema 是支撑测试，不新增 P2 编号。
 这些测试是 Phase_2 **框架与合同级**验证，保证接口、单位、守恒和后处理口径正确——
@@ -48,3 +48,4 @@ P2 编号冻结为 P2-0…P2-9；后处理和 HDF5 schema 是支撑测试，不�
 | `test_phase4_d3_compact_source.py` | **P4-D3 compact-source 映射 fixtures（4 项绿）**：`farfield/compact_source.py`（D3-4 handoff 公式）的非重言锚定——闭式 `u_src=(1+i)/2·Ωδ_T·T̂_s/T₀` vs **独立梯形积分** `(iΩ/T₀)∫T̂(y)dy`（<1e-6）；幅/相恒等式（`Ωδ_T/√2`、+45°）；剖面极限（u(0)=0、u(∞)=u_src）与复线性；10 kHz 工作点 `dp=Z₀u_src`（每侧无 ×2）。on-stack 实现检验在提取探针 RIG1、不在此。 |
 | `test_phase4_d3_oneway.py` | **P4-D3 单向注入门 G-D3-3 one-way（2 项绿，非退化）**：单向 near→far 软源注入（`scripts/phase4_d3_oneway_probe.py`）——注入单向性 `w⁻/w⁺<0.05`（上行波干净）；下行脉冲于注入边界 `bottom=sponge \|R\|<0.05`（非反射）vs `bottom=rigid \|R\|>0.3`（非退化对照）。双向 sharp-patch 反射 ~0.5 不可压门（§10）后用户决策 (b) 单向重构过门。ny=256；ny=512 一致（单向性 0.009、sponge 0.001、rigid 0.80）。见立项 §11。 |
 | `test_phase1_*.py` | Phase_1 回归测试（常数、ODE、频率求解、线性度、M1 门、参考数据完整性、热导纳、时/频域一致），Phase_2 必须持续通过。 |
+| `nonlinear/` | **Phase_5 非线性验证子包**（合同 §17）：`phase5_gate_schema.json`（Gate 状态枚举、run 七文件合同、metadata/结果字段的机器可读转录）+ 规划中的 `test_phase5_*.py` Gate 测试；逐文件见 `nonlinear/README.md`。 |

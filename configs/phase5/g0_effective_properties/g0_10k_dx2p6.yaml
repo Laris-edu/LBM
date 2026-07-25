@@ -1,0 +1,55 @@
+# Phase_5 G0-B effective-property measurement (contract Phase5_instruct_v1.2 §5).
+# Frozen mapping: ALL background temperatures reuse the SAME UnitMapping/tau/closure
+# (satisfied by construction: backgrounds enter only through the initial condition;
+# the mapping is created once from the inherited gas config and never re-derived).
+case:
+  name: phase5_g0_effective_properties_10k_dx2p6
+  phase: Phase_5
+  gate: G0-B
+  work_package: WP2
+
+inheritance:
+  gas_config_path: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+  phase5_contract: docs/Phase_5/Phase5_instruct_v1.2.md
+  model_route: ROUTE_B_MAIN
+
+g0:
+  temperatures_K: [270.0, 300.0, 330.0, 360.0]
+  # main thermodynamic path = isobaric (rho_b*T_b = rho0*T0); equal-density is a
+  # reduced diagnostic set (contract §3.1/§5.1: diagnostic only, archived).
+  equal_density_diagnostic:
+    temperatures_K: [270.0, 360.0]
+    wavenumbers: [klow128, k1]
+  # wavenumber grid: two low-k rungs (constitutive-law limit + convergence row)
+  # and the production/instrument layer k1/k2/k3 (contract §5.1) plus the
+  # kbox=2*pi/48 diagnostic serving the WP1-3 energy-excess attribution.
+  wavenumbers:
+    - {label: klow256, ny: 256, mode: 1, layer: low}
+    - {label: klow128, ny: 128, mode: 1, layer: low}
+    - {label: k1, ny: 64, mode: 1, layer: production}
+    - {label: kbox, ny: 48, mode: 1, layer: diagnostic_wp13}
+    - {label: k2, ny: 45, mode: 1, layer: production}
+    - {label: k3, ny: 37, mode: 1, layer: production}
+  acoustic_wavenumbers: [klow128, k1, k2]
+  # 300 K regression caliber: dx2p6 is a (tau,k) point-calibrated instrument;
+  # its documented validity anchor (and the Phase_5 production feature) is k1.
+  regression_wavenumber: k1
+  nx: 4
+  amplitudes: {thermal: 1.0e-5, shear: 1.0e-5, acoustic: 1.0e-6}
+  # adaptive step policy (documented; pre-registered, not tuned per result):
+  # diffusive runs: steps = 0.35/(D_nom*k^2) clamped to [4000, 44000];
+  # acoustic runs: steps = 14 periods clamped to [2000, 20000];
+  # sample_interval keeps <=~1600 samples; fit_start = steps//8 (acoustic //10).
+  steps_policy: {diffusive_decay_fraction: 0.35, diffusive_min: 4000, diffusive_max: 44000,
+                 acoustic_periods: 14, acoustic_min: 2000, acoustic_max: 20000}
+  anisotropy_check: {temperature_K: 300.0, direction: x, wavenumber_ny: 64}
+  window_consistency: {temperature_K: 300.0, wavenumber: k1, fit_start_factors: [0.125, 0.25]}
+
+gates:  # contract §5.3
+  regression_300K_transport_rel: 0.05     # low-k layer vs mapping nominals
+  regression_300K_acoustic_rel: 0.02      # c/gamma at low-k
+  window_consistency_rel: 0.02
+  lowk_convergence_rel: 0.02              # klow256 vs klow128; else finite-k caliber
+
+output:
+  results_root: results/phase5/g0_effective_properties

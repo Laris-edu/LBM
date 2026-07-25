@@ -1,0 +1,282 @@
+{
+  "schema_name": "phase5_gate_schema",
+  "schema_version": "1.2.0",
+  "phase5_contract_version": "v1.2",
+  "source_contract": "docs/Phase_5/Phase5_instruct_v1.2.md",
+  "authority_note": "合同 §4/§16/§17 是规范源；本文件是供脚本/测试消费的机器可读转录，冲突时以合同为准并同步升级 schema_version。Gate 现值不在此维护（唯一追踪处：docs/Phase_5/Phase5_STATUS.md §1）。",
+  "gate_states": {
+    "allowed": [
+      "NOT_RUN",
+      "RUNNING",
+      "PASSED",
+      "FAILED",
+      "SCOPED_CANDIDATE",
+      "SCOPED_PASSED_BY_USER",
+      "WAIVED_BY_SCOPE"
+    ],
+    "script_emittable": ["PASSED", "FAILED", "SCOPED_CANDIDATE"],
+    "user_only": ["SCOPED_PASSED_BY_USER"],
+    "note": "脚本与报告只能产出 script_emittable 三态；SCOPED_PASSED_BY_USER 必须有单独用户决策记录（合同 §4.2/D0-7）。"
+  },
+  "gate_report_required_sections": [
+    "fixture",
+    "metrics",
+    "thresholds",
+    "required_outputs",
+    "failure_labels",
+    "decision_authority",
+    "retest_triggers"
+  ],
+  "results_root": "results/phase5/",
+  "run_id_convention": "UTC 时间戳，如 20260711T063735Z（沿用 Phase_4 先例）",
+  "run_required_files": [
+    "config_resolved.yaml",
+    "summary.json",
+    "signals.h5",
+    "harmonic_fit.json",
+    "provenance.json",
+    "gate_evaluation.json",
+    "run_report.md"
+  ],
+  "run_metadata_required_keys": [
+    "run_id",
+    "created_at",
+    "code_commit",
+    "config_digest",
+    "physics_core_digest",
+    "parent_baseline_run",
+    "phase5_contract_version",
+    "work_package",
+    "gate_id",
+    "case_family",
+    "model_route",
+    "property_model_id",
+    "tau_policy",
+    "mapping_digest",
+    "background_path",
+    "forcing_protocol",
+    "P_mean_W_m2",
+    "P_mean_rematched",
+    "target_Theta_DC",
+    "frequency_Hz",
+    "T_ambient_K",
+    "T_mean_K",
+    "epsilon_AC_measured",
+    "Theta_DC_measured",
+    "chi_0",
+    "chi_eff",
+    "C_A_J_m2K",
+    "dc_heat_sink_model",
+    "dc_heat_sink_parameters",
+    "H_s_role",
+    "thermal_resistance_effective",
+    "grid_shape",
+    "dx_m",
+    "dt_s",
+    "domain_height_m",
+    "boundary_model",
+    "wall_mass_policy",
+    "wall_neutrality_gate_id",
+    "boundary_mass_flux_definition",
+    "boundary_mass_flux_0f_to_3f",
+    "spectral_operator_stack_id",
+    "spectral_correction_enabled",
+    "high_wavenumber_filter_enabled",
+    "high_wavenumber_filter_strength",
+    "operator_ablation_run_id",
+    "q_feedback_relax",
+    "fit_window",
+    "fit_cycles",
+    "detrend_order",
+    "harmonic_order_max",
+    "harmonic_fit_condition_number",
+    "U_det",
+    "U95_fit",
+    "U_gov",
+    "no_clipping",
+    "no_floor",
+    "no_positivity_repair",
+    "gate_status",
+    "scoped_limitations"
+  ],
+  "run_result_required_keys": [
+    "T_s_hat_1f",
+    "p_hat_1f",
+    "p_hat_2f",
+    "p_hat_3f",
+    "outgoing_mode_1f",
+    "outgoing_mode_2f",
+    "outgoing_mode_3f",
+    "G1",
+    "D_G",
+    "D_OP",
+    "H2",
+    "H3",
+    "m1",
+    "m2",
+    "m3",
+    "QS0_error_amplitude",
+    "QS0_error_phase",
+    "QS1_error_amplitude",
+    "QS1_error_phase",
+    "wall_boundary_sensitivity",
+    "operator_sensitivity_D_G",
+    "operator_sensitivity_H2",
+    "operator_sensitivity_H3",
+    "boundary_mass_flux_0f_to_3f",
+    "energy_residual",
+    "mass_or_flux_residual",
+    "wall_temperature_error"
+  ],
+  "case_families": [
+    "a1_signed_zero_mean",
+    "a2a_operating_point",
+    "a2b_self_heating",
+    "a5_chi_map",
+    "finite_width"
+  ],
+  "wp2_gate_order": ["G0-B", "G3", "G1-W", "G1a", "G1b", "G2-T", "G2-A", "G2-O", "G4a"],
+  "wp2_conditional_after": [
+    "G2-T/G2-A/G2-O @ 30 kHz（H3 条件触发，合同 §7.4）",
+    "G4b（先 1D，LBM 需 G1-W 与 G2-O 均通过）"
+  ],
+  "gates": {
+    "G0-B": {
+      "title": "物理模型闭合门（路线 B 有效物性）",
+      "contract_section": "§5",
+      "results_family": "g0_effective_properties",
+      "config_dir": "configs/phase5/g0_effective_properties/",
+      "verification_test": "verification/nonlinear/test_phase5_g0_effective_properties.py",
+      "report_doc": "docs/Phase_5/nonlinear_model_freeze.md",
+      "failure_labels": [
+        "MODEL_CLOSURE_FAILED",
+        "EFFECTIVE_PROPERTY_LAW_NOT_IDENTIFIED",
+        "BACKGROUND_PATH_DEPENDENCE_UNRESOLVED"
+      ]
+    },
+    "G1-W": {
+      "title": "热壁非线性中性与质量约束门（G1a/G1b 前置硬门）",
+      "contract_section": "§6.1",
+      "results_family": "g1w_wall_neutrality",
+      "config_dir": "configs/phase5/g1w_wall_neutrality/",
+      "verification_test": "verification/nonlinear/test_phase5_g1w_wall_neutrality.py",
+      "report_doc": "docs/Phase_5/wall_nonlinearity_neutrality_report.md",
+      "prerequisite_for": ["G1a", "G1b"],
+      "failure_labels": [
+        "NONLINEAR_WALL_NEUTRALITY_FAILED",
+        "PRESSURE_PRESERVING_WALL_DIAGNOSTIC_ONLY",
+        "MASS_NEUTRAL_WALL_NOT_AVAILABLE"
+      ]
+    },
+    "G1a": {
+      "title": "规定壁温气侧幅值包络门",
+      "contract_section": "§6.2",
+      "results_family": "g1a_wall_amplitude",
+      "config_dir": "configs/phase5/g1a_wall_amplitude/",
+      "verification_test": "verification/nonlinear/test_phase5_g1_amplitude_envelope.py",
+      "report_doc": "docs/Phase_5/nonlinear_entry_gate_report.md",
+      "epsilon_ac_targets": [0.001, 0.01, 0.03, 0.05],
+      "epsilon_ac_conditional": [0.075, 0.1],
+      "minimum_amplitude_window": 0.05,
+      "failure_labels": [
+        "AMPLITUDE_ENVELOPE_FAILED_BELOW_0P03",
+        "G1A_ONLY_PASSED",
+        "HERMITE_TEMPERATURE_WINDOW_SCOPED"
+      ]
+    },
+    "G1b": {
+      "title": "Level C 耦合幅值包络门",
+      "contract_section": "§6.3",
+      "results_family": "g1b_levelc_amplitude",
+      "config_dir": "configs/phase5/g1b_levelc_amplitude/",
+      "verification_test": "verification/nonlinear/test_phase5_g1_amplitude_envelope.py",
+      "report_doc": "docs/Phase_5/nonlinear_entry_gate_report.md",
+      "minimum_amplitude_window": 0.05,
+      "failure_labels": ["LEVELC_NONLINEAR_COUPLING_NOT_CERTIFIED"]
+    },
+    "G2-T": {
+      "title": "壁温→出射声学模态热生成链门",
+      "contract_section": "§7.1",
+      "results_family": "g2_thermal_transfer",
+      "config_dir": "configs/phase5/g2_thermal_transfer/",
+      "verification_test": "verification/nonlinear/test_phase5_g2_harmonic_transfer.py",
+      "report_doc": "docs/Phase_5/harmonic_transfer_report.md",
+      "mandatory_frequencies_hz": [10000, 20000],
+      "conditional_frequencies_hz": [30000],
+      "failure_labels": ["G2_2F_NOT_CERTIFIED", "G2_3F_NOT_CERTIFIED", "G2_3F_WAIVED_BY_SIGNAL"]
+    },
+    "G2-A": {
+      "title": "纯声学传播与读出链门",
+      "contract_section": "§7.2",
+      "results_family": "g2_acoustic_transfer",
+      "config_dir": "configs/phase5/g2_acoustic_transfer/",
+      "verification_test": "verification/nonlinear/test_phase5_g2_harmonic_transfer.py",
+      "report_doc": "docs/Phase_5/harmonic_transfer_report.md",
+      "mandatory_frequencies_hz": [10000, 20000],
+      "conditional_frequencies_hz": [30000],
+      "failure_labels": ["G2_2F_NOT_CERTIFIED", "G2_3F_NOT_CERTIFIED"]
+    },
+    "G2-O": {
+      "title": "谱修正与高波数滤波谐波消融门",
+      "contract_section": "§7.3",
+      "results_family": "g2_operator_ablation",
+      "config_dir": "configs/phase5/g2_operator_ablation/",
+      "verification_test": "verification/nonlinear/test_phase5_g2_operator_ablation.py",
+      "report_doc": "docs/Phase_5/harmonic_operator_ablation_report.md",
+      "failure_labels": ["HARMONIC_OPERATOR_ABLATION_FAILED"]
+    },
+    "G3": {
+      "title": "独立非线性 1D NSF 参考门（双物性分支）",
+      "contract_section": "§8",
+      "results_family": "g3_nsf1d",
+      "config_dir": null,
+      "solver_code": "reference/nonlinear_nsf_1d.py",
+      "verification_test": "verification/nonlinear/test_phase5_g3_nsf1d.py",
+      "report_doc": "docs/Phase_5/nonlinear_1d_reference_report.md",
+      "property_branches": ["1D-lbm-equivalent", "1D-physical"],
+      "failure_labels": [
+        "NONLINEAR_1D_REFERENCE_FAILED",
+        "LOW_MACH_RESOLUTION_INSUFFICIENT",
+        "CROSS_VALIDATION_NOT_AVAILABLE"
+      ]
+    },
+    "G4a": {
+      "title": "稳态 DC 基态 + 小扰动门",
+      "contract_section": "§9.1",
+      "results_family": "g4a_dc_base",
+      "results_family_is_convention": true,
+      "config_dir": "configs/phase5/g4_dc_base/",
+      "verification_test": null,
+      "report_doc": "docs/Phase_5/dc_protocol_report.md",
+      "failure_labels": [
+        "DC_BASESTATE_DOMAIN_NOT_CONVERGED",
+        "DC_HEATSINK_PHYSICAL_SENSITIVITY_RECORDED"
+      ]
+    },
+    "G4b": {
+      "title": "自热建立瞬态门（1D 必须、LBM 条件）",
+      "contract_section": "§9.2",
+      "results_family": "g4b_self_heating",
+      "results_family_is_convention": true,
+      "config_dir": "configs/phase5/a2b_self_heating/",
+      "verification_test": null,
+      "report_doc": "docs/Phase_5/dc_protocol_report.md",
+      "prerequisites": ["G1-W", "G2-O", "1D NSF 先行"],
+      "failure_labels": ["A2B_LBM_WAIVED_BY_SCOPE", "A2B_1D_ONLY"]
+    },
+    "G5": {
+      "title": "二维增量门（有限宽度）",
+      "contract_section": "§10",
+      "results_family": "finite_width",
+      "config_dir": "configs/phase5/finite_width/",
+      "verification_test": null,
+      "report_doc": null,
+      "default_decision": "WAIVED_JASA_SCOPE",
+      "variants": ["G5-lite"],
+      "failure_labels": [
+        "FINITE_WIDTH_2D_FAILED_BOUNDARY_ARTIFACT",
+        "FINITE_WIDTH_2D_WAIVED_JASA_SCOPE"
+      ]
+    }
+  }
+}

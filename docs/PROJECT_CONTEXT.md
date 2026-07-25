@@ -1,6 +1,6 @@
 # LBM 项目上下文入口
 
-**最后更新**：2026-07-11
+**最后更新**：2026-07-23
 **用途**：新会话第一份必读文档，用于快速恢复项目阶段、读取路线、不可误判规则和下一步优先级。
 **定位**：全项目生命周期唯一上下文入口，不是某个阶段的专属文档。
 **维护原则**：只保留压缩摘要和入口索引；阶段流水、run 细节、完整数值和推导证据由对应 `PhaseN_STATUS.md`、M 报告和专项诊断报告维护，本文不复制。
@@ -8,35 +8,40 @@
 ## 1. 新会话最小读取
 
 1. `docs/PROJECT_CONTEXT.md`（本文）
-2. 当前阶段状态：`docs/Phase_4/Phase4_STATUS.md`
-3. Phase_4 冻结合同：`docs/Phase_4/phase4_instruction_v1.0.md`
-4. Phase_4 启动授权与硬约束：`docs/Phase_3/M3/M3_Closure_Decision.md`（§3 授权边界、§4 停放项）
-5. 目录 / 文件导览：`docs/Phase_4/Phase4_Output_Files_Guide.md`、`docs/Phase_4/README.md`、各代码目录 `README.md`
-6. Phase_4 配置入口：`configs/phase4_m4_smoke.yaml`、`configs/gas_air_10k_d2q37_levelc_dx2p6.yaml`（主线气侧，不换 dx/tau）、`configs/README.md`
-7. Phase_3 继承边界（维护态）：`docs/Phase_3/Phase3_STATUS.md`、`docs/Phase_3/M3/M3_Verification_Report.md`、`docs/Phase_3/phase3_instruction_v1.0.md`
-8. Phase_2 继承边界：`docs/Phase_2/Phase2_STATUS.md`、`docs/Phase_2/M2/M2_Verification_Report.md`、`docs/Phase_2/M2/M2_Critical_Decision.md`
+2. 当前阶段状态：`docs/Phase_5/Phase5_STATUS.md`（状态标签 + Gate 现值唯一追踪处）
+3. Phase_5 冻结合同：`docs/Phase_5/Phase5_instruct_v1.2.md`（v1.2 权威；WP0 已冻结）
+4. Phase_5 目录 / 规范：`docs/Phase_5/README.md`、`docs/Phase_5/Phase5_Output_Files_Guide.md`、`configs/phase5/README.md`、gate schema `verification/nonlinear/phase5_gate_schema.json`
+5. 继承授权与硬约束（Phase_5 内仍有效）：`docs/Phase_3/M3/M3_Closure_Decision.md`（§3 授权边界、§4 停放项）
+6. Phase_4 继承边界（维护态）：`docs/Phase_4/Phase4_STATUS.md`、`docs/Phase_4/phase4_instruction_v1.0.md`、`docs/Phase_4/M4/M4_Verification_Report.md`
+7. 主线气侧配置（冻结，不换 dx/tau）：`configs/gas_air_10k_d2q37_levelc_dx2p6.yaml`、`configs/README.md`
+8. Phase_3 继承边界（维护态）：`docs/Phase_3/Phase3_STATUS.md`、`docs/Phase_3/M3/M3_Verification_Report.md`、`docs/Phase_3/phase3_instruction_v1.0.md`
+9. Phase_2 继承边界：`docs/Phase_2/Phase2_STATUS.md`、`docs/Phase_2/M2/M2_Verification_Report.md`、`docs/Phase_2/M2/M2_Critical_Decision.md`
 
 更细的专项报告入口见第 6 节。阶段切换或 M3/M4 决策变化时，必须在同一次变更中同步本节读取顺序与第 2 节状态。
 
 推荐新会话提示词：
 
 ```text
-请先阅读 docs/PROJECT_CONTEXT.md 和 docs/Phase_4/Phase4_STATUS.md，
-再读 docs/Phase_4/M4/P4_D3_Multidomain_Acoustic_Project.md（多域声学外推立项，
-D3-1 介质门过、core 步 §8、D3-2 反射门 §9 过、D3-3 §10 双向未过→§11 单向 PASS）。
-P4-1 单网格开边界已 FAILED（体积注入底板，合同 §13.2），现走 D3 多域绕行路线。
-**当前状态：M4 gate = PASSED_WITH_SCOPED_RISK（2026-07-09）——D3 主线 D3-0→D3-4 全部闭合。
-E2 幅值 +1.62%<10%、相位 0.92°、固定绝对观察点 R2 2.63%<5%、SPL 86.67 dB ±0.46 dB[M3]、digest d69bf24d881e；
-M4 报告 docs/Phase_4/M4/M4_Verification_Report.md（七节 + 五项 scoped 风险）。
-非 clear PASS、非 final production、不授权 Phase_5。
-收尾决策 (b) 已执行：#2 CV 审计→DIAGNOSTIC_QUANTIFIED（通量闭合 ~1%）、#3 源相位→已定性（y0 免疫真实偏移）。
-剩余路线级用户决策：(a) Phase_4 转维护态+Phase_5 立项 / (c) 论文优先 / M4 标签是否改判（见 §5），决策前不行动。**
+请先阅读 docs/PROJECT_CONTEXT.md 和 docs/Phase_5/Phase5_STATUS.md，
+再读 Phase_5 冻结合同 docs/Phase_5/Phase5_instruct_v1.2.md。
+**当前状态：Phase_5 已立项（2026-07-20，WP0 范围与合同冻结完成），Phase_4/Phase_3 维护态**
+（M4 = PASSED_WITH_SCOPED_RISK、digest d69bf24d881e、全量 158 测试绿；M3 = SCOPED_ACCEPTED、
+幅值 ±5.4% 边界、单频 10 kHz、dx2p6 不换 dx/tau——两者授权边界在 Phase_5 内仍有效）。
+主路线 = **路线 B 已确认**（2026-07-22 批准 ROUTE_B_MAIN + 1D_REAL_AIR_BOUNDING，
+升级条件预注册于 docs/Phase_5/route_ab_decision_memo.md）。WP1 五件仪器全部交付并认证。
+全部 Phase_5 Gate NOT_RUN（G5 默认 WAIVED_JASA_SCOPE）；A2a+QS-1 是基础论文首要物理锚；
+基础谐波目标 H2/L2-2f@20 kHz（H3 为条件项）；脚本只能产出 PASSED/FAILED/SCOPED_CANDIDATE，
+scoped 升级、路线 A 启动、PRA 升级均属用户决策。
+下一步 = WP2 入口 Gate 自 G0 起（G0 三重使命：有效物性律测定 + WP1-3 能量超额归因 α_eff(k)
++ 1D-lbm-equivalent 实测律挂接）：G0→G3→G1-W→G1a→G1b→G2-T/A/O(10/20 kHz)→G4a。
 回答和文档均使用中文。
 ```
 
 ## 2. 当前阶段与状态
 
-> 谱系说明：下一段保留 2026-07-09 的闭环长摘要；其 E2/R2/digest 数值已由紧随其后的 2026-07-11 审查修订段覆盖，当前引用以后者为准。
+**当前阶段（2026-07-22）：Phase_5 WP1 五项全部交付；路线 B 已确认；进入 WP2 入口 Gate（G0 起）。Phase_4/Phase_3 维护态。** 权威合同 `docs/Phase_5/Phase5_instruct_v1.2.md`（v1.2，评审基线=master `b86459c`，与冻结时 HEAD 一致）；状态标签与 Gate 现值唯一追踪处 `docs/Phase_5/Phase5_STATUS.md`。主路线=**路线 B 已确认**（2026-07-22 用户批准 `ROUTE_B_MAIN + 1D_REAL_AIR_BOUNDING`，`route_ab_decision_memo.md`；升级条件预注册）；基础投稿目标 JASA/JSV、PRA 条件升级；A2a+QS-1 为基础论文首要物理锚（D0-5）；基础谐波目标 H2/L2-2f@20 kHz（H3/30 kHz 条件项）。全部 Phase_5 Gate `NOT_RUN`（G5 默认 `WAIVED_JASA_SCOPE`）、`FINAL_PRODUCTION_NOT_CLAIMED`。执行顺序：WP1 独立仪器 → WP2 入口 Gate（G0→G3→G1-W→G1a→G1b→G2-T/A/O 10/20 kHz→G4a→条件项）→ WP3 首轮 8 信息单元 Go/No-Go → WP4 完整矩阵。维护基线：Phase_4（M4 digest `d69bf24d881e`、全量 158 绿）+ Phase_3（39 绿）；任何 core/config 变更须全量重验并评估合同 §23 定向复验矩阵。
+
+> 谱系说明：以下两段是 Phase_4 期历史长摘要（2026-07-09 / 2026-07-11）。其中「不授权 Phase_5 / 决策前不行动」已由 2026-07-20 立项决策（§4）解除；E2/R2/digest 数值当前引用以 2026-07-11 审查修订段为准。
 
 **当前阶段：Phase_4 走 P4-D3 多域声学外推路线（P4-1 单网格开边界终态 FAILED→架构级绕行）；D3-1 声学介质门 PASS、简化碰撞 core 步 DONE（§4/立项 §8）、D3-2 开边界反射门 PASS（G-D3-2 非退化，立项 §9）；D3-3 双向界面判死活（立项 §10）稳定已解但 sharp-patch 反射 `|R_iface|≈0.5 ≫ 门`→用户决策 (b) 单向重构→**D3-3 单向 near→far `PASS`（G-D3-3 one-way 非退化，立项 §11：注入单向性 0.009、注入边界 sponge `|R|=0.001`、刚性底对照 0.80）**，架构真正绕开 P4-1（远场开边界在干净粗声域）；**D3-4（立项 §12/§12.1）：细域辐射提取判死（注入淹没 31×@40k/57×@10k、Z 签名完美故不可分）→ 源侧落地——`farfield/compact_source.py` 映射固化（`u_src=(1+i)/2·Ωδ_T·T̂_s/T₀`、`dp̂=Z₀u_src` 每侧）+ RIG1 双参数拟合于 10 kHz 标定点 MAP CHECK 1.001@+5.3°（幅值门干净过、相位记边缘；源侧误差预算 ~±8%）；**(iii) 链路 smoke 全绿（§12.2）**——G1 线性 0.0000/0.00°、单向 0.0104、行波干净；**(iv) 声速决断完成（§12.3）**——介质标定（c_SI +0.17%、G 重锁 0.1580@+152.4°）；**(v) Kirchhoff K0 PASSED（§12.4）**——约定钉死（`e^{+iΩt}` 下出射=`(−i/4)H₀^{(2)}`）；**端到端 E2 PASSED → M4 gate=`PASSED_WITH_SCOPED_RISK`（§13，2026-07-09）**——幅值 +2.28%<10%（4.4×）、相位 1.21°、R2 0.18%、SPL **86.6 dB ±0.46 dB[M3 ±5.4%]**、digest `cbcf7d738ede`、148 绿；M4 报告 `M4_Verification_Report.md` 交付。**D3 主线 D3-0→D3-4 闭合；Phase_5 入口决策属用户**。Phase_3 维护态**（M3 收尾决策方案 (a) APPROVED，`docs/Phase_3/M3/M3_Closure_Decision.md`）。P4-1 结论：开顶边界实现（全条带特征阻抗，种子稳定）与测量（特征分解反射计）均交付，但 10 kHz `|R|<0.05` 在冻结栈上不可达——根因是**体积注入底板**（全局周期 FFT dispersion 修正 × 边界行必然制造的 y-缝，~1.1e-4/步离域波注入，有界柱稳态 `|R|≈0.2–0.3`，与顶边界实现无关；无缝平滑场完全干净）；12 个边界变体否证与判决实验见 `docs/Phase_4/M4/P4_1_Open_Boundary_Diagnostic_Report.md`（可复现探针 `scripts/phase4_volume_injection_probe.py`）。路线三选一待用户决策（报告 §6）：(a) 接受降级、论文收缩为近场方法学；(b) 触发停放项重启流程做修正栈缝感知化（唯一通向过门的路）；(c) 有界接受底板（不可行）。Phase_4 唯一主线：解除 y 向周期（开顶边界，门槛 `|R|<0.05`）→ 控制面采集 → 2D Kirchhoff 频域外推 → 远场 `p_hat`/SPL（M4 端到端幅值门 `<10%`，报告携带 M3 ±5.4% 误差带）；不做频扫/参数景观（Phase_5）。权威合同 `docs/Phase_4/phase4_instruction_v1.0.md`。M3 终态（Phase_3 范围）：相位门三级 PASS、幅值边界（近壁读出/重构 (tau,k) 点标定极限）——**scoped 接受、不追认 clear PASS**。 历程：P3-5 定位根因（equilibrium-clamp 热壁 BC，Level C `T_s_hat +61%`）→ P3-5+ Grad 正则化壁面修复（`boundary/wall_thermal_grad.py` 经 `coupling/conjugate.py` 接入）→ P3-6 四项收尾全部完成：④ physics-core digest `26be2fde…` run_id 无关复现（补合同 §9 HDF5 后不变）；③ HDF5 全 metadata（`timeseries.h5`）+ `phase3_m3_summarize.py` + Level A 动态导纳提交脚本（canonical `Y −5.32%/+2.20°`、digest `02cea11e…` 复现）；② **首个 Level B 动态频响**（矩通量积分伺服）`Z +5.47%/−2.24°`（relax 收敛一致；FD 梯度控制器被数据否决——矩通量超发 ~2.5×）；① finer-dx 三重否证（传导 q 导出比是 (tau,k) 窄带点标定 `0.505@k/2`；dx1p3 特征 k 重标可行但 **Grad 壁重构在 dx1p3 tau 失稳**）。**三级自洽**：A `Y −5.32%/+2.20°`、B `Z +5.47%/−2.24°`、C `T_s_hat +5.38%/−1.90°`——同一近壁物理、同一幅值边界；`q_g_hat −0.11%`（能量守恒锚）。合同 §15 七项全覆盖；Phase_3 测试 39 绿。清晰 `<5%` 需 k 鲁棒导出或 tau 鲁棒壁重构（研究级，超出 Phase_3）；**导出窗机理已闭环（2026-07-03）**——raw 矩由平衡-streaming 伪影主导（∝k²、α 无关）、k 鲁棒导出无廉价工程解、唯一真路=碰撞/闭合层建模 neq k² 通道，「特征钉标定 k」的 scoped 运行模式由此获得机理正当性（`docs/Phase_2/closure/Phase2_Conductive_Export_K_Window.md`）。详见 `docs/Phase_3/M3/M3_Verification_Report.md` §9/§10 与 `Phase3_STATUS.md` §1/§3/§5。P3-1/P3-2 只声明壁面 smoke、P3-3 只声明 ODE fixtures、P3-4 只声明 short smoke，均不等于动态门。
 
@@ -58,8 +63,12 @@ M4 报告 docs/Phase_4/M4/M4_Verification_Report.md（七节 + 五项 scoped 风
 | Phase_4 P4-0 contract freeze | `FROZEN`（2026-07-03） |
 | Phase_4 open boundary（P4-1，单网格） | **`FAILED`（2026-07-04，体积注入底板；实现稳定、门不可达；§13.2 诊断报告已交付）→ 转 P4-D3 多域绕行** |
 | P4-D3 多域声学外推 | D3-1 门 `PASS`；core `DONE`；D3-2 `PASS`；D3-3 单向 `PASS`；**D3-4 全链闭合，E2 修订后 1.62%/0.92°、R2 2.63%、SPL 86.67 dB ±0.46 dB[M3]，digest `d69bf24d881e`；M4 gate=`PASSED_WITH_SCOPED_RISK`** |
-| M4 gate | **`PASSED_WITH_SCOPED_RISK`**（2026-07-11 审查复验；E2 +1.62%<10%；scoped 风险：#2 CV→`DIAGNOSTIC_QUANTIFIED`、#3 源相位→已定性；#1/#4/#5 声明性保留；非 clear PASS、非 final production、不授权 Phase_5） |
-| Final production claim | `NOT_CLAIMED` |
+| M4 gate | **`PASSED_WITH_SCOPED_RISK`**（2026-07-11 审查复验；E2 +1.62%<10%；scoped 风险：#2 CV→`DIAGNOSTIC_QUANTIFIED`、#3 源相位→已定性；#1/#4/#5 声明性保留；非 clear PASS、非 final production——Phase_5 立项系用户决策、非 M4 自动授权） |
+| Phase_4 / Phase_3 阶段态 | `维护态`（2026-07-20 起；基线=全量 158 绿 + M4 digest `d69bf24d881e` / Phase_3 39 绿） |
+| Phase_5 WP0 contract freeze | `FROZEN`（2026-07-20；合同 v1.2 + STATUS + README + Output Guide + gate schema + configs/verification 目录规范） |
+| Phase_5 G0-B | **`SCOPED_PASSED_BY_USER`**（2026-07-23 决策 D5-2；α/c/γ@k1 +1.7%/+0.8%/+1.6% 过；围栏=剪切 ν 不认证 + 低波数有限-k 表格口径；`MODEL_CLOSURE_PASSED_ROUTE_B`；冻结文档 `nonlinear_model_freeze.md`） |
+| Phase_5 其余 gates（G1-W/G1a/G1b/G2-T/A/O/G3/G4a/G4b） | `NOT_RUN`（G5 默认 `WAIVED_JASA_SCOPE`；30 kHz G2 与 G4b 为条件项） |
+| Final production claim | `NOT_CLAIMED`（Phase_5 `FINAL_PRODUCTION_NOT_CLAIMED`） |
 
 **Phase_2 继承声明**：对紧致空气薄膜目标（10 kHz、`kL≈0.04<<1`、空气 `Pr<1`、薄膜法向=点阵轴），气体核硬物理相关门全过；剩余残差有界且对该目标物理无关：对角声衰减约 1.31、high-mode 5-12x 过阻尼、Pr=2 鲁棒性。该结论满足进入 Phase_3 的条件，但不等价于 unrestricted/final production pass。
 
@@ -119,6 +128,14 @@ M4 报告 docs/Phase_4/M4/M4_Verification_Report.md（七节 + 五项 scoped 风
 
 ## 3. 不可误判规则
 
+- 不把 Phase_5 WP0 合同冻结写成任何 Phase_5 Gate 通过、科学信号或生产授权；当前全部 Gate `NOT_RUN`、`FINAL_PRODUCTION_NOT_CLAIMED`。
+- G1-W 通过前，不把 `pressure_preserving` 整行 Grad 热壁下的 DC 偏移、H2 或全域质量变化归因为气体有限温升非线性（该壁在规定正弦壁温下内生 `O(ε²)` DC/2f 密度项，合同 §6.1）；该壁在 Phase_5 只能作诊断对照，不得作 DC/H2 生产边界。
+- 未通过 G2-O 算子消融前，不把 2f/3f 解读为纯物理谐波；谐波声明严格按 L1/L2/L3 层级（基础目标 L2-2f@20 kHz；H3/30 kHz 为合同 §7.4 条件项，未触发时 `H3_DIAGNOSTIC_ONLY`，不得因「已算出 3f 数值」升级声明）。
+- 不把 A1 写成真实 Joule 加热协议：它是有符号零均值热功率数值消融（半周期主动抽热，D0-4）；A1 `D_G` 未跨 3% 不构成自动 NO_GO——A2a/QS-1 判别、经认证 H2 或严格上界是并列科学信号（D0-5/合同 §12.5）。
+- 不把「固定 `P_mean` 改 `H_s` 后结果变化」判成数值域高不收敛：`H_s` 是 DC 热阻模型参数，该变化是热沉物理敏感性；G4a 域高检查必须状态匹配（重匹配 `P_mean` 使 `Theta_DC` 1% 内一致，或保持等效热阻，D0-13）。
+- Phase_5 脚本与报告只能产出 `PASSED/FAILED/SCOPED_CANDIDATE`；`SCOPED_PASSED_BY_USER` 只能由用户批准并单独留档（D0-7）；scoped pass 不得写成 clear pass。
+- 不得为通过非线性 Gate 按幅值逐点更换 dx、tau、热流导出因子、色散因子、Grad 壁参数或远场增益；`q_feedback_relax`/拟合窗/去趋势/滤波按算例族预注册（合同 §0.4）；更换生产热壁/谱修正/滤波或其顺序=物理仪器变化，触发合同 §23 定向复验。
+- 不把大 `C_A` 合成点写成实际 CNT 膜设计点（必须标注 `material_relevance`）；非均匀基态下 `chi_eff` 必须由基态线性化或小扰动测量得到，禁止直接套 300 K 公式（合同 §1.2/§3.5）。
 - 不把 P3-0 合同冻结写成 Phase_3 framework pass、Level A/B pass、Level C pass 或 M3 pass。
 - 不把 P3-1 Level A smoke 写成 Level A 动态 thermal admittance M3 pass；热导纳 `<5%/<5 deg` 仍需后续动态验证或 M3 报告声明。
 - 不把 P3-2 Level B heat-flux smoke 写成 Level B 动态频响或 M3 pass；当前只验证 wall-row prescribed `q_g''` readback、符号和能量审计。
@@ -167,6 +184,8 @@ M4 报告 docs/Phase_4/M4/M4_Verification_Report.md（七节 + 五项 scoped 风
 
 ## 4. 当前关键决策
 
+- **路线 A/B 正式决策（2026-07-22，用户决策 D5-1）**：批准维持 `ROUTE_B_MAIN + 1D_REAL_AIR_BOUNDING`（D0-3 预授权默认；备忘录 `docs/Phase_5/route_ab_decision_memo.md`）。依据 WP1 双物性消融：D_G/相位通过 D-AB-2（A1 `D_G>3%` 不可达）；H2 物理分支压低 ~14×（k(T) 相消，指数扫描结构性验证）与 D_OP 分支差 +2.18pp（闭式渗透率效验；恒压等效=常物性 −2.4% vs 真实空气近零）触发 `ROUTE_A_COST_REVIEW_REQUIRED`→评审后不启动路线 A，真实空气定量由 1D-physical 分支承载。升级条件预注册（终稿需 LBM 直接承载真实空气 H2/D_OP 定量值→重开评审）。G0 后复核触发在案（实测律挂接 + p-side H2）。
+- **Phase_5 立项 + WP0 冻结（2026-07-20，用户决策 D5-0）**：用户下达「开始 Phase_5」，`docs/Phase_5/Phase5_instruct_v1.2.md`（v1.2）冻结为 Phase_5 唯一规范性入口与生产合同（评审基线=master `b86459c`，与现行 HEAD 一致）；Phase_4 转维护态（基线 158 绿 + M4 digest `d69bf24d881e`）。WP0 交付：`Phase5_STATUS.md`（状态标签 + Gate 现值）、`docs/Phase_5/README.md`、`Phase5_Output_Files_Guide.md`、gate schema `verification/nonlinear/phase5_gate_schema.json`、目录规范 `configs/phase5/README.md`。路线 B 默认（正式 A/B 决策待 WP1 双物性消融，§2.4）；A2a+QS-1 首要物理锚、H2/L2-2f@20 kHz 基础谐波目标、G5 默认 waived、`D_eng=3%` 主阈值 + 确定性 `U_gov`。下一步 WP1（多谐波拟合器、双 1D NSF、质量中性热壁候选、边界通量审计）。决策记录：`Phase5_STATUS.md` §4。
 - **M4 收尾决策 (b)：scoped 风险 #2/#3 清偿（2026-07-09）**：#3 源相位——`fit_compact_source_y0_scan`（T 剖面残差判据、反自标定）证明 MAP CHECK 对 y 原点**严格不变**（1.0006@+5.335° 三位小数跨全 y0 域；y0*=1.50 两频率一致=几何决定），+5.335° 改判真实栈↔映射相位偏移（40 kHz +9.3° 趋势一致）、源幅值实现收紧 ±~3%（立项 §12.1.1）；#2 CV 审计——E2 runner 增粗域声能通量审计 `I(y)=½Re[p̂v̂*]`（带内闭合 ~1%、I_start=4.496e-4 W/m²、倾斜与 1.1% 单向性干涉一致），P4-2→`DIAGNOSTIC_QUANTIFIED`。E2 重跑门数值**逐位复现**，权威 run/digest→`20260709T121241Z`/`cbcf7d738ede`（谱系留档于 M4_Run_Summaries）；绝对 SPL 带 ±8%→±7%。**标签保持 `PASSED_WITH_SCOPED_RISK`**（#1/#4/#5 声明性；是否改判属用户，镜像 M3 收尾先例）。
 - **M4 端到端：E2 PASSED → M4 gate=`PASSED_WITH_SCOPED_RISK`（2026-07-11 审查修订）**：链常数不变；固定绝对观察点 R2 + 通道相位门后，E2 vs R1 幅值 max +1.62%<10%、相位 0.92°<10°、R2 2.63%<5%、通道 −0.36%/−0.07°；SPL 86.67 dB ±0.46 dB[M3]。权威 run `results/m4/20260711T063735Z`（digest `d69bf24d881e`）；旧 R2 0.18% 废止。M4 措辞与 scoped 风险不变，Phase_5 入口仍属用户。
 - **P4-D3 D3-4(v) Kirchhoff kernel K0 PASSED（2026-07-09，立项 §12.4，P4-4 交付）**：按合同 §9 精确交付四件套——`farfield/kirchhoff_2d.py`（`kirchhoff_2d_frequency` API 逐字合规、`dpdn_from_velocity` 速度通道、`KIRCHHOFF_METADATA` 固化）、`scripts/phase4_kirchhoff_verification.py`、`verification/test_phase4_kirchhoff.py`（4 绿）、`configs/phase4_kirchhoff_fixture.yaml`。**约定一次钉死（P4-0 冻结风险项闭账）**：`x(t)=Re[x̂e^{+iΩt}]` 下 2D 出射 Green=**`(−i/4)H₀^{(2)}(kR)`**（=教科书 `(i/4)H₀^{(1)}` 之共轭；计划书 `hankel1_2d_outgoing` 简写在本约定下映射至此），积分式 `p̂=∮[p̂∂G/∂n−G∂p̂/∂n]dS`（n=辐射侧法向）。**K0 全过大余量**：圆柱 0.082%/0.034°（24×/59×）、离散收敛（欠采样 1.5/λ 错 164%→12/λ 达截断底板 ~0.06%）、速度通道平面波 0.49%/0.50°、**错核反例 104%**（`H₀^{(1)}` 在本约定=入射波，O(1) 失败→fixture 有判别力）。prefactor/Hankel 种类自此冻结、不得对端到端热声结果反调（两通道幅相差 >10%/10° 时按合同 §6 排查数据链、不动 kernel）。全套 147 绿。
@@ -199,17 +218,24 @@ M4 报告 docs/Phase_4/M4/M4_Verification_Report.md（七节 + 五项 scoped 风
 - **array layout 冻结**：`c=(Q,D)`、`w=(Q,)`、`f/g=(...,Q)`、`u/q_lu=(...,D)`；周期验证用 pull streaming，速度轴始终最后一维。
 - **D2Q21 边界**：保留 `central_moment_closure=second_order` 作低模态 C2+ baseline，`fourth_order` 仅 diagnostic。
 
-## 5. 下一步优先级（M4 `PASSED_WITH_SCOPED_RISK` 后，2026-07-09）
+## 5. 下一步优先级（Phase_5 已立项，2026-07-20）
 
-1. **用户决策（阻塞项）：Phase_4 收尾 / Phase_5 入口**。剩余选项不变；决策前维持修订后的 M4 digest `d69bf24d881e` 与 158 测试基线。
-2. **维护基线**：Phase_3 维护态 + Phase_4（M4 digest `d69bf24d881e`）；任何 core/config 变更须全量重验。
-2. **已判死路线（不再返工）**：细域辐射提取（§12 RIG2，注入淹没 31-57×）；双向 sharp-patch 界面（§10，反射 ~0.5）。
-3. **风险/回滚**：compact-source 映射若 10 kHz 定量失锚或误差预算撑破 `<10%` → 回 (a) 降级（合同 §13.2）。x 周期只认证法向出射。
-3. **回滚/收尾 (a)**：任一 G-D3 门失败无廉价修复 → 落合同 §13.2 降级，D1死/b′死/D3 部分正面合成方法学地图。
+1. **✅ WP1 独立仪器开发五项全部完成（2026-07-22）**：多谐波拟合器 + 非线性 1D NSF 双物性 + 质量中性壁/审计（仪器级，G1-W 认证路径预注册、能量超额路由 G0）+ 低马赫/符号对夹具 + **双物性消融/路线备忘录**。消融结果（真实空气 10 kHz）：D_G/相位通过 D-AB-2（两分支至 ε=0.10 线性到 U_det——A1 `D_G>3%` 不可达，D0-5 预判坐实）；**H2 物理分支压低 14–23×、D_OP 符号翻转（lbm −1.31% vs phys +0.87%）→ `ROUTE_A_COST_REVIEW_REQUIRED` 成立**；QS-0 分支内有效（~8–11%）。备忘录 `docs/Phase_5/route_ab_decision_memo.md` 建议维持 D0-3 默认（路线 B 主线 + 1D 真实空气定界）+ 预注册升级条件。✅ 路线决策（2026-07-22，D5-1）→ ✅ **G0-B 已跑（2026-07-23）：`SCOPED_CANDIDATE`**——α/c/γ@k1 锚定全过、有效律冻结为表格口径（`nonlinear_model_freeze.md`：α_eff 温度指数随 k 1.0→5.4；**k1 处 k_eff∝T^1.04 与真实空气 T^0.89 仅差 0.15**；kbox α=0.60×名义→WP1-3 归因输入；k2=0.48×→G2 逐 k 物性）。✅ **实测律挂接复核已执行（2026-07-23，备忘录 §8）**：Δ_prop(D_OP) +2.18pp→−0.38pp（线上、符号翻转消失）、H2 判据比 3.1→1.1-1.2（擦线）——**D5-1 追溯性强化**（LBM 在标定点内禀近空气导热标度 T^1.04）。✅ **G0 scoped 升级已批准（2026-07-23，D5-2：围栏=剪切 ν 不认证[G5 复审触发重开] + 低波数有限-k 表格口径；`MODEL_CLOSURE_PASSED_ROUTE_B`）** → **当前：G3（WP2 顺序次门）**——1D NSF 正式认证：run 合同七文件 + ≥1.5 收敛阶梯 + 双分支正式定义（含 g0 实测律）+ p-side H2 复核 + `nonlinear_1d_reference_report.md`。
+2. **WP2 入口 Gate（顺序冻结）**：G0 → G3 → G1-W → G1a → G1b → G2-T/G2-A/G2-O（10/20 kHz）→ G4a →（条件 30 kHz G2 / 条件 G4b）。G1-W 通过前 `pressure_preserving` 壁只作诊断。
+3. **维护基线**：Phase_4（158 绿 + M4 digest `d69bf24d881e`）与 Phase_3（39 绿）维护态；任何 core/config 变更须全量重验，并评估合同 §23 定向复验矩阵。
 4. **停放项（条件重启，见 `M3_Closure_Decision.md` §4）**：k 鲁棒传导导出、tau 鲁棒 Grad 壁重构、Level A/B/C 清晰 `<5%` 幅值门。
-5. **延后项**：频扫/功率扫/参数景观（Phase_5）、非紧致/高 k/`Pr>1`、RR high-mode 输运重标、RR 热 dispersion 泛化。
+5. **Phase_5 内冻结的延后/条件项**：G5 默认 `WAIVED_JASA_SCOPE`（G5-lite 可先行）；H3/30 kHz 条件触发（合同 §7.4）；A2b LBM 条件执行；F1 稀疏频点条件项；A4 双音最后考虑。Phase_4 期已判死路线不返工（细域辐射提取、双向 sharp-patch 界面、P4-1 单网格开边界）。
 
 ## 6. 详细事实入口
+
+### Phase_5
+
+- Phase_5 冻结合同（v1.2 权威）：`docs/Phase_5/Phase5_instruct_v1.2.md`
+- Phase_5 当前状态（状态标签 + Gate 现值唯一追踪处）：`docs/Phase_5/Phase5_STATUS.md`
+- Phase_5 文档目录索引：`docs/Phase_5/README.md`
+- Phase_5 输出导览（跨目录落位 + 归档约定）：`docs/Phase_5/Phase5_Output_Files_Guide.md`
+- Gate schema（机器可读，合同 §4/§16 转录）：`verification/nonlinear/phase5_gate_schema.json`
+- Phase_5 配置目录规范（子目录制）：`configs/phase5/README.md`
 
 ### Phase_4
 

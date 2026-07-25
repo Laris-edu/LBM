@@ -30,6 +30,10 @@ class ShearWaveSettings:
     relative_tolerance: float = DEFAULT_RELATIVE_TOLERANCE
     direction_tolerance: float = DEFAULT_DIRECTION_TOLERANCE
     background_velocity_lu: tuple[float, float] = (0.0, 0.0)
+    # Phase_5 G0 (contract §5.1): uniform non-reference background on the SAME
+    # frozen mapping. None -> theta_ref (behaviour identical to Phase_2).
+    background_theta_lu: float | None = None
+    background_path: str = "isobaric"  # "isobaric" | "equal_density"
 
 
 def _settings_from_config(config: dict[str, Any]) -> ShearWaveSettings:
@@ -61,7 +65,28 @@ def _settings_from_config(config: dict[str, Any]) -> ShearWaveSettings:
         relative_tolerance=float(p2.get("relative_tolerance", DEFAULT_RELATIVE_TOLERANCE)),
         direction_tolerance=float(p2.get("direction_tolerance", DEFAULT_DIRECTION_TOLERANCE)),
         background_velocity_lu=_velocity_pair(p2.get("background_velocity_lu", (0.0, 0.0))),
+        background_theta_lu=(
+            None if p2.get("background_theta_lu") is None else float(p2["background_theta_lu"])
+        ),
+        background_path=str(p2.get("background_path", "isobaric")),
     )
+
+
+def _background_state(mapping: Any, settings: Any) -> tuple[float, float]:
+    """Uniform background (theta_b, rho_b) in LU on the frozen mapping (G0 §5.1)."""
+
+    theta_ref = float(mapping.theta_ref_lu)
+    rho_ref = float(mapping.lattice.rho_ref_lu)
+    theta_b = theta_ref if settings.background_theta_lu is None else float(settings.background_theta_lu)
+    if theta_b <= 0.0:
+        raise ValueError("background_theta_lu must be positive")
+    if settings.background_path == "isobaric":
+        rho_b = rho_ref * theta_ref / theta_b
+    elif settings.background_path == "equal_density":
+        rho_b = rho_ref
+    else:
+        raise ValueError(f"unknown background_path: {settings.background_path}")
+    return theta_b, rho_b
 
 
 def _velocity_pair(value: Any) -> tuple[float, float]:
@@ -126,8 +151,9 @@ def _initialize_shear_wave(solver: GasSolver2D, settings: ShearWaveSettings, dir
         solver.nx,
         settings.mode_index,
     )
-    rho = np.ones((solver.ny, solver.nx), dtype=float)
-    theta = np.full((solver.ny, solver.nx), solver.mapping.theta_ref_lu, dtype=float)
+    theta_b, rho_b = _background_state(solver.mapping, settings)
+    rho = np.full((solver.ny, solver.nx), rho_b, dtype=float)
+    theta = np.full((solver.ny, solver.nx), theta_b, dtype=float)
     u = np.broadcast_to(np.asarray(settings.background_velocity_lu, dtype=float), (solver.ny, solver.nx, 2)).copy()
     u += settings.amplitude * np.sin(phase)[..., None] * transverse[None, None, :]
     solver.initialize_from_macro(rho, u, theta)
@@ -182,6 +208,7 @@ def measure_shear_wave_direction(config: dict[str, Any], direction: str, setting
 
     solver = GasSolver2D(_simulation_config(config, settings, direction))
     k2 = _initialize_shear_wave(solver, settings, direction)
+    theta_bg, rho_bg = _background_state(solver.mapping, settings)
     times: list[int] = []
     amplitudes: list[complex] = []
     first_invalid_step: int | None = None
@@ -200,7 +227,7 @@ def measure_shear_wave_direction(config: dict[str, Any], direction: str, setting
         theta_max = float(np.nanmax(macro.theta)) if macro.theta.size else np.nan
         min_theta = min(min_theta, theta_min)
         max_theta = max(max_theta, theta_max)
-        max_rho_drift = max(max_rho_drift, float(np.nanmax(np.abs(macro.rho - 1.0))))
+        max_rho_drift = max(max_rho_drift, float(np.nanmax(np.abs(macro.rho - rho_bg))))
         if (not finite) or theta_min <= 0.0:
             first_invalid_step = step
             negative_theta_detected = negative_theta_detected or bool(theta_min <= 0.0)
@@ -232,6 +259,9 @@ def measure_shear_wave_direction(config: dict[str, Any], direction: str, setting
         "nu_target_lu": float(nu_target),
         "nu_measured_lu": float(nu_measured) if np.isfinite(nu_measured) else np.nan,
         "relative_error": float(relative_error) if np.isfinite(relative_error) else np.nan,
+        "background_theta_lu": float(theta_bg),
+        "background_rho_lu": float(rho_bg),
+        "background_path": settings.background_path,
         "mode_index": settings.mode_index,
         "background_velocity_lu": list(settings.background_velocity_lu),
         "k2_lu": k2,

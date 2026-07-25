@@ -35,6 +35,10 @@ class AcousticWaveSettings:
     gamma_tolerance: float = DEFAULT_GAMMA_TOLERANCE
     direction_tolerance: float = DEFAULT_DIRECTION_TOLERANCE
     background_velocity_lu: tuple[float, float] = (0.0, 0.0)
+    # Phase_5 G0 (contract §5.1): uniform non-reference background on the SAME
+    # frozen mapping. None -> theta_ref (behaviour identical to Phase_2).
+    background_theta_lu: float | None = None
+    background_path: str = "isobaric"  # "isobaric" | "equal_density"
 
 
 def _settings_from_config(config: dict[str, Any]) -> AcousticWaveSettings:
@@ -65,7 +69,28 @@ def _settings_from_config(config: dict[str, Any]) -> AcousticWaveSettings:
         gamma_tolerance=float(p2.get("gamma_tolerance", DEFAULT_GAMMA_TOLERANCE)),
         direction_tolerance=float(p2.get("direction_tolerance", DEFAULT_DIRECTION_TOLERANCE)),
         background_velocity_lu=_velocity_pair(p2.get("background_velocity_lu", (0.0, 0.0))),
+        background_theta_lu=(
+            None if p2.get("background_theta_lu") is None else float(p2["background_theta_lu"])
+        ),
+        background_path=str(p2.get("background_path", "isobaric")),
     )
+
+
+def _background_state(mapping: Any, settings: Any) -> tuple[float, float]:
+    """Uniform background (theta_b, rho_b) in LU on the frozen mapping (G0 §5.1)."""
+
+    theta_ref = float(mapping.theta_ref_lu)
+    rho_ref = float(mapping.lattice.rho_ref_lu)
+    theta_b = theta_ref if settings.background_theta_lu is None else float(settings.background_theta_lu)
+    if theta_b <= 0.0:
+        raise ValueError("background_theta_lu must be positive")
+    if settings.background_path == "isobaric":
+        rho_b = rho_ref * theta_ref / theta_b
+    elif settings.background_path == "equal_density":
+        rho_b = rho_ref
+    else:
+        raise ValueError(f"unknown background_path: {settings.background_path}")
+    return theta_b, rho_b
 
 
 def _velocity_pair(value: Any) -> tuple[float, float]:
@@ -137,8 +162,7 @@ def _initialize_acoustic_wave(
     phase, unit, k_mag = _direction_phase_and_unit(direction, solver.ny, solver.nx, settings.mode_index)
     mapping = solver.mapping
     gamma = mapping.physical.gamma
-    theta0 = mapping.theta_ref_lu
-    rho0 = mapping.lattice.rho_ref_lu
+    theta0, rho0 = _background_state(mapping, settings)
     c_s = float(np.sqrt(gamma * theta0))
 
     rho = rho0 * (1.0 + settings.amplitude * np.sin(phase))
@@ -267,8 +291,7 @@ def measure_acoustic_wave_direction(
     solver = GasSolver2D(_simulation_config(config, settings, direction))
     phase, unit, k_mag = _initialize_acoustic_wave(solver, settings, direction)
     mapping = solver.mapping
-    rho0 = mapping.lattice.rho_ref_lu
-    theta0 = mapping.theta_ref_lu
+    theta0, rho0 = _background_state(mapping, settings)
     p0 = rho0 * theta0
     c_target = float(np.sqrt(mapping.physical.gamma * theta0))
     background_advection = float(np.dot(np.asarray(settings.background_velocity_lu, dtype=float), unit))
@@ -380,6 +403,9 @@ def measure_acoustic_wave_direction(
         "attenuation_status": ACOUSTIC_ATTENUATION_STATUS,
         "mode_index": settings.mode_index,
         "background_velocity_lu": list(settings.background_velocity_lu),
+        "background_theta_lu": float(theta0),
+        "background_rho_lu": float(rho0),
+        "background_path": settings.background_path,
         "background_advection_lu": background_advection,
         "lab_phase_speed_lu": float(lab_phase_speed) if np.isfinite(lab_phase_speed) else np.nan,
         "intrinsic_phase_speed_lu": (

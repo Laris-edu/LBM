@@ -1,0 +1,42 @@
+{
+ "run_id": "20260722T173919Z",
+ "created_at": "2026-07-22T17:39:19.618222+00:00",
+ "code_commit": "b86459c590f406a2e0bfe452d6a73a61ede4b611",
+ "phase5_contract_version": "v1.2",
+ "work_package": "WP2",
+ "gate_id": "G0-B",
+ "model_route": "ROUTE_B_MAIN",
+ "config_path": "configs\\phase5\\g0_effective_properties\\g0_10k_dx2p6.yaml",
+ "config_digest": "8de7138da32b",
+ "gas_config_path": "configs\\gas_air_10k_d2q37_levelc_dx2p6.yaml",
+ "gas_config_digest": "849699bb37f6",
+ "mapping": {
+  "dx_m": 2.61175e-06,
+  "dt_s": 1.95881e-09,
+  "theta_ref_lu": 0.04837849258185211,
+  "alpha_lu_nominal": 0.0063847269603904055,
+  "nu_lu_nominal": 0.0045084655773953205,
+  "gamma": 1.4
+ },
+ "background_paths": [
+  "isobaric",
+  "equal_density(diagnostic)"
+ ],
+ "temperatures_K": [
+  270.0,
+  300.0,
+  330.0,
+  360.0
+ ],
+ "n_measurement_rows": 31,
+ "property_table_digest": "8bbacf242674",
+ "gate_status": "SCOPED_CANDIDATE",
+ "scoped_limitations": [
+  "regression_300K_nu_at_calibration_k",
+  "lowk_convergence"
+ ],
+ "regression_wavenumber": "k1",
+ "no_clipping": true,
+ "no_floor": true,
+ "no_positivity_repair": true
+}

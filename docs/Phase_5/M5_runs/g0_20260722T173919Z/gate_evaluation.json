@@ -1,0 +1,73 @@
+{
+ "gate_id": "G0-B",
+ "verdict": "SCOPED_CANDIDATE",
+ "rows": {
+  "regression_300K_alpha_at_calibration_k": {
+   "wavenumber": "k1",
+   "value": 0.01734361762625669,
+   "gate": 0.05,
+   "passed": true
+  },
+  "regression_300K_nu_at_calibration_k": {
+   "wavenumber": "k1",
+   "value": 0.33769771998104503,
+   "gate": 0.05,
+   "passed": false,
+   "caliber_note": "shear is a documented non-QoI on dx2p6 (Phase_3); failure here scopes, it does not hard-fail"
+  },
+  "regression_300K_c_at_calibration_k": {
+   "value": 0.00817270697335104,
+   "gate": 0.02,
+   "passed": true
+  },
+  "regression_300K_gamma_at_calibration_k": {
+   "value": 0.016412207085974462,
+   "gate": 0.02,
+   "passed": true
+  },
+  "window_consistency": {
+   "value": 6.000701205211012e-05,
+   "gate": 0.02,
+   "passed": true
+  },
+  "lowk_convergence": {
+   "value": 0.23179054543295308,
+   "gate": 0.02,
+   "passed": false,
+   "caliber_note": "if failed: low-k layer reported as finite-k effective coefficients (contract \u00a75.3); scopes, does not hard-fail"
+  },
+  "paths_archived": {
+   "passed": true,
+   "note": "isobaric main + equal-density diagnostic archived"
+  },
+  "numerical_discipline": {
+   "passed": true,
+   "no_clipping": true,
+   "no_floor": true,
+   "no_positivity_repair": true,
+   "problems": []
+  }
+ },
+ "lowk_convergence_by_T": [
+  {
+   "T_K": 270.0,
+   "alpha_rel_diff": 0.09760103871161441,
+   "nu_rel_diff": 0.23179054543295308
+  },
+  {
+   "T_K": 300.0,
+   "alpha_rel_diff": 0.07711621344737218,
+   "nu_rel_diff": 0.21546203072097236
+  },
+  {
+   "T_K": 330.0,
+   "alpha_rel_diff": 0.06259129136539765,
+   "nu_rel_diff": 0.2013168458207214
+  },
+  {
+   "T_K": 360.0,
+   "alpha_rel_diff": 0.0518997986104206,
+   "nu_rel_diff": 0.18894414734871634
+  }
+ ]
+}
