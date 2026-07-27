@@ -1,0 +1,88 @@
+gate_id: G3
+case_family: g3_nsf1d
+protocol:
+  label: g3_production_real_air_10kHz
+  frequency_hz: 10000.0
+  params_overrides: {}
+  equilibrium:
+    n_cycles: 10.0
+    cells_per_delta: 12.0
+    height_over_delta: 15.0
+  anchor:
+    epsilon: 0.0001
+    height_over_delta: 15.0
+    n_cycles: 8.0
+    settle_cycles: 3.0
+    samples_per_cycle: 64
+    n_harmonics: 5
+    ladder_cells_per_delta:
+    - 6.0
+    - 12.0
+    - 24.0
+    anchor_eval_cells_per_delta: 12.0
+  pair:
+    epsilon: 1.0e-05
+    height_over_delta: 4.0
+    cells_per_delta: 8.0
+    n_cycles: 11.0
+    settle_cycles: 7.0
+  ringdown:
+    height_m: 0.0005
+    n_cells: 64
+    epsilon: 0.0001
+    n_periods: 12.0
+    boundary: adiabatic
+    gamma_ratio_window:
+    - 0.85
+    - 1.25
+    freq_offset_max: 0.01
+    isothermal_diagnostic_n_cells:
+    - 64
+    - 32
+  a1_ablation:
+    epsilons:
+    - 0.005
+    - 0.03
+    - 0.05
+    - 0.1
+    m2_fit_epsilons:
+    - 0.03
+    - 0.05
+    - 0.1
+    height_over_delta: 15.0
+    cells_per_delta: 12.0
+    n_cycles: 8.0
+    settle_cycles: 3.0
+    ramp_cycles: 1.5
+    representative_epsilon: 0.05
+  a1_floor_pair:
+    epsilon: 0.005
+    enabled: true
+  resolvability_min: 100.0
+gates:
+  equilibrium_dp_rel: 1.0e-10
+  linear_limit_amp_rel: 0.02
+  linear_limit_phase_deg: 2.0
+  convergence_order_min: 1.5
+  finest_two_rel: 0.01
+  energy_residual_rel: 0.005
+  leakage_max: 1.0e-08
+  leakage_sensitivity_min: 1.0e-07
+branches:
+  formal:
+    1D-lbm-equivalent: 1D-lbm-equivalent_g0_measured_k1_v1
+    1D-physical: 1D-physical_air_sutherland_anchored_T0_v1
+  diagnostic_lineage: 1D-lbm-equivalent_reference_constant_v1
+  g0_measured_exponents:
+    k: 1.04
+    mu: -0.6
+  anchor_note: all branches anchored at frozen (mu, kg, T0); k1 single-point surrogate
+    caveat frozen in reference/nonlinear_nsf_1d.py docstring
+params_si:
+  T0: 300.0
+  p0: 101325.0
+  rho0: 1.177
+  cp: 1005.0
+  kg: 0.0263
+  nu0: 1.57e-05
+  mu_bulk: 0.0

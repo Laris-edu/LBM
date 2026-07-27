@@ -1,6 +1,6 @@
 # LBM 项目上下文入口
 
-**最后更新**：2026-07-23
+**最后更新**：2026-07-27
 **用途**：新会话第一份必读文档，用于快速恢复项目阶段、读取路线、不可误判规则和下一步优先级。
 **定位**：全项目生命周期唯一上下文入口，不是某个阶段的专属文档。
 **维护原则**：只保留压缩摘要和入口索引；阶段流水、run 细节、完整数值和推导证据由对应 `PhaseN_STATUS.md`、M 报告和专项诊断报告维护，本文不复制。
@@ -29,17 +29,20 @@
 幅值 ±5.4% 边界、单频 10 kHz、dx2p6 不换 dx/tau——两者授权边界在 Phase_5 内仍有效）。
 主路线 = **路线 B 已确认**（2026-07-22 批准 ROUTE_B_MAIN + 1D_REAL_AIR_BOUNDING，
 升级条件预注册于 docs/Phase_5/route_ab_decision_memo.md）。WP1 五件仪器全部交付并认证。
-全部 Phase_5 Gate NOT_RUN（G5 默认 WAIVED_JASA_SCOPE）；A2a+QS-1 是基础论文首要物理锚；
-基础谐波目标 H2/L2-2f@20 kHz（H3 为条件项）；脚本只能产出 PASSED/FAILED/SCOPED_CANDIDATE，
-scoped 升级、路线 A 启动、PRA 升级均属用户决策。
-下一步 = WP2 入口 Gate 自 G0 起（G0 三重使命：有效物性律测定 + WP1-3 能量超额归因 α_eff(k)
-+ 1D-lbm-equivalent 实测律挂接）：G0→G3→G1-W→G1a→G1b→G2-T/A/O(10/20 kHz)→G4a。
-回答和文档均使用中文。
+WP2 已闭合三门：G0-B `SCOPED_PASSED_BY_USER`（D5-2，有效律冻结 nonlinear_model_freeze.md）、
+G3 `PASSED`（2026-07-26，1D NSF 参考认证 + 正式分支定义 + p-side 复核，
+nonlinear_1d_reference_report.md）、G1-W `PASSED`（2026-07-27，**生产壁=v1.1 对称质量中性壁**、
+旧壁 DIAGNOSTIC_ONLY、+13%/+20° 超额归因闭合，wall_nonlinearity_neutrality_report.md）；
+其余 Gate NOT_RUN（G5 默认 WAIVED_JASA_SCOPE）。
+A2a+QS-1 是基础论文首要物理锚；基础谐波目标 H2/L2-2f@20 kHz（H3 为条件项）；
+脚本只能产出 PASSED/FAILED/SCOPED_CANDIDATE，scoped 升级、路线 A 启动、PRA 升级均属用户决策。
+下一步 = **G1a**（规定壁温气侧幅值包络，合同 §6.2，用已认证生产壁）→ G1b→
+G2-T/A/O(10/20 kHz)→G4a。回答和文档均使用中文。
 ```
 
 ## 2. 当前阶段与状态
 
-**当前阶段（2026-07-22）：Phase_5 WP1 五项全部交付；路线 B 已确认；进入 WP2 入口 Gate（G0 起）。Phase_4/Phase_3 维护态。** 权威合同 `docs/Phase_5/Phase5_instruct_v1.2.md`（v1.2，评审基线=master `b86459c`，与冻结时 HEAD 一致）；状态标签与 Gate 现值唯一追踪处 `docs/Phase_5/Phase5_STATUS.md`。主路线=**路线 B 已确认**（2026-07-22 用户批准 `ROUTE_B_MAIN + 1D_REAL_AIR_BOUNDING`，`route_ab_decision_memo.md`；升级条件预注册）；基础投稿目标 JASA/JSV、PRA 条件升级；A2a+QS-1 为基础论文首要物理锚（D0-5）；基础谐波目标 H2/L2-2f@20 kHz（H3/30 kHz 条件项）。全部 Phase_5 Gate `NOT_RUN`（G5 默认 `WAIVED_JASA_SCOPE`）、`FINAL_PRODUCTION_NOT_CLAIMED`。执行顺序：WP1 独立仪器 → WP2 入口 Gate（G0→G3→G1-W→G1a→G1b→G2-T/A/O 10/20 kHz→G4a→条件项）→ WP3 首轮 8 信息单元 Go/No-Go → WP4 完整矩阵。维护基线：Phase_4（M4 digest `d69bf24d881e`、全量 158 绿）+ Phase_3（39 绿）；任何 core/config 变更须全量重验并评估合同 §23 定向复验矩阵。
+**当前阶段（2026-07-27）：Phase_5 WP2 已闭合 G0-B（scoped by user）、G3（PASSED）、G1-W（PASSED，生产壁认证）；当前次门 G1a。Phase_4/Phase_3 维护态。** 权威合同 `docs/Phase_5/Phase5_instruct_v1.2.md`（v1.2，评审基线=master `b86459c`，与冻结时 HEAD 一致）；状态标签与 Gate 现值唯一追踪处 `docs/Phase_5/Phase5_STATUS.md`。主路线=**路线 B 已确认**（2026-07-22 用户批准 `ROUTE_B_MAIN + 1D_REAL_AIR_BOUNDING`，`route_ab_decision_memo.md`；升级条件预注册）；基础投稿目标 JASA/JSV、PRA 条件升级；A2a+QS-1 为基础论文首要物理锚（D0-5）；基础谐波目标 H2/L2-2f@20 kHz（H3/30 kHz 条件项）。全部 Phase_5 Gate `NOT_RUN`（G5 默认 `WAIVED_JASA_SCOPE`）、`FINAL_PRODUCTION_NOT_CLAIMED`。执行顺序：WP1 独立仪器 → WP2 入口 Gate（G0→G3→G1-W→G1a→G1b→G2-T/A/O 10/20 kHz→G4a→条件项）→ WP3 首轮 8 信息单元 Go/No-Go → WP4 完整矩阵。维护基线：Phase_4（M4 digest `d69bf24d881e`、全量 158 绿）+ Phase_3（39 绿）；任何 core/config 变更须全量重验并评估合同 §23 定向复验矩阵。
 
 > 谱系说明：以下两段是 Phase_4 期历史长摘要（2026-07-09 / 2026-07-11）。其中「不授权 Phase_5 / 决策前不行动」已由 2026-07-20 立项决策（§4）解除；E2/R2/digest 数值当前引用以 2026-07-11 审查修订段为准。
 
@@ -67,7 +70,9 @@ scoped 升级、路线 A 启动、PRA 升级均属用户决策。
 | Phase_4 / Phase_3 阶段态 | `维护态`（2026-07-20 起；基线=全量 158 绿 + M4 digest `d69bf24d881e` / Phase_3 39 绿） |
 | Phase_5 WP0 contract freeze | `FROZEN`（2026-07-20；合同 v1.2 + STATUS + README + Output Guide + gate schema + configs/verification 目录规范） |
 | Phase_5 G0-B | **`SCOPED_PASSED_BY_USER`**（2026-07-23 决策 D5-2；α/c/γ@k1 +1.7%/+0.8%/+1.6% 过；围栏=剪切 ν 不认证 + 低波数有限-k 表格口径；`MODEL_CLOSURE_PASSED_ROUTE_B`；冻结文档 `nonlinear_model_freeze.md`） |
-| Phase_5 其余 gates（G1-W/G1a/G1b/G2-T/A/O/G3/G4a/G4b） | `NOT_RUN`（G5 默认 `WAIVED_JASA_SCOPE`；30 kHz G2 与 G4b 为条件项） |
+| Phase_5 G3 | **`PASSED`**（2026-07-26，run `20260726T082938Z`：§8.2 七行全过，1D NSF 参考仪器认证 + 正式分支定义冻结（`1D-lbm-equivalent_g0_measured_k1_v1`/Sutherland T0 锚定）+ p-side H2 复核上界口径闭合；报告 `docs/Phase_5/nonlinear_1d_reference_report.md`） |
+| Phase_5 G1-W | **`PASSED`**（2026-07-27，run `20260727T083342Z`：§6.1 八行全过——**生产壁认证=v1.1 对称质量中性壁**（质量通量 1.4e-15、导纳回归 +3.98%/+1.96° vs lbm-equivalent 谱参考、夹具 ≤2.8e-9）；旧壁 `PRESSURE_PRESERVING_WALL_DIAGNOSTIC_ONLY` 生效；WP1-3 能量超额经 G0 α_eff(k) 高 k 扩展行归因闭合；报告 `docs/Phase_5/wall_nonlinearity_neutrality_report.md`） |
+| Phase_5 其余 gates（G1a/G1b/G2-T/A/O/G4a/G4b） | `NOT_RUN`（G5 默认 `WAIVED_JASA_SCOPE`；30 kHz G2 与 G4b 为条件项） |
 | Final production claim | `NOT_CLAIMED`（Phase_5 `FINAL_PRODUCTION_NOT_CLAIMED`） |
 
 **Phase_2 继承声明**：对紧致空气薄膜目标（10 kHz、`kL≈0.04<<1`、空气 `Pr<1`、薄膜法向=点阵轴），气体核硬物理相关门全过；剩余残差有界且对该目标物理无关：对角声衰减约 1.31、high-mode 5-12x 过阻尼、Pr=2 鲁棒性。该结论满足进入 Phase_3 的条件，但不等价于 unrestricted/final production pass。
@@ -132,6 +137,12 @@ scoped 升级、路线 A 启动、PRA 升级均属用户决策。
 - G1-W 通过前，不把 `pressure_preserving` 整行 Grad 热壁下的 DC 偏移、H2 或全域质量变化归因为气体有限温升非线性（该壁在规定正弦壁温下内生 `O(ε²)` DC/2f 密度项，合同 §6.1）；该壁在 Phase_5 只能作诊断对照，不得作 DC/H2 生产边界。
 - 未通过 G2-O 算子消融前，不把 2f/3f 解读为纯物理谐波；谐波声明严格按 L1/L2/L3 层级（基础目标 L2-2f@20 kHz；H3/30 kHz 为合同 §7.4 条件项，未触发时 `H3_DIAGNOSTIC_ONLY`，不得因「已算出 3f 数值」升级声明）。
 - 不把 A1 写成真实 Joule 加热协议：它是有符号零均值热功率数值消融（半周期主动抽热，D0-4）；A1 `D_G` 未跨 3% 不构成自动 NO_GO——A2a/QS-1 判别、经认证 H2 或严格上界是并列科学信号（D0-5/合同 §12.5）。
+- 不把 G3 `PASSED` 写成任何 LBM 侧 Gate 通过或非线性物理结论：G3 认证的是 1D NSF **参考仪器**（七行仪器硬认证）；`1D-lbm-equivalent` 正式定义是 k1 单点律 surrogate（禁外推到其它 k，freeze doc §4）。
+- 不把 A1 密闭 rig 的 p-side H2 底板上界（≤2.1e-5，G3 报告 §4.1）当作生产 p-side 判据：规定正弦热流下箱压 2f 被能量守恒压制、该 rig 按构造是 T-side 仪器；生产 p-side 谐波判据在 G1a（规定壁温）与 G2（LBM 出射模态）。
+- 不把等温端 ringdown 的 γ 超额读作格式耗散：那是欠分辨等温端无缓冲热沉伪影（∝1/dy、与格式耗散趋势反向，G3 报告 §3.1 双点诊断坐实）；低耗散认证行=密封绝热 ringdown（真离散本征模）。
+- 不把 lbm-equivalent 密封谱参考当作真空气物理参考：它是冻结栈**自身有效介质**（实测 α_eff(k) 表逐模）的密封解，用途=把壁缺陷与已知介质标定分离（G1-W 回归行口径）；真空气定界仍由 1D-physical 分支承载。
+- 不把 G1-W 生产壁认证外推为幅值包络或谐波认证：v1.1 壁认证的是质量中性/钉扎/小幅值导纳/夹具底板；ε 包络归 G1a、谐波归 G2。矩通道在 mn 场形上必须用归档重标定常数（3.055@+17.5°），不得裸用 (tau,k) 旧标定读热流。
+- 不把 G1-W 夹具的 ≤6e-10 稳态注入底板声明外推到其它 rig/几何：它是密封 y-周期单缝 rig 在 10 kHz 的实测；双边界行腔（等温盖几何）的缝×FFT 累积仍判死（G4a 处理 canonical 几何时另证）。
 - 不把「固定 `P_mean` 改 `H_s` 后结果变化」判成数值域高不收敛：`H_s` 是 DC 热阻模型参数，该变化是热沉物理敏感性；G4a 域高检查必须状态匹配（重匹配 `P_mean` 使 `Theta_DC` 1% 内一致，或保持等效热阻，D0-13）。
 - Phase_5 脚本与报告只能产出 `PASSED/FAILED/SCOPED_CANDIDATE`；`SCOPED_PASSED_BY_USER` 只能由用户批准并单独留档（D0-7）；scoped pass 不得写成 clear pass。
 - 不得为通过非线性 Gate 按幅值逐点更换 dx、tau、热流导出因子、色散因子、Grad 壁参数或远场增益；`q_feedback_relax`/拟合窗/去趋势/滤波按算例族预注册（合同 §0.4）；更换生产热壁/谱修正/滤波或其顺序=物理仪器变化，触发合同 §23 定向复验。
@@ -184,6 +195,8 @@ scoped 升级、路线 A 启动、PRA 升级均属用户决策。
 
 ## 4. 当前关键决策
 
+- **G1-W 权威认证 PASSED（2026-07-27，脚本判定、非用户决策）**：热壁非线性中性门八行全过（run `20260727T083342Z`、digest `57bd724e0709`；报告 `docs/Phase_5/wall_nonlinearity_neutrality_report.md`）。随 G1-W 生效：**生产壁=v1.1 对称质量中性壁**（合同 §6.1 决策块自动授权生产算例统一使用）、旧壁 `PRESSURE_PRESERVING_WALL_DIAGNOSTIC_ONLY`、矩通道重标定常数 3.055@+17.5°（§23 归档）、冻结栈谐波注入底板 ≤6e-10 实测界定。WP1-3 遗留能量超额经"谱计算否证单点假设→合成扫描预言→G0 仪器高 k 补测 1.58–12.5×→谱参考闭合 +3.98%/+1.96°"证据链定量归因（Stage-1）。夹具重设计谱系（ε² 标度 ×100 实测验证）留档报告 §3.2。下一门 G1a。
+- **G3 权威认证 PASSED（2026-07-26，脚本判定、非用户决策）**：1D NSF 参考仪器七行全过（run `20260726T082938Z`、digest `5758666fd20d`；报告 `docs/Phase_5/nonlinear_1d_reference_report.md`）。随 G3 冻结：正式分支定义（`1D-lbm-equivalent` = G0 实测律 `g0_measured_transport()`、`1D-physical` = Sutherland T0 锚定、常物性降为诊断谱系）+ p-side H2 复核上界口径闭合（T-side 路线结论不改，备忘录 §9）+ ringdown 仪器发现（等温端热沉伪影诊断与绝热重设计，报告 §3.1）。下一门 G1-W。
 - **路线 A/B 正式决策（2026-07-22，用户决策 D5-1）**：批准维持 `ROUTE_B_MAIN + 1D_REAL_AIR_BOUNDING`（D0-3 预授权默认；备忘录 `docs/Phase_5/route_ab_decision_memo.md`）。依据 WP1 双物性消融：D_G/相位通过 D-AB-2（A1 `D_G>3%` 不可达）；H2 物理分支压低 ~14×（k(T) 相消，指数扫描结构性验证）与 D_OP 分支差 +2.18pp（闭式渗透率效验；恒压等效=常物性 −2.4% vs 真实空气近零）触发 `ROUTE_A_COST_REVIEW_REQUIRED`→评审后不启动路线 A，真实空气定量由 1D-physical 分支承载。升级条件预注册（终稿需 LBM 直接承载真实空气 H2/D_OP 定量值→重开评审）。G0 后复核触发在案（实测律挂接 + p-side H2）。
 - **Phase_5 立项 + WP0 冻结（2026-07-20，用户决策 D5-0）**：用户下达「开始 Phase_5」，`docs/Phase_5/Phase5_instruct_v1.2.md`（v1.2）冻结为 Phase_5 唯一规范性入口与生产合同（评审基线=master `b86459c`，与现行 HEAD 一致）；Phase_4 转维护态（基线 158 绿 + M4 digest `d69bf24d881e`）。WP0 交付：`Phase5_STATUS.md`（状态标签 + Gate 现值）、`docs/Phase_5/README.md`、`Phase5_Output_Files_Guide.md`、gate schema `verification/nonlinear/phase5_gate_schema.json`、目录规范 `configs/phase5/README.md`。路线 B 默认（正式 A/B 决策待 WP1 双物性消融，§2.4）；A2a+QS-1 首要物理锚、H2/L2-2f@20 kHz 基础谐波目标、G5 默认 waived、`D_eng=3%` 主阈值 + 确定性 `U_gov`。下一步 WP1（多谐波拟合器、双 1D NSF、质量中性热壁候选、边界通量审计）。决策记录：`Phase5_STATUS.md` §4。
 - **M4 收尾决策 (b)：scoped 风险 #2/#3 清偿（2026-07-09）**：#3 源相位——`fit_compact_source_y0_scan`（T 剖面残差判据、反自标定）证明 MAP CHECK 对 y 原点**严格不变**（1.0006@+5.335° 三位小数跨全 y0 域；y0*=1.50 两频率一致=几何决定），+5.335° 改判真实栈↔映射相位偏移（40 kHz +9.3° 趋势一致）、源幅值实现收紧 ±~3%（立项 §12.1.1）；#2 CV 审计——E2 runner 增粗域声能通量审计 `I(y)=½Re[p̂v̂*]`（带内闭合 ~1%、I_start=4.496e-4 W/m²、倾斜与 1.1% 单向性干涉一致），P4-2→`DIAGNOSTIC_QUANTIFIED`。E2 重跑门数值**逐位复现**，权威 run/digest→`20260709T121241Z`/`cbcf7d738ede`（谱系留档于 M4_Run_Summaries）；绝对 SPL 带 ±8%→±7%。**标签保持 `PASSED_WITH_SCOPED_RISK`**（#1/#4/#5 声明性；是否改判属用户，镜像 M3 收尾先例）。

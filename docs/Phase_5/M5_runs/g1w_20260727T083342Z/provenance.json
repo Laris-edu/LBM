@@ -1,0 +1,53 @@
+{
+ "run_id": "20260727T083342Z",
+ "command": "E:\\Code\\LBM\\scripts\\phase5_g1w_wall_neutrality.py",
+ "python": "3.14.2",
+ "numpy": "2.4.4",
+ "code_commit": "18f2de4a27d18b540008df26d36c27b5cd351939",
+ "physics_core_digest": "57bd724e0709",
+ "gas_config_sha256": "849699bb37f6416d89b880a6446457d46a8eaf10a45230ca828ed90749ec38e1",
+ "g0_table_source": "docs\\Phase_5\\M5_runs\\g0_20260722T173919Z\\property_table.csv",
+ "alpha_extension_rows": [
+  {
+   "ny": 24,
+   "k_lu": 0.2617993877991494,
+   "alpha_eff_lu": 0.010056239143343283,
+   "ratio_vs_nominal": 1.575046075694422,
+   "steps": 2056,
+   "finite": true
+  },
+  {
+   "ny": 16,
+   "k_lu": 0.39269908169872414,
+   "alpha_eff_lu": 0.01719497204143546,
+   "ratio_vs_nominal": 2.693141327438071,
+   "steps": 914,
+   "finite": true
+  },
+  {
+   "ny": 12,
+   "k_lu": 0.5235987755982988,
+   "alpha_eff_lu": 0.03362522245708398,
+   "ratio_vs_nominal": 5.266509071678126,
+   "steps": 514,
+   "finite": true
+  },
+  {
+   "ny": 8,
+   "k_lu": 0.7853981633974483,
+   "alpha_eff_lu": 0.07984258110645075,
+   "ratio_vs_nominal": 12.505245972424266,
+   "steps": 300,
+   "finite": true
+  },
+  {
+   "ny": 6,
+   "k_lu": 1.0471975511965976,
+   "alpha_eff_lu": 0.061371429292627656,
+   "ratio_vs_nominal": 9.612224559227664,
+   "steps": 300,
+   "finite": true
+  }
+ ],
+ "stage1_attribution": "scratchpad probe 2026-07-26: alpha_eff(k) spectral sealed reference closes the WP1-3 +13%/+20 deg energy excess"
+}

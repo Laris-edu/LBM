@@ -1,0 +1,46 @@
+gate_id: G1-W
+case_family: g1w_wall_neutrality
+smoke_mode: false
+protocol:
+  frequency_Hz: 1.0e4
+  ny: 48
+  nx: 8
+  periods: 3.0
+  settle_periods: 1.0
+  samples_per_period: 64
+  ramp_periods: 1.0
+  epsilon_ladder_mn:
+  - 0.001
+  - 0.01
+  - 0.03
+  - 0.05
+  - 0.1
+  epsilon_ladder_old:
+  - 0.001
+  - 0.03
+  - 0.05
+  pair:
+    epsilon: 0.0001
+    ramp_periods: 2.0
+    settle_periods: 12.0
+    periods: 14.0
+  alpha_extension_ny:
+  - 24
+  - 16
+  - 12
+  - 8
+  - 6
+  highk_policy_primary: hold_last
+  grad_extrap_old: linear
+gates:
+  mass_flux_component: 1.0e-10
+  mass_window_rel: 1.0e-08
+  mass_cumulative_rel: 1.0e-06
+  velocity_over_c0: 1.0e-08
+  wall_temperature_error_K: 0.01
+  admittance_amp_rel: 0.05
+  admittance_phase_deg: 5.0
+  fixture_nontarget_rel: 1.0e-08
+  old_wall_difference_fraction: 0.1
+gas_config: configs\gas_air_10k_d2q37_levelc_dx2p6.yaml
+config_path: configs\phase5\g1w_wall_neutrality\g1w_10k_dx2p6.yaml

@@ -32,12 +32,17 @@ flux q''(t), signed zero-mean allowed = A1), ``kind="film"`` (film ODE
 ``C_A dT_s/dt = P(t) - 2 q''`` coupled inside the RK stages; the factor 2 is
 the frozen freestanding double-sided convention).
 
-Dual property branches (contract §2.3): ``lbm_equivalent_transport``
-(reference-state constant transport = Route B closure; replace with the
-G0-measured law via ``power_law_transport`` once G0 runs) and
+Dual property branches (contract §2.3, formal definitions frozen by G3):
+``g0_measured_transport`` is the **formal 1D-lbm-equivalent branch** — the
+G0-measured effective law of the frozen-mapping LBM at the calibration
+wavenumber k1 (anchored power law, exponents from the G0 authoritative run;
+k1 single-point surrogate caveat frozen in its docstring); and
 ``physical_air_transport`` (Sutherland-shape mu(T)/k(T) **anchored to the
 frozen values at T0** so both branches coincide at the reference state and
 ``Delta_prop`` ablations are not polluted by a reference-point offset).
+``lbm_equivalent_transport`` (reference-state constant transport) is retained
+as the diagnostic lineage branch of the WP1-5 ablations, not the formal
+1D-lbm-equivalent definition.
 
 Complex amplitudes are extracted with ``postproc.multiharmonic_fit`` (frozen
 convention ``x(t)=Re[x_hat e^{+i n Omega t}]``, shared per contract §8.1).
@@ -67,6 +72,7 @@ __all__ = [
     "SOLVER_ID",
     "TransportModel",
     "lbm_equivalent_transport",
+    "g0_measured_transport",
     "physical_air_transport",
     "power_law_transport",
     "WallDrive",
@@ -171,6 +177,30 @@ def power_law_transport(
         T_ref=params.T0,
         mu_exponent=mu_exponent,
         k_exponent=k_exponent,
+    )
+
+
+# Formal 1D-lbm-equivalent branch (frozen by G3; single source of the numbers).
+# G0 authoritative run 20260722T173919Z (docs/Phase_5/nonlinear_model_freeze.md
+# §1/§3): at the calibration wavenumber k1=0.0982 the frozen-mapping LBM's
+# effective laws over 270-360 K fit k_eff ∝ T^{+1.04} and mu_eff ∝ T^{-0.60}
+# (isobaric path, y axis). Frozen caveat: this is a k1 single-point-law
+# surrogate — the 1D model cannot express the full alpha_eff(T, k) table, and
+# the freeze doc §4 forbids extrapolating the summary exponents to other k;
+# the branch is valid precisely because the Phase_5 QoIs are anchored at k1.
+G0_MEASURED_K_EXPONENT = 1.04
+G0_MEASURED_MU_EXPONENT = -0.60
+G0_MEASURED_PROPERTY_MODEL_ID = "1D-lbm-equivalent_g0_measured_k1_v1"
+
+
+def g0_measured_transport(params: PhysicalParams) -> TransportModel:
+    """Formal ``1D-lbm-equivalent`` branch: G0-measured effective law at k1."""
+
+    return power_law_transport(
+        params,
+        mu_exponent=G0_MEASURED_MU_EXPONENT,
+        k_exponent=G0_MEASURED_K_EXPONENT,
+        property_model_id=G0_MEASURED_PROPERTY_MODEL_ID,
     )
 
 
@@ -741,6 +771,7 @@ def acoustic_ringdown_fixture(
     epsilon: float = 1.0e-4,
     n_periods: float = 12.0,
     samples_per_cycle: int = 32,
+    boundary: str = "isothermal",
 ) -> dict:
     """Mode-1 standing-wave ringdown: sound speed + physical damping check.
 
@@ -750,8 +781,27 @@ def acoustic_ringdown_fixture(
     decay rate against the laminar bulk prediction
     gamma = (k^2/2)(nu_L + (gamma_eff-1) alpha) — a *low-dissipation* check:
     a dissipative scheme overshoots the physical decay.
+
+    boundary="adiabatic" seals both ends (zero-flux wall + adiabatic lid).
+    Mode-1 has velocity nodes and temperature antinodes at the walls, so the
+    sealed adiabatic box makes it a TRUE discrete eigenmode (no boundary
+    layers required) and the measured decay is the pure bulk prediction —
+    the clean low-dissipation certification used by the G3 gate row.
+
+    boundary="isothermal" (default, WP1 instrument variant) keeps T-pinned
+    ends. G3 finding (first authoritative run, 2026-07-26): at the box
+    acoustic frequency the end thermal layer delta_kappa(f_box) is ~55x
+    SMALLER than affordable dy, so the discrete isothermal wall acts as an
+    unbuffered thermal sink at the pressure antinode (conductance 2k/dy
+    coupled directly to the bulk oscillation) — parasitic damping ~8e3/s at
+    real air, ~14x the bulk prediction (masked in the nu x100 instrument
+    test where physical damping is 100x larger). Valid only as a boundary-
+    dissipation DIAGNOSTIC (the parasitic rate scales ~1/dy, the opposite
+    of scheme dissipation) — not as the low-dissipation gate row.
     """
 
+    if boundary not in ("isothermal", "adiabatic"):
+        raise ValueError(f"unknown ringdown boundary {boundary!r}")
     transport = transport or lbm_equivalent_transport(params)
     R = params.p0 / (params.rho0 * params.T0)
     cv = params.cp - R
@@ -760,11 +810,16 @@ def acoustic_ringdown_fixture(
     f_ac = c0 / (2.0 * height_m)
     omega_ac = 2.0 * math.pi * f_ac
 
-    drive = WallDrive(kind="temperature", frequency_hz=f_ac, amplitude=0.0)
+    if boundary == "adiabatic":
+        # zero-flux wall drive + adiabatic lid = fully sealed adiabatic box
+        drive = WallDrive(kind="flux", frequency_hz=f_ac, amplitude=0.0)
+    else:
+        drive = WallDrive(kind="temperature", frequency_hz=f_ac, amplitude=0.0)
     cfg = NSF1DConfig(
         params=params, transport=transport, drive=drive,
         height_m=height_m, n_cells=n_cells, n_cycles=n_periods,
         samples_per_cycle=samples_per_cycle,
+        lid_bc="adiabatic" if boundary == "adiabatic" else "isothermal",
     )
 
     k_mode = math.pi / height_m
@@ -791,6 +846,7 @@ def acoustic_ringdown_fixture(
     alpha0 = float(transport.k(params.T0)) / (params.rho0 * params.cp)
     gamma_pred = 0.5 * k_mode * k_mode * (nu_l0 + (gamma_eff - 1.0) * alpha0)
     return {
+        "boundary": boundary,
         "f_acoustic_hz": f_ac,
         "gamma_measured": float(gamma_meas),
         "gamma_predicted_bulk": float(gamma_pred),

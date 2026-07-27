@@ -1,0 +1,64 @@
+# Phase_5 G1-W 非线性热壁中性门配置（合同 §6.1；runner: scripts/phase5_g1w_wall_neutrality.py）
+# 生产候选 = v1.1 对称双侧质量中性壁（boundary/wall_thermal_mass_neutral.py）；
+# 诊断对照 = 冻结 pressure_preserving Grad 壁（Level A 权威口径 grad_extrap=linear）。
+# 导纳回归参考 = lbm-equivalent 密封谱参考（G0 表 + run 内高 k 扩展行；预注册路径见 Phase5_STATUS §5）。
+case:
+  name: phase5_g1w_wall_neutrality_10k_dx2p6
+  phase: Phase_5
+  gate: G1-W
+
+inheritance:
+  gas_config_path: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+  phase5_contract: docs/Phase_5/Phase5_instruct_v1.2.md
+
+g1w:                              # 权威协议（预注册；不得按结果逐点调整）
+  frequency_Hz: 1.0e4
+  ny: 48
+  nx: 8
+  periods: 3.0                    # settle 1 + fit 2
+  settle_periods: 1.0             # 密封 rig settle 不敏感性已于 WP1-3 验证（1→3 周期读数不动）
+  samples_per_period: 64
+  ramp_periods: 1.0               # 升余弦幅值 ramp（WP1-4 瞬态纪律）
+  epsilon_ladder_mn: [0.001, 0.01, 0.03, 0.05, 0.10]   # 0.10 = 条件点（§6.1）
+  epsilon_ladder_old: [0.001, 0.03, 0.05]              # 诊断对照 + 差异审计
+  pair:                           # 边界—线性内部夹具（符号对，±同协议）。fixture 重设计
+    epsilon: 1.0e-4               # （首次权威尝试 20260727T040121Z 的窗口判别）：奇组合 2f
+    ramp_periods: 2.0             # 是瞬态（实测 τ≈1.1 周期→settle 12 压到 ~1e-9）；3f 是
+    settle_periods: 12.0          # 稳态（ε=1e-3 时含真实三次物理 C₃ε²≈2.8e-7）→ ε 降至
+    periods: 14.0                 # 1e-4 使物理 3f ~2.5e-9 < 1e-8 门；若仍平在 ~4e-8 = 栈注入底板
+  alpha_extension_ny: [24, 16, 12, 8, 6]               # G0 仪器高 k 扩展行（k=0.26..1.05）
+  highk_policy_primary: hold_last # 表外（k>1.05，权重可忽略）主政策；nominal 作敏感带
+  grad_extrap_old: linear         # Level A 权威口径
+
+g1w_smoke:                        # 机器链路 smoke（诊断频率、小 rig；非权威）
+  frequency_Hz: 2.0e5
+  ny: 16
+  nx: 4
+  periods: 2.0
+  settle_periods: 1.0
+  samples_per_period: 64
+  ramp_periods: 0.5
+  epsilon_ladder_mn: [0.01, 0.05]
+  epsilon_ladder_old: [0.01, 0.05]
+  pair:
+    epsilon: 0.01
+    ramp_periods: 0.5
+    settle_periods: 1.0
+    periods: 2.0
+  alpha_extension_ny: [8, 6]
+  highk_policy_primary: hold_last
+  grad_extrap_old: linear
+
+gates:                            # 合同 §6.1 阈值（冻结）
+  mass_flux_component: 1.0e-10
+  mass_window_rel: 1.0e-8
+  mass_cumulative_rel: 1.0e-6
+  velocity_over_c0: 1.0e-8
+  wall_temperature_error_K: 0.01
+  admittance_amp_rel: 0.05
+  admittance_phase_deg: 5.0
+  fixture_nontarget_rel: 1.0e-8
+  old_wall_difference_fraction: 0.1
+
+output:
+  results_root: results/phase5/g1w_wall_neutrality

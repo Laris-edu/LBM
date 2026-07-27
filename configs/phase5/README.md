@@ -26,3 +26,4 @@ finite_width/
 | 文件 | 作用 |
 |---|---|
 | `g0_effective_properties/g0_10k_dx2p6.yaml` | **G0-B 权威配置（2026-07-23 已跑）**：4 温度点 × 等压主路径 + 等密度诊断子集 × 双低波数层 + k1/kbox/k2/k3 生产层；步数策略/回归校准点（k1）/门阈值预注册。权威 run `20260722T173919Z`（`SCOPED_CANDIDATE`），冻结文档 `docs/Phase_5/nonlinear_model_freeze.md`。 |
+| `g1w_wall_neutrality/g1w_10k_dx2p6.yaml` | **G1-W 权威配置（2026-07-27 已跑）**：双壁矩阵（mn v1.1 ε 阶梯 + 旧壁诊断对照）+ 符号对夹具协议（ε=1e-4、ramp 2、settle 12——重设计依据在注释与报告 §3.2 留档）+ α_eff 高 k 扩展行 + 谱参考政策 + §6.1 八行阈值预注册；含 `g1w_smoke` 机器协议。权威 run `20260727T083342Z`（**`PASSED`**），报告 `docs/Phase_5/wall_nonlinearity_neutrality_report.md`。 |

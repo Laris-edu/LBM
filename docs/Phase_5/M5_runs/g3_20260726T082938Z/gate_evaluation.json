@@ -1,0 +1,340 @@
+{
+ "gate_id": "G3",
+ "verdict": "PASSED",
+ "rows": {
+  "equilibrium_preservation": {
+   "value": 0.0,
+   "gate": 1e-10,
+   "n_cycles": 10.0,
+   "energy_residual_rel_total": 0.0,
+   "passed": true,
+   "note": "branch-independent: anchored laws coincide on the uniform state; undriven energy closure gated on rel_total (flux integral is machine zero, rel_flux is noise/noise)"
+  },
+  "linear_limit_amplitude": {
+   "value_by_branch": {
+    "g0": 1.4043775049543683e-05,
+    "phys": 1.405430140755115e-05
+   },
+   "gate": 0.02,
+   "eval_cells_per_delta": 12.0,
+   "reference": "Phase_1 half-space admittance (closed-box corrected)",
+   "passed": true
+  },
+  "linear_limit_phase": {
+   "value_by_branch": {
+    "g0": 0.10104711659948769,
+    "phys": 0.10104702542070859
+   },
+   "gate": 2.0,
+   "eval_cells_per_delta": 12.0,
+   "passed": true
+  },
+  "grid_convergence": {
+   "by_branch": {
+    "g0": {
+     "ladder_cells_per_delta": [
+      6.0,
+      12.0,
+      24.0
+     ],
+     "Y_corrected": [
+      {
+       "re": 995.4449480428093,
+       "im": 981.661015518636,
+       "abs": 1398.0590094745753,
+       "phase_deg": 44.60055334511684
+      },
+      {
+       "re": 990.3637751759899,
+       "im": 986.8767006001742,
+       "abs": 1398.1223227487374,
+       "phase_deg": 44.89895288340052
+      },
+      {
+       "re": 989.0807212361666,
+       "im": 988.1682443788925,
+       "abs": 1398.126300560832,
+       "phase_deg": 44.97355868177306
+      }
+     ],
+     "coarse_pair_diff": 7.281599314181101,
+     "fine_pair_diff": 1.8205254035145786,
+     "observed_order": 1.9999004833255292,
+     "finest_two_rel_diff": 0.001302117986611302
+    },
+    "phys": {
+     "ladder_cells_per_delta": [
+      6.0,
+      12.0,
+      24.0
+     ],
+     "Y_corrected": [
+      {
+       "re": 995.444956852158,
+       "im": 981.6610274576999,
+       "abs": 1398.0590241301336,
+       "phase_deg": 44.60055344000219
+      },
+      {
+       "re": 990.3637840302811,
+       "im": 986.8767125642808,
+       "abs": 1398.1223374656665,
+       "phase_deg": 44.89895297457929
+      },
+      {
+       "re": 989.0807301142386,
+       "im": 988.1682563504306,
+       "abs": 1398.1263153027217,
+       "phase_deg": 44.97355877169285
+      }
+     ],
+     "coarse_pair_diff": 7.2815993007573905,
+     "fine_pair_diff": 1.820525392026796,
+     "observed_order": 1.999900489769522,
+     "finest_two_rel_diff": 0.0013021179646651717
+    }
+   },
+   "gate_order_min": 1.5,
+   "gate_finest_two_rel": 0.01,
+   "passed": true
+  },
+  "total_energy_residual": {
+   "value": 3.614231795534062e-11,
+   "gate": 0.005,
+   "definition": "max over all runs of |dE - int(net flux)| / int(|flux|)",
+   "passed": true
+  },
+  "linearization_leakage": {
+   "by_branch": {
+    "g0": {
+     "max_even_in_odd": 2.0013051859874847e-10,
+     "third_harmonic": 1.398105634662901e-10,
+     "physical_2f_sensitivity": 5.715964528400463e-07
+    },
+    "phys": {
+     "max_even_in_odd": 1.857154215829951e-10,
+     "third_harmonic": 1.5903617081177106e-10,
+     "physical_2f_sensitivity": 3.606349620316478e-07
+    }
+   },
+   "gate": 1e-08,
+   "sensitivity_min": 1e-07,
+   "passed": true,
+   "note": "pass requires the numerical floor AND the physical-2f sensitivity counter-check (non-degenerate fixture)"
+  },
+  "low_mach_resolvability": {
+   "ringdown_boundary": "adiabatic",
+   "ringdown_gamma_ratio": 1.0037381228626694,
+   "ringdown_freq_offset_rel": -0.0003911367862414558,
+   "ringdown_window": [
+    0.85,
+    1.25
+   ],
+   "ringdown_energy_residual_rel_total": 1.1209928749613354e-16,
+   "isothermal_sink_diagnostic": [
+    {
+     "n_cells": 64,
+     "gamma_ratio": 14.484101887398984,
+     "gamma_measured": 8525.34858259718,
+     "gamma_excess_over_bulk": 7936.748153735647
+    },
+    {
+     "n_cells": 32,
+     "gamma_ratio": 8.68725556908562,
+     "gamma_measured": 5113.322353593536,
+     "gamma_excess_over_bulk": 4524.721924732003
+    }
+   ],
+   "anchor_resolvability_amp_over_u95": {
+    "g0": {
+     "q": 162577.34011784315,
+     "p_box": 28894.85479285769
+    },
+    "phys": {
+     "q": 162836.9831848179,
+     "p_box": 29195.282634915377
+    }
+   },
+   "resolvability_min": 100.0,
+   "anchor_snr_info_amp_over_residual_rms": {
+    "g0": {
+     "q": 25596.777191123056,
+     "p_box": 4548.825655380076
+    },
+    "phys": {
+     "q": 25637.656355986248,
+     "p_box": 4596.121066494316
+    }
+   },
+   "max_mach": 0.00032167846630807277,
+   "passed": true,
+   "note": "sealed adiabatic ringdown (mode-1 = true discrete eigenmode): measured decay vs pure bulk prediction is the direct scheme-dissipation bound; the isothermal variant is an unbuffered-wall-sink diagnostic (excess ~1/dy, opposite of scheme dissipation). 1f amplitudes resolved above fit uncertainty; residual spectra archived in signals.h5 (physical box-mode transient audited, not penalized)"
+  },
+  "numerical_discipline": {
+   "no_clipping": true,
+   "no_floor": true,
+   "no_positivity_repair": true,
+   "max_mass_drift_rel": 6.9251969708545465e-15,
+   "passed": true
+  }
+ },
+ "review_blocks": {
+  "p_side_dual_property_ablation": {
+   "preregistration": "route_ab_decision_memo.md \u00a76/\u00a77 (p-side H2 \u5f52 G3)",
+   "table": [
+    {
+     "epsilon": 0.005,
+     "const": {
+      "G1_T_side_K_per_Wm2": 0.0007247700667502922,
+      "p1f_Pa": 32.98456542161752,
+      "H2_p_side": 7.389547688046431e-06,
+      "H3_p_side": 4.853465544737823e-06,
+      "H2_T_side": 0.0006657765010686249,
+      "H3_T_side": 2.2120804711891837e-05
+     },
+     "g0": {
+      "G1_T_side_K_per_Wm2": 0.0007247722227287634,
+      "p1f_Pa": 32.984665357310845,
+      "H2_p_side": 5.877822526018051e-06,
+      "H3_p_side": 3.895533939602288e-06,
+      "H2_T_side": 0.00010218750102428489,
+      "H3_T_side": 2.0689442476599104e-05
+     },
+     "phys": {
+      "G1_T_side_K_per_Wm2": 0.0007247719662740984,
+      "p1f_Pa": 32.98465120334684,
+      "H2_p_side": 6.090026748873394e-06,
+      "H3_p_side": 4.029737972564177e-06,
+      "H2_T_side": 2.9167510518909306e-05,
+      "H3_T_side": 2.0856179820800928e-05
+     },
+     "dab2_pside": {
+      "delta_prop": 2.122042228553429e-07,
+      "delta_ref": 5.877822526018051e-06,
+      "ratio_vs_0p3_delta_ref": 0.1203417432878846,
+      "phys_over_g0": 1.0361025229863654
+     }
+    },
+    {
+     "epsilon": 0.03,
+     "const": {
+      "G1_T_side_K_per_Wm2": 0.0007247856682871997,
+      "p1f_Pa": 197.90620852570353,
+      "H2_p_side": 1.0808343169833198e-05,
+      "H3_p_side": 6.770747825616092e-06,
+      "H2_T_side": 0.004150792465172443,
+      "H3_T_side": 2.6166122675348073e-05
+     },
+     "g0": {
+      "G1_T_side_K_per_Wm2": 0.0007247764727834953,
+      "p1f_Pa": 197.90980528279712,
+      "H2_p_side": 2.404914951608808e-06,
+      "H3_p_side": 1.3397101119647834e-06,
+      "H2_T_side": 0.0004745990134765663,
+      "H3_T_side": 1.8456830388807284e-05
+     },
+     "phys": {
+      "G1_T_side_K_per_Wm2": 0.000724779539282029,
+      "p1f_Pa": 197.90929575764855,
+      "H2_p_side": 3.281950714954706e-06,
+      "H3_p_side": 1.895984277921493e-06,
+      "H2_T_side": 0.00028568460560723675,
+      "H3_T_side": 1.8383602589359308e-05
+     },
+     "dab2_pside": {
+      "delta_prop": 8.770357633458978e-07,
+      "delta_ref": 2.404914951608808e-06,
+      "ratio_vs_0p3_delta_ref": 1.215615771580876,
+      "phys_over_g0": 1.3646847314742627
+     }
+    },
+    {
+     "epsilon": 0.05,
+     "const": {
+      "G1_T_side_K_per_Wm2": 0.0007248265056356386,
+      "p1f_Pa": 329.8421022986147,
+      "H2_p_side": 1.3547876129435491e-05,
+      "H3_p_side": 8.333120944957333e-06,
+      "H2_T_side": 0.006938185889481694,
+      "H3_T_side": 2.7776865984425167e-05
+     },
+     "g0": {
+      "G1_T_side_K_per_Wm2": 0.0007247816660618826,
+      "p1f_Pa": 329.85209137959424,
+      "H2_p_side": 3.3047025139204754e-06,
+      "H3_p_side": 2.0905906445903403e-06,
+      "H2_T_side": 0.000773380931129896,
+      "H3_T_side": 1.6059467887440272e-05
+     },
+     "phys": {
+      "G1_T_side_K_per_Wm2": 0.0007247929389491771,
+      "p1f_Pa": 329.85067618821785,
+      "H2_p_side": 2.360537934732326e-06,
+      "H3_p_side": 1.1230737851598135e-06,
+      "H2_T_side": 0.000493574068472003,
+      "H3_T_side": 1.542967024713354e-05
+     },
+     "dab2_pside": {
+      "delta_prop": -9.441645791881495e-07,
+      "delta_ref": 3.3047025139204754e-06,
+      "ratio_vs_0p3_delta_ref": 0.952344500209447,
+      "phys_over_g0": 0.7142966499371659
+     }
+    },
+    {
+     "epsilon": 0.1,
+     "const": {
+      "G1_T_side_K_per_Wm2": 0.0007250388741619246,
+      "p1f_Pa": 659.6763101299576,
+      "H2_p_side": 2.039687835644265e-05,
+      "H3_p_side": 1.2277526516084849e-05,
+      "H2_T_side": 0.01390177639335477,
+      "H3_T_side": 2.7718743513552973e-05
+     },
+     "g0": {
+      "G1_T_side_K_per_Wm2": 0.0007248015389736749,
+      "p1f_Pa": 659.7162496737152,
+      "H2_p_side": 1.1540294944500585e-05,
+      "H3_p_side": 7.905786101693652e-06,
+      "H2_T_side": 0.0015204004187098195,
+      "H3_T_side": 1.0677366153434525e-05
+     },
+     "phys": {
+      "G1_T_side_K_per_Wm2": 0.000724855250013244,
+      "p1f_Pa": 659.7105923133291,
+      "H2_p_side": 7.365459304302076e-06,
+      "H3_p_side": 5.074630147035248e-06,
+      "H2_T_side": 0.0010105823761713169,
+      "H3_T_side": 2.7050062318396595e-05
+     },
+     "dab2_pside": {
+      "delta_prop": -4.174835640198509e-06,
+      "delta_ref": 1.1540294944500585e-05,
+      "ratio_vs_0p3_delta_ref": 1.2058720221265478,
+      "phys_over_g0": 0.6382383933620357
+     }
+    }
+   ],
+   "m2_pside_absolute_2f_scaling": {
+    "const": 1.5310820388779964,
+    "g0": 2.3315754501446015,
+    "phys": 1.7273945368445327
+   },
+   "D_G_flux_ladder": {
+    "const": 0.0003708864700189274,
+    "g0": 4.04489079355308e-05,
+    "phys": 0.00011491026560217499
+   },
+   "note": "informational review, not a gate row; feeds the route memo"
+  },
+  "a1_leakage_floor": {
+   "protocol": "a1_flux_signed_pair_odd_combination_T_side",
+   "epsilon": 0.005,
+   "settle_cycles": 3.0,
+   "leakage_2f": 3.147943592052956e-05,
+   "leakage_3f": 2.0998222134300298e-05,
+   "leakage_4f": 1.573608951335012e-05,
+   "note": "rig measurement floor at production settle (U_det input); NOT the <=1e-8 gate row (that row is the Dirichlet pair fixture with pre-registered settle discipline)"
+  }
+ }
+}

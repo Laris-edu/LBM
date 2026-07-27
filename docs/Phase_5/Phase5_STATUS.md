@@ -1,8 +1,10 @@
 # Phase_5 阶段状态
 
-**最后更新**：2026-07-22
+**最后更新**：2026-07-27
 **路线决策（2026-07-22）**：用户批准 **`ROUTE_B_MAIN + 1D_REAL_AIR_BOUNDING`**（备忘录 `route_ab_decision_memo.md` 选项 1 = D0-3 预授权默认；升级条件预注册于备忘录 §5/§7）。
-**G0 决策（2026-07-23，D5-2）**：用户批准 **`SCOPED_PASSED_BY_USER`**（围栏=剪切 ν 不认证 + 低波数有限-k 表格口径，见 §4）；`MODEL_CLOSURE_PASSED_ROUTE_B`。WP1 五项全部交付 + G0 闭合；当前 WP2 次门 **G3**。
+**G0 决策（2026-07-23，D5-2）**：用户批准 **`SCOPED_PASSED_BY_USER`**（围栏=剪切 ν 不认证 + 低波数有限-k 表格口径，见 §4）；`MODEL_CLOSURE_PASSED_ROUTE_B`。
+**G3（2026-07-26）**：权威 run `20260726T082938Z` **`PASSED`**（脚本判定，七行全过；报告 `nonlinear_1d_reference_report.md`）——1D NSF 参考仪器正式认证 + 分支正式定义冻结 + p-side H2 复核闭合（备忘录 §9）。
+**G1-W（2026-07-27）**：权威 run `20260727T083342Z` **`PASSED`**（八行全过；报告 `wall_nonlinearity_neutrality_report.md`）——**v1.1 对称质量中性壁=已认证生产热壁**；WP1-3 遗留 +13%/+20° 能量超额经 G0 α_eff(k) 高 k 扩展行定量归因闭合；旧壁 `PRESSURE_PRESERVING_WALL_DIAGNOSTIC_ONLY` 生效。WP1 五项 + G0 + G3 + G1-W 闭合；当前 WP2 次门 **G1a**。
 **阶段名称**：Phase_5 — 热声薄膜有限温升非线性换能（Nonlinear Entry and Production Contract）
 **参考合同**：`docs/Phase_5/Phase5_instruct_v1.2.md`（v1.2，2026-07-20 经 WP0 冻结为 Phase_5 唯一规范性入口与生产合同；实际入库名等同合同建议名 `Phase5_指导文档_v1.2.md`；v1.0/v1.1 未随库存档，修订历史见合同附录 C/D）
 **状态口径（2026-07-20）**：**Phase_5 已立项——用户下达「开始 Phase_5」，WP0（范围与合同冻结）完成。** 合同评审基线 `b86459c590f406a2e0bfe452d6a73a61ede4b611` 与冻结时 master HEAD 一致（冻结锚点即现行代码态）。主路线=路线 B「参考态输运闭合下的全非线性理想气体」（D0-3；正式 A/B 决策待 WP1 双物性 1D 消融，默认结论 D-AB-2：`ROUTE_B_MAIN + 1D_REAL_AIR_BOUNDING`）。基础投稿目标 JASA/JSV，PRA 为证据触发的条件升级（D0-2）。基础谐波目标 H2 / 20 kHz / L2-2f（D0-8；H3/30 kHz 为 §7.4 条件项）。**全部 Phase_5 Gate `NOT_RUN`**（G5 默认 `WAIVED_JASA_SCOPE`，D0-9），生产状态 `FINAL_PRODUCTION_NOT_CLAIMED`。继承边界：M3 `SCOPED_ACCEPTED`（幅值 ±5.4% 边界、单频 10 kHz、dx2p6 不换 dx/tau，`docs/Phase_3/M3/M3_Closure_Decision.md` §3/§4 在 Phase_5 内仍有效）；M4 `PASSED_WITH_SCOPED_RISK`（非 clear PASS，digest `d69bf24d881e`）。维护基线：Phase_3 39 测试绿 + Phase_4 全量 158 测试绿。规范性优先级（合同 §0.1）：Phase 0 物理冻结 > M2/M3/M4 Closure Decision > 合同 v1.2 > 本 STATUS > Gate 报告与路线决策备忘录 > 单个算例配置/运行摘要。
@@ -17,12 +19,13 @@ PHASE5_SCOPE_FROZEN
 ROUTE_B_MAIN
 1D_REAL_AIR_BOUNDING
 MODEL_CLOSURE_PASSED_ROUTE_B
-NONLINEAR_WALL_NEUTRALITY_NOT_CERTIFIED
+NONLINEAR_WALL_NEUTRALITY_CERTIFIED
+PRESSURE_PRESERVING_WALL_DIAGNOSTIC_ONLY
 AMPLITUDE_ENVELOPE_NOT_CERTIFIED
 HARMONIC_TRANSFER_NOT_CERTIFIED
 HARMONIC_OPERATOR_ABLATION_NOT_CERTIFIED
 H2_BASE_TARGET_H3_CONDITIONAL
-NONLINEAR_1D_REFERENCE_NOT_CERTIFIED
+NONLINEAR_1D_REFERENCE_CERTIFIED
 DC_PROTOCOL_NOT_CERTIFIED
 FINITE_WIDTH_2D_DEFERRED_JASA_SCOPE
 FINAL_PRODUCTION_NOT_CLAIMED
@@ -35,13 +38,13 @@ FINAL_PRODUCTION_NOT_CLAIMED
 | Gate | 内容 | 当前状态 |
 |---|---|---|
 | G0-B | 物理模型闭合门（路线 B 有效物性；等压主路径，270–360 K） | **`SCOPED_PASSED_BY_USER`**（2026-07-23，决策 D5-2；run `20260722T173919Z`：α/c/γ@k1 +1.7%/+0.8%/+1.6% 全过。**围栏**：剪切 ν 不认证[几何无剪切+μ-only 消融零影响+多通道解耦实测；有限宽/横向流声明不可用，G5 复审触发重开]；低波数层仅按有限波数表格口径[k→0 外推不认证]。冻结文档 `nonlinear_model_freeze.md`） |
-| G1-W | 热壁非线性中性与质量约束（G1a/G1b 的前置硬门） | `NOT_RUN`；现有 `pressure_preserving` 壁在通过前仅可作诊断（D0-11） |
+| G1-W | 热壁非线性中性与质量约束（G1a/G1b 的前置硬门） | **`PASSED`**（2026-07-27，run `20260727T083342Z`、digest `57bd724e0709`：八行全过——质量通量 1.4e-15、窗内质量 2.7e-12、u_n 6e-14、壁温 1.9e-12 K、导纳回归 +3.98%/+1.96°[能量通道 vs lbm-equivalent 谱参考]、夹具 ≤2.8e-9、旧壁 DIAGNOSTIC_ONLY、纪律过。**生产壁=v1.1 对称质量中性壁**；矩通道重标定 3.055@+17.5° 归档（§23）。报告 `wall_nonlinearity_neutrality_report.md`） |
 | G1a | 规定壁温气侧幅值包络（ε_AC 至 0.05，条件 0.075/0.10） | `NOT_RUN` |
 | G1b | Level C 耦合幅值包络（M3 小幅值回归为前置） | `NOT_RUN` |
 | G2-T | 壁温→出射声学模态热生成链（10/20 kHz 强制） | `NOT_RUN` |
 | G2-A | 纯声学传播/读出链（10/20 kHz 强制） | `NOT_RUN` |
 | G2-O | 谱修正与高波数滤波谐波消融（D0-12） | `NOT_RUN` |
-| G3 | 独立非线性 1D NSF 参考（双物性分支） | `NOT_RUN`（求解器未实现，属 WP1） |
+| G3 | 独立非线性 1D NSF 参考（双物性分支） | **`PASSED`**（2026-07-26，run `20260726T082938Z`、physics-core digest `5758666fd20d`：§8.2 七行全过——平衡精确 0、锚 +0.0014%/−0.101°@δ/12、阶 2.00、最细两档 0.130%、能量 3.6e-11、泄漏 2.0e-10+灵敏度反证、绝热 ringdown γ 比 1.004。分支正式定义冻结（`g0_measured_k1_v1`/Sutherland）+ p-side H2 复核（上界口径，备忘录 §9）。报告 `nonlinear_1d_reference_report.md`） |
 | G4a | 稳态 DC 基态 + 小扰动（canonical 等温热库 `T(H_s)=T_ambient`） | `NOT_RUN` |
 | G4b | 自热建立瞬态（1D 必须、LBM 条件） | `NOT_RUN` |
 | G5 | 完整有限宽度二维 | `WAIVED_JASA_SCOPE`（默认，D0-9；G5-lite 可先行，非必要项） |
@@ -100,8 +103,8 @@ FINAL_PRODUCTION_NOT_CLAIMED
 ## 5. 风险与边界
 
 - **继承硬约束**：单频 10 kHz、dx2p6 mapping、不换 dx/dt/tau/热流导出因子/Grad 壁重构（M3 决策 §3；触发即按停放项重启流程处理）。Phase_5 新增的生产壁与算子消融要求（G1-W/G2-O）在通过前具有**阻断效力**，但不得倒改冻结上游结论。
-- **热壁风险（G1-W 立门依据，合同 §6.1）**：现有 `pressure_preserving` 整行 Grad 热壁在规定正弦壁温下内生 `O(ε²)` DC 密度项与 2f 密度项——**已在生产尺度定量坐实（2026-07-21 §3：1f=2.37e-6 ≫ 门 1e-10）**；通过 G1-W 前，该壁下的 DC/H2/全域质量变化一律只作诊断。质量中性生产壁候选若破坏 M3 小幅值导纳（幅值 ≤5%、相位 ≤5° 门），不得用 equilibrium clamp 顶替（§21）。
-- **【开放量（已路由到 G0）】质量中性壁能量通道 +13%/+20° 超额（2026-07-22 v1.1 判决后）**：v1 的 −37.9% 分解闭环——密封几何物理 −8%（三方验证）⊕ 矩通道场形失准 ~3×（免标定能量读出实锤，(tau,k) 重标定输入）⊕ wrap 背面畸形（v1.1 已修，对称比 1.0000）。剩余单一开放量=能量通道逐侧 1.044@+23.3° vs 真值 0.9202@+3.53°，主嫌疑 α_eff(k) 在箱尺度 k≈0.131 的标定点外行为——**正是 G0-B 测量对象，继续归因等 G0 数据**（次级嫌疑：缝×FFT 注入能量）。等温盖几何在冻结栈判死（G1-W 夹具硬约束）。G1-W 认证路径预注册：G0 α_eff(k) → 矩导出对 mn 场形重标定（§23 换壁重标）→ 密封几何 + 三方验证参考的回归夹具。候选（v1 单侧版 + v1.1 对称版）判决前仅作研究件；G1-W 仍 `NOT_RUN`。旧壁 M3 导纳达标与其质量源是同一机制两面——G1-W 报告核心素材。
+- **热壁（G1-W 已闭账，2026-07-27）**：旧壁 `pressure_preserving` 的 O(ε)/O(ε²) 质量源在权威 run 定量归档（1f=1.0e-4@ε=0.05 vs mn 1.4e-15）→ `DIAGNOSTIC_ONLY` 标签生效；**生产壁=v1.1 对称质量中性壁（已认证，非 equilibrium clamp、保留物理 neq 热流）**。等温盖几何在冻结栈判死的约束仍在（canonical 盖几何认证留 G4a 处理）。
+- **【已闭合】质量中性壁能量通道 +13%/+20° 超额（2026-07-26/27 归因闭合）**：预注册路径执行完毕——G0 仪器高 k 扩展行实测 α_eff/α_nom=1.58–12.5×（k=0.26–1.05）→ lbm-equivalent 密封谱参考 1.0087@+21.09°（常 α 验证=三方验证闭式值逐位）→ 实测能量通道 1.0488@+23.05° 回归残差 +3.98%/+1.96°（门内）。机理：密封箱响应带横跨冻结栈 α_eff(k) 强非单调区，名义 α 连续介质参考在此仪器上不成立；缝×FFT 稳态谐波注入底板实测 ≤~6e-10（G2 底板输入）。矩通道场形重标定常数 3.055@+17.5° 归档（§23 换壁重标；G1a/G2 矩通道读出定标用）。详见 `wall_nonlinearity_neutrality_report.md` §2/§3。
 - **Hermite 温度窗风险**：若 `epsilon_AC=0.03` 已失稳，停大信号主线，转 A2a 小扰动/上界/方法路线（§21）；G1a 最低幅值窗=0.05，未过则不授权完整生产矩阵。
 - **算子消融风险**：G2-O 若显示谱修正/滤波开关改变谐波符号、阈值或阶次，谐波降 L1/诊断；禁止按结果挑"更好看"的算子栈。
 - **规划非承诺**：合同附录 E 工期为非规范性估计；首轮 8 信息单元 ≈ 20–40 次实际运行（§14），生产物理点与验证/网格/窗口/空检/消融点必须分别预算；禁用"40 算例两周"式高置信承诺。
@@ -117,7 +120,7 @@ FINAL_PRODUCTION_NOT_CLAIMED
 4. ✅ 低马赫与"边界—线性内部"夹具（2026-07-22）：1D ringdown/低马赫（WP1-2）+ `signed_pair_combination`（通用符号对，§6.1 夹具落地）+ LBM 静 rig 纪律（箱共振反例固化）。
 5. ✅ WP1 双物性 1D 消融 + `route_ab_decision_memo.md`（2026-07-22）：**`ROUTE_A_COST_REVIEW_REQUIRED` 成立（H2 压低 14–23×、D_OP 符号翻转）**；备忘录建议维持 D0-3 默认（路线 B 主线 + 1D 定界）+ 预注册升级条件；**路线决策待用户（备忘录 §7）**。
 
-**WP1 全部五项完成（2026-07-22）**。下一步：用户路线决策 → WP2 入口 Gate（顺序冻结，§13）：G0 → G3 → G1-W → G1a → G1b → G2-T/G2-A/G2-O（10/20 kHz）→ G4a →（条件 30 kHz G2 / 条件 G4b）。G0 兼具双重使命：有效物性律测定 + WP1-3 能量超额归因（α_eff(k) 箱尺度）+ `1D-lbm-equivalent` 分支实测律挂接。
+**WP1 全部五项完成（2026-07-22）；WP2 已闭合 G0（scoped by user，D5-2）、G3（PASSED，2026-07-26）、G1-W（PASSED，2026-07-27）**。下一步：**G1a**（规定壁温气侧幅值包络，合同 §6.2：G1-W 认证生产壁 v1.1、ε 阶梯 0.001→0.05+条件 0.075/0.10、基准网格+一档诊断细化、冻结谱修正/滤波栈）→ G1b（Level C 耦合包络 + 生产壁小幅值 M3 回归重跑）→ G2-T/G2-A/G2-O（10/20 kHz）→ G4a →（条件项）。G1a 可直接消费的已认证仪器：v1.1 生产壁 + 能量通道读出 + 矩通道重标定常数（3.055@+17.5°）+ lbm-equivalent 谱参考 + 夹具底板 ≤6e-10。
 
 ## 7. 更新日志
 
@@ -125,6 +128,8 @@ FINAL_PRODUCTION_NOT_CLAIMED
 |---|---|
 | 2026-07-20 | **Phase_5 立项、WP0 全部交付**：合同 v1.2 入库确认（评审基线=HEAD `b86459c`）；创建本 STATUS（状态标签 + Gate 现值表全 `NOT_RUN`）、`README.md`、`Phase5_Output_Files_Guide.md`、gate schema `verification/nonlinear/phase5_gate_schema.json`、`configs/phase5/README.md`；更新 `configs/README.md`、`verification/README.md`、`PROJECT_CONTEXT.md`（阶段指针）、`Phase4_STATUS.md`（转维护态）、`CLAUDE.md`（阶段状态指针）。下一步 WP1。 |
 | 2026-07-23 | **G0-B 用户 scoped 升级（D5-2）**：`SCOPED_CANDIDATE`→`SCOPED_PASSED_BY_USER`；围栏=剪切 ν 不认证（需剪切的声明不可用、G5 复审触发重开）+ 低波数有限-k 表格口径；标签 `MODEL_CLOSURE_PASSED_ROUTE_B`。批准前用户质询"剪切与松弛"获多通道解耦+实测证据解答（决策留痕 §4）。run 归档中脚本判定不改。**WP2 首门闭合，当前 G3**。 |
+| 2026-07-27 | **G1-W 权威认证 PASSED（WP2 第三门闭合，两次权威 run ~6+7.5 h + Stage-1 归因 + 夹具重设计）**：runner `scripts/phase5_g1w_wall_neutrality.py` + 配置 + 合同测试 4 绿（含谱参考对独立闭式解的非重言锚）。**Stage-1 归因闭合（关键路径前置）**：WP1-3 遗留 +13%/+20° 能量超额的主嫌疑（α_eff(kbox) 单点）被谱计算否证（方向相反）→ 合成扫描给出可测预言（表外 α 需 3–5× 名义）→ **G0 仪器补测高 k 行实测 1.58–12.5×（k=0.26–1.05，非外推）** → lbm-equivalent 密封谱参考 1.0087@+21.09°（常 α 验证=三方验证值逐位复现）。**首次权威尝试 `20260727T040121Z`**：7/8 行过（能量通道 1.0488@+23.05° 复现 WP1-3、回归 +3.98%/+1.96° 门内、profile rms 3.2%、旧壁 DIAGNOSTIC_ONLY）、夹具行 FAIL（底板 ~1e-7）→ **零成本窗口判别**：2f=瞬态（τ=1.1 周期实测）、3f=稳态→ε² 标度检验支持真实三次物理（C₃≈0.28）→ 夹具重设计（ε 1e-3→1e-4 + settle 8→12，预注册）→ **权威 run `20260727T083342Z` PASSED**：夹具 2f=3.3e-10、3f=2.77e-9（**恰 ×100=ε² 标度实测验证**）；八行全过。**生产壁=v1.1 对称质量中性壁**；矩通道重标定 3.055@+17.5°（与 WP1-3 的 0.328@−17.9° 精确互为倒数）；冻结栈稳态谐波注入底板 ≤~6e-10 实测界定（G2 输入）；旧壁链验证 vs M3 +0.18%/+0.10°。报告交付 + M5_runs 归档。**下一门 G1a** |
+| 2026-07-26 | **G3 权威认证 PASSED（WP2 次门闭合，两次权威 run ~2×66 min + 仪器修正）**：runner `scripts/phase5_g3_nsf1d_reference.py`（七文件 run 合同 + §16.2/16.3 全字段）+ 合同测试 5 绿 + `g0_measured_transport()` 正式分支构造器。**首次尝试 `20260726T074420Z` FAILED**——唯一失败行 ringdown γ 比 14.48，定量归因**欠分辨等温端热沉伪影**（δ_κ(347 kHz)=0.14 µm ≪ dy=7.8 µm，无缓冲热沉 2k/dy；解析 ~9.1e3/s vs 实测超额 7.94e3/s；ν×100 仪器变体被物理阻尼掩蔽）→ fixture 重设计**密封绝热箱**（mode-1 真离散本征模）→ **权威 run `20260726T082938Z` PASSED**：γ 比 1.004、等温诊断双点超额 7937→4525/s（比值 0.570≈∝1/dy 预测 0.5，与格式耗散反向=归因坐实）；非 ringdown 块两 run 逐位一致。其余六行：平衡精确 0、锚 +0.0014%/−0.101°、阶 2.00/最细两档 0.130%、能量 3.6e-11、泄漏 2.0e-10+灵敏度 5.7e-7、可分辨性 q 1.6e5。**预注册复核闭合**：p-side H2 贴底板（H3p≈0.6·H2p、无 ε² 标度）→ 上界口径 `H2p≤2.1e-5` + T-side 结论不改（备忘录 §9）；A1 底板 2f=3.15e-5（U_det 输入）；D_G 于正式 g0 分支 4.0e-5（`>3%` 不可达坐实）。报告交付 + M5_runs 归档。**下一门 G1-W** |
 | 2026-07-23 | **G0 实测律挂接复核（预注册触发，~13 min）**：`1D-lbm-equivalent_g0_measured_k1_v1`（k_eff∝T^1.04、μ∝T^−0.60）重跑 WP1-5 全协议、三分支对照。**结果**：g0 分支 H2 自身压低 9×（两分支反相分居相消零点两侧 +65°/−50°）、H2 判据比 3.1→**1.1-1.2**（生产 ε 擦线）；**Δ_prop(D_OP) +2.18pp→−0.38pp 恰在判据线上**（符号翻转消失；g0 D_OP +1.25% vs 密封闭式 +1.34%，交叉验证 0.09pp）。**D5-1 路线决策追溯性强化**——路线 B 的 LBM 在标定点内禀携带近空气导热标度。备忘录 §8 追记；caveat：k1 单点律 surrogate，分支正式定义 + p-side H2 归 G3 | 复核闭环 | 下一步 G3（WP2 次门） |
 | 2026-07-23 | **G0-B 实现 + 权威 run（WP2 首门）**：三个 P2 测量 helper 加背景态扩展（默认逐位不变，P2 回归 17 绿）；runner `scripts/phase5_g0_effective_properties.py` + 首个 phase5 子目录配置 + 合同测试（3 绿）；mini smoke 抓出并修正两处（CSV 字段、**门径校准点**——低波数层不收敛于名义值反发散 +44%@k=0.049，300 K 回归改锚 (tau,k) 标定点 k1）。**权威 run `20260722T173919Z`（31 行，digest `8bbacf242674`，~66 min）verdict=`SCOPED_CANDIDATE`**：α@k1 +1.73%✅ c +0.82%✅ γ +1.64%✅ 窗口 0.01%✅；scoped=ν@k1 −33.8%（Phase_3 非 QoI）+ 低波数收敛 23.2%（有限-k 口径）。**有效律冻结（表格口径，无单一幂律）**：α_eff 温度指数随 k 从 1.04（k→0，k_eff≈常数）到 2.04（**k1：k_eff∝T^1.04，与真实空气 T^0.89 仅差 0.15！**）到 5.4（k2 谷底 α=0.48×名义）；等压/等密度 LU 逐位简并（运动学系数密度无关）；x/y 逐位各向同性；c/√(γθ_b) 全温度 +0.7~0.9% | 冻结文档 `nonlinear_model_freeze.md` 交付；精选摘要归档 `M5_runs/g0_20260722T173919Z/`；三个下游输出：①1D-lbm-equivalent 挂 T^1.04 实测律（预注册复核——预期两 1D 分支近重合、Δ_prop 大幅收窄、路线 B 追溯加强）②WP1-3 归因输入（kbox α=0.60×名义）③G2 各谐波按各自 k 有效物性传播 | **G0 scoped 升级决策属用户** |
 | 2026-07-22 | **路线 A/B 正式决策（D5-1）**：消融结果经用户质询触发的独立验证（D_OP 闭式渗透率 0.1pp、H2 指数扫描穿零+相位翻转）确认后，**用户批准维持 `ROUTE_B_MAIN + 1D_REAL_AIR_BOUNDING`**。标签更新（§1）、备忘录 §7 决策记录、升级条件预注册生效。WP1 就此全面收官（五项交付 + 路线决策闭环）；进入 WP2 G0。 |

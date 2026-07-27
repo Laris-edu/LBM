@@ -1,0 +1,163 @@
+{
+ "gate_id": "G1-W",
+ "verdict": "PASSED",
+ "rows": {
+  "normal_mass_flux_components": {
+   "value_max_0f_3f": 1.3833515488081955e-15,
+   "gate": 1e-10,
+   "normalization": "dm_rel = (M_after - M_before)_callback / (rho_ref_lu * nx): net wall-operation mass change per step per wall column in reference-density units (= dimensionless normal mass flux for dt_lu=dx_lu=1); velocities are row-0 means divided by c0_lu = sqrt(theta_ref_lu).",
+   "passed": true
+  },
+  "global_mass": {
+   "window_max": 2.6689761511988727e-12,
+   "gate_window": 1e-08,
+   "cumulative_max": 4.408621615918182e-12,
+   "gate_cumulative": 1e-06,
+   "passed": true
+  },
+  "impermeability_no_slip": {
+   "u_normal_max_0f_3f_over_c0": 6.00120662801037e-14,
+   "u_tangential_mean_over_c0": 7.867559101517887e-14,
+   "gate": 1e-08,
+   "passed": true
+  },
+  "wall_temperature_realization": {
+   "max_error_K": 1.936295711245192e-12,
+   "gate_K": 0.01,
+   "note": "callback-instant realization (audit series); end-of-step readback perturbation by the global corrections is the documented M3 plumbing note",
+   "passed": true
+  },
+  "admittance_regression": {
+   "channel": "sealed energy balance (calibration-free)",
+   "reference": "lbm-equivalent sealed spectral reference [hold_last|gamma_nominal]",
+   "Y_measured_over_Yhs": {
+    "re": 0.9651135486564215,
+    "im": 0.41063447089803257,
+    "abs": 1.0488397544381591,
+    "phase_deg": 23.04867976827821
+   },
+   "Y_reference_over_Yhs": {
+    "re": 0.941168763828578,
+    "im": 0.36288964557116776,
+    "abs": 1.0087058723281932,
+    "phase_deg": 21.085312707128146
+   },
+   "amp_rel_err": 0.03978749723874708,
+   "phase_deg_err": 1.9633670611500618,
+   "gate_amp": 0.05,
+   "gate_phase_deg": 5.0,
+   "policy_band": {
+    "hold_last|gamma_nominal": {
+     "amp_rel_err": 0.03978749723874708,
+     "phase_deg_err": 1.9633670611500618
+    },
+    "hold_last|gamma_eff_g0": {
+     "amp_rel_err": 0.04640963610305571,
+     "phase_deg_err": 1.8026765458374756
+    },
+    "nominal|gamma_nominal": {
+     "amp_rel_err": 0.06056878009816291,
+     "phase_deg_err": 4.3313528024016765
+    },
+    "nominal|gamma_eff_g0": {
+     "amp_rel_err": 0.06706471199477604,
+     "phase_deg_err": 4.159225005814559
+    }
+   },
+   "window_sensitivity_rel": 0.006624072315242421,
+   "profile_check_supporting": {
+    "rms_dev_over_row1": 0.031783153997795695,
+    "max_dev_over_row1": 0.047212098614757815
+   },
+   "passed": true
+  },
+  "boundary_linear_interior_fixture": {
+   "odd_pair_nontarget": {
+    "q_moment_si": {
+     "odd_2f_rel": 3.282418182760419e-10,
+     "odd_3f_rel": 2.7661407356353047e-09,
+     "even_2f_abs": 0.0007698324987469202,
+     "even_2f_rel_1f": 5.354643546003467e-05
+    },
+    "p_box_lu": {
+     "odd_2f_rel": 6.262261854890982e-10,
+     "odd_3f_rel": 5.111067061583479e-10,
+     "even_2f_abs": 4.321034806377245e-11,
+     "even_2f_rel_1f": 2.032652600323659e-05
+    }
+   },
+   "value_max": 2.7661407356353047e-09,
+   "gate": 1e-08,
+   "passed": true
+  },
+  "old_wall_difference_audit": {
+   "table": {
+    "epsilon_compare": 0.05,
+    "D_G": {
+     "mn": 0.0018393723737795131,
+     "old": 0.0012973701635980994,
+     "difference": 0.0005420022101814137,
+     "threshold": 0.006624072315242421,
+     "exceeds": false
+    },
+    "H2_pbox": {
+     "mn": 0.011033881021390104,
+     "old": 0.0663048676722404,
+     "difference": 0.0552709866508503,
+     "threshold": 0.006630486767224041,
+     "exceeds": true
+    },
+    "H3_pbox": {
+     "mn": 0.0007779317787438084,
+     "old": 0.0031964046849665413,
+     "difference": 0.0024184729062227328,
+     "threshold": 0.006624072315242421,
+     "exceeds": false
+    },
+    "DC_pbox_rel": {
+     "mn": 0.0007338882922767468,
+     "old": 8.876991887380352e-07,
+     "difference": 0.0007330005930880088,
+     "threshold": 0.006624072315242421,
+     "exceeds": false
+    },
+    "DC_mass_flux_0f": {
+     "mn": 1.3636567749489855e-15,
+     "old": 1.917271265852865e-07,
+     "difference": 1.9172712522162973e-07,
+     "threshold": 0.006624072315242421,
+     "exceeds": false
+    },
+    "mass_flux_1f": {
+     "mn": 4.172964232172332e-17,
+     "old": 0.00010085178261443093,
+     "difference": 0.0001008517826143892,
+     "threshold": 0.006624072315242421,
+     "exceeds": false
+    }
+   },
+   "old_wall_marking": "DIAGNOSTIC_ONLY",
+   "chain_validation_old_wall_vs_M3": {
+    "Y_over_Yhs": {
+     "re": 0.9477272698364304,
+     "im": 0.03797165110655633,
+     "abs": 0.9484876510948217,
+     "phase_deg": 2.2943861358612647
+    },
+    "vs_M3": {
+     "amp_rel_err": 0.001782478976364299,
+     "phase_deg_err": 0.09638613586126484
+    }
+   },
+   "passed": true
+  },
+  "numerical_discipline": {
+   "no_clipping": true,
+   "no_floor": true,
+   "no_positivity_repair": true,
+   "finite": true,
+   "constraint_residual_note": "v1.1 removes blended-neq mass/momentum exactly via the equilibrium increment; the per-step audited dm_rel IS the residual (machine level)",
+   "passed": true
+  }
+ }
+}

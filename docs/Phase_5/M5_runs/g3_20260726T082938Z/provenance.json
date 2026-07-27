@@ -1,0 +1,17 @@
+{
+ "run_id": "20260726T082938Z",
+ "command": "E:\\Code\\LBM\\scripts\\phase5_g3_nsf1d_reference.py",
+ "python": "3.14.2",
+ "numpy": "2.4.4",
+ "code_commit": "18f2de4a27d18b540008df26d36c27b5cd351939",
+ "physics_core_digest": "5758666fd20d",
+ "physics_core_files": {
+  "reference/nonlinear_nsf_1d.py": "e14da1a1693b",
+  "postproc/multiharmonic_fit.py": "8467d487e625",
+  "reference/constants.py": "bd2d0b184049",
+  "reference/thermal_admittance.py": "bdeb073aad09"
+ },
+ "solver_id": "nonlinear_nsf_1d_fv_central_rk4_v1",
+ "parent_baseline_run": "g0_effective_properties/20260722T173919Z",
+ "g0_law_source": "docs/Phase_5/nonlinear_model_freeze.md \u00a71/\u00a73 (k_eff\u221dT^1.04, mu_eff\u221dT^-0.60 at k1, 270-360 K)"
+}

@@ -70,8 +70,11 @@ def test_equilibrium_preservation_is_exact():
 
 def test_acoustic_ringdown_sound_speed_and_low_dissipation():
     # nu x100 makes the 12-period decay measurable and viscosity-dominated;
-    # bulk prediction is a lower bound (isothermal-end thermal layers add
-    # O((gamma-1) delta_kappa/H) ~ +10%); a dissipative scheme would blow the cap.
+    # bulk prediction is a lower bound — the isothermal ends add a fixed
+    # unbuffered-wall-sink excess ~8e3/s (delta_kappa(f_box) << dy; G3
+    # finding), ~+14% here where physical damping is ~5.9e4/s; a dissipative
+    # scheme would blow the cap. The G3 gate row uses the sealed adiabatic
+    # variant (true eigenmode, no boundary sink).
     ring = acoustic_ringdown_fixture(params=default_params(nu0=1.57e-3))
     assert 0.95 <= ring["gamma_ratio"] <= 1.45
     assert abs(ring["frequency_offset_rel"]) <= 0.01

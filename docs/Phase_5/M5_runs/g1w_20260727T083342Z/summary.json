@@ -1,0 +1,165 @@
+{
+ "run_id": "20260727T083342Z",
+ "created_at": "2026-07-27T13:55:16.083887+00:00",
+ "code_commit": "18f2de4a27d18b540008df26d36c27b5cd351939",
+ "config_digest": "effa2eedeb41",
+ "physics_core_digest": "57bd724e0709",
+ "parent_baseline_run": "g0_effective_properties/20260722T173919Z",
+ "phase5_contract_version": "v1.2",
+ "work_package": "WP2",
+ "gate_id": "G1-W",
+ "case_family": "g1w_wall_neutrality",
+ "model_route": "ROUTE_B_MAIN",
+ "property_model_id": "frozen_dx2p6_stack + alpha_eff(k) table (G0 + in-run extension)",
+ "tau_policy": "frozen dx2p6 mapping (inherited, unchanged)",
+ "mapping_digest": "811c8a001b59",
+ "background_path": "uniform_theta0_reference",
+ "forcing_protocol": "prescribed_sinusoidal_wall_temperature (G1a analog)",
+ "P_mean_W_m2": 0.0,
+ "P_mean_rematched": false,
+ "target_Theta_DC": 0.0,
+ "frequency_Hz": 10000.0,
+ "T_ambient_K": 300.0,
+ "T_mean_K": 300.0,
+ "epsilon_AC_measured": {
+  "mn_ladder": [
+   0.001,
+   0.01,
+   0.03,
+   0.05,
+   0.1
+  ],
+  "old_ladder": [
+   0.001,
+   0.03,
+   0.05
+  ],
+  "pair": 0.0001
+ },
+ "Theta_DC_measured": 0.0,
+ "chi_0": null,
+ "chi_eff": null,
+ "C_A_J_m2K": null,
+ "dc_heat_sink_model": "not_applicable_g1w (sealed periodic rig; canonical sink enters at G4a)",
+ "dc_heat_sink_parameters": null,
+ "H_s_role": "sealed rig height (ny)",
+ "thermal_resistance_effective": null,
+ "grid_shape": [
+  48,
+  8
+ ],
+ "dx_m": 2.61175e-06,
+ "dt_s": 1.95881e-09,
+ "domain_height_m": 0.000125364,
+ "boundary_model": "v1.1 symmetric mass-neutral Grad wall (production candidate) + pressure_preserving Grad wall (diagnostic contrast)",
+ "wall_mass_policy": "mass_neutral_by_construction (v1.1)",
+ "wall_neutrality_gate_id": "G1-W/20260727T083342Z",
+ "boundary_mass_flux_definition": "dm_rel = (M_after - M_before)_callback / (rho_ref_lu * nx): net wall-operation mass change per step per wall column in reference-density units (= dimensionless normal mass flux for dt_lu=dx_lu=1); velocities are row-0 means divided by c0_lu = sqrt(theta_ref_lu).",
+ "boundary_mass_flux_0f_to_3f": [
+  1.3634491214691054e-15,
+  1.7338107079674625e-17,
+  5.0243318153665775e-18,
+  5.058801799831518e-18
+ ],
+ "spectral_operator_stack_id": "frozen_dx2p6_dispersion_correction_stack",
+ "spectral_correction_enabled": true,
+ "high_wavenumber_filter_enabled": false,
+ "high_wavenumber_filter_strength": 0.0,
+ "operator_ablation_run_id": null,
+ "q_feedback_relax": null,
+ "fit_window": {
+  "settle_periods": 1.0,
+  "fit_periods": 2.0
+ },
+ "fit_cycles": 2.0,
+ "detrend_order": 0,
+ "harmonic_order_max": 3,
+ "harmonic_fit_condition_number": 1.4172544246431777,
+ "U_det": {
+  "window_pair_rel": 0.006624072315242421
+ },
+ "U95_fit": {
+  "p_box_1f_amp": 4.538403107342275e-08
+ },
+ "U_gov": 0.006624072315242421,
+ "no_clipping": true,
+ "no_floor": true,
+ "no_positivity_repair": true,
+ "gate_status": "PASSED",
+ "scoped_limitations": [],
+ "smoke_mode": false,
+ "results": {
+  "T_s_hat_1f": {
+   "re": 0.30000000000000004,
+   "im": 0.0,
+   "abs": 0.30000000000000004,
+   "phase_deg": 0.0
+  },
+  "p_hat_1f": {
+   "re": 1.9773251894467702e-05,
+   "im": -7.969376890892775e-06,
+   "abs": 2.1318828732159897e-05,
+   "phase_deg": -21.95132023172179
+  },
+  "p_hat_2f": {
+   "re": -2.5284344842309422e-09,
+   "im": -6.207814686241744e-08,
+   "abs": 6.212961692150465e-08,
+   "phase_deg": -92.33236014776709
+  },
+  "p_hat_3f": {
+   "re": -2.646457569619989e-09,
+   "im": -3.930979307253506e-08,
+   "abs": 3.939877623827071e-08,
+   "phase_deg": -93.8515182753017
+  },
+  "outgoing_mode_1f": null,
+  "outgoing_mode_2f": null,
+  "outgoing_mode_3f": null,
+  "outgoing_mode_note": "sealed rig has no outgoing mode; G2 quantity",
+  "G1": 479.98216995581794,
+  "D_G": {
+   "mn": 0.0018393723737795131,
+   "old": 0.0012973701635980994,
+   "difference": 0.0005420022101814137,
+   "threshold": 0.006624072315242421,
+   "exceeds": false
+  },
+  "D_OP": null,
+  "D_OP_note": "A2a quantity (G4a)",
+  "H2": 0.011033881021390104,
+  "H3": 0.0007779317787438084,
+  "m1": null,
+  "m2": null,
+  "m3": null,
+  "m_note": "scaling exponents belong to G1a/production; ladder harmonics archived",
+  "QS0_error_amplitude": null,
+  "QS0_error_phase": null,
+  "QS1_error_amplitude": null,
+  "QS1_error_phase": null,
+  "QS_note": "not_applicable_g1w",
+  "wall_boundary_sensitivity": {
+   "moment_channel_recalibration_Y_energy_over_Y_moment": {
+    "re": 2.9130912466793206,
+    "im": 0.9205626006184513,
+    "abs": 3.055083650759351,
+    "phase_deg": 17.53699694813855
+   },
+   "note": "\u00a723 pre-registered wall-change recalibration input; archived, not used to pass any gate row"
+  },
+  "operator_sensitivity_D_G": null,
+  "operator_sensitivity_H2": null,
+  "operator_sensitivity_H3": null,
+  "operator_note": "G2-O quantity",
+  "boundary_mass_flux_0f_to_3f": [
+   1.3634491214691054e-15,
+   1.7338107079674625e-17,
+   5.0243318153665775e-18,
+   5.058801799831518e-18
+  ],
+  "energy_residual": null,
+  "energy_residual_note": "sealed energy identity IS the readout; its closure vs the spectral reference is the regression row",
+  "mass_or_flux_residual": 4.408621615918182e-12,
+  "wall_temperature_error": 1.936295711245192e-12
+ }
+}

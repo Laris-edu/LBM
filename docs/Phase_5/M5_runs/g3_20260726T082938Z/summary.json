@@ -1,0 +1,172 @@
+{
+ "run_id": "20260726T082938Z",
+ "created_at": "2026-07-26T09:01:05.997416+00:00",
+ "code_commit": "18f2de4a27d18b540008df26d36c27b5cd351939",
+ "config_digest": "43706cc43408",
+ "physics_core_digest": "5758666fd20d",
+ "parent_baseline_run": "g0_effective_properties/20260722T173919Z",
+ "phase5_contract_version": "v1.2",
+ "work_package": "WP2",
+ "gate_id": "G3",
+ "case_family": "g3_nsf1d",
+ "model_route": "ROUTE_B_MAIN",
+ "property_model_id": {
+  "1D-lbm-equivalent": "1D-lbm-equivalent_g0_measured_k1_v1",
+  "1D-physical": "1D-physical_air_sutherland_anchored_T0_v1",
+  "diagnostic_lineage": "1D-lbm-equivalent_reference_constant_v1"
+ },
+ "tau_policy": "not_applicable_1d_reference (transport laws archived per branch)",
+ "mapping_digest": "not_applicable_1d_reference",
+ "background_path": "uniform_T0_equilibrium",
+ "forcing_protocol": "temperature_anchor + a1_signed_zero_mean_flux + dirichlet_signed_pair + acoustic_ringdown",
+ "P_mean_W_m2": 0.0,
+ "P_mean_rematched": false,
+ "target_Theta_DC": 0.0,
+ "frequency_Hz": 10000.0,
+ "T_ambient_K": 300.0,
+ "T_mean_K": 300.0,
+ "epsilon_AC_measured": {
+  "anchor": 0.0001,
+  "pair": 1e-05,
+  "a1_ladder": [
+   0.005,
+   0.03,
+   0.05,
+   0.1
+  ]
+ },
+ "Theta_DC_measured": 0.0,
+ "chi_0": null,
+ "chi_eff": null,
+ "C_A_J_m2K": null,
+ "chi_note": "no film protocol in G3 certification blocks (film ODE smoke-tested at instrument level)",
+ "dc_heat_sink_model": "canonical_isothermal_lid_T_ambient",
+ "dc_heat_sink_parameters": {
+  "lid_temperature_K": 300.0,
+  "height_over_delta": 15.0
+ },
+ "H_s_role": "rig domain height (certification); not a heat-sink study",
+ "thermal_resistance_effective": null,
+ "grid_shape": [
+  180
+ ],
+ "dx_m": 2.2169220834508478e-06,
+ "dt_s": 2.5531045751633988e-09,
+ "domain_height_m": 0.0003990459750211526,
+ "boundary_model": "nsf1d_zero_mass_flux_noslip_wall + isothermal_reservoir_lid",
+ "wall_mass_policy": "zero_normal_mass_flux_by_construction",
+ "wall_neutrality_gate_id": "not_applicable_1d_reference (independent reference for G1-W)",
+ "boundary_mass_flux_definition": "convective wall flux == [0, p_w, 0] exactly",
+ "boundary_mass_flux_0f_to_3f": [
+  0.0,
+  0.0,
+  0.0,
+  0.0
+ ],
+ "spectral_operator_stack_id": "none_1d_fv_central_rk4",
+ "spectral_correction_enabled": false,
+ "high_wavenumber_filter_enabled": false,
+ "high_wavenumber_filter_strength": 0.0,
+ "operator_ablation_run_id": null,
+ "q_feedback_relax": null,
+ "fit_window": {
+  "settle_cycles": 3.0,
+  "fit_cycles": 5.0
+ },
+ "fit_cycles": 5.0,
+ "detrend_order": 0,
+ "harmonic_order_max": 5,
+ "harmonic_fit_condition_number": 1.4164922447272659,
+ "U_det": {
+  "grid_finest_two_rel": {
+   "g0": 0.001302117986611302,
+   "phys": 0.0013021179646651717
+  }
+ },
+ "U95_fit": {
+  "anchor_g0_q_1f_amp": 0.0002545862697875449
+ },
+ "U_gov": 0.001302117986611302,
+ "no_clipping": true,
+ "no_floor": true,
+ "no_positivity_repair": true,
+ "gate_status": "PASSED",
+ "scoped_limitations": [],
+ "smoke_mode": false,
+ "solver_id": "nonlinear_nsf_1d_fv_central_rk4_v1",
+ "results": {
+  "representative_point": {
+   "branch": "g0",
+   "protocol": "a1_flux",
+   "epsilon": 0.05
+  },
+  "T_s_hat_1f": {
+   "re": 10.628553900219046,
+   "im": -10.86588216551129,
+   "abs": 15.199787934199536,
+   "phase_deg": -45.63259884446663
+  },
+  "p_hat_1f": {
+   "re": 4.346237636154152,
+   "im": -329.823456421617,
+   "abs": 329.85209137959424,
+   "phase_deg": -89.24503046657571
+  },
+  "p_hat_2f": {
+   "re": -0.0007958179798635001,
+   "im": -0.0007449235964287482,
+   "abs": 0.0010900630356040714,
+   "phase_deg": -136.89192886794078
+  },
+  "p_hat_3f": {
+   "re": -0.00038869116459555597,
+   "im": -0.0005696030294490839,
+   "abs": 0.0006895856963367378,
+   "phase_deg": -124.30921965296551
+  },
+  "outgoing_mode_1f": null,
+  "outgoing_mode_2f": null,
+  "outgoing_mode_3f": null,
+  "outgoing_mode_note": "no outgoing acoustic mode in the closed 1D rig",
+  "G1": 0.0007247816660618826,
+  "D_G": {
+   "const": 0.0003708864700189274,
+   "g0": 4.04489079355308e-05,
+   "phys": 0.00011491026560217499
+  },
+  "D_OP": null,
+  "D_OP_note": "A2a operating point not re-run in G3; measured in the G0-hookup review (route memo \u00a78: g0 +1.25%, phys +0.87%)",
+  "H2": 3.3047025139204754e-06,
+  "H3": 2.0905906445903403e-06,
+  "H3_note": "upper-bound caliber: at/below the rig floor (see a1_leakage_floor)",
+  "m1": null,
+  "m2": {
+   "const": 1.5310820388779964,
+   "g0": 2.3315754501446015,
+   "phys": 1.7273945368445327
+  },
+  "m3": null,
+  "m3_note": "3f below measurement floor; upper bound only",
+  "QS0_error_amplitude": null,
+  "QS0_error_phase": null,
+  "QS1_error_amplitude": null,
+  "QS1_error_phase": null,
+  "QS_note": "QS rules are exercised in the A2a review (memo \u00a72/\u00a78), not in G3",
+  "wall_boundary_sensitivity": null,
+  "wall_boundary_note": "not_applicable_1d_reference (G1-W quantity; this solver is its reference)",
+  "operator_sensitivity_D_G": null,
+  "operator_sensitivity_H2": null,
+  "operator_sensitivity_H3": null,
+  "operator_note": "not_applicable_1d_reference (no spectral correction/filter operators in 1D FV)",
+  "boundary_mass_flux_0f_to_3f": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "boundary_mass_flux_note": "zero normal mass flux by construction; measured mass drift is the audit",
+  "energy_residual": 3.614231795534062e-11,
+  "mass_or_flux_residual": 6.9251969708545465e-15,
+  "wall_temperature_error": -8.031353360138382e-13
+ }
+}
