@@ -1,0 +1,48 @@
+gate_id: G1a
+case_family: g1a_wall_amplitude
+protocol:
+  frequency_Hz: 1.0e4
+  ny: 48
+  nx: 8
+  periods: 3.0
+  settle_periods: 1.0
+  samples_per_period: 64
+  ramp_periods: 1.0
+  epsilon_mandatory:
+  - 0.001
+  - 0.01
+  - 0.03
+  - 0.05
+  epsilon_conditional:
+  - 0.075
+  - 0.1
+  n_harmonics: 5
+  refinement:
+    ny_refined: 96
+    epsilons:
+    - 0.001
+    - 0.05
+    dx1p3_probe_steps: 3000
+    dx1p3_epsilon: 0.001
+  alpha_extension_ny:
+  - 24
+  - 16
+  - 12
+  - 8
+  - 6
+  highk_policy_primary: hold_last
+  window_sensitivity_cycles:
+  - 2.0
+  - 1.5
+gates:
+  smallamp_amp_rel: 0.05
+  smallamp_phase_deg: 5.0
+  wall_temperature_error_K: 0.01
+  energy_audit_rel: 0.01
+  mass_window_rel: 1.0e-08
+  mass_cumulative_rel: 1.0e-06
+  window_amp_rel: 0.02
+  window_phase_deg: 2.0
+  refinement_dg_rel: 0.01
+  min_amplitude_window: 0.05
+config_path: configs\phase5\g1a_wall_amplitude\g1a_10k_dx2p6.yaml

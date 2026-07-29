@@ -1,0 +1,180 @@
+{
+ "run_id": "20260728T085824Z",
+ "created_at": "2026-07-28T09:41:14.742779+00:00",
+ "code_commit": "9a50d71e5b61b777b11509c2e54ab9a6e36f44f8",
+ "config_digest": "a7cd822d4d53",
+ "physics_core_digest": "0a37c4e33aca",
+ "parent_baseline_run": "results/phase5/g1w_wall_neutrality/20260727T083342Z",
+ "phase5_contract_version": "v1.2",
+ "work_package": "WP2",
+ "gate_id": "G1a",
+ "case_family": "g1a_wall_amplitude",
+ "model_route": "ROUTE_B_MAIN",
+ "property_model_id": "frozen_dx2p6_route_b_closure",
+ "tau_policy": "frozen (M3 closure \u00a73; no per-point retuning)",
+ "mapping_digest": "849699bb37f6",
+ "background_path": "uniform_reference_state",
+ "forcing_protocol": "prescribed_wall_temperature_zero_mean_sinusoid",
+ "P_mean_W_m2": 0.0,
+ "P_mean_rematched": false,
+ "target_Theta_DC": 0.0,
+ "frequency_Hz": 10000.0,
+ "T_ambient_K": 300.0,
+ "T_mean_K": 300.0,
+ "epsilon_AC_measured": {
+  "0.001": 0.001,
+  "0.01": 0.01,
+  "0.03": 0.03,
+  "0.05": 0.05,
+  "0.075": 0.075,
+  "0.1": 0.1
+ },
+ "Theta_DC_measured": 0.0,
+ "chi_0": null,
+ "chi_eff": null,
+ "C_A_J_m2K": null,
+ "dc_heat_sink_model": "not_applicable_g1a_sealed_rig (sealed rig; canonical sink belongs to G4a)",
+ "dc_heat_sink_parameters": null,
+ "H_s_role": "rig domain height (sealed periodic)",
+ "thermal_resistance_effective": null,
+ "grid_shape": [
+  48,
+  8
+ ],
+ "dx_m": 2.61175e-06,
+ "dt_s": 1.95881e-09,
+ "domain_height_m": 0.000125364,
+ "boundary_model": "mass_neutral_v1p1_symmetric (G1-W certified production wall)",
+ "wall_mass_policy": "mass_neutral_by_construction",
+ "wall_neutrality_gate_id": "G1-W PASSED (20260727T083342Z)",
+ "boundary_mass_flux_definition": "wall_mass_audit.NORMALIZATION_DEFINITION",
+ "boundary_mass_flux_0f_to_3f": 1.363449121469107e-15,
+ "spectral_operator_stack_id": "frozen_production_dx2p6",
+ "spectral_correction_enabled": true,
+ "high_wavenumber_filter_enabled": true,
+ "high_wavenumber_filter_strength": "frozen_production",
+ "operator_ablation_run_id": null,
+ "q_feedback_relax": null,
+ "fit_window": {
+  "settle_periods": 1.0,
+  "fit_periods": 2.0
+ },
+ "fit_cycles": 2.0,
+ "detrend_order": 0,
+ "harmonic_order_max": 5,
+ "harmonic_fit_condition_number": 1.4197294853538986,
+ "U_det": {
+  "window_max_mandatory": 0.001753371724447561,
+  "refinement_dg_diff": 0.00021400035543150953
+ },
+ "U95_fit": {
+  "q1f_rel_at_eps_min": 0.00081534058433087
+ },
+ "U_gov": 0.001753371724447561,
+ "no_clipping": true,
+ "no_floor": true,
+ "no_positivity_repair": true,
+ "gate_status": "PASSED",
+ "scoped_limitations": [
+  "G1A_PASSED_TO_0P05"
+ ],
+ "smoke_mode": false,
+ "results": {
+  "T_s_hat_1f": {
+   "re": 15.0,
+   "im": 0.0,
+   "abs": 15.0,
+   "phase_deg": 0.0
+  },
+  "p_hat_1f": {
+   "re": 0.0009897618264397316,
+   "im": -0.0003951185728085385,
+   "abs": 0.0010657143893443354,
+   "phase_deg": -21.762166454603317
+  },
+  "p_hat_2f": {
+   "re": -8.052715058035444e-06,
+   "im": -8.568950386059286e-06,
+   "abs": 1.1758959585127265e-05,
+   "phase_deg": -133.2210807452637
+  },
+  "p_hat_3f": {
+   "re": 2.0805227675380327e-08,
+   "im": -8.287698539351847e-07,
+   "abs": 8.29030957377571e-07,
+   "phase_deg": -88.5619633520317
+  },
+  "outgoing_mode_1f": null,
+  "outgoing_mode_2f": null,
+  "outgoing_mode_3f": null,
+  "outgoing_mode_note": "sealed rig has no outgoing mode (G2 quantity)",
+  "G1": 1.0486163591797066,
+  "D_G": {
+   "0.001": 0.0,
+   "0.01": -0.00017638511575079896,
+   "0.03": -0.0003470196817950688,
+   "0.05": -0.00021299274508546073,
+   "0.075": 0.0003820745887455068,
+   "0.1": 0.001451536691706945
+  },
+  "D_OP": null,
+  "D_OP_note": "A2a quantity (WP3)",
+  "H2": {
+   "0.001": 0.0005023455997720441,
+   "0.01": 0.004467199983077445,
+   "0.03": 0.015415361970406103,
+   "0.05": 0.026346652445777552,
+   "0.075": 0.03997471132041999,
+   "0.1": 0.053551749566314116
+  },
+  "H3": {
+   "0.001": 0.0006337117076184322,
+   "0.01": 0.0005748700518213962,
+   "0.03": 0.0006047599959146717,
+   "0.05": 0.0008620714186550063,
+   "0.075": 0.0014870776057175094,
+   "0.1": 0.002438926460856367
+  },
+  "H2_p_side": {
+   "0.001": 0.002914280271547548,
+   "0.01": 0.004139486635707967,
+   "0.03": 0.007482419730757476,
+   "0.05": 0.0110338752133785,
+   "0.075": 0.015540259896023709,
+   "0.1": 0.020068343779531157
+  },
+  "harmonic_floor_note": "settle-1 single-run transient floor ~6e-4 rel (G1-W archive); certification belongs to G2",
+  "m1": null,
+  "m2": null,
+  "m3": null,
+  "m_note": "scaling exponents certified in G2; ladder H2 archived here",
+  "QS0_error_amplitude": null,
+  "QS0_error_phase": null,
+  "QS1_error_amplitude": null,
+  "QS1_error_phase": null,
+  "wall_boundary_sensitivity": {
+   "moment_channel_recalibration_c_eps_min": {
+    "re": 2.9130912466793206,
+    "im": 0.9205626006184513,
+    "abs": 3.055083650759351,
+    "phase_deg": 17.53699694813855
+   },
+   "drift_by_eps": {
+    "0.001": 0.0,
+    "0.01": 0.0007436139632354894,
+    "0.03": 0.0027727207686086223,
+    "0.05": 0.005331268522442871,
+    "0.075": 0.00928183948488838,
+    "0.1": 0.014069346142380562
+   }
+  },
+  "operator_sensitivity_D_G": null,
+  "operator_sensitivity_H2": null,
+  "operator_sensitivity_H3": null,
+  "operator_note": "G2-O quantity (frozen stack here)",
+  "boundary_mass_flux_0f_to_3f": 1.363449121469107e-15,
+  "energy_residual": 0.005331268522442871,
+  "mass_or_flux_residual": 4.025964746764046e-12,
+  "wall_temperature_error": 1.9793245048284187e-12
+ }
+}

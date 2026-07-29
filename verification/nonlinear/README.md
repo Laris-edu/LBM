@@ -13,12 +13,13 @@
 | `test_phase5_wall_mass_neutral.py` | **WP1-3 质量中性壁 + 边界通量审计仪器测试（10 项，~7 s；含 v1.1 对称双侧壁与等温顶盖）**：审计工具对**合成已知注入**定量校准（1f 恢复比 1.00）；`pressure_preserving` 旧壁质量源被定量看见（1f>1e-3、2f/1f≈ε 的时间导数结构、壁归因漂移=solver 级漂移→审计完备 + 下游算子守恒）；质量中性壁全分量 ≤1e-14（门 1e-10）、累计漂移 ≤1e-15、u_n/u_t ≤1e-14 c0（门 1e-8）；θ/u 精确钉扎（SI 壁温误差 ≪0.01 K 门）；传导热流保留（非 clamp，与 Grad 壁同量级）；新旧壁动态响应差异可检出（G1-W 差异审计有分辨力；微型 rig 差异幅度是声学特性 rig 伪影、不得读作生产导纳差）；20 周期稳定性。生产尺度导纳判决见 STATUS §3；G1-W gate 属 WP2。 |
 | `test_phase5_nsf1d_instrument.py` | **WP1-2 非线性 1D NSF 求解器仪器测试（11 项，~2.5 min）**：平衡保持严格 0（门 1e-10）、声学 ringdown（声速相位漂移法 −0.17% + 物理阻尼上界=低耗散证明）、闭箱压缩功修正线性锚对 Phase_1 半空间导纳（修正后 ≤0.5%/0.5°，箱压效应 1.83% 落在解析预测带内 + **修正必须严格优于原始**）、两档网格相位误差收敛方向（比值 ≥2）、符号对线性化泄漏（数值底 ≤1e-8、实测 2.3e-10 + **物理 2f 灵敏度反例** ≥1e-7、实测 1.7e-6）、**双物性分支大幅值发散反例**（ε=0.2 下 2f 差 >10%、实测 61%）、A1 有符号零均值协议 smoke（负半周主动抽热真实存在）、薄膜 ODE 耦合 smoke、物性模型 T0 锚定/形状检查、密封绝热盖能量闭合、输入校验。缩放 toy 参数控制运行时；真实空气 10 kHz 单点证据见 STATUS §3。仪器认证，非 G3 gate。 |
 | `test_phase5_g0_effective_properties.py` | **G0-B 机理测试（3 项，~2 min）**：背景态构造/校验（等压 p 精确守恒、等密度、默认=参考态）、背景温度敏感性非退化（α_eff@1.1θ 比值 >1.05——G0 存在的前提）、runner 微型矩阵端到端（四件套文件、summary/gate 行 schema、三态枚举、逐 k 温度敏感、等密度行归档语义）。权威 G0 物理判定不在此断言（属 gate run，STATUS §3）。 |
+| `test_phase5_g1_amplitude_envelope.py` | **G1a 合同测试（3 项，~30 s，进程池 smoke）**：七文件合同 + §16.2/16.3 逐键 + 三态 verdict；机器级行（质量/壁温/有限性/能量漂移/窗口）在 smoke 保真度也必须过 + **保真度受限行（小幅值回归相位、域细化 D_G 差）在 smoke 必须 FAIL**→脚本在非权威保真度拒发 PASSED；**反循环门断言**（细化行 gate 不得自含细化差分量——smoke 抓出的自满足门 bug 固化为回归）；能量漂移在 ε_min 按构造=0、其它点实测 >0；H2 随 ε 单调（真非线性实测）。G1b 落地时扩展本模块。权威判定属 gate run（STATUS §3）。 |
 | `test_phase5_g1w_wall_neutrality.py` | **G1-W 合同测试（4 项，~1.5 min）**：runner `--smoke`（诊断频率小密封 rig）单次模块夹具——七文件合同 + §16.2/16.3 逐键断言 + 三态 verdict；**壁判别非退化**（mn 中性行机器级真过 + 旧壁质量源实测高出 mn 千倍以上 → DIAGNOSTIC_ONLY 判定是测出来的非叙事）；**密封谱参考对独立闭式解的非重言锚**（常 α 输入必须复现 tanh 密封闭式 0.9202@+3.53° 于 3%/1.5° 内 + profile 钉扎/衰减形状）；α 高 k 扩展行归档且回升 >2× 在案。权威 G1-W 物理判定不在此断言（属 gate run，STATUS §3）。 |
 | `test_phase5_g3_nsf1d.py` | **G3 合同测试（5 项，~1.5 min）**：runner `--smoke`（toy 缩放）单次模块夹具——七文件 run 合同齐全、§16.2 59 metadata 键 + §16.3 27 结果键对 schema 逐键断言、verdict 限三态；**gate 逻辑非退化**（平衡/能量/泄漏/低马赫行在机器级物理上过，粗 smoke 阶梯实测阶 ~2 但最细两档 1% 行必须 FAIL → 脚本在粗设置下拒发 PASSED、阶梯差为真测非拷贝）；**正式分支定义冻结**（g0 实测律指数 +1.04/−0.60、id `1D-lbm-equivalent_g0_measured_k1_v1`、三分支 T0 锚定重合且 id 相异、summary 携带正式映射）；harmonic_fit 相位约定字符串 + detrend 预注册 + p-side 消融复核块三分支 H2 可测且相异。权威 G3 物理判定不在此断言（属 gate run，STATUS §3）。 |
 
 ## 规划测试（合同交付物，随 WP2 落地；当前不存在）
 
-`test_phase5_g1_amplitude_envelope.py` · `test_phase5_g2_harmonic_transfer.py` · `test_phase5_g2_operator_ablation.py`
+`test_phase5_g2_harmonic_transfer.py` · `test_phase5_g2_operator_ablation.py`
 
 ## 纪律
 

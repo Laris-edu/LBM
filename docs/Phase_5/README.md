@@ -11,8 +11,9 @@
 | `Phase5_STATUS.md` | status | Phase_5 当前状态、状态标签与 Gate 现值追踪、决策记录（含范围对齐）、验证记录、风险、下一步与更新日志。 | 阶段进度、Gate 状态、决策或交付物变化时更新。 |
 | `Phase5_Output_Files_Guide.md` | output-guide | Phase_5 跨目录总览：配置/验证/后处理/参考求解器/运行产物的落位关系与归档约定。 | 新增报告、配置、脚本、测试、run 归档或目录结构变化时更新。 |
 | `nonlinear_model_freeze.md` | gate-report/frozen | **G0-B 交付（2026-07-23）**：有效物性律冻结（表格口径：α_eff(T,k) 指数 1.0→5.4 随 k、k1 处 k_eff∝T^1.04、路径 LU 简并、各向同性）+ §5.3 门行（verdict `SCOPED_CANDIDATE`，升级属用户）+ 三个下游输出（1D 挂接/WP1-3 归因/G2 逐 k 物性）。权威 run `20260722T173919Z`（摘要归档 `M5_runs/`）。 | mapping/色散/滤波变化触发 §23 复验重跑；用户 scoped 决策后更新判定行。 |
-| `M5_runs/` | run-archive | 权威 run 精选摘要归档（summary/gate_evaluation/run_report 等；不含 h5）。当前：`g0_20260722T173919Z/`、`g3_20260726T082938Z/`、`g1w_20260727T083342Z/`。 | 新权威 run 归档时追加。 |
+| `M5_runs/` | run-archive | 权威 run 精选摘要归档（summary/gate_evaluation/run_report 等；不含 h5）。当前：`g0_20260722T173919Z/`、`g3_20260726T082938Z/`、`g1w_20260727T083342Z/`、`g1a_20260728T085824Z/`。 | 新权威 run 归档时追加。 |
 | `route_ab_decision_memo.md` | decision-memo | **WP1-5 交付（2026-07-22）**：双物性 1D 消融 + 独立验证（§2.1）+ D-AB-2 逐 QoI 判定 + **用户决策已记录（§7：2026-07-22 批准维持 `ROUTE_B_MAIN + 1D_REAL_AIR_BOUNDING`，升级条件预注册）** + G0 挂接复核（§8）+ **G3 闭合追记（§9：分支正式定义 + p-side 上界口径）**。 | 升级条件触发时重开。 |
+| `nonlinear_entry_gate_report.md` | gate-report | **G1a 交付（2026-07-28，§A）+ G1b 占位（§B `NOT_RUN`）**：幅值包络九行认证 `PASSED`+`G1A_PASSED_TO_0P05`（生产矩阵解锁至 ε=0.075；ε=0.10 出能量包络=场形幅值依赖实测 §A.3；H2 阶梯 §A.4；细化双轴 §A.5——dx1p3 以 mn 壁 978 步实测判死）。权威 run `20260728T085824Z`（摘要归档 `M5_runs/g1a_20260728T085824Z/`）。 | G1b 落地扩展 §B；生产壁/谱修正/滤波/拟合器变更或 G0 α_eff 升版 → §23 复验。 |
 | `wall_nonlinearity_neutrality_report.md` | gate-report | **G1-W 交付（2026-07-27）**：热壁中性认证 `PASSED`（§6.1 八行 + Stage-1 归因闭合 §2 + 夹具重设计谱系 §3.2）+ **生产壁认证（v1.1 对称质量中性壁）** + 旧壁 `DIAGNOSTIC_ONLY` + 矩通道重标定常数（§23）。权威 run `20260727T083342Z`（摘要归档 `M5_runs/g1w_20260727T083342Z/`；首次尝试 `20260727T040121Z` FAILED 谱系在案）。 | 壁模块/审计/拟合器行为变更或 G0 α_eff 表升版 → §23 复验重跑。 |
 | `nonlinear_1d_reference_report.md` | gate-report | **G3 交付（2026-07-26）**：1D NSF 参考仪器认证 `PASSED`（§8.2 七行 + 密封绝热 ringdown 重设计与等温热沉伪影诊断 §3.1）+ 正式分支定义冻结（§2）+ p-side H2 复核与 A1 底板（§4）。权威 run `20260726T082938Z`（摘要归档 `M5_runs/g3_20260726T082938Z/`；首次尝试 `20260726T074420Z` FAILED 谱系在案）。 | physics-core（1D 求解器/拟合器）行为变更或 G0 实测律升版 → §23 复验重跑。 |
 
@@ -22,7 +23,6 @@
 
 | 规划路径 | 归属 |
 |---|---|
-| `nonlinear_entry_gate_report.md` | G1a/G1b |
 | `harmonic_transfer_report.md` | G2-T/G2-A |
 | `harmonic_operator_ablation_report.md` | G2-O |
 | `dc_protocol_report.md` | G4a/G4b |

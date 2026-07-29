@@ -1,0 +1,69 @@
+# Phase_5 G1a 规定壁温气侧幅值包络门配置（合同 §6.2；runner: scripts/phase5_g1a_amplitude_envelope.py）
+# 生产热壁 = G1-W 认证 v1.1 对称质量中性壁（run 20260727T083342Z PASSED）。
+# 基准协议逐字沿用 G1-W 权威协议（ny48/periods3/settle1/ramp1）——必测 ε 点与 G1-W 阶梯
+# 可比（确定性栈下逐位复现）；谱修正/滤波=冻结生产设置（消融归 G2-O）。
+case:
+  name: phase5_g1a_wall_amplitude_10k_dx2p6
+  phase: Phase_5
+  gate: G1a
+
+inheritance:
+  gas_config_path: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+  gas_config_dx1p3_probe: configs/gas_air_10k_d2q37_levelc_dx1p3_probe.yaml
+  phase5_contract: docs/Phase_5/Phase5_instruct_v1.2.md
+  g1w_certified_run: results/phase5/g1w_wall_neutrality/20260727T083342Z
+
+g1a:                              # 权威协议（预注册；不得按结果逐点调整）
+  frequency_Hz: 1.0e4
+  ny: 48
+  nx: 8
+  periods: 3.0                    # settle 1 + fit 2（G1-W 权威口径逐字）
+  settle_periods: 1.0
+  samples_per_period: 64
+  ramp_periods: 1.0
+  epsilon_mandatory: [0.001, 0.01, 0.03, 0.05]
+  epsilon_conditional: [0.075, 0.10]
+  n_harmonics: 5                  # §12.1 联合拟合（H2/H3 追踪；detrend 0 预注册）
+  refinement:                     # 一档诊断细化（不得回调基准答案）
+    ny_refined: 96                # 域细化轴：k_box 减半、谱参考按 n_cells=96 重建
+    epsilons: [0.001, 0.05]       # D_G^96(0.05) 与基准 D_G^48(0.05) 差异行
+    dx1p3_probe_steps: 3000       # 分辨率细化轴死活探测（P3-6 旧壁先例 ~1280 步失稳；
+    dx1p3_epsilon: 0.001          # 结果无论生死均归档；死→细化轴=域细化并记局限）
+  alpha_extension_ny: [24, 16, 12, 8, 6]   # 谱参考高 k 行（与 G1-W 同仪器，确定性复现）
+  highk_policy_primary: hold_last
+  window_sensitivity_cycles: [2.0, 1.5]    # multiwindow 后缀窗（≤2%/2° 行）
+
+g1a_smoke:                        # 机器链路 smoke（诊断频率、小 rig；非权威）
+  frequency_Hz: 2.0e5
+  ny: 16
+  nx: 4
+  periods: 2.0
+  settle_periods: 1.0
+  samples_per_period: 64
+  ramp_periods: 0.5
+  epsilon_mandatory: [0.01, 0.05]
+  epsilon_conditional: []
+  n_harmonics: 5
+  refinement:
+    ny_refined: 32
+    epsilons: [0.01]
+    dx1p3_probe_steps: 0          # smoke 不跑 dx 探测
+    dx1p3_epsilon: 0.01
+  alpha_extension_ny: [8, 6]
+  highk_policy_primary: hold_last
+  window_sensitivity_cycles: [1.0, 0.75]
+
+gates:                            # 合同 §6.2 阈值（冻结）
+  smallamp_amp_rel: 0.05          # ε=0.001 基频 vs 谱参考
+  smallamp_phase_deg: 5.0
+  wall_temperature_error_K: 0.01
+  energy_audit_rel: 0.01          # 双通道一致性漂移 max|c(ε)/c(0.001)−1|（操作化定义见 runner docstring）
+  mass_window_rel: 1.0e-8
+  mass_cumulative_rel: 1.0e-6
+  window_amp_rel: 0.02
+  window_phase_deg: 2.0
+  refinement_dg_rel: 0.01         # D_G 差异 ≤ max(1%, U_gov)
+  min_amplitude_window: 0.05      # 至少 ε=0.05 全行过 → 授权主非线性生产
+
+output:
+  results_root: results/phase5/g1a_wall_amplitude

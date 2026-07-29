@@ -1,0 +1,151 @@
+{
+ "gate_id": "G1a",
+ "verdict": "PASSED",
+ "labels": [
+  "G1A_PASSED_TO_0P05"
+ ],
+ "rows": {
+  "smallamp_regression": {
+   "epsilon": 0.001,
+   "Y_energy": {
+    "re": 0.9651135486564215,
+    "im": 0.41063447089803257,
+    "abs": 1.0488397544381591,
+    "phase_deg": 23.04867976827821
+   },
+   "Y_reference": {
+    "re": 0.941168763828578,
+    "im": 0.36288964557116776,
+    "abs": 1.0087058723281932,
+    "phase_deg": 21.085312707128146
+   },
+   "ratio": {
+    "amp_rel_err": 0.03978749723874708,
+    "phase_deg_err": 1.9633670611500618
+   },
+   "gate": [
+    0.05,
+    5.0
+   ],
+   "passed": true
+  },
+  "wall_temperature": {
+   "max_err_K": 1.9793245048284187e-12,
+   "gate": 0.01,
+   "passed": true
+  },
+  "energy_audit_two_channel_drift": {
+   "definition": "max_eps |c(eps)/c(eps_min)-1|, c=Y_energy/Y_moment (recalibration frozen at eps_min; \u00a723 constant)",
+   "c_eps_min": {
+    "re": 2.9130912466793206,
+    "im": 0.9205626006184513,
+    "abs": 3.055083650759351,
+    "phase_deg": 17.53699694813855
+   },
+   "drift_by_eps": {
+    "0.001": 0.0,
+    "0.01": 0.0007436139632354894,
+    "0.03": 0.0027727207686086223,
+    "0.05": 0.005331268522442871,
+    "0.075": 0.00928183948488838,
+    "0.1": 0.014069346142380562
+   },
+   "gate": 0.01,
+   "passed": true
+  },
+  "global_mass": {
+   "window_max": 2.6689761511988727e-12,
+   "cumulative_max": 4.025964746764046e-12,
+   "gates": [
+    1e-08,
+    1e-06
+   ],
+   "passed": true
+  },
+  "finiteness": {
+   "by_eps": {
+    "0.001": true,
+    "0.01": true,
+    "0.03": true,
+    "0.05": true,
+    "0.075": true,
+    "0.1": true
+   },
+   "passed": true
+  },
+  "numerical_repair": {
+   "no_clipping": true,
+   "no_floor": true,
+   "no_positivity_repair": true,
+   "passed": true
+  },
+  "window_sensitivity": {
+   "by_eps": {
+    "0.001": {
+     "amp_rel": -0.001753371724447561,
+     "phase_deg": -0.10889529573447111
+    },
+    "0.01": {
+     "amp_rel": -0.0016153096579158976,
+     "phase_deg": -0.09627378379439397
+    },
+    "0.03": {
+     "amp_rel": -0.0012797292234095758,
+     "phase_deg": -0.06832358522274534
+    },
+    "0.05": {
+     "amp_rel": -0.0009042532471682518,
+     "phase_deg": -0.04047385302362186
+    },
+    "0.075": {
+     "amp_rel": -0.0003787840752768057,
+     "phase_deg": -0.005735776870742307
+    },
+    "0.1": {
+     "amp_rel": 0.00020851584644088206,
+     "phase_deg": 0.029004122705869658
+    }
+   },
+   "gates": [
+    0.02,
+    2.0
+   ],
+   "passed": true
+  },
+  "diagnostic_refinement": {
+   "domain_axis": {
+    "ny": [
+     48,
+     96
+    ],
+    "D_G_48": -0.00021299274508546073,
+    "D_G_96": 1.0076103460487928e-06,
+    "D_G_diff": 0.00021400035543150953,
+    "gate": 0.01,
+    "H2_q_diff_into_Ugov": 0.005655365685643558
+   },
+   "resolution_axis_dx1p3": {
+    "n_steps_target": 3000,
+    "steps_survived": 978,
+    "finite": false,
+    "death_mode": "RuntimeError: non-positive streamed wall-row density",
+    "ny": 96,
+    "dt_s": 9.79406e-10
+   },
+   "passed": true,
+   "note": "domain axis (ny doubling, matched spectral reference) is the certified refinement; dx1p3 liveness outcome archived \u2014 if dead (P3-6 precedent) the limitation is documented, not scoped"
+  },
+  "minimum_amplitude_window": {
+   "eps_pass": {
+    "0.001": true,
+    "0.01": true,
+    "0.03": true,
+    "0.05": true,
+    "0.075": true,
+    "0.1": false
+   },
+   "gate": 0.05,
+   "passed": true
+  }
+ }
+}

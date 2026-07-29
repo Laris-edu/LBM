@@ -42,7 +42,7 @@ docs/Phase_5/Phase5_instruct_v1.2.md          # 权威合同（Gate/矩阵/数�
 | 质量中性热壁候选 + 边界通量审计 | `boundary/wall_thermal_mass_neutral.py` + `boundary/wall_mass_audit.py` | **已交付（WP1-3）+ G1-W 认证 `PASSED`（2026-07-27）**：**v1.1 对称质量中性壁=已认证生产热壁**（runner `scripts/phase5_g1w_wall_neutrality.py`、配置 `configs/phase5/g1w_wall_neutrality/`、合同测试 4 绿、报告 `wall_nonlinearity_neutrality_report.md`、权威 run 摘要 `M5_runs/g1w_20260727T083342Z/`）；旧壁 DIAGNOSTIC_ONLY；仪器测试 10+4 绿 |
 | 低马赫/边界—线性内部夹具 | 1D ringdown（`reference/nonlinear_nsf_1d.py`）+ `signed_pair_combination`（`postproc/multiharmonic_fit.py`）+ 静 rig 纪律测试 | **已交付（2026-07-22，WP1-4）** |
 | 路线 A/B 决策备忘 | `docs/Phase_5/route_ab_decision_memo.md` | **已交付（2026-07-22，WP1-5）**；`ROUTE_A_COST_REVIEW_REQUIRED` 成立，用户决策未决 |
-| Gate 测试 `test_phase5_*.py` | `verification/nonlinear/` | 已创建：`test_phase5_g0_effective_properties.py`（G0）、`test_phase5_g3_nsf1d.py`（G3）、`test_phase5_g1w_wall_neutrality.py`（G1-W）；其余随 WP2 各 Gate |
+| Gate 测试 `test_phase5_*.py` | `verification/nonlinear/` | 已创建：`test_phase5_g0_effective_properties.py`（G0）、`test_phase5_g3_nsf1d.py`（G3）、`test_phase5_g1w_wall_neutrality.py`（G1-W）、`test_phase5_g1_amplitude_envelope.py`（G1a，G1b 落地时扩展）；其余随 WP2 各 Gate |
 
 - `scripts/` 保持扁平命名空间（`CLAUDE.md` 约定），Phase_5 脚本用 `phase5_` 前缀分类，不建子目录。
 - `configs/phase5/` 是**唯一**采用子目录制的配置目录（合同 §17 冻结）；顶层 `configs/` 其余保持扁平。

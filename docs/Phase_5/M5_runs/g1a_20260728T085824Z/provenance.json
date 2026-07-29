@@ -1,0 +1,18 @@
+{
+ "run_id": "20260728T085824Z",
+ "command": "E:\\Code\\LBM\\scripts\\phase5_g1a_amplitude_envelope.py --workers 12",
+ "workers": 12,
+ "parallel_scheduling_note": "process pool over independent cases only; per-case step sequence identical to serial (assembly ladder-ordered, scheduling-invariant)",
+ "python": "3.14.2",
+ "numpy": "2.4.4",
+ "code_commit": "9a50d71e5b61b777b11509c2e54ab9a6e36f44f8",
+ "physics_core_digest": "0a37c4e33aca",
+ "physics_core_files": {
+  "boundary/wall_thermal_mass_neutral.py": "07ea06e5fb8c",
+  "boundary/wall_mass_audit.py": "1ca55028b1b8",
+  "postproc/multiharmonic_fit.py": "8467d487e625",
+  "scripts/phase5_g1w_wall_neutrality.py": "14aef014d2de"
+ },
+ "g1w_certified_run": "results/phase5/g1w_wall_neutrality/20260727T083342Z",
+ "g0_alpha_table": "docs\\Phase_5\\M5_runs\\g0_20260722T173919Z\\property_table.csv"
+}
