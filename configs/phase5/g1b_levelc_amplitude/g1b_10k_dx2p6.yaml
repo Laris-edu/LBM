@@ -42,8 +42,14 @@ g1b:                              # 权威协议（预注册；不得按结果�
                                   # =耦合轨迹能量通道导纳 vs 谱参考（失准严格相消、G1-W 同构）；
                                   # ε 定标用 §23 复重标常数（下方 moment_recal）。
   moment_recal:                   # G1-W §23 归档常数（Y_energy/Y_moment @ mn 场形、10 kHz/ny48）
-    abs: 3.0551                   # 用于 P1 as-built 预测与 T̂_s as-built 参考（info 行）；
-    phase_deg: 17.54              # in-run 实测 recal 与此常数的一致性作交叉核对行
+    abs: 3.0551                   # |recal| 同时作 q_feedback_scale（下行）；相位残差 e^{−i17.5°}
+    phase_deg: 17.54              # 归 as-built 分母；in-run 实测 recal 与常数作交叉核对行
+  q_feedback_scale_from_recal: true   # 薄膜反馈 = |recal|·q_moment（§23 换壁重标的时域实增益形式）。
+                                  # 依据（B 机首跑 20260729T075306Z 判决）：未标定反馈使薄膜损耗项
+                                  # 欠计 3×，密封 rig 无隐式热沉（旧壁的质量交换泄漏即热沉——
+                                  # "同硬币两面"第三现身）→ 世俗热失控 +215 K/3 周期。实增益恢复
+                                  # DC 闭合（DC 无相位）；AC 相位残差是 as-built 特性、参考侧建模。
+  fit_detrend_order: 1            # 按族预注册（§12.2）：残余 O(ε²) 物理整流漂移的拟合处置
   epsilon_mandatory: [0.001, 0.01, 0.03, 0.05]
   epsilon_conditional: [0.075, 0.10]
   p1_targeting: predicted_from_reference   # P1=ε·T0·|iΩC_A+2Y_ref|；线性预测、实测 ε 归档（门 ≤10%）
@@ -73,8 +79,10 @@ g1b_smoke:                        # 机器链路 smoke（诊断频率、短窗�
     coupling_scheme: heun_picard1
     q_extraction: moment_row
   moment_recal:
-    abs: 3.0551                   # smoke rig 的真实 recal 未测——本常数在 smoke 下只驱动
-    phase_deg: 17.54              # 机器链路；ε 定标行在 smoke 保真度预期 FAIL（合同测试断言）
+    abs: 3.0551                   # smoke rig 的真实 recal（实测 ~4.6@35°）≠ 本生产常数——
+    phase_deg: 17.54              # ε 定标行在 smoke 保真度预期 FAIL（合同测试断言）
+  q_feedback_scale_from_recal: true
+  fit_detrend_order: 1
   epsilon_mandatory: [0.01, 0.05]
   epsilon_conditional: []
   p1_targeting: predicted_from_reference

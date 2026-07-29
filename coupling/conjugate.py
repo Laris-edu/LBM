@@ -181,6 +181,7 @@ def run_levelc_predictor_corrector(
     q_feedback_relax: float = 1.0,
     grad_extrap: str = "linear",
     q_extraction: str = "moment_row",
+    q_feedback_scale: float = 1.0,
 ) -> LevelCCouplingResult:
     """Run a Level C predictor-corrector coupling trajectory.
 
@@ -208,6 +209,18 @@ def run_levelc_predictor_corrector(
     low-pass; measured in the G1b smoke: predictor-corrector delta growth ~25x/period,
     H2 ~ 0.38), so it must not be used for production coupling without a dedicated
     stabilization design).
+
+    ``q_feedback_scale`` is a REAL gain applied to the extracted flux before the relax
+    filter (default 1.0 = byte-identical legacy behaviour). Purpose (G1b, §23
+    pre-registered wall-change recalibration): on the mass-neutral wall's field shape
+    the moment channel under-reads the true energy flux by the G1-W archived constant
+    (|recal|=3.055); feeding the film the unscaled moment flux under-counts its loss
+    term ~3x and — the sealed rig having NO implicit sink (unlike the
+    pressure-preserving wall's mass-exchange leak) — produces a secular thermal
+    runaway (+215 K over 3 production periods, measured in the first B-machine G1b
+    attempt). The real gain restores the loss-term MAGNITUDE (DC closure has no
+    phase); the archived +17.5deg phase residual is an as-built AC characteristic
+    handled on the reference side.
     """
 
     if n_steps < 1:
@@ -220,6 +233,8 @@ def run_levelc_predictor_corrector(
         raise ValueError(f"unsupported grad_extrap: {grad_extrap}")
     if q_extraction not in {"moment_row", "energy_balance"}:
         raise ValueError(f"unsupported q_extraction: {q_extraction}")
+    if not (q_feedback_scale > 0.0 and np.isfinite(q_feedback_scale)):
+        raise ValueError("q_feedback_scale must be positive and finite")
     if not 0.0 < q_feedback_relax <= 1.0:
         raise ValueError("q_feedback_relax must be in (0, 1]")
     if row != BOTTOM_WALL_ROW:
@@ -271,8 +286,8 @@ def run_levelc_predictor_corrector(
             p_now = _box_p_pa()
             q_raw = energy_prefactor * (p_now - p_box_prev) / dt
             p_box_prev = p_now
-            return q_raw
-        return extract_bottom_wall_heat_flux_si(solver, row=row)
+            return q_feedback_scale * q_raw
+        return q_feedback_scale * extract_bottom_wall_heat_flux_si(solver, row=row)
 
     mass_lu = np.empty_like(t)
     T_s[0] = T0
@@ -280,7 +295,7 @@ def run_levelc_predictor_corrector(
     mass_lu[0] = float(np.sum(solver.f))
     p_box_series[0] = _box_p_pa()
     q_g[0] = (0.0 if q_extraction == "energy_balance"
-              else extract_bottom_wall_heat_flux_si(solver, row=row))
+              else q_feedback_scale * extract_bottom_wall_heat_flux_si(solver, row=row))
     dTdt[0] = film_rhs(T_s[0], float(t[0]), params=params, drive=drive, q_g_one_sided_si=q_g[0])
     theta_wall[0], T_wall[0] = _wall_temperature_state(solver, row)
     pressure_probe[0] = _pressure_probe_pa(solver, probe_loc)
