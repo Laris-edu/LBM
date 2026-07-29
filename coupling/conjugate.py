@@ -210,6 +210,24 @@ def run_levelc_predictor_corrector(
     H2 ~ 0.38), so it must not be used for production coupling without a dedicated
     stabilization design).
 
+    ``"hybrid_ac_dc"`` (G1b fourth design, user decision D5-4, v2) composes the feed
+    from the two channels' respective validity domains. AC = scaled moment channel
+    minus its own trailing-period mean (removes the DC whose sign is INVERTED on the
+    mass-neutral field shape — the measured runaway driver). DC = PHYSICAL PINNING,
+    ``q_dc = G_DC (T_s - Tbar_box)`` with ``Tbar_box = T0 * Pbar/p(0)`` (sealed
+    ideal gas on the trailing-period-mean box pressure) and ``G_DC = k_g/(H/2)`` the
+    analytic quasi-static half-box conductance. Design rationale: v1 (period-mean
+    energy-identity DIFFERENCING) was measured delay-unstable — the box's intrinsic
+    DC time constant C_A/(2 G_DC) ~ 0.4 us is ~1000x shorter than the one-period
+    estimator delay, so the delayed difference loop oscillates (smoke growth 6.75).
+    v2 has no delayed self-feedback: the state's own term is instantaneous (pure
+    stable relaxation), only the slowly-drifting TARGET is smoothed; at P_mean=0 the
+    DC equilibrium (T_s -> Tbar_box) is independent of the G_DC value, so G_DC is a
+    pinning-stiffness model constant, not a tunable. At 1f the trailing-period mean
+    of a harmonic vanishes identically, so the as-built AC reference is unchanged
+    (the instantaneous-T_s pinning term adds a real conductance G_DC to the AC loss —
+    included in the as-built denominator by the caller).
+
     ``q_feedback_scale`` is a REAL gain applied to the extracted flux before the relax
     filter (default 1.0 = byte-identical legacy behaviour). Purpose (G1b, §23
     pre-registered wall-change recalibration): on the mass-neutral wall's field shape
@@ -231,7 +249,7 @@ def run_levelc_predictor_corrector(
         raise ValueError(f"unsupported wall_bc: {wall_bc}")
     if grad_extrap not in {"linear", "row1"}:
         raise ValueError(f"unsupported grad_extrap: {grad_extrap}")
-    if q_extraction not in {"moment_row", "energy_balance"}:
+    if q_extraction not in {"moment_row", "energy_balance", "hybrid_ac_dc"}:
         raise ValueError(f"unsupported q_extraction: {q_extraction}")
     if not (q_feedback_scale > 0.0 and np.isfinite(q_feedback_scale)):
         raise ValueError("q_feedback_scale must be positive and finite")
@@ -278,15 +296,50 @@ def run_levelc_predictor_corrector(
         return float(np.mean(solver.get_pressure_lu())) * p_scale
 
     p_box_prev = _box_p_pa() if q_extraction == "energy_balance" else 0.0
+    if q_extraction == "hybrid_ac_dc":
+        f_drive = float(getattr(drive, "frequency_hz", 0.0) or 0.0)
+        if f_drive <= 0.0:
+            raise ValueError("hybrid_ac_dc requires a drive with frequency_hz")
+        n_period = max(int(round(1.0 / (f_drive * dt))), 8)
+        hyb_buf_q = np.zeros(n_period)
+        hyb_buf_p = np.zeros(n_period)
+        hyb_sum_q = 0.0
+        hyb_sum_p = 0.0
+        hyb_p_init = _box_p_pa()
+        hyb_g_dc = (float(getattr(solver.mapping.physical, "kg_W_mK", 0.0263))
+                    / ((solver.ny / 2.0) * float(solver.mapping.lattice.dx_m)))
+        hyb_step = 0
     p_box_series = np.empty_like(np.arange(int(n_steps) + 1, dtype=float))
 
-    def _extract_q_raw() -> float:
-        nonlocal p_box_prev
+    def _extract_q_raw(t_wall_now_K: float) -> float:
+        nonlocal p_box_prev, hyb_sum_q, hyb_sum_p, hyb_step
         if q_extraction == "energy_balance":
             p_now = _box_p_pa()
             q_raw = energy_prefactor * (p_now - p_box_prev) / dt
             p_box_prev = p_now
             return q_feedback_scale * q_raw
+        if q_extraction == "hybrid_ac_dc":
+            q_m = q_feedback_scale * extract_bottom_wall_heat_flux_si(solver, row=row)
+            p_now = _box_p_pa()
+            idx = hyb_step % n_period
+            # rolling one-period windows (O(1) per step)
+            if hyb_step >= n_period:
+                hyb_sum_q -= hyb_buf_q[idx]
+                hyb_sum_p -= hyb_buf_p[idx]
+            hyb_buf_q[idx] = q_m
+            hyb_buf_p[idx] = p_now
+            hyb_sum_q += q_m
+            hyb_sum_p += p_now
+            count = min(hyb_step + 1, n_period)
+            m_q = hyb_sum_q / count
+            p_bar = hyb_sum_p / count
+            # v2 DC: physical pinning to the (slowly drifting) sealed-box mean
+            # state — instantaneous in the film state (no delayed self-feedback),
+            # smoothed only in the target; equilibrium independent of G_DC
+            t_box_bar = T0 * p_bar / hyb_p_init
+            q_dc = hyb_g_dc * (t_wall_now_K - t_box_bar)
+            hyb_step += 1
+            return (q_m - m_q) + q_dc
         return q_feedback_scale * extract_bottom_wall_heat_flux_si(solver, row=row)
 
     mass_lu = np.empty_like(t)
@@ -294,7 +347,7 @@ def run_levelc_predictor_corrector(
     P_in[0] = evaluate_drive(drive, float(t[0]))
     mass_lu[0] = float(np.sum(solver.f))
     p_box_series[0] = _box_p_pa()
-    q_g[0] = (0.0 if q_extraction == "energy_balance"
+    q_g[0] = (0.0 if q_extraction in ("energy_balance", "hybrid_ac_dc")
               else q_feedback_scale * extract_bottom_wall_heat_flux_si(solver, row=row))
     dTdt[0] = film_rhs(T_s[0], float(t[0]), params=params, drive=drive, q_g_one_sided_si=q_g[0])
     theta_wall[0], T_wall[0] = _wall_temperature_state(solver, row)
@@ -344,12 +397,12 @@ def run_levelc_predictor_corrector(
         if scheme == "explicit_lagged":
             T_next = T_n + dt * rhs_n
             _advance(T_next)
-            q_raw = _extract_q_raw()
+            q_raw = _extract_q_raw(T_next)
             q_fb = (1.0 - q_feedback_relax) * q_fb + q_feedback_relax * q_raw
         else:
             T_predict = T_n + dt * rhs_n
             _advance(T_predict)
-            q_raw = _extract_q_raw()
+            q_raw = _extract_q_raw(T_predict)
             q_fb = (1.0 - q_feedback_relax) * q_fb + q_feedback_relax * q_raw
             rhs_end = film_rhs(T_predict, t_np1, params=params, drive=drive, q_g_one_sided_si=q_fb)
             T_next = T_n + 0.5 * dt * (rhs_n + rhs_end)

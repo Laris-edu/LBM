@@ -22,8 +22,9 @@ g1b:                              # 权威协议（预注册；不得按结果�
   frequency_Hz: 1.0e4
   ny: 48
   nx: 8
-  periods: 3.0                    # settle 1 + fit 2（N=5 谐波窗）；M3 口径行=末 1 周期 complex_amplitude
-  settle_periods: 1.0
+  periods: 5.0                    # D5-4 hybrid 预注册：settle 3 + fit 2——DC 能量环带宽 ~1/周期，
+                                  # 全形式估计器需 2 周期激活 + 1 周期整定后方进拟合窗
+  settle_periods: 3.0
   m3_fit_last_periods: 1.0
   film:                           # M3 canonical 冻结
     C_A_J_m2K: 7.0e-4
@@ -35,7 +36,7 @@ g1b:                              # 权威协议（预注册；不得按结果�
     grad_extrap: row1             # 认证口径
     q_feedback_relax: 0.02        # 算例族内固定（M3 lineage；不得按幅值逐点调）
     coupling_scheme: heun_picard1
-    q_extraction: moment_row      # 生产反馈=M3 谱系矩通道（relax=0.02 为其调定、稳定）。
+    q_extraction: hybrid_ac_dc    # D5-4 第四设计：AC=矩通道×§23 增益去自身 DC（反号 DC 出环）、
                                   # 能量恒等式时域反馈已判死（smoke 实测：dp̄/dt 的 ω 增益放大
                                   # 箱声模自激，growth ~25×——conjugate docstring 留档 DIAGNOSTIC
                                   # ONLY）。矩通道在 mn 场形失准 ~3× 由参考侧频域处理：回归行
@@ -64,8 +65,8 @@ g1b_smoke:                        # 机器链路 smoke（诊断频率、短窗�
   frequency_Hz: 2.0e5
   ny: 16
   nx: 4
-  periods: 2.0
-  settle_periods: 1.0
+  periods: 3.0
+  settle_periods: 2.0
   m3_fit_last_periods: 1.0
   film:
     C_A_J_m2K: 7.0e-4
@@ -77,7 +78,7 @@ g1b_smoke:                        # 机器链路 smoke（诊断频率、短窗�
     grad_extrap: row1
     q_feedback_relax: 0.02
     coupling_scheme: heun_picard1
-    q_extraction: moment_row
+    q_extraction: hybrid_ac_dc
   moment_recal:
     abs: 3.0551                   # smoke rig 的真实 recal（实测 ~4.6@35°）≠ 本生产常数——
     phase_deg: 17.54              # ε 定标行在 smoke 保真度预期 FAIL（合同测试断言）

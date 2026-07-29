@@ -230,7 +230,12 @@ def run_g1b(config_path: Path, output_root: Path | None = None,
     # Y_sealed * e^{-i arg(recal)} — full magnitude, archived phase residual
     q_scale = float(rc["abs"]) if bool(proto.get("q_feedback_scale_from_recal")) else 1.0
     y_loss_asbuilt = y_sealed_si * (q_scale / recal)
-    denom_asbuilt = 1j * omega * C_A + 2.0 * y_loss_asbuilt
+    # hybrid v2 DC pinning adds a real conductance 2*G_DC to the AC loss term
+    # (instantaneous-T_s term; G_DC analytic, pre-registered, non-tunable)
+    dx_m_ref = float(mapping.lattice.dx_m)
+    g_dc = kg / ((ny / 2.0) * dx_m_ref) \
+        if str(lc.get("q_extraction")) == "hybrid_ac_dc" else 0.0
+    denom_asbuilt = 1j * omega * C_A + 2.0 * y_loss_asbuilt + 2.0 * g_dc
     detrend = int(proto.get("fit_detrend_order", 0))
     log("reference: Y_sealed/Yhs=%.4f@%+.2f deg  |denom_asbuilt|=%.1f phase=%+.2f deg" % (
         abs(ref["Y_over_Yhs"]),
