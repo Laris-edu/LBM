@@ -1,0 +1,100 @@
+# Phase_5 G1b Level C 耦合幅值包络门配置（合同 §6.3；runner: scripts/phase5_g1b_levelc_amplitude.py）
+# 生产热壁 = G1-W 认证 v1.1（wall_bc="mass_neutral"、grad_extrap="row1"=认证口径）。
+# M3 canonical 继承：C_A/驱动协议/heun_picard1/relax/ny48 逐项取自 configs/phase3_m3_grad_10k_dx2p6.yaml；
+# 生产壁变化 → 小幅值 M3 回归重跑（合同 §6.3），旧 M3 digest 仅上游参考。
+# 回归参考（预注册，零新调参自由度）：M3 薄膜 ODE 代数 × G1-W 认证密封谱参考——
+#   T_s_ref = P_hat / (iΩC_A + 2·Y_sealed_ref)，Y_sealed_ref = (Y/Yhs)_spectral(ny48) · Y_hs(SI)。
+#   依据：mn 壁使 y-周期 rig 成为真密封箱（G1-W"两种壁解两个不同物理问题"），
+#   半空间解析参考的相位在此 rig 物理上不适用（~20° 偏差非壁缺陷）。
+case:
+  name: phase5_g1b_levelc_amplitude_10k_dx2p6
+  phase: Phase_5
+  gate: G1b
+
+inheritance:
+  gas_config_path: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+  m3_protocol_lineage: configs/phase3_m3_grad_10k_dx2p6.yaml
+  phase5_contract: docs/Phase_5/Phase5_instruct_v1.2.md
+  g1w_certified_run: results/phase5/g1w_wall_neutrality/20260727T083342Z
+  g1a_certified_run: results/phase5/g1a_wall_amplitude/20260728T085824Z
+
+g1b:                              # 权威协议（预注册；不得按结果逐点调整）
+  frequency_Hz: 1.0e4
+  ny: 48
+  nx: 8
+  periods: 3.0                    # settle 1 + fit 2（N=5 谐波窗）；M3 口径行=末 1 周期 complex_amplitude
+  settle_periods: 1.0
+  m3_fit_last_periods: 1.0
+  film:                           # M3 canonical 冻结
+    C_A_J_m2K: 7.0e-4
+    P_mean_W_m2: 0.0
+    gas_flux_factor: 2.0
+    T0_K: 300.0
+  level_c:
+    wall_bc: mass_neutral         # G1-W 认证生产壁（v1.1 对称）
+    grad_extrap: row1             # 认证口径
+    q_feedback_relax: 0.02        # 算例族内固定（M3 lineage；不得按幅值逐点调）
+    coupling_scheme: heun_picard1
+    q_extraction: moment_row      # 生产反馈=M3 谱系矩通道（relax=0.02 为其调定、稳定）。
+                                  # 能量恒等式时域反馈已判死（smoke 实测：dp̄/dt 的 ω 增益放大
+                                  # 箱声模自激，growth ~25×——conjugate docstring 留档 DIAGNOSTIC
+                                  # ONLY）。矩通道在 mn 场形失准 ~3× 由参考侧频域处理：回归行
+                                  # =耦合轨迹能量通道导纳 vs 谱参考（失准严格相消、G1-W 同构）；
+                                  # ε 定标用 §23 复重标常数（下方 moment_recal）。
+  moment_recal:                   # G1-W §23 归档常数（Y_energy/Y_moment @ mn 场形、10 kHz/ny48）
+    abs: 3.0551                   # 用于 P1 as-built 预测与 T̂_s as-built 参考（info 行）；
+    phase_deg: 17.54              # in-run 实测 recal 与此常数的一致性作交叉核对行
+  epsilon_mandatory: [0.001, 0.01, 0.03, 0.05]
+  epsilon_conditional: [0.075, 0.10]
+  p1_targeting: predicted_from_reference   # P1=ε·T0·|iΩC_A+2Y_ref|；线性预测、实测 ε 归档（门 ≤10%）
+  n_harmonics: 5
+  alpha_extension_ny: [24, 16, 12, 8, 6]   # 谱参考高 k 行（与 G1-W/G1a 同仪器）
+  highk_policy_primary: hold_last
+  physical:                       # SI 参考端（M3 lineage）
+    kg_W_mK: 0.0263
+    alpha0_m2_s: 2.2233775895e-5
+
+g1b_smoke:                        # 机器链路 smoke（诊断频率、短窗；非权威）
+  frequency_Hz: 2.0e5
+  ny: 16
+  nx: 4
+  periods: 2.0
+  settle_periods: 1.0
+  m3_fit_last_periods: 1.0
+  film:
+    C_A_J_m2K: 7.0e-4
+    P_mean_W_m2: 0.0
+    gas_flux_factor: 2.0
+    T0_K: 300.0
+  level_c:
+    wall_bc: mass_neutral
+    grad_extrap: row1
+    q_feedback_relax: 0.02
+    coupling_scheme: heun_picard1
+    q_extraction: moment_row
+  moment_recal:
+    abs: 3.0551                   # smoke rig 的真实 recal 未测——本常数在 smoke 下只驱动
+    phase_deg: 17.54              # 机器链路；ε 定标行在 smoke 保真度预期 FAIL（合同测试断言）
+  epsilon_mandatory: [0.01, 0.05]
+  epsilon_conditional: []
+  p1_targeting: predicted_from_reference
+  n_harmonics: 3
+  alpha_extension_ny: [8, 6]
+  highk_policy_primary: hold_last
+  physical:
+    kg_W_mK: 0.0263
+    alpha0_m2_s: 2.2233775895e-5
+
+gates:                            # 合同 §6.3 阈值（冻结）
+  m3_amp_rel: 0.054               # 既有 M3 ±5.4% scoped 边界
+  m3_phase_deg: 5.0
+  target_epsilon_rel: 0.10
+  wall_temperature_error_K: 0.01
+  film_energy_audit_rel: 0.01
+  mass_window_rel: 1.0e-8
+  mass_cumulative_rel: 1.0e-6
+  stability_delta_pc_growth_max: 2.0   # 末周期 max|delta_pc| / 首周期 max|delta_pc| 上限（无自激增长）
+  min_amplitude_window: 0.05
+
+output:
+  results_root: results/phase5/g1b_levelc_amplitude

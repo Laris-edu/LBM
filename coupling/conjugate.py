@@ -13,6 +13,7 @@ from boundary.wall_dirichlet import (
     apply_bottom_dirichlet_wall,
 )
 from boundary.wall_thermal_grad import make_bottom_grad_wall_callback
+from boundary.wall_thermal_mass_neutral import make_symmetric_mass_neutral_wall_callback
 from core.solver import GasSolver2D
 from phase3_interfaces.heat_flux_extraction import (
     UPPER_GAS_WALL_NORMAL,
@@ -53,6 +54,13 @@ class LevelCCouplingResult:
     heat_flux_sign_convention: str = LEVEL_A_HEAT_FLUX_SIGN_CONVENTION
     wall_bc: str = "equilibrium_clamp"
     q_feedback_relax: float = 1.0
+    # per-sample total gas mass sum(f) in LU (pure observation, added for the
+    # Phase_5 G1b global-mass gate rows; None on results from older callers)
+    mass_lu: np.ndarray | None = None
+    q_extraction: str = "moment_row"
+    # per-sample box-mean pressure in Pa (pure observation; feeds the G1b
+    # frequency-domain energy-channel admittance readout)
+    p_box_mean_Pa: np.ndarray | None = None
 
     @property
     def passed_smoke(self) -> bool:
@@ -172,27 +180,46 @@ def run_levelc_predictor_corrector(
     wall_bc: str = "equilibrium_clamp",
     q_feedback_relax: float = 1.0,
     grad_extrap: str = "linear",
+    q_extraction: str = "moment_row",
 ) -> LevelCCouplingResult:
     """Run a Level C predictor-corrector coupling trajectory.
 
     ``wall_bc`` selects the thermal wall boundary condition:
-    ``"equilibrium_clamp"`` (P3-4 default; static macrostate smoke) or ``"thermal_grad"``
-    (P3-5+ Grad/regularized wet-node wall that resolves the dynamic near-wall admittance).
+    ``"equilibrium_clamp"`` (P3-4 default; static macrostate smoke), ``"thermal_grad"``
+    (P3-5+ Grad/regularized wet-node wall that resolves the dynamic near-wall admittance),
+    or ``"mass_neutral"`` (Phase_5 G1-W certified production wall, v1.1 symmetric
+    double-sided mass-neutral Grad wall — certified caliber is ``grad_extrap="row1"``;
+    added for G1b, contract §6.3; defaults and existing paths are byte-identical).
     ``q_feedback_relax`` temporally under-relaxes the q_g fed to the film ODE; it damps the
     step-to-step (Nyquist) coupling instability of ``thermal_grad`` without affecting the
     physical (10 kHz) signal. ``1.0`` (no relaxation) reproduces the P3-4 clamp behaviour;
     ``thermal_grad`` needs a small value (~0.02). ``grad_extrap`` is the near-wall
     non-equilibrium extrapolation for the Grad wall (``"linear"`` or ``"row1"``).
+
+    ``q_extraction`` selects the one-sided gas flux the film ODE integrates:
+    ``"moment_row"`` (M3 lineage and the ONLY production-certified feedback: near-wall
+    moment-channel conductive flux; on the mass-neutral wall's field shape it reads ~3x
+    low — G1-W §23 archived complex constant — which G1b handles on the REFERENCE side
+    in the frequency domain, where the coupled-run energy-channel admittance cancels the
+    miscalibration exactly) or ``"energy_balance"`` (sealed-box identity
+    ``q_side = (N dy / (2(gamma-1))) dp_mean/dt`` — DIAGNOSTIC ONLY: feeding the
+    time-domain derivative of the resonant box-mean pressure into the film SELF-EXCITES
+    through the acoustic box modes (derivative gain ~ omega_box outruns the relax
+    low-pass; measured in the G1b smoke: predictor-corrector delta growth ~25x/period,
+    H2 ~ 0.38), so it must not be used for production coupling without a dedicated
+    stabilization design).
     """
 
     if n_steps < 1:
         raise ValueError("n_steps must be positive")
     if scheme not in {"heun_picard1", "heun", "explicit_lagged"}:
         raise ValueError(f"unsupported Level C scheme: {scheme}")
-    if wall_bc not in {"equilibrium_clamp", "thermal_grad"}:
+    if wall_bc not in {"equilibrium_clamp", "thermal_grad", "mass_neutral"}:
         raise ValueError(f"unsupported wall_bc: {wall_bc}")
     if grad_extrap not in {"linear", "row1"}:
         raise ValueError(f"unsupported grad_extrap: {grad_extrap}")
+    if q_extraction not in {"moment_row", "energy_balance"}:
+        raise ValueError(f"unsupported q_extraction: {q_extraction}")
     if not 0.0 < q_feedback_relax <= 1.0:
         raise ValueError("q_feedback_relax must be in (0, 1]")
     if row != BOTTOM_WALL_ROW:
@@ -228,9 +255,32 @@ def run_levelc_predictor_corrector(
     delta_pc = np.zeros_like(t)
     wall_error = np.empty_like(t)
 
+    p_scale = float(solver.mapping.pressure_scale)
+    gamma_g = float(solver.mapping.physical.gamma)
+    energy_prefactor = solver.ny * float(solver.mapping.lattice.dx_m) / (2.0 * (gamma_g - 1.0))
+
+    def _box_p_pa() -> float:
+        return float(np.mean(solver.get_pressure_lu())) * p_scale
+
+    p_box_prev = _box_p_pa() if q_extraction == "energy_balance" else 0.0
+    p_box_series = np.empty_like(np.arange(int(n_steps) + 1, dtype=float))
+
+    def _extract_q_raw() -> float:
+        nonlocal p_box_prev
+        if q_extraction == "energy_balance":
+            p_now = _box_p_pa()
+            q_raw = energy_prefactor * (p_now - p_box_prev) / dt
+            p_box_prev = p_now
+            return q_raw
+        return extract_bottom_wall_heat_flux_si(solver, row=row)
+
+    mass_lu = np.empty_like(t)
     T_s[0] = T0
     P_in[0] = evaluate_drive(drive, float(t[0]))
-    q_g[0] = extract_bottom_wall_heat_flux_si(solver, row=row)
+    mass_lu[0] = float(np.sum(solver.f))
+    p_box_series[0] = _box_p_pa()
+    q_g[0] = (0.0 if q_extraction == "energy_balance"
+              else extract_bottom_wall_heat_flux_si(solver, row=row))
     dTdt[0] = film_rhs(T_s[0], float(t[0]), params=params, drive=drive, q_g_one_sided_si=q_g[0])
     theta_wall[0], T_wall[0] = _wall_temperature_state(solver, row)
     pressure_probe[0] = _pressure_probe_pa(solver, probe_loc)
@@ -249,17 +299,22 @@ def run_levelc_predictor_corrector(
             solver.step(1, boundary_callback=make_bottom_grad_wall_callback(
                 theta_w, rho_policy=rho_policy, extrap=grad_extrap, fill_deep_links=False))
             return
+        if wall_bc == "mass_neutral":
+            theta_w = _theta_wall_lu(T_wall_K)
+            solver.step(1, boundary_callback=make_symmetric_mass_neutral_wall_callback(
+                theta_w, extrap=grad_extrap))
+            return
         _apply_wall_temperature(solver, T_wall_K=T_wall_K, rho_policy=rho_policy, row=row)
         solver.step(1)
         _apply_wall_temperature(solver, T_wall_K=T_wall_K, rho_policy=rho_policy, row=row)
 
     def _reimpose(T_wall_K: float) -> None:
-        """Picard-corrector wall re-imposition. For ``thermal_grad`` the wall is already
-        imposed inside the streaming step; re-reconstructing row 0 here would retroactively
-        alter the near-wall state (inconsistent with the predictor advance, and it detaches
-        Level C from the isolated Level A admittance), so it is a no-op. For
-        ``equilibrium_clamp`` it re-clamps row 0 (P3-4 behaviour)."""
-        if wall_bc == "thermal_grad":
+        """Picard-corrector wall re-imposition. For ``thermal_grad`` and ``mass_neutral``
+        the wall is already imposed inside the streaming step; re-reconstructing row 0 here
+        would retroactively alter the near-wall state (inconsistent with the predictor
+        advance, and it detaches Level C from the isolated Level A admittance), so it is a
+        no-op. For ``equilibrium_clamp`` it re-clamps row 0 (P3-4 behaviour)."""
+        if wall_bc in ("thermal_grad", "mass_neutral"):
             return
         _apply_wall_temperature(solver, T_wall_K=T_wall_K, rho_policy=rho_policy, row=row)
 
@@ -274,12 +329,12 @@ def run_levelc_predictor_corrector(
         if scheme == "explicit_lagged":
             T_next = T_n + dt * rhs_n
             _advance(T_next)
-            q_raw = extract_bottom_wall_heat_flux_si(solver, row=row)
+            q_raw = _extract_q_raw()
             q_fb = (1.0 - q_feedback_relax) * q_fb + q_feedback_relax * q_raw
         else:
             T_predict = T_n + dt * rhs_n
             _advance(T_predict)
-            q_raw = extract_bottom_wall_heat_flux_si(solver, row=row)
+            q_raw = _extract_q_raw()
             q_fb = (1.0 - q_feedback_relax) * q_fb + q_feedback_relax * q_raw
             rhs_end = film_rhs(T_predict, t_np1, params=params, drive=drive, q_g_one_sided_si=q_fb)
             T_next = T_n + 0.5 * dt * (rhs_n + rhs_end)
@@ -302,6 +357,8 @@ def run_levelc_predictor_corrector(
         pressure_probe[i + 1] = _pressure_probe_pa(solver, probe_loc)
         temperature_probe[i + 1] = _temperature_probe_K(solver, probe_loc)
         wall_error[i + 1] = _wall_temperature_error_K(solver, row, T_s[i + 1])
+        mass_lu[i + 1] = float(np.sum(solver.f))
+        p_box_series[i + 1] = _box_p_pa()
 
     audit = audit_film_energy(
         t_si=t,
@@ -339,6 +396,9 @@ def run_levelc_predictor_corrector(
         finite=finite,
         wall_bc=wall_bc,
         q_feedback_relax=q_feedback_relax,
+        mass_lu=mass_lu,
+        q_extraction=q_extraction,
+        p_box_mean_Pa=p_box_series,
     )
 
 
