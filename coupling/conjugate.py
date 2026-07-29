@@ -339,7 +339,13 @@ def run_levelc_predictor_corrector(
             t_box_bar = T0 * p_bar / hyb_p_init
             q_dc = hyb_g_dc * (t_wall_now_K - t_box_bar)
             hyb_step += 1
-            return (q_m - m_q) + q_dc
+            # v2.1: the de-DC operator is exact only with a FULL window; during
+            # window fill the lagged mean lets the sign-inverted moment DC leak
+            # through (measured: +307 K first-period ratchet, run 20260729T130108Z),
+            # so the AC channel is gated off until the window is full (the film
+            # couples through the DC pinning alone during period 1 = settle)
+            ac = (q_m - m_q) if hyb_step > n_period else 0.0
+            return ac + q_dc
         return q_feedback_scale * extract_bottom_wall_heat_flux_si(solver, row=row)
 
     mass_lu = np.empty_like(t)

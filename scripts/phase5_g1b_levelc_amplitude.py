@@ -311,8 +311,11 @@ def run_g1b(config_path: Path, output_root: Path | None = None,
         mask_fit = mask_fit0
         spp = r["steps_per_period"]
         dpc = np.abs(r["delta_pc_K"])
-        growth = (float(np.max(dpc[-spp:]) / max(np.max(dpc[1:spp + 1]), 1e-300))
-                  if len(dpc) > 2 * spp else float("nan"))
+        # baseline = first FULL period after the hybrid AC channel activates
+        # (period 1 is DC-pinning-only by design — near-zero delta_pc there
+        # would fake a growth ratio); growth gates genuine late-run growth
+        growth = (float(np.max(dpc[-spp:]) / max(np.max(dpc[spp + 1:2 * spp + 1]), 1e-300))
+                  if len(dpc) > 3 * spp else float("nan"))
         mass = r["mass_lu"]
         m0 = float(mass[0])
         wall_err_win = float(np.max(r["wall_error_K"][mask_fit]))
