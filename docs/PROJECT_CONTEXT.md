@@ -42,7 +42,7 @@ A2a+QS-1 是基础论文首要物理锚；基础谐波目标 H2/L2-2f@20 kHz（H
 
 ## 2. 当前阶段与状态
 
-**当前阶段（2026-07-29）：Phase_5 WP2 已闭合 G0-B（scoped by user）、G3、G1-W（生产壁认证）、G1a（包络至 0.075）；G1b `FAILED`（密封无沉 rig 耦合回路结构性阻断，三馈路实测死亡证据链，路线决策待用户——(a) 混合馈路第四设计 vs (b) scoped 阻断顺延 G4a、G2 先行）。Phase_4/Phase_3 维护态。** 权威合同 `docs/Phase_5/Phase5_instruct_v1.2.md`（v1.2，评审基线=master `b86459c`，与冻结时 HEAD 一致）；状态标签与 Gate 现值唯一追踪处 `docs/Phase_5/Phase5_STATUS.md`。主路线=**路线 B 已确认**（2026-07-22 用户批准 `ROUTE_B_MAIN + 1D_REAL_AIR_BOUNDING`，`route_ab_decision_memo.md`；升级条件预注册）；基础投稿目标 JASA/JSV、PRA 条件升级；A2a+QS-1 为基础论文首要物理锚（D0-5）；基础谐波目标 H2/L2-2f@20 kHz（H3/30 kHz 条件项）。全部 Phase_5 Gate `NOT_RUN`（G5 默认 `WAIVED_JASA_SCOPE`）、`FINAL_PRODUCTION_NOT_CLAIMED`。执行顺序：WP1 独立仪器 → WP2 入口 Gate（G0→G3→G1-W→G1a→G1b→G2-T/A/O 10/20 kHz→G4a→条件项）→ WP3 首轮 8 信息单元 Go/No-Go → WP4 完整矩阵。维护基线：Phase_4（M4 digest `d69bf24d881e`、全量 158 绿）+ Phase_3（39 绿）；任何 core/config 变更须全量重验并评估合同 §23 定向复验矩阵。
+**当前阶段（2026-07-30）：Phase_5 WP2 已闭合 G0-B（scoped by user）、G3、G1-W（生产壁认证）、G1a（包络至 0.075）；G1b `FAILED` 终判（D5-4 第四设计三轮迭代后回退条款执行——五通道证据链：因果滞后去 DC 算子在自驱动 DC 回路内原理性自激；耦合包络顺延 G4a 有沉几何）；当前次门 G2-T/A/O。Phase_4/Phase_3 维护态。** 权威合同 `docs/Phase_5/Phase5_instruct_v1.2.md`（v1.2，评审基线=master `b86459c`，与冻结时 HEAD 一致）；状态标签与 Gate 现值唯一追踪处 `docs/Phase_5/Phase5_STATUS.md`。主路线=**路线 B 已确认**（2026-07-22 用户批准 `ROUTE_B_MAIN + 1D_REAL_AIR_BOUNDING`，`route_ab_decision_memo.md`；升级条件预注册）；基础投稿目标 JASA/JSV、PRA 条件升级；A2a+QS-1 为基础论文首要物理锚（D0-5）；基础谐波目标 H2/L2-2f@20 kHz（H3/30 kHz 条件项）。全部 Phase_5 Gate `NOT_RUN`（G5 默认 `WAIVED_JASA_SCOPE`）、`FINAL_PRODUCTION_NOT_CLAIMED`。执行顺序：WP1 独立仪器 → WP2 入口 Gate（G0→G3→G1-W→G1a→G1b→G2-T/A/O 10/20 kHz→G4a→条件项）→ WP3 首轮 8 信息单元 Go/No-Go → WP4 完整矩阵。维护基线：Phase_4（M4 digest `d69bf24d881e`、全量 158 绿）+ Phase_3（39 绿）；任何 core/config 变更须全量重验并评估合同 §23 定向复验矩阵。
 
 > 谱系说明：以下两段是 Phase_4 期历史长摘要（2026-07-09 / 2026-07-11）。其中「不授权 Phase_5 / 决策前不行动」已由 2026-07-20 立项决策（§4）解除；E2/R2/digest 数值当前引用以 2026-07-11 审查修订段为准。
 
@@ -147,8 +147,9 @@ A2a+QS-1 是基础论文首要物理锚；基础谐波目标 H2/L2-2f@20 kHz（H
 - 不把 `G1A_PASSED_TO_0P05` 读成 G1a 失败或把 G1a 读成全幅值窗认证：ε=0.10 出的是**能量审计包络**（双通道漂移=场形幅值依赖实测，基频增益本身跨 100× 窗线性 0.15%）；生产矩阵授权至 ε=0.075，0.10 点按合同 §6.2 记标签。矩通道热流读出在 ε>0.075 须按 G1a 报告 §A.3 漂移带解释。
 - 不把 gate runner 的进程池并行当作物理/协议变更：它只在编排层调度独立算例（装配阶梯序、调度不变），上权威 run 前须有串行/并行 A/B 逐位一致验证（G1a 先例）。
 - 跨机运行按"每机逐位、跨机容差"口径（用户决策 D5-3，2026-07-29；详录 `scripts/README.md`）：不得把跨机 run 声明为逐位复现；权威 run 的 provenance 必须记机器指纹；A/B 两机 digest 与归因在案。
-- 不把 G1b `FAILED` 读作生产壁或 G1a/G2/A2a 链失效：阻断的是**密封无沉 rig 上的 Level C 薄膜耦合回路**（矩通道 DC 在 mn 场反号→自激，实测证据链 `nonlinear_entry_gate_report.md` §B.1）；G1a 规定壁温无回路不受影响、G2 用规定壁温协议、A2a 用 canonical 热沉几何。也不得把旧壁 M3 耦合稳定读作可迁移——其稳定=质量泄漏伪热沉+grad 场 DC 标定两个隐藏前提（第四次"同硬币两面"）。
-- 不把 `q_extraction="energy_balance"`（时域导数馈路）用于生产耦合：箱模 ω 放大自激实测判死（DIAGNOSTIC ONLY，conjugate docstring 冻结）。
+- 不把 G1b `FAILED` 读作生产壁或 G1a/G2/A2a 链失效：阻断的是**密封无沉 rig 上的 Level C 薄膜耦合回路**（五通道证据链 `nonlinear_entry_gate_report.md` §B）；G1a 规定壁温无回路不受影响、G2 用规定壁温协议、A2a 用 canonical 热沉几何。也不得把旧壁 M3 耦合稳定读作可迁移——其稳定=质量泄漏伪热沉+grad 场 DC 标定两个隐藏前提。
+- 不把 `q_extraction="energy_balance"`/`"hybrid_ac_dc"` 用于密封无沉 rig 的生产耦合：前者箱模 ω 放大自激、后者的因果滞后去 DC 算子在自驱动 DC 回路内**原理性自激**（v1/v2/v2.1 三轮实测，conjugate docstring 与报告 §B.2 冻结）；hybrid 资产仅作 G4a 有沉几何的设计输入。
+- 不把耦合态的 in-run recal（run#3/#4 的 ~1.07@+70°）当作 §23 常数失效或新标定：热态背景/回路瞬态污染下的读数不构成标定更新；§23 常数（3.055@17.5°）的定义域=规定壁温协议冷背景 1f。
 - 不把「固定 `P_mean` 改 `H_s` 后结果变化」判成数值域高不收敛：`H_s` 是 DC 热阻模型参数，该变化是热沉物理敏感性；G4a 域高检查必须状态匹配（重匹配 `P_mean` 使 `Theta_DC` 1% 内一致，或保持等效热阻，D0-13）。
 - Phase_5 脚本与报告只能产出 `PASSED/FAILED/SCOPED_CANDIDATE`；`SCOPED_PASSED_BY_USER` 只能由用户批准并单独留档（D0-7）；scoped pass 不得写成 clear pass。
 - 不得为通过非线性 Gate 按幅值逐点更换 dx、tau、热流导出因子、色散因子、Grad 壁参数或远场增益；`q_feedback_relax`/拟合窗/去趋势/滤波按算例族预注册（合同 §0.4）；更换生产热壁/谱修正/滤波或其顺序=物理仪器变化，触发合同 §23 定向复验。
