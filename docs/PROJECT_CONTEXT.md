@@ -35,9 +35,12 @@ G1-W `PASSED`（**生产壁=v1.1 对称质量中性壁**）、G1a `PASSED`+`G1A_
 nonlinear_entry_gate_report.md §A）；其余 Gate NOT_RUN（G5 默认 WAIVED_JASA_SCOPE）。
 A2a+QS-1 是基础论文首要物理锚；基础谐波目标 H2/L2-2f@20 kHz（H3 为条件项）；
 脚本只能产出 PASSED/FAILED/SCOPED_CANDIDATE，scoped 升级、路线 A 启动、PRA 升级均属用户决策。
-下一步 = **G1b**（Level C 耦合幅值包络，合同 §6.3：生产壁接入 conjugate.py[Phase_3 维护面
-加性变更+全量回归] + 生产壁小幅值 M3 回归重跑 + P1 伺服）→ G2-T/A/O(10/20 kHz)→G4a。
-多 run gate 沿用进程池并行模式（G1a execute_cases 先例）。回答和文档均使用中文。
+G1b `FAILED` 闭卷（D5-4，五通道证据链；耦合顺延 G4a；WP4 届时走 SCOPED_GO；
+论文影响评估=报告 §B.2.2，主线存活、G4a 关键路径单点化）。
+下一步 = **G2-T/G2-A/G2-O**（合同 §7，10/20 kHz；规定壁温协议、生产壁 v1.1、
+G0 逐 k 有效物性表必须携带[2f@k₂ α_eff=0.48×名义]、底板 ≤6e-10；
+交接口径全清单 Phase5_STATUS §6）→ G4a。多 run gate 沿用进程池并行
+（execute_cases 先例，B 机 --workers 16、两机同 commit、D5-3 口径）。回答和文档均使用中文。
 ```
 
 ## 2. 当前阶段与状态
