@@ -1,0 +1,220 @@
+{
+ "gate_id": "G2-A",
+ "verdict": "PASSED",
+ "labels": [],
+ "rows_by_frequency": {
+  "10000": {
+   "amplitude_span_vs_prediction": {
+    "measured_span_ratio": 1.0038311126442392,
+    "predicted_span_ratio_symbol": 1.0044124636513356,
+    "symbol_at_f": {
+     "c_m_s": 347.5932596069029,
+     "sigma_per_cell": -2.858933295980625e-05
+    },
+    "per_cell_measured": -2.482982222157327e-05,
+    "model_vs_symbol_diagnostic": {
+     "classical_filter_span_ratio": 0.9908877328634926,
+     "per_cell_classical": 5.006831772139213e-05,
+     "per_cell_filter": 9.373486087269136e-06,
+     "note": "v1 reference formula, archived as medium characterization delta (wrong physics for the simplified-collision longitudinal mode)"
+    },
+    "abs_err": 0.0005813510070964423,
+    "gate": 0.05,
+    "passed": true
+   },
+   "phase_linearity": {
+    "max_residual_deg": 0.042515539938589114,
+    "gate": 5.0,
+    "k_fit_lu": 0.060371455303259824,
+    "k_local_stage1": {
+     "230": 0.06053175229457341,
+     "282": 0.060530896071924876,
+     "333": 0.060515721699110056,
+     "384": 0.06049842394085345
+    },
+    "c_meas_m_s": 347.6119437665215,
+    "c_dev_vs_air": 0.0017635267046729464,
+    "c_gate_note": "10 kHz leg gates |c_dev|<=2% (inherited M4 calibration); other frequencies archived as instrument characterization",
+    "c_gated_here": true,
+    "passed": true
+   },
+   "incoming_contamination": {
+    "by_row": {
+     "230": 0.0019872408532377434,
+     "282": 0.0019854585683196356,
+     "333": 0.0020246132038068978,
+     "384": 0.0020597518187657304
+    },
+    "value_max": 0.0020597518187657304,
+    "gate": 0.05,
+    "z_eff_over_z0": 1.0226362608057584,
+    "nominal_z0_diagnostic": {
+     "230": 0.009948202639253568,
+     "282": 0.009955890499316118,
+     "333": 0.010109124685727356,
+     "384": 0.010278927447017552
+    },
+    "rigid_top_control_min": 1.0162949733170117,
+    "rigid_control_gate": 0.3,
+    "passed": true
+   },
+   "control_surface_position_sensitivity": {
+    "scatter_rel": 0.0005789651821737078,
+    "gate": 0.05,
+    "passed": true
+   },
+   "channel_consistency": {
+    "by_row": {
+     "230": {
+      "re": 0.9999430775473699,
+      "im": -0.0014627743614896867,
+      "abs": 0.999944147462116,
+      "phase_deg": -0.08381550849398459
+     },
+     "282": {
+      "re": 0.9999434859673026,
+      "im": -0.0014633885057566043,
+      "abs": 0.9999445567802047,
+      "phase_deg": -0.08385066404806597
+     },
+     "333": {
+      "re": 0.9999430977354062,
+      "im": -0.001462759272524249,
+      "abs": 0.9999441676280579,
+      "phase_deg": -0.08381464222043679
+     },
+     "384": {
+      "re": 0.9999434392991726,
+      "im": -0.001463355512783522,
+      "abs": 0.999944510063841,
+      "phase_deg": -0.08384877750044699
+     }
+    },
+    "worst_amp_rel": 5.585253788398248e-05,
+    "worst_phase_deg": 0.08385066404806597,
+    "sinc_correction": 0.990309066093774,
+    "gate": [
+     0.1,
+     10.0
+    ],
+    "passed": true
+   },
+   "stability": {
+    "injection_finite": true,
+    "rigid_control_finite": true,
+    "passed": true
+   }
+  },
+  "20000": {
+   "amplitude_span_vs_prediction": {
+    "measured_span_ratio": 1.0347372559742571,
+    "predicted_span_ratio_symbol": 1.0414302846505878,
+    "symbol_at_f": {
+     "c_m_s": 366.7132230790341,
+     "sigma_per_cell": -0.0002636041690457919
+    },
+    "per_cell_measured": -0.0002217372436858532,
+    "model_vs_symbol_diagnostic": {
+     "classical_filter_span_ratio": 0.9517338979535115,
+     "per_cell_classical": 0.00020027327088556853,
+     "per_cell_filter": 0.0001209592110616519,
+     "note": "v1 reference formula, archived as medium characterization delta (wrong physics for the simplified-collision longitudinal mode)"
+    },
+    "abs_err": 0.006693028676330703,
+    "gate": 0.05,
+    "passed": true
+   },
+   "phase_linearity": {
+    "max_residual_deg": 0.08251448482689804,
+    "gate": 5.0,
+    "k_fit_lu": 0.11446877055269294,
+    "k_local_stage1": {
+     "230": 0.1147243481473834,
+     "282": 0.11457718028805323,
+     "333": 0.1143312267727665,
+     "384": 0.11419465664685209
+    },
+    "c_meas_m_s": 366.66487854553293,
+    "c_dev_vs_air": 0.05667111972776051,
+    "c_gate_note": "10 kHz leg gates |c_dev|<=2% (inherited M4 calibration); other frequencies archived as instrument characterization",
+    "c_gated_here": false,
+    "passed": true
+   },
+   "incoming_contamination": {
+    "by_row": {
+     "230": 0.0013102132691306038,
+     "282": 0.0005251706981161782,
+     "333": 0.000750310123995546,
+     "384": 0.0017063018863761503
+    },
+    "value_max": 0.0017063018863761503,
+    "gate": 0.05,
+    "z_eff_over_z0": 1.0786879078483327,
+    "nominal_z0_diagnostic": {
+     "230": 0.03662267438914308,
+     "282": 0.03736106176610816,
+     "333": 0.038599648014640955,
+     "384": 0.03929861755787929
+    },
+    "rigid_top_control_min": 1.0875625208183561,
+    "rigid_control_gate": 0.3,
+    "passed": true
+   },
+   "control_surface_position_sensitivity": {
+    "scatter_rel": 0.006447563278508856,
+    "gate": 0.05,
+    "passed": true
+   },
+   "channel_consistency": {
+    "by_row": {
+     "230": {
+      "re": 0.9998910094330986,
+      "im": 0.0005468836033927438,
+      "abs": 0.9998911589902256,
+      "phase_deg": 0.03133753473048508
+     },
+     "282": {
+      "re": 0.9998909793762234,
+      "im": 0.0005469257876702311,
+      "abs": 0.9998911289564281,
+      "phase_deg": 0.03133995291636414
+     },
+     "333": {
+      "re": 0.9998910094674586,
+      "im": 0.0005469688875379447,
+      "abs": 0.9998911590712347,
+      "phase_deg": 0.0313424216821572
+     },
+     "384": {
+      "re": 0.9998910644177439,
+      "im": 0.0005470056194574336,
+      "abs": 0.999891214041606,
+      "phase_deg": 0.0313445247723142
+     }
+    },
+    "worst_amp_rel": 0.00010887104357193422,
+    "worst_phase_deg": 0.0313445247723142,
+    "sinc_correction": 0.9654228531029437,
+    "gate": [
+     0.1,
+     10.0
+    ],
+    "passed": true
+   },
+   "stability": {
+    "injection_finite": true,
+    "rigid_control_finite": true,
+    "passed": true
+   }
+  }
+ },
+ "injection_boundary_pulse": {
+  "sponge_R": 0.0010996497414353038,
+  "rigid_R": 0.8010250725857941,
+  "gates": [
+   0.05,
+   0.3
+  ],
+  "passed": true
+ }
+}

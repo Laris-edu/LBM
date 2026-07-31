@@ -1,0 +1,80 @@
+# Phase_5 G2-A 纯声学传播与读出链门配置（合同 §7.2；runner: scripts/phase5_g2a_acoustic_transfer.py）
+# 载体 = Phase_4 D3 粗声学域（configs/phase4_acoustic_coarse_dx334.yaml,本项目唯一认证行波载体）
+# + D3-3 单向加性软源。范围围栏：c0 旋钮 = M4 (iv) 10 kHz 单频标定,20 kHz 腿只测量归档
+# 实现相速度(仪器表征,不重标定,不设 c 门)——近场 L2-2f 声明由 G2-T 细栈承载,
+# 远场 2f SPL(L3)属 §1.6 排除项。
+case:
+  name: phase5_g2a_acoustic_transfer_10k20k_coarse
+  phase: Phase_5
+  gate: G2-A
+
+inheritance:
+  acoustic_config_path: configs/phase4_acoustic_coarse_dx334.yaml
+  phase5_contract: docs/Phase_5/Phase5_instruct_v1.2.md
+  m4_certified_run: results/m4/20260711T063735Z   # digest d69bf24d881e（声学域链谱系）
+
+g2a:                              # 权威协议（预注册；不得按结果逐点调整）
+                                  # fixture v2（2026-07-30,v1 诊断 run 20260730T095503Z 暴露三处
+                                  # 仪器侧操作化错误后重设计;介质冻结不动,门阈值不变）
+  ny: 512
+  nx: 4
+  n_abs: 60                       # 顶/底 sponge 行数（D3-2/D3-3 认证几何）
+  y_s: 90                         # 软源平面（底 sponge 之上,D3-3 逐字）
+  epsilon: 1.0e-3                 # 注入压力相对幅值（线性,Mach~7e-4）
+  scale: 0.05                     # 加性软源增益（D3-3 逐字；绝对幅值标定=M4 G,此处不消费）
+  control_rows_frac: [0.45, 0.55, 0.65, 0.75]   # 控制面行（间距 ~51 格 ≈ λ@20k——v1 全局相位拟合
+                                  # 混叠根因;v2 两段式拟合[簇局部 k 中位数→载波去趋势重拟合]对间距免疫）
+  grad_stencil_cells: 4           # A5 压力梯度通道中心差分半宽（sinc 因子按 v2 k_fit 精确修正）
+  symbol:                         # A0 介质符号行（v2:干净全周期域一步模态本征值,P2-6 权威口径;
+    modes: [4, 5, 9, 10]          # ny=512 上 f_m≈8.1/10.2/19.2/21.7 kHz——严格夹逼两个驱动频率
+    n_steps: 1000                 # (m=5 实测 10.17 kHz 在 10 kHz 上方,故需 m=4 补下界;不外推)
+    fit_skip_frac: 0.33           # ——A1 跨度参考、A4 归一化用;经典+滤波公式仅作诊断列归档
+    eps_seed: 1.0e-5
+  frequencies:
+    - frequency_Hz: 1.0e4
+      periods: 14.0               # ~3.9 个域渡越,稳态充分
+      fit_periods: 4.0
+      gate_c_dev: true            # 10 kHz 腿设 |c_meas/347−1| ≤2% 门（继承 M4 标定一致性）
+    - frequency_Hz: 2.0e4
+      periods: 26.0               # 同一物理时长量级（渡越数一致）
+      fit_periods: 6.0
+      gate_c_dev: false           # 20 kHz 相速度只归档（表征,不重标定;围栏见头注）
+  compact_source_T_s_hat_K: 0.37269   # M3 canonical T̂_s（compact-source 映射档案行输入）
+  k1_lu_fine_stack: 0.0982        # 细栈标定波数（G0 表插值锚,10 kHz 热特征）
+  k2_lu_fine_stack: 0.1396        # 2f 热特征波数（G0 实测行,α_eff=0.48×名义;携带因子档案行）
+
+g2a_smoke:                        # 机器链路 smoke（小域;非权威）
+  ny: 256
+  nx: 4
+  n_abs: 60
+  y_s: 70
+  epsilon: 1.0e-3
+  scale: 0.05
+  control_rows_frac: [0.50, 0.60, 0.70]
+  grad_stencil_cells: 4
+  symbol:                         # ny=256 上 m=2/3 → f_m≈8.6/12.9 kHz,夹住 10 kHz
+    modes: [2, 3]
+    n_steps: 800
+    fit_skip_frac: 0.33
+    eps_seed: 1.0e-5
+  frequencies:
+    - frequency_Hz: 1.0e4
+      periods: 10.0
+      fit_periods: 3.0
+      gate_c_dev: true
+  compact_source_T_s_hat_K: 0.37269
+  k1_lu_fine_stack: 0.0982
+  k2_lu_fine_stack: 0.1396
+
+gates:                            # 合同 §7.2 阈值（冻结）
+  amplitude_span_rel: 0.05        # |Â₊| 跨度传输 vs 预测（经典吸收+滤波符号）绝对差
+  phase_residual_deg: 5.0         # 相位线性回归最大残差
+  c_dev_rel_10k: 0.02             # 10 kHz 实现相速度 vs 空气 347（P2-6 措辞继承）
+  incoming_ratio: 0.05            # |Â₋|/|Â₊| 稳态污染（=反射系数门,合同 |R|<0.05）
+  rigid_control_min: 0.3          # 刚性对照非退化下限
+  position_scatter_rel: 0.05      # 控制面位置敏感性（衰减归一后散布）
+  channel_amp_rel: 0.10           # 压力梯度/速度通道一致性
+  channel_phase_deg: 10.0
+
+output:
+  results_root: results/phase5/g2_acoustic_transfer

@@ -1,0 +1,38 @@
+gate_id: G2-A
+case_family: g2_acoustic_transfer
+protocol:
+  ny: 512
+  nx: 4
+  n_abs: 60
+  y_s: 90
+  epsilon: 0.001
+  scale: 0.05
+  control_rows_frac:
+  - 0.45
+  - 0.55
+  - 0.65
+  - 0.75
+  grad_stencil_cells: 4
+  frequencies:
+  - frequency_Hz: 1.0e4
+    periods: 14.0
+    fit_periods: 4.0
+    gate_c_dev: true
+  - frequency_Hz: 2.0e4
+    periods: 26.0
+    fit_periods: 6.0
+    gate_c_dev: false
+  compact_source_T_s_hat_K: 0.37269
+  k1_lu_fine_stack: 0.0982
+  k2_lu_fine_stack: 0.1396
+gates:
+  amplitude_span_rel: 0.05
+  phase_residual_deg: 5.0
+  c_dev_rel_10k: 0.02
+  incoming_ratio: 0.05
+  rigid_control_min: 0.3
+  position_scatter_rel: 0.05
+  channel_amp_rel: 0.1
+  channel_phase_deg: 10.0
+config_path: configs\phase5\g2_acoustic_transfer\g2a_10k20k_coarse.yaml
+acoustic_config: configs\phase4_acoustic_coarse_dx334.yaml

@@ -1,0 +1,45 @@
+gate_id: G2-O
+case_family: g2_operator_ablation
+protocol:
+  frequencies_Hz:
+  - 1.0e4
+  - 2.0e4
+  ny: 48
+  nx: 8
+  periods: 3.0
+  settle_periods: 1.0
+  samples_per_period: 64
+  ramp_periods: 1.0
+  epsilon_baseline: 0.001
+  epsilon_production: 0.05
+  n_harmonics: 5
+  pair:
+    epsilon: 0.0001
+    ramp_periods: 2.0
+    settle_periods: 12.0
+    periods: 14.0
+  variants:
+  - id: v0_frozen
+    mutations: {}
+  - id: v1_acoustic_corr_off
+    identity_expected: true
+    mutations:
+      collision.acoustic_phase_correction_enabled: false
+  - id: v2_filter_off
+    mutations:
+      numerics.high_wavenumber_filter.enabled: false
+  - id: v3_filter_half
+    mutations:
+      numerics.high_wavenumber_filter.strength: 0.00325
+  - id: v4_dispersion_off_diag
+    diagnostic_only: true
+    mutations:
+      collision.dispersion_correction_enabled: false
+gates:
+  single_tone_leakage_rel: 1.0e-08
+  dg_sensitivity_pp: 0.01
+  h2_sensitivity_fraction: 0.1
+  attribution_phase_deg: 90.0
+  attribution_mag_lo: 0.5
+  attribution_mag_hi: 2.0
+config_path: configs\phase5\g2_operator_ablation\g2o_10k20k_dx2p6.yaml

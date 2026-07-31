@@ -188,8 +188,15 @@ def run_driven(
     gas_cfg: dict, wall: str, epsilon: float, *,
     frequency_hz: float, periods: float, settle_periods: float,
     samples_per_period: int, grad_extrap_old: str, log,
-    ramp_periods: float = 1.0,
+    ramp_periods: float = 1.0, record_field_rows: bool = False,
 ) -> dict[str, Any]:
+    """Driven sealed-rig run (G1-W caliber).
+
+    ``record_field_rows=False`` (default) is byte-identical to the original
+    G1-W/G1a instrument; ``True`` additionally samples x-averaged u_y and
+    pressure rows (pure observation added for G2-T near-field p/T/u output —
+    the step sequence is untouched).
+    """
     solver = GasSolver2D(gas_cfg)
     mapping = solver.mapping
     dt = float(mapping.lattice.dt_s)
@@ -213,14 +220,20 @@ def run_driven(
     mass_t = np.empty(n_samples)
     t_rows = np.empty((n_samples, solver.ny))
     theta_imposed = np.empty(n_samples)
+    uy_rows = np.empty((n_samples, solver.ny)) if record_field_rows else None
+    p_rows = np.empty((n_samples, solver.ny)) if record_field_rows else None
 
     def sample(idx: int, step: int, theta_w_now: float) -> None:
         t_s[idx] = step * dt
-        p_box[idx] = float(np.mean(solver.get_pressure_lu()))
+        p_field = solver.get_pressure_lu()
+        p_box[idx] = float(np.mean(p_field))
         q_mom[idx] = extract_bottom_wall_heat_flux_si(solver)
         mass_t[idx] = float(np.sum(solver.f))
         t_rows[idx] = np.mean(solver.get_temperature_lu(), axis=1)
         theta_imposed[idx] = theta_w_now
+        if record_field_rows:
+            uy_rows[idx] = np.mean(solver.get_macro().u[:, :, 1], axis=1)
+            p_rows[idx] = np.mean(p_field, axis=1)
 
     sample(0, 0, theta0)
     sample_idx = 1
@@ -252,6 +265,8 @@ def run_driven(
     n_used = sample_idx
     t_s, p_box, q_mom, mass_t = t_s[:n_used], p_box[:n_used], q_mom[:n_used], mass_t[:n_used]
     t_rows, theta_imposed = t_rows[:n_used], theta_imposed[:n_used]
+    if record_field_rows:
+        uy_rows, p_rows = uy_rows[:n_used], p_rows[:n_used]
 
     # fits over the pre-registered window
     mask = t_s >= settle_periods / frequency_hz * (1.0 - 1e-12)
@@ -292,6 +307,7 @@ def run_driven(
                         "steps_per_period": steps_per_period, "n_steps": n_steps},
         "t_s": t_s, "p_box_lu": p_box, "q_moment_si": q_mom, "mass": mass_t,
         "t_rows_lu": t_rows, "theta_imposed_lu": theta_imposed,
+        "uy_rows_lu": uy_rows, "p_rows_lu": p_rows,
         "fit_p": fit_p, "fit_q": fit_q, "fit_p_window2": fit_p2,
         "recorder": recorder, "audit": audit,
         "window_dm_rel": window_dm_rel, "total_drift_rel": total_drift_rel,

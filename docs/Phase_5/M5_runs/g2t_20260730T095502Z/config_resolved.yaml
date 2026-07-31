@@ -1,0 +1,51 @@
+gate_id: G2-T
+case_family: g2_thermal_transfer
+protocol:
+  frequencies_Hz:
+  - 1.0e4
+  - 2.0e4
+  ny: 48
+  nx: 8
+  periods: 3.0
+  settle_periods: 1.0
+  samples_per_period: 64
+  ramp_periods: 1.0
+  epsilons:
+  - 0.001
+  - 0.01
+  n_harmonics: 5
+  control_rows:
+  - 6
+  - 10
+  - 14
+  - 18
+  refinement:
+    ny_refined: 96
+  nsf1d:
+    n_cells: 128
+    n_cells_refined: 256
+    cycles: 7.0
+    settle_cycles: 3.0
+    samples_per_cycle: 64
+  alpha_extension_ny:
+  - 24
+  - 16
+  - 12
+  - 8
+  - 6
+  highk_policy_primary: hold_last
+  window_sensitivity_cycles:
+  - 2.0
+  - 1.5
+gates:
+  transfer_amp_rel: 0.1
+  transfer_phase_deg: 10.0
+  outgoing_amp_rel: 0.1
+  outgoing_phase_deg: 10.0
+  window_amp_rel: 0.03
+  window_phase_deg: 3.0
+  fit_leakage_rel: 1.0e-08
+  mass_window_rel: 1.0e-08
+  mass_cumulative_rel: 1.0e-06
+  wall_temperature_error_K: 0.01
+config_path: configs\phase5\g2_thermal_transfer\g2t_10k20k_dx2p6.yaml

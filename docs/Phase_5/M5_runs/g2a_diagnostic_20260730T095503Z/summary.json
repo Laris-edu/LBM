@@ -1,0 +1,213 @@
+{
+ "run_id": "20260730T095503Z",
+ "created_at": "2026-07-30T10:17:16.510136+00:00",
+ "code_commit": "950106adab871e3625458c76fb004c115b63b169",
+ "config_digest": "df95431ea5b0",
+ "physics_core_digest": "83ce0d6c542c",
+ "parent_baseline_run": "M4 d69bf24d881e (acoustic-domain chain) + G1a 20260728T085824Z",
+ "phase5_contract_version": "v1.2",
+ "work_package": "WP2",
+ "gate_id": "G2-A",
+ "case_family": "g2_acoustic_transfer",
+ "model_route": "ROUTE_B_MAIN",
+ "property_model_id": "phase4_acoustic_coarse_dx334 (simplified collision; c0 knob = M4 (iv) 10 kHz calibration, not re-fit)",
+ "tau_policy": "acoustic-domain artificial nu x100 (frozen Phase_4 asset)",
+ "mapping_digest": "2ce3e5118ac0",
+ "background_path": "uniform_reference_state",
+ "forcing_protocol": "one_way_additive_soft_source_monochromatic (no thermal feedback)",
+ "P_mean_W_m2": 0.0,
+ "P_mean_rematched": false,
+ "target_Theta_DC": 0.0,
+ "frequency_Hz": [
+  10000.0,
+  20000.0
+ ],
+ "T_ambient_K": 300.0,
+ "T_mean_K": 300.0,
+ "epsilon_AC_measured": {
+  "pressure_rel": 0.001
+ },
+ "Theta_DC_measured": 0.0,
+ "chi_0": null,
+ "chi_eff": null,
+ "C_A_J_m2K": null,
+ "dc_heat_sink_model": "not_applicable_g2a_acoustic_carrier",
+ "dc_heat_sink_parameters": null,
+ "H_s_role": "acoustic domain height (sponged open)",
+ "thermal_resistance_effective": null,
+ "grid_shape": [
+  512,
+  4
+ ],
+ "dx_m": 0.000334,
+ "dt_s": 2.5049968029099264e-07,
+ "domain_height_m": 0.171008,
+ "boundary_model": "top/bottom sponges + additive soft source (D3-3 one-way)",
+ "wall_mass_policy": "not_applicable_g2a_acoustic_carrier",
+ "wall_neutrality_gate_id": "not_applicable_g2a_acoustic_carrier",
+ "boundary_mass_flux_definition": "not_applicable_g2a_acoustic_carrier",
+ "boundary_mass_flux_0f_to_3f": null,
+ "spectral_operator_stack_id": "acoustic_simplified_collision (no dispersion / no acoustic-phase); biharmonic filter 0.03 x 6",
+ "spectral_correction_enabled": false,
+ "high_wavenumber_filter_enabled": true,
+ "high_wavenumber_filter_strength": 0.03,
+ "operator_ablation_run_id": "G2-O (fine-stack operators; separate family)",
+ "q_feedback_relax": null,
+ "fit_window": {
+  "per_frequency_fit_periods": {
+   "10000": 4.0,
+   "20000": 6.0
+  }
+ },
+ "fit_cycles": null,
+ "detrend_order": 0,
+ "harmonic_order_max": 3,
+ "harmonic_fit_condition_number": null,
+ "U_det": {
+  "10000": {
+   "position_scatter": 0.012980836440683893
+  },
+  "20000": {
+   "position_scatter": 0.06507662942751628
+  }
+ },
+ "U95_fit": null,
+ "U_gov": {
+  "10000": 0.012980836440683893,
+  "20000": 0.06507662942751628
+ },
+ "no_clipping": true,
+ "no_floor": true,
+ "no_positivity_repair": true,
+ "gate_status": "SCOPED_CANDIDATE",
+ "scoped_limitations": [
+  "G2_2F_NOT_CERTIFIED"
+ ],
+ "smoke_mode": false,
+ "results": {
+  "T_s_hat_1f": null,
+  "p_hat_1f": null,
+  "p_hat_2f": null,
+  "p_hat_3f": null,
+  "outgoing_mode_1f": {
+   "10000": {
+    "230": {
+     "re": -6.073918865793599e-06,
+     "im": 4.1402392183924985e-06,
+     "abs": 7.350787112531469e-06,
+     "phase_deg": 145.72000806098157
+    },
+    "282": {
+     "re": 6.09087873199608e-06,
+     "im": -4.132190659516101e-06,
+     "abs": 7.3602855497918204e-06,
+     "phase_deg": -34.153861026114136
+    },
+    "333": {
+     "re": -6.34540384559939e-06,
+     "im": 3.74795602815912e-06,
+     "abs": 7.369621723858139e-06,
+     "phase_deg": 149.43148777305564
+    },
+    "384": {
+     "re": 6.575695579748966e-06,
+     "im": -3.348053378610372e-06,
+     "abs": 7.37897240701945e-06,
+     "phase_deg": -26.983182210755384
+    }
+   },
+   "20000": {
+    "230": {
+     "re": 2.054984030734999e-06,
+     "im": 6.272775678333561e-06,
+     "abs": 6.600808592685363e-06,
+     "phase_deg": 71.86101675003044
+    },
+    "282": {
+     "re": -9.589570656187244e-08,
+     "im": 6.676863764461489e-06,
+     "abs": 6.677552374614208e-06,
+     "phase_deg": 90.82284762832428
+    },
+    "333": {
+     "re": -2.9968114813565952e-06,
+     "im": 6.052529245755003e-06,
+     "abs": 6.753812947181047e-06,
+     "phase_deg": 116.34156466220055
+    },
+    "384": {
+     "re": -5.3723251908997975e-06,
+     "im": 4.21875095262045e-06,
+     "abs": 6.830793332916207e-06,
+     "phase_deg": 141.85835006554407
+    }
+   }
+  },
+  "outgoing_mode_2f": null,
+  "outgoing_mode_3f": null,
+  "outgoing_mode_note": "A+ characteristic amplitude at control rows (carrier certification; thermal 2f content is a G2-T/fine-stack quantity)",
+  "G1": null,
+  "D_G": null,
+  "D_OP": null,
+  "H2": null,
+  "H3": null,
+  "m1": null,
+  "m2": null,
+  "m3": null,
+  "m_note": "not_applicable_g2a_acoustic_carrier",
+  "QS0_error_amplitude": null,
+  "QS0_error_phase": null,
+  "QS1_error_amplitude": null,
+  "QS1_error_phase": null,
+  "wall_boundary_sensitivity": null,
+  "operator_sensitivity_D_G": null,
+  "operator_sensitivity_H2": null,
+  "operator_sensitivity_H3": null,
+  "operator_note": "not_applicable_g2a_acoustic_carrier",
+  "boundary_mass_flux_0f_to_3f": null,
+  "energy_residual": null,
+  "mass_or_flux_residual": null,
+  "wall_temperature_error": null,
+  "realized_phase_velocity_m_s": {
+   "10000": 347.6037080619812,
+   "20000": 5240.068551452874
+  },
+  "injection_boundary_pulse": {
+   "sponge_R": 0.0010996497414353038,
+   "rigid_R": 0.8010250725857941,
+   "gates": [
+    0.05,
+    0.3
+   ],
+   "passed": true
+  },
+  "compact_source_map": {
+   "10000": {
+    "u_src_nominal_alpha": {
+     "re": 0.0010382645681287835,
+     "im": 0.0010382645681287835,
+     "abs": 0.00146832783357917,
+     "phase_deg": 45.0
+    }
+   },
+   "20000": {
+    "u_src_nominal_alpha": {
+     "re": 0.0014683278335791698,
+     "im": 0.0014683278335791698,
+     "abs": 0.002076529136257567,
+     "phase_deg": 45.0
+    }
+   },
+   "carriage_2f_at_k2": {
+    "alpha_eff_k2_over_alpha_eff_k1": 0.47202470292737847,
+    "u_src_20k_alpha_eff_k2": {
+     "re": 0.001008800746956776,
+     "im": 0.001008800746956776,
+     "abs": 0.0014266596980783814,
+     "phase_deg": 45.0
+    },
+    "note": "2f source mapping must use alpha_eff(k2) from the G0 table (freeze doc \u00a73.3 output 3); sqrt(alpha) enters via delta_T"
+   }
+  }
+ }
+}

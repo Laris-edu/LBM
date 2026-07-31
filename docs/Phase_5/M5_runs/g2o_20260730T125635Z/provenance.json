@@ -1,0 +1,50 @@
+{
+ "run_id": "20260730T125635Z",
+ "command": "E:\\Code\\LBM\\scripts\\phase5_g2o_operator_ablation.py",
+ "workers": 14,
+ "python": "3.14.2",
+ "numpy": "2.4.4",
+ "code_commit": "950106adab871e3625458c76fb004c115b63b169",
+ "physics_core_digest": "4cf49b676f10",
+ "variants": [
+  {
+   "id": "v0_frozen",
+   "mutations": {},
+   "diagnostic_only": false,
+   "identity_expected": false
+  },
+  {
+   "id": "v1_acoustic_corr_off",
+   "mutations": {
+    "collision.acoustic_phase_correction_enabled": false
+   },
+   "diagnostic_only": false,
+   "identity_expected": true
+  },
+  {
+   "id": "v2_filter_off",
+   "mutations": {
+    "numerics.high_wavenumber_filter.enabled": false
+   },
+   "diagnostic_only": false,
+   "identity_expected": false
+  },
+  {
+   "id": "v3_filter_half",
+   "mutations": {
+    "numerics.high_wavenumber_filter.strength": 0.00325
+   },
+   "diagnostic_only": false,
+   "identity_expected": false
+  },
+  {
+   "id": "v4_dispersion_off_diag",
+   "mutations": {
+    "collision.dispersion_correction_enabled": false
+   },
+   "diagnostic_only": true,
+   "identity_expected": false
+  }
+ ],
+ "g1w_pair_instrument": "eps/ramp/settle/periods verbatim from the G1-W certified pair protocol"
+}

@@ -1,0 +1,257 @@
+{
+ "run_id": "20260730T125635Z",
+ "created_at": "2026-07-30T14:50:15.810863+00:00",
+ "code_commit": "950106adab871e3625458c76fb004c115b63b169",
+ "config_digest": "5729375e919a",
+ "physics_core_digest": "4cf49b676f10",
+ "parent_baseline_run": "results/phase5/g1a_wall_amplitude/20260728T085824Z",
+ "phase5_contract_version": "v1.2",
+ "work_package": "WP2",
+ "gate_id": "G2-O",
+ "case_family": "g2_operator_ablation",
+ "model_route": "ROUTE_B_MAIN",
+ "property_model_id": "frozen_dx2p6_route_b_closure",
+ "tau_policy": "frozen (M3 closure \u00a73)",
+ "mapping_digest": "849699bb37f6",
+ "background_path": "uniform_reference_state",
+ "forcing_protocol": "prescribed_wall_temperature_zero_mean_sinusoid",
+ "P_mean_W_m2": 0.0,
+ "P_mean_rematched": false,
+ "target_Theta_DC": 0.0,
+ "frequency_Hz": [
+  10000.0,
+  20000.0
+ ],
+ "T_ambient_K": 300.0,
+ "T_mean_K": 300.0,
+ "epsilon_AC_measured": {
+  "baseline": 0.001,
+  "production": 0.05,
+  "pair": 0.0001
+ },
+ "Theta_DC_measured": 0.0,
+ "chi_0": null,
+ "chi_eff": null,
+ "C_A_J_m2K": null,
+ "dc_heat_sink_model": "not_applicable_g2o",
+ "dc_heat_sink_parameters": null,
+ "H_s_role": "rig domain height (sealed periodic)",
+ "thermal_resistance_effective": null,
+ "grid_shape": [
+  48,
+  8
+ ],
+ "dx_m": 2.61175e-06,
+ "dt_s": 1.95881e-09,
+ "domain_height_m": 0.000125364,
+ "boundary_model": "mass_neutral_v1p1_symmetric (G1-W certified production wall)",
+ "wall_mass_policy": "mass_neutral_by_construction",
+ "wall_neutrality_gate_id": "G1-W PASSED (20260727T083342Z)",
+ "boundary_mass_flux_definition": "wall_mass_audit.NORMALIZATION_DEFINITION",
+ "boundary_mass_flux_0f_to_3f": null,
+ "spectral_operator_stack_id": "frozen_production_dx2p6 + pre-registered diagnostic variants (instrument identification only)",
+ "spectral_correction_enabled": true,
+ "high_wavenumber_filter_enabled": true,
+ "high_wavenumber_filter_strength": "frozen_production (0.0065)",
+ "operator_ablation_run_id": "20260730T125635Z",
+ "q_feedback_relax": null,
+ "fit_window": {
+  "settle_periods": 1.0,
+  "fit_periods": 2.0
+ },
+ "fit_cycles": 2.0,
+ "detrend_order": 0,
+ "harmonic_order_max": 5,
+ "harmonic_fit_condition_number": null,
+ "U_det": {
+  "10000": {
+   "window_p1f": 0.0015963644016442347,
+   "window_H2q_diff": 0.00012125762420493388
+  },
+  "20000": {
+   "window_p1f": 0.000550500895780015,
+   "window_H2q_diff": 5.991453274435676e-05
+  }
+ },
+ "U95_fit": {
+  "10000": 0.00035115456815596813,
+  "20000": 0.00015112092037559128
+ },
+ "U_gov": {
+  "10000": {
+   "D_G": 0.0031927288032884693,
+   "H2": 0.00035115456815596813
+  },
+  "20000": {
+   "D_G": 0.00110100179156003,
+   "H2": 0.00015112092037559128
+  }
+ },
+ "no_clipping": true,
+ "no_floor": true,
+ "no_positivity_repair": true,
+ "gate_status": "PASSED",
+ "scoped_limitations": [],
+ "smoke_mode": false,
+ "results": {
+  "T_s_hat_1f": null,
+  "p_hat_1f": null,
+  "p_hat_2f": null,
+  "p_hat_3f": null,
+  "outgoing_mode_1f": null,
+  "outgoing_mode_2f": null,
+  "outgoing_mode_3f": null,
+  "outgoing_mode_note": "G2-T quantity",
+  "G1": {
+   "10000": 1.0488397544381591,
+   "20000": 1.3083308219153638
+  },
+  "D_G": {
+   "10000": -0.00021299274508546073,
+   "20000": -0.0001472462959564158
+  },
+  "D_OP": null,
+  "D_OP_note": "A2a quantity (WP3)",
+  "H2": {
+   "10000": 0.026346652445777552,
+   "20000": 0.02755416576205636
+  },
+  "H3": {
+   "10000": 0.0008620714186550063,
+   "20000": 0.000560809028219584
+  },
+  "m1": null,
+  "m2": null,
+  "m3": null,
+  "m_note": "scaling direction row uses the two-eps pair per variant",
+  "QS0_error_amplitude": null,
+  "QS0_error_phase": null,
+  "QS1_error_amplitude": null,
+  "QS1_error_phase": null,
+  "wall_boundary_sensitivity": null,
+  "operator_sensitivity_D_G": {
+   "v1_acoustic_corr_off@10000": 0.0,
+   "v1_acoustic_corr_off@20000": 0.0,
+   "v2_filter_off@10000": 7.187385644424893e-05,
+   "v2_filter_off@20000": 3.235247350763526e-05,
+   "v3_filter_half@10000": 3.515006160148548e-05,
+   "v3_filter_half@20000": 1.6016714094790885e-05
+  },
+  "operator_sensitivity_H2": {
+   "v1_acoustic_corr_off@10000": 0.0,
+   "v1_acoustic_corr_off@20000": 0.0,
+   "v2_filter_off@10000": 0.0003523694333807739,
+   "v2_filter_off@20000": 1.3792366937760009e-05,
+   "v3_filter_half@10000": 0.00017783315720966766,
+   "v3_filter_half@20000": 8.844560394422746e-06
+  },
+  "operator_sensitivity_H3": null,
+  "operator_note": "per-variant own-baseline normalization (contract \u00a77.3 fixture item 3); baseline linear shifts archived",
+  "baseline_linear_shifts": {
+   "v0_frozen": {
+    "10000": {
+     "re": 1.0,
+     "im": 0.0,
+     "abs": 1.0,
+     "phase_deg": 0.0
+    },
+    "20000": {
+     "re": 1.0,
+     "im": 0.0,
+     "abs": 1.0,
+     "phase_deg": 0.0
+    }
+   },
+   "v1_acoustic_corr_off": {
+    "10000": {
+     "re": 1.0,
+     "im": 0.0,
+     "abs": 1.0,
+     "phase_deg": 0.0
+    },
+    "20000": {
+     "re": 1.0,
+     "im": 0.0,
+     "abs": 1.0,
+     "phase_deg": 0.0
+    }
+   },
+   "v2_filter_off": {
+    "10000": {
+     "re": 0.9922734331791974,
+     "im": 0.001555469241678577,
+     "abs": 0.9922746523406677,
+     "phase_deg": 0.08981571684848057
+    },
+    "20000": {
+     "re": 0.9922731856277647,
+     "im": -0.0022938371526236728,
+     "abs": 0.9922758369550047,
+     "phase_deg": -0.1324503730690465
+    }
+   },
+   "v3_filter_half": {
+    "10000": {
+     "re": 0.9961736570014911,
+     "im": 0.0008502767680458708,
+     "abs": 0.9961740198751956,
+     "phase_deg": 0.04890438334110306
+    },
+    "20000": {
+     "re": 0.9962302496210261,
+     "im": -0.0010354295043550473,
+     "abs": 0.9962307877064583,
+     "phase_deg": -0.05955020864239844
+    }
+   },
+   "v4_dispersion_off_diag": {
+    "10000": null,
+    "20000": null
+   }
+  },
+  "boundary_mass_flux_0f_to_3f": null,
+  "energy_residual": null,
+  "mass_or_flux_residual": null,
+  "wall_temperature_error": null,
+  "single_tone_leakage": {
+   "10000": {
+    "q_moment_si": {
+     "odd_2f_rel": 3.282418182760419e-10,
+     "odd_3f_rel": 2.7661407356353047e-09,
+     "even_2f_rel_1f": 5.354643546003467e-05
+    },
+    "p_box_lu": {
+     "odd_2f_rel": 6.262261854890982e-10,
+     "odd_3f_rel": 5.111067061583479e-10,
+     "even_2f_rel_1f": 2.032652600323659e-05
+    },
+    "max_nontarget": 2.7661407356353047e-09,
+    "pair_protocol_effective": {
+     "epsilon": 0.0001,
+     "ramp_periods": 2.0,
+     "settle_periods": 12.0,
+     "periods": 14.0
+    }
+   },
+   "20000": {
+    "q_moment_si": {
+     "odd_2f_rel": 2.4387429686103376e-10,
+     "odd_3f_rel": 2.825888465249118e-09,
+     "even_2f_rel_1f": 5.481700607099362e-05
+    },
+    "p_box_lu": {
+     "odd_2f_rel": 6.215350282713644e-10,
+     "odd_3f_rel": 6.349499913817119e-10,
+     "even_2f_rel_1f": 1.7541070961282762e-05
+    },
+    "max_nontarget": 2.825888465249118e-09,
+    "pair_protocol_effective": {
+     "epsilon": 0.0001,
+     "ramp_periods": 2.0,
+     "settle_periods": 20.0,
+     "periods": 22.0
+    }
+   }
+  }
+ }
+}

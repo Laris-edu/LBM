@@ -164,13 +164,21 @@ def _case_worker(payload: dict[str, Any]) -> tuple[str, dict[str, Any]]:
     return label, run
 
 
-def execute_cases(payloads: list[dict[str, Any]], workers: int, log) -> dict[str, Any]:
-    """Run independent cases via a process pool (or serially if workers<=1)."""
+def execute_cases(payloads: list[dict[str, Any]], workers: int, log,
+                  worker=None) -> dict[str, Any]:
+    """Run independent cases via a process pool (or serially if workers<=1).
 
+    ``worker`` (module-level callable, picklable) defaults to this gate's
+    ``_case_worker``; other gate runners (G2) pass their own — the scheduling
+    layer is shared, the physics payload dispatch is per-gate.
+    """
+
+    if worker is None:
+        worker = _case_worker
     results: dict[str, Any] = {}
     if workers <= 1 or len(payloads) <= 1:
         for p in payloads:
-            label, run = _case_worker(p)
+            label, run = worker(p)
             results[label] = run
         return results
     # cap per-worker BLAS threads before children spawn (tiny-array workloads;
@@ -179,7 +187,7 @@ def execute_cases(payloads: list[dict[str, Any]], workers: int, log) -> dict[str
         os.environ.setdefault(var, "1")
     log("parallel scheduling: %d independent cases on %d workers" % (len(payloads), workers))
     with ProcessPoolExecutor(max_workers=workers) as pool:
-        futures = {pool.submit(_case_worker, p): p["label"] for p in payloads}
+        futures = {pool.submit(worker, p): p["label"] for p in payloads}
         for fut in as_completed(futures):
             label = futures[fut]
             try:

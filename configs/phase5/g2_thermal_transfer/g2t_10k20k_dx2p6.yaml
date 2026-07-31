@@ -1,0 +1,78 @@
+# Phase_5 G2-T 壁温→出射声学模态热生成链门配置（合同 §7.1；runner: scripts/phase5_g2t_thermal_transfer.py）
+# 夹具 = G1-W/G1a 认证的密封单缝 rig + v1.1 生产壁 + 规定壁温协议（逐字 G1a 权威口径）。
+# 传递行携带 G0 α_eff(k) 表（freeze doc §3.3 输出 3）：LBM 对其谱参考、1D（g0_measured 分支）
+# 对连续介质闭式，两残差之比 ≤10%/10°；20 kHz 腿的热特征 k₂=0.1396 在 G0 实测行上（0.48×名义）。
+# 读出 = 免标定密封能量通道（守恒矩，频率无关）；矩通道只作双通道诊断（§23 常数不重拟合）。
+case:
+  name: phase5_g2t_thermal_transfer_10k20k_dx2p6
+  phase: Phase_5
+  gate: G2-T
+
+inheritance:
+  gas_config_path: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+  phase5_contract: docs/Phase_5/Phase5_instruct_v1.2.md
+  g1w_certified_run: results/phase5/g1w_wall_neutrality/20260727T083342Z
+  g1a_certified_run: results/phase5/g1a_wall_amplitude/20260728T085824Z
+  g1a_summary: docs/Phase_5/M5_runs/g1a_20260728T085824Z/summary.json   # §7.4 H3 触发评估输入
+
+g2t:                              # 权威协议（预注册；不得按结果逐点调整）
+  frequencies_Hz: [1.0e4, 2.0e4]  # 10/20 kHz 强制；30 kHz 条件项由 §7.4 触发评估行处理
+  ny: 48
+  nx: 8
+  periods: 3.0                    # settle 1 + fit 2（G1a 权威口径逐字）
+  settle_periods: 1.0
+  samples_per_period: 64
+  ramp_periods: 1.0
+  epsilons: [0.001, 0.01]         # 传递函数在 0.001；0.01 作线性度支撑行
+  n_harmonics: 5                  # §12.1 联合拟合（detrend 0 预注册）
+  control_rows: [6, 10, 14, 18]   # 出射模态读出控制行（δ(10k)≈10.2 行、δ(20k)≈7.2 行；
+                                  # 避开壁重构行 0–2 与中高对称零点 24；奇折叠读出）
+  refinement:
+    ny_refined: 96                # 域细化轴：k_box 减半、谱参考按 n=96 同表重建
+  nsf1d:                          # 1D-lbm-equivalent 腿（G3 认证仪器；密封绝热半高几何）
+    n_cells: 128                  # dy≈0.49 µm = δ(10k)/54、δ(20k)/38
+    n_cells_refined: 256          # N 倍增差进 U_gov
+    cycles: 7.0
+    settle_cycles: 3.0            # 密封小箱最慢模 τ≈0.7 周期(10k)；settle 3 足够
+    samples_per_cycle: 64
+  alpha_extension_ny: [24, 16, 12, 8, 6]   # 谱参考高 k 行（G1-W 同仪器，确定性复现）
+  highk_policy_primary: hold_last
+  window_sensitivity_cycles: [2.0, 1.5]
+
+g2t_smoke:                        # 机器链路 smoke（诊断频率、小 rig；非权威）
+  frequencies_Hz: [2.0e5, 4.0e5]
+  ny: 16
+  nx: 4
+  periods: 2.0
+  settle_periods: 1.0
+  samples_per_period: 64
+  ramp_periods: 0.5
+  epsilons: [0.01]
+  n_harmonics: 5
+  control_rows: [3, 5]
+  refinement:
+    ny_refined: 32
+  nsf1d:
+    n_cells: 48
+    n_cells_refined: 96
+    cycles: 4.0
+    settle_cycles: 2.0
+    samples_per_cycle: 64
+  alpha_extension_ny: [8, 6]
+  highk_policy_primary: hold_last
+  window_sensitivity_cycles: [1.0, 0.75]
+
+gates:                            # 合同 §7.1 阈值（冻结）
+  transfer_amp_rel: 0.10          # LBM 与 1D 对应传递函数差异（携带 α_eff(k) 表）
+  transfer_phase_deg: 10.0
+  outgoing_amp_rel: 0.10          # 出射模态读出行（控制行逐行 vs 表携带连续性预测）
+  outgoing_phase_deg: 10.0
+  window_amp_rel: 0.03            # 合同 §7.1 窗口敏感性 ≤3%/3°
+  window_phase_deg: 3.0
+  fit_leakage_rel: 1.0e-8
+  mass_window_rel: 1.0e-8         # 仪器纪律行（G1-W/G1a 口径沿用）
+  mass_cumulative_rel: 1.0e-6
+  wall_temperature_error_K: 0.01
+
+output:
+  results_root: results/phase5/g2_thermal_transfer

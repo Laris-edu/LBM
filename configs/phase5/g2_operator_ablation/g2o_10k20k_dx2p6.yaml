@@ -1,0 +1,91 @@
+# Phase_5 G2-O 谱修正与高波数滤波谐波消融门配置（合同 §7.3；runner: scripts/phase5_g2o_operator_ablation.py）
+# 消融对象 = 壁面 callback 之后的两族全局算子：声学相位修正（对角+高模 FFT）与保守双调和高波数滤波。
+# 全部消融仅用于仪器识别（§0.4）；生产结果永远使用冻结栈；诊断设置不回写。
+# 每个变体用其自身小幅值 1f 基线归一化（§7.3 夹具第 3 条——算子开关改变线性有效介质,
+# 不得误判为非线性变化;基线线性偏移单独归档）。
+case:
+  name: phase5_g2o_operator_ablation_10k20k_dx2p6
+  phase: Phase_5
+  gate: G2-O
+
+inheritance:
+  gas_config_path: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+  phase5_contract: docs/Phase_5/Phase5_instruct_v1.2.md
+  g1w_certified_run: results/phase5/g1w_wall_neutrality/20260727T083342Z
+  g1a_certified_run: results/phase5/g1a_wall_amplitude/20260728T085824Z
+
+g2o:                              # 权威协议（预注册；不得按结果逐点调整）
+  frequencies_Hz: [1.0e4, 2.0e4]  # 10/20 kHz 强制（L2-2f 需 20 kHz 消融）
+  ny: 48
+  nx: 8
+  periods: 3.0                    # G1a 权威口径逐字（settle 1 + fit 2）
+  settle_periods: 1.0
+  samples_per_period: 64
+  ramp_periods: 1.0
+  epsilon_baseline: 0.001         # 变体自身 1f 基线（归一化点）
+  epsilon_production: 0.05        # 生产点（D_G / H2 敏感性测点）
+  n_harmonics: 5
+  pair:                           # 单音夹具 = G1-W 认证符号对协议（S1 行,冻结栈）
+    epsilon: 1.0e-4               # settle 纪律:按箱弛豫时间 ≥~11τ_box 迁移,非按周期数——
+    ramp_periods: 2.0             # τ_box 实测 1.1 周期@10k / 1.47 周期@20k(诊断 run
+    settle_periods: 12.0          # 20260730T103844Z 双窗衰减比 0.507=纯瞬态判别);
+    periods: 14.0                 # 10 kHz 逐字保持(12=10.9τ),20 kHz 覆盖(20=13.6τ)
+    overrides:
+      - frequency_Hz: 2.0e4
+        settle_periods: 20.0
+        periods: 22.0
+  variants:                       # 预注册消融变体（内存变异,冻结配置文件不动）
+    - id: v0_frozen
+      mutations: {}
+    - id: v1_acoustic_corr_off    # 结构性恒等（权威 run 前机制测试实测:对角支在 48×8 上
+      identity_expected: true     # 0 个合格模[需 kx,ky 同非零且 laplacian<0.01926,最小对角
+      mutations:                  # 0.63]、高模支因子=1.0 早退）→ S6 字节级恒等断言,可证伪;
+        collision.acoustic_phase_correction_enabled: false  # 恒等算子不可能生成/压制谐波
+    - id: v2_filter_off
+      mutations:
+        numerics.high_wavenumber_filter.enabled: false
+    - id: v3_filter_half
+      mutations:
+        numerics.high_wavenumber_filter.strength: 0.00325
+    - id: v4_dispersion_off_diag  # 诊断附加列（缝注入归因完备性;碰撞内算子=G0 标定输运
+      diagnostic_only: true       # 闭合的一部分,施加于壁 callback 之前,非 §7.3 壁后算子,
+      mutations:                  # 不参与判门——但它是本 rig 上唯一活跃的全局 FFT 谱算子
+        collision.dispersion_correction_enabled: false      # (P4-1 缝注入嫌疑族),双频归档
+
+g2o_smoke:                        # 机器链路 smoke（诊断频率、小 rig；非权威）
+  frequencies_Hz: [2.0e5]
+  ny: 16
+  nx: 4
+  periods: 2.0
+  settle_periods: 1.0
+  samples_per_period: 64
+  ramp_periods: 0.5
+  epsilon_baseline: 0.01
+  epsilon_production: 0.05
+  n_harmonics: 5
+  pair:
+    epsilon: 0.01
+    ramp_periods: 0.5
+    settle_periods: 1.0
+    periods: 2.0
+  variants:
+    - id: v0_frozen
+      mutations: {}
+    - id: v1_acoustic_corr_off    # smoke rig 16×4 同样 0 合格对角模 → S6 恒等断言生效
+      identity_expected: true
+      mutations:
+        collision.acoustic_phase_correction_enabled: false
+    - id: v2_filter_off
+      mutations:
+        numerics.high_wavenumber_filter.enabled: false
+
+gates:                            # 合同 §7.3 阈值（冻结）
+  single_tone_leakage_rel: 1.0e-8 # 算子单音泄漏（奇组合非目标 2f/3f 相对 1f）
+  dg_sensitivity_pp: 0.01         # |ΔD_G| ≤ max[1pp, U_gov(D_G)]
+  h2_sensitivity_fraction: 0.1    # |ΔH2| ≤ max[0.1·H2_ref, U_gov(H2)] + 标度方向不变
+  attribution_phase_deg: 90.0     # 可归因性：复 2f 相位漂移 ≤90°
+  attribution_mag_lo: 0.5         # 可归因性：H2 幅值比 ∈ [0.5, 2]
+  attribution_mag_hi: 2.0
+
+output:
+  results_root: results/phase5/g2_operator_ablation

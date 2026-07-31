@@ -1,0 +1,266 @@
+{
+ "gate_id": "G2-O",
+ "verdict": "FAILED",
+ "labels": [
+  "HARMONIC_OPERATOR_ABLATION_FAILED"
+ ],
+ "rows": {
+  "single_tone_leakage": {
+   "by_freq": {
+    "10000": {
+     "q_moment_si": {
+      "odd_2f_rel": 3.282418182760419e-10,
+      "odd_3f_rel": 2.7661407356353047e-09,
+      "even_2f_rel_1f": 5.354643546003467e-05
+     },
+     "p_box_lu": {
+      "odd_2f_rel": 6.262261854890982e-10,
+      "odd_3f_rel": 5.111067061583479e-10,
+      "even_2f_rel_1f": 2.032652600323659e-05
+     },
+     "max_nontarget": 2.7661407356353047e-09
+    },
+    "20000": {
+     "q_moment_si": {
+      "odd_2f_rel": 3.535916224904104e-08,
+      "odd_3f_rel": 2.5762775596918962e-08,
+      "even_2f_rel_1f": 5.481787921537711e-05
+     },
+     "p_box_lu": {
+      "odd_2f_rel": 1.51808747995547e-07,
+      "odd_3f_rel": 1.0137851751707603e-07,
+      "even_2f_rel_1f": 1.7540262055138448e-05
+     },
+     "max_nontarget": 1.51808747995547e-07
+    }
+   },
+   "value_max": 1.51808747995547e-07,
+   "gate": 1e-08,
+   "instrument": "G1-W signed-pair protocol verbatim (odd combination; ring-down carriers pre-registered non-viable: decaying-tone bin leakage ~gamma/omega >> 1e-8)",
+   "passed": false
+  },
+  "dg_operator_sensitivity": {
+   "rows": {
+    "v1_acoustic_corr_off@10000": {
+     "stable": true,
+     "delta_D_G": 0.0,
+     "gate": 0.01,
+     "D_G_variant": -0.00021299274508546073,
+     "D_G_frozen": -0.00021299274508546073,
+     "passed": true
+    },
+    "v1_acoustic_corr_off@20000": {
+     "stable": true,
+     "delta_D_G": 0.0,
+     "gate": 0.01,
+     "D_G_variant": -0.0001472462959564158,
+     "D_G_frozen": -0.0001472462959564158,
+     "passed": true
+    },
+    "v2_filter_off@10000": {
+     "stable": true,
+     "delta_D_G": 7.187385644424893e-05,
+     "gate": 0.01,
+     "D_G_variant": -0.00028486660152970966,
+     "D_G_frozen": -0.00021299274508546073,
+     "passed": true
+    },
+    "v2_filter_off@20000": {
+     "stable": true,
+     "delta_D_G": 3.235247350763526e-05,
+     "gate": 0.01,
+     "D_G_variant": -0.00017959876946405107,
+     "D_G_frozen": -0.0001472462959564158,
+     "passed": true
+    },
+    "v3_filter_half@10000": {
+     "stable": true,
+     "delta_D_G": 3.515006160148548e-05,
+     "gate": 0.01,
+     "D_G_variant": -0.0002481428066869462,
+     "D_G_frozen": -0.00021299274508546073,
+     "passed": true
+    },
+    "v3_filter_half@20000": {
+     "stable": true,
+     "delta_D_G": 1.6016714094790885e-05,
+     "gate": 0.01,
+     "D_G_variant": -0.0001632630100512067,
+     "D_G_frozen": -0.0001472462959564158,
+     "passed": true
+    }
+   },
+   "passed": true
+  },
+  "h2_operator_sensitivity": {
+   "rows": {
+    "v1_acoustic_corr_off@10000": {
+     "stable": true,
+     "delta_H2q": 0.0,
+     "gate": 0.002634665244577755,
+     "H2q_variant": 0.026346652445777552,
+     "H2q_frozen": 0.026346652445777552,
+     "scaling_direction_preserved": true,
+     "passed": true
+    },
+    "v1_acoustic_corr_off@20000": {
+     "stable": true,
+     "delta_H2q": 0.0,
+     "gate": 0.0027554165762056363,
+     "H2q_variant": 0.02755416576205636,
+     "H2q_frozen": 0.02755416576205636,
+     "scaling_direction_preserved": true,
+     "passed": true
+    },
+    "v2_filter_off@10000": {
+     "stable": true,
+     "delta_H2q": 0.0003523694333807739,
+     "gate": 0.002634665244577755,
+     "H2q_variant": 0.026699021879158326,
+     "H2q_frozen": 0.026346652445777552,
+     "scaling_direction_preserved": true,
+     "passed": true
+    },
+    "v2_filter_off@20000": {
+     "stable": true,
+     "delta_H2q": 1.3792366937760009e-05,
+     "gate": 0.0027554165762056363,
+     "H2q_variant": 0.02756795812899412,
+     "H2q_frozen": 0.02755416576205636,
+     "scaling_direction_preserved": true,
+     "passed": true
+    },
+    "v3_filter_half@10000": {
+     "stable": true,
+     "delta_H2q": 0.00017783315720966766,
+     "gate": 0.002634665244577755,
+     "H2q_variant": 0.02652448560298722,
+     "H2q_frozen": 0.026346652445777552,
+     "scaling_direction_preserved": true,
+     "passed": true
+    },
+    "v3_filter_half@20000": {
+     "stable": true,
+     "delta_H2q": 8.844560394422746e-06,
+     "gate": 0.0027554165762056363,
+     "H2q_variant": 0.027563010322450784,
+     "H2q_frozen": 0.02755416576205636,
+     "scaling_direction_preserved": true,
+     "passed": true
+    }
+   },
+   "passed": true
+  },
+  "h3_operator_sensitivity": {
+   "required": false,
+   "note": "H3 untriggered (G2-T \u00a77.4 evaluation; H3_DIAGNOSTIC_ONLY) \u2014 H3q archived per variant, no gate",
+   "H3q_by_variant": {
+    "v0_frozen": {
+     "10000": 0.0008620714186550063,
+     "20000": 0.000560809028219584
+    },
+    "v1_acoustic_corr_off": {
+     "10000": 0.0008620714186550063,
+     "20000": 0.000560809028219584
+    },
+    "v2_filter_off": {
+     "10000": 0.000820987298836439,
+     "20000": 0.0005671341784230159
+    },
+    "v3_filter_half": {
+     "10000": 0.0008409911872934535,
+     "20000": 0.0005632966715758146
+    },
+    "v4_dispersion_off_diag": {
+     "10000": null,
+     "20000": null
+    }
+   },
+   "passed": true
+  },
+  "stability": {
+   "stable_nonproduction_variants": [
+    "v1_acoustic_corr_off",
+    "v2_filter_off",
+    "v3_filter_half"
+   ],
+   "passed": true
+  },
+  "attributability": {
+   "rows": {
+    "v1_acoustic_corr_off@10000": {
+     "stable": true,
+     "c2_phase_shift_deg": 0.0,
+     "H2_magnitude_ratio": 1.0,
+     "D_G_sign_preserved": true,
+     "passed": true
+    },
+    "v1_acoustic_corr_off@20000": {
+     "stable": true,
+     "c2_phase_shift_deg": 0.0,
+     "H2_magnitude_ratio": 1.0,
+     "D_G_sign_preserved": true,
+     "passed": true
+    },
+    "v2_filter_off@10000": {
+     "stable": true,
+     "c2_phase_shift_deg": 0.9076415711583243,
+     "H2_magnitude_ratio": 1.0133743531215575,
+     "D_G_sign_preserved": true,
+     "passed": true
+    },
+    "v2_filter_off@20000": {
+     "stable": true,
+     "c2_phase_shift_deg": 0.5487432494377116,
+     "H2_magnitude_ratio": 1.0005005546913255,
+     "D_G_sign_preserved": true,
+     "passed": true
+    },
+    "v3_filter_half@10000": {
+     "stable": true,
+     "c2_phase_shift_deg": 0.4419944806465977,
+     "H2_magnitude_ratio": 1.006749743921952,
+     "D_G_sign_preserved": true,
+     "passed": true
+    },
+    "v3_filter_half@20000": {
+     "stable": true,
+     "c2_phase_shift_deg": 0.2607614387964199,
+     "H2_magnitude_ratio": 1.0003209881391728,
+     "D_G_sign_preserved": true,
+     "passed": true
+    }
+   },
+   "passed": true
+  },
+  "spectral_identity": {
+   "rows": {
+    "v1_acoustic_corr_off@f10000_eps0.001": {
+     "max_abs_series_diff": 0.0,
+     "passed": true
+    },
+    "v1_acoustic_corr_off@f10000_eps0.05": {
+     "max_abs_series_diff": 0.0,
+     "passed": true
+    },
+    "v1_acoustic_corr_off@f20000_eps0.001": {
+     "max_abs_series_diff": 0.0,
+     "passed": true
+    },
+    "v1_acoustic_corr_off@f20000_eps0.05": {
+     "max_abs_series_diff": 0.0,
+     "passed": true
+    }
+   },
+   "claim": "acoustic phase correction family is identity on this rig geometry+config (0 qualifying diagonal modes at the frozen low_laplacian; high-mode factors exactly 1.0) \u2014 an identity operator can neither generate nor suppress harmonics, making the \u00a77.3 conclusion EXACT for this family; row falsifies on any nonzero series difference",
+   "applicable": true,
+   "passed": true
+  },
+  "numerical_repair": {
+   "no_clipping": true,
+   "no_floor": true,
+   "no_positivity_repair": true,
+   "passed": true
+  }
+ }
+}
