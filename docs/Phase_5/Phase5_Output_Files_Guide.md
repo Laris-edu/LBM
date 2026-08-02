@@ -44,6 +44,7 @@ docs/Phase_5/Phase5_instruct_v1.2.md          # 权威合同（Gate/矩阵/数�
 | 路线 A/B 决策备忘 | `docs/Phase_5/route_ab_decision_memo.md` | **已交付（2026-07-22，WP1-5）**；`ROUTE_A_COST_REVIEW_REQUIRED` 成立，用户决策未决 |
 | G2 谐波传递链（G2-T/G2-A） | `scripts/phase5_g2t_thermal_transfer.py` + `scripts/phase5_g2a_acoustic_transfer.py` | **已交付 + 权威认证（2026-07-30）**：G2-T `PASSED`（`20260730T095502Z`,摘要 `M5_runs/g2t_20260730T095502Z/`）;G2-A `PASSED`（fixture v2 `20260730T104402Z`,摘要 `M5_runs/g2a_20260730T104402Z/`;v1 诊断 run 归档 `M5_runs/g2a_diagnostic_20260730T095503Z/`）;报告 `harmonic_transfer_report.md` |
 | G2-O 算子消融 | `scripts/phase5_g2o_operator_ablation.py` | **已交付（2026-07-30）**：首次权威 `20260730T103844Z`=S1 20 kHz settle 纪律诊断 run（双窗判别瞬态）;重跑(settle 20/22)见 STATUS §3;报告 `harmonic_operator_ablation_report.md` |
+| G4a DC 基态门(帐篷架构) | `scripts/phase5_g4a_dc_basestate.py` + `boundary` v1.1 带泛化 | **已交付 + 权威认证 `PASSED`（2026-08-01）**：主 run `20260801T081856Z`(摘要 `M5_runs/g4a_20260801T081856Z/`)+ 耦合行重跑 `20260801T155507Z`(摘要 `M5_runs/g4a_coupled_20260801T155507Z/`);QS 判读=动力学非线性残差(核心发现);报告 `dc_protocol_report.md`;测试 6 绿 |
 | Gate 测试 `test_phase5_*.py` | `verification/nonlinear/` | 已创建：`test_phase5_g0_effective_properties.py`（G0）、`test_phase5_g3_nsf1d.py`（G3）、`test_phase5_g1w_wall_neutrality.py`（G1-W）、`test_phase5_g1_amplitude_envelope.py`（G1a，G1b 落地时扩展）、`test_phase5_g2_harmonic_transfer.py`（G2-T/A，12 项）、`test_phase5_g2_operator_ablation.py`（G2-O，7 项） |
 
 - `scripts/` 保持扁平命名空间（`CLAUDE.md` 约定），Phase_5 脚本用 `phase5_` 前缀分类，不建子目录。

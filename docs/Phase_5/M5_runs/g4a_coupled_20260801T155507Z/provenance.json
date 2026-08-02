@@ -1,0 +1,14 @@
+{
+ "run_id": "20260801T155507Z",
+ "scope": "coupled_row_rerun",
+ "prior_run": "results\\phase5\\g4a_dc_base\\20260801T081856Z",
+ "argv": [
+  "E:\\Code\\LBM\\scripts\\phase5_g4a_dc_basestate.py",
+  "--coupled-rerun-from",
+  "results/phase5/g4a_dc_base/20260801T081856Z"
+ ],
+ "machine": "LARIS-JIXIE",
+ "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+ "started_utc": "2026-08-01T13:36:56.469221+00:00",
+ "finished_utc": "2026-08-01T15:55:07.694296+00:00"
+}

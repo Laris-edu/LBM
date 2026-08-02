@@ -1,0 +1,70 @@
+# G4a 稳态 DC 基态 + 小扰动 — 权威配置(合同 §9.1;设计预注册 dc_protocol_report.md §A)
+# 架构 = 帐篷双带 rig(§A.0,探针认证 2026-07-30):y 周期 2H_s、row 0 热带(膜面 v1.1 壁)
+# + row H_s 环境沉带(v1.1 band,canonical T(H_s)=T_ambient 的直接实现);场连续无缝跳变。
+# 状态匹配(D0-13)=逐档规定同一 θ̄_w ⇒ Θ_DC 按构造精确一致;P_mean=2q̄(带簿记)逐档归档。
+# 读出=带能量簿记(逐步精确,免输运标定);全部判门量为比值(单位桥相消);
+# 绝对 SI 桥=解析 |Y_hs|(G1-W 同哲学)仅用于 χ 归档行。
+
+inheritance:
+  gas_config: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml   # 冻结 dx2p6(M3 继承,不换 dx/tau)
+  g0_freeze_doc: docs/Phase_5/nonlinear_model_freeze.md
+  design_prereg: docs/Phase_5/dc_protocol_report.md
+
+g4a:                              # 权威协议(预注册;不得按结果逐点调整)
+  frequency_Hz: 1.0e4             # M3 继承单频
+  nx: 8
+  samples_per_period: 64
+  theta_dc: 0.05                  # canonical Θ_DC(WP1-5 A2a-lite 先例)
+  eps_ac: [0.005, 0.02]           # 合同 §9.1 冻结
+  canonical_rung: "100"
+  hs_rungs:                       # 状态匹配 H_s 阶梯(D0-13;每档同 θ̄_w)
+    - {name: "100", hs_rows: 48, settle_periods: 5.0}    # canonical=继承认证高度 4.61δ
+    - {name: "150", hs_rows: 72, settle_periods: 9.0}    # 1.5H_s(τ_dom∝H_s²)
+    - {name: "200", hs_rows: 96, settle_periods: 15.0}   # 2H_s
+  uniform_init_settle_periods: 12.0   # 初态分支:均匀初态全弛豫(≥11τ_dom@canonical)
+  drive_periods: 4.0
+  fit_skip_periods: 2.0
+  fixed_p_branch: true            # 热沉物理敏感性分支(不判门,分表)
+  coupled_branch: true            # 耦合薄膜 ODE 行(G1b 顺延;单独判读不阻断)
+  coupled_chi0: 0.016             # §1.3 基线膜(C_A=7e-4 J/m²K @10 kHz);C_A_lu 由解析关系导出
+  coupled_p1_over_pmean: 1.0      # P̄≥P₁ 边界点(合同 §3.3 非负功率)
+  qs_alpha_temperature_exponent: 1.04   # G0 k1 实测温度律 k_eff∝T^1.04(freeze doc §3.3)
+  y_hs_si_w_m2k: 1393.4           # 解析 |Y_hs|(10 kHz、300 K 空气)=k√(ω/α);§1.3 基线 1.40e3
+  chi_c_areal_si: 7.0e-4          # χ 归档行的基线 C_A(§1.3)
+
+g4a_smoke:                        # 机器链 smoke(小域;非权威)
+  frequency_Hz: 1.0e4
+  nx: 4
+  samples_per_period: 32
+  theta_dc: 0.05
+  eps_ac: [0.005, 0.02]
+  canonical_rung: "100"
+  hs_rungs:                       # settle ≥ 窗口起点+1τ_dom(稳态窗=最后 1 周期;
+    - {name: "100", hs_rows: 12, settle_periods: 2.0}   # settle=1.0 时窗含种子态,smoke 实测教训)
+    - {name: "150", hs_rows: 18, settle_periods: 2.0}
+  uniform_init_settle_periods: 2.0
+  drive_periods: 2.0
+  fit_skip_periods: 1.0
+  fixed_p_branch: true
+  coupled_branch: true
+  coupled_chi0: 0.016
+  coupled_p1_over_pmean: 1.0
+  qs_alpha_temperature_exponent: 1.04
+  y_hs_si_w_m2k: 1393.4
+  chi_c_areal_si: 7.0e-4
+
+gates:                            # §9.1 阈值(冻结)
+  stationarity_per_period: 1.0e-3     # <0.1%/周期
+  dc_closure_rel: 5.0e-3              # ≤0.5%
+  column_duplicate_rel: 1.0e-6        # 帐篷内建重复对照(探针 6.4e-14;宽松 6 个量级)
+  state_match_rel: 1.0e-2             # Θ_DC 偏差 ≤1%(规定 θ̄_w ⇒ 按构造近精确)
+  domain_amp_rel: 2.0e-2              # 状态匹配域高敏感性 ≤2%
+  domain_phase_deg: 2.0               # ≤2°
+  init_branch_rel: 1.0e-4             # 初态分支剖面一致(同一基态分支)
+  window_amp_rel: 1.0e-2              # 窗口敏感性 ≤1%
+  window_phase_deg: 1.0               # ≤1°
+  regression_amp_rel: 8.0e-2          # 冷背景绝对回归 vs 帐篷谱参考(含单位桥+离散项;
+  regression_phase_deg: 5.0           #  G1-W 残差族 ~4% + 离散恒等 ~2% 预算)
+  coupled_amp_rel: 1.0e-1             # 耦合行 T̂_s vs ODE 闭式(用实测 Y_inc)一致性
+  coupled_phase_deg: 10.0
+  u_gov_dop_floor: 5.0e-3             # QS 判定容差下限(与 0.1|D_OP−1| 取大)

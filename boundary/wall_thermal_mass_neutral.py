@@ -166,6 +166,7 @@ def _mass_neutral_reconstruct_row0_symmetric(
     theta_w: float,
     *,
     extrap: str,
+    row: int = 0,
 ) -> tuple[np.ndarray, np.ndarray]:
     """v1.1 symmetric two-sided mass-neutral reconstruction of row 0.
 
@@ -181,6 +182,11 @@ def _mass_neutral_reconstruct_row0_symmetric(
     ``feq(rho_w+drho, dj/(rho_w+drho), theta_w) - feq(rho_w, 0, theta_w)``
     (smoothest possible removal — no ghost content, the min-norm lesson).
     Mass neutrality, u=0 and theta=theta_w remain machine-exact.
+
+    ``row`` generalizes the band position on the periodic lattice (G4a tent
+    rig: hot band at row 0, ambient sink band at row ny//2). Neighbours are
+    taken modulo ny (up = row+1, down = row-1); ``row=0`` reproduces the
+    original v1.1 wall byte-identically (row-1 == ny-1 by the wrap).
     """
 
     lattice = solver.lattice
@@ -197,8 +203,10 @@ def _mass_neutral_reconstruct_row0_symmetric(
     if solver.ny < 5:
         raise ValueError("symmetric two-sided wall needs ny >= 5")
 
+    ny = int(solver.ny)
+    row = int(row) % ny
     nx = f_stream.shape[1]
-    rho_w = np.sum(f_stream[0:1], axis=-1)  # (1, nx) kept -> mass neutral
+    rho_w = np.sum(f_stream[row:row + 1], axis=-1)  # (1, nx) kept -> mass neutral
     if not np.all(rho_w > 0.0):
         raise RuntimeError("non-positive streamed wall-row density")
     theta_row = np.full((1, nx), float(theta_w))
@@ -210,11 +218,11 @@ def _mass_neutral_reconstruct_row0_symmetric(
         feq_j, geq_j = equilibrium_fg(m.rho, m.u, m.theta, S, lattice)
         return f_stream[j:j + 1] - feq_j, g_stream[j:j + 1] - geq_j
 
-    up_f, up_g = interior_neq(1)
-    dn_f, dn_g = interior_neq(solver.ny - 1)
+    up_f, up_g = interior_neq((row + 1) % ny)
+    dn_f, dn_g = interior_neq((row - 1) % ny)
     if extrap == "linear":
-        up2_f, up2_g = interior_neq(2)
-        dn2_f, dn2_g = interior_neq(solver.ny - 2)
+        up2_f, up2_g = interior_neq((row + 2) % ny)
+        dn2_f, dn2_g = interior_neq((row - 2) % ny)
         up_f, up_g = 2.0 * up_f - up2_f, 2.0 * up_g - up2_g
         dn_f, dn_g = 2.0 * dn_f - dn2_f, 2.0 * dn_g - dn2_g
 
@@ -246,9 +254,36 @@ def _mass_neutral_reconstruct_row0_symmetric(
     delta = (target_int - k_tr - g_partial) / q
     g0 = geq_w + g_neq + delta[..., None]
 
-    f_stream[0:1] = f0
-    g_stream[0:1] = g0
+    f_stream[row:row + 1] = f0
+    g_stream[row:row + 1] = g0
     return f_stream, g_stream
+
+
+def make_symmetric_mass_neutral_band_callback(
+    theta_band_lu: float | Callable[[GasSolver2D], float],
+    row: int,
+    *,
+    extrap: str = "row1",
+):
+    """G4a tent band: the v1.1 symmetric reconstruction at an arbitrary row.
+
+    Same certified construction as ``make_symmetric_mass_neutral_wall_callback``
+    (per-direction neq, equilibrium-increment cleanup, exact energy pinning),
+    placed at ``row`` on the periodic lattice. Used for the tent rig's ambient
+    sink band (row ny//2) and, composed with the row-0 wall, keeps the field
+    free of first-order jumps (the WP1-3 lid-rig death variable).
+    """
+
+    if extrap not in {"linear", "row1"}:
+        raise ValueError(f"unsupported non-equilibrium extrapolation: {extrap}")
+
+    def _callback(*, solver, f_post, g_post, f_stream, g_stream):
+        theta_b = float(theta_band_lu(solver) if callable(theta_band_lu) else theta_band_lu)
+        return _mass_neutral_reconstruct_row0_symmetric(
+            solver, f_stream, g_stream, theta_b, extrap=extrap, row=int(row)
+        )
+
+    return _callback
 
 
 def make_symmetric_mass_neutral_wall_callback(

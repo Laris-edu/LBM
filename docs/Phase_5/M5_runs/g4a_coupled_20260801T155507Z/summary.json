@@ -1,0 +1,46 @@
+{
+ "gate": "G4a",
+ "run_id": "20260801T155507Z",
+ "scope": "coupled_row_rerun",
+ "supersedes_coupled_row_of": "20260801T081856Z",
+ "coupled_row": {
+  "status": "stable",
+  "Ts_hat_measured": {
+   "re": 0.000224693315576856,
+   "im": -0.0004040259295077554,
+   "abs": 0.0004623029718480364,
+   "phase_deg": -60.91999406330976
+  },
+  "Ts_hat_ode_closed_form": {
+   "re": 0.00020940308183785319,
+   "im": -0.0003932893329465907,
+   "abs": 0.0004455627341831506,
+   "phase_deg": -61.96736474051806
+  },
+  "consistency": {
+   "ratio": {
+    "re": 1.037397647429098,
+    "im": 0.0189658108903685,
+    "abs": 1.0375710004014937,
+    "phase_deg": 1.0473706772083011
+   },
+   "amp_rel_err": 0.03757100040149375,
+   "phase_deg_err": 1.0473706772083011,
+   "amp_gate": 0.1,
+   "phase_gate_deg": 10.0,
+   "passed": true
+  },
+  "chi0": 0.016,
+  "C_A_lu": 1.9136809977375944,
+  "instrument": {
+   "c_row_cv": 19.054439338737826,
+   "G_inst": -2.968590120568704e-07,
+   "raw_gain_would_be": 1.2446196205940607
+  },
+  "passed": true,
+  "accounting": "cv repinning subtraction + semi-implicit G_inst (report A.4; supersedes the prior run's raw-feed coupled row)"
+ },
+ "physics_core_digest": "57cc9d802163",
+ "code_commit": "fc3f047d20f6861d4c3108de5874bfa9274043bd",
+ "wall_clock_min": 138.18613481666668
+}

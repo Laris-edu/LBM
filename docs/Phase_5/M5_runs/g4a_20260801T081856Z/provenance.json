@@ -1,0 +1,13 @@
+{
+ "run_id": "20260801T081856Z",
+ "gate": "G4a",
+ "smoke": false,
+ "argv": [
+  "E:\\Code\\LBM\\scripts\\phase5_g4a_dc_basestate.py"
+ ],
+ "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+ "machine": "LARIS-JIXIE",
+ "workers": 14,
+ "started_utc": "2026-07-31T11:01:59.144024+00:00",
+ "finished_utc": "2026-08-01T08:18:56.810785+00:00"
+}

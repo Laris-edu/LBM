@@ -1,0 +1,108 @@
+{
+ "gate": "G4a",
+ "run_id": "20260801T081856Z",
+ "verdict": "PASSED",
+ "labels": [
+  "DC_BASESTATE_STATE_MATCHED_PASSED",
+  "DYNAMIC_NONLINEAR_RESIDUAL_IDENTIFIED",
+  "LEVELC_COUPLED_ROW_NOT_CERTIFIED"
+ ],
+ "gate_status": "PASSED",
+ "scoped_limitations": [
+  "DC_BASESTATE_STATE_MATCHED_PASSED",
+  "DYNAMIC_NONLINEAR_RESIDUAL_IDENTIFIED",
+  "LEVELC_COUPLED_ROW_NOT_CERTIFIED"
+ ],
+ "smoke_mode": false,
+ "architecture": "tent double-band (dc_protocol_report.md A.0; probe-certified 2026-07-30)",
+ "physics_core_digest": "9d2235c1af30",
+ "code_commit": "fc3f047d20f6861d4c3108de5874bfa9274043bd",
+ "frequency_Hz": 10000.0,
+ "theta_dc_target": 0.05,
+ "eps_ac": [
+  0.005,
+  0.02
+ ],
+ "hs_rungs": {
+  "100": 48,
+  "150": 72,
+  "200": 96
+ },
+ "results": {
+  "state_matching": {
+   "100": {
+    "theta_dc_measured": 0.04999797410466012,
+    "p_mean_lu_per_area": 1.2909861881833287,
+    "rel_dev_vs_target": 4.0517906797599146e-05
+   },
+   "150": {
+    "theta_dc_measured": 0.04999872363520996,
+    "p_mean_lu_per_area": 0.8097093217316252,
+    "rel_dev_vs_target": 2.5527295800742422e-05
+   },
+   "200": {
+    "theta_dc_measured": 0.04999899772726567,
+    "p_mean_lu_per_area": 0.6349287850890085,
+    "rel_dev_vs_target": 2.004545468670127e-05
+   }
+  },
+  "qs_chi": {
+   "status": "ok",
+   "D_OP_measured": {
+    "re": 0.9714612778861066,
+    "im": -0.02342399643761957,
+    "abs": 0.971743638024565,
+    "phase_deg": -1.3812553939366252
+   },
+   "D_OP_QS0_pred": {
+    "re": 1.0240289729346193,
+    "im": 0.000686814993825602,
+    "abs": 1.0240292032575862,
+    "phase_deg": 0.03842820427154507
+   },
+   "D_OP_QS1_pred": {
+    "re": 1.0235022480268976,
+    "im": 0.0016772136409889831,
+    "abs": 1.0235036222513874,
+    "phase_deg": 0.09389053823566448
+   },
+   "qs0_residual": 0.05783332768046579,
+   "qs1_residual": 0.057778311853195756,
+   "qs_validity_tol": 0.005,
+   "chi_0": 0.012929616504063508,
+   "chi_eff": 0.013305583899008412,
+   "Y_cold_si_w_m2k": 1700.835331675707,
+   "Y_wp_si_w_m2k": 1652.7759128832688,
+   "alpha_temperature_exponent": 1.04,
+   "tbar_s_over_t0": 1.0499979741046601,
+   "qs0_valid": false,
+   "qs1_valid": false,
+   "label": "DYNAMIC_NONLINEAR_RESIDUAL_IDENTIFIED"
+  },
+  "coupled": {
+   "status": "unstable",
+   "unstable_at_step": 180
+  },
+  "fixed_P_branch": {
+   "150": {
+    "status": "ok",
+    "theta_dc_at_fixed_P": 0.07913650763383033,
+    "p_rel_err_vs_target": 0.0011151528775452668
+   },
+   "200": {
+    "status": "ok",
+    "theta_dc_at_fixed_P": 0.10080664711074441,
+    "p_rel_err_vs_target": 0.00010351546791920185
+   }
+  },
+  "U_gov": {
+   "parts": {
+    "window": 0.0001297224451448642,
+    "eps_pair": 9.194785147870199e-05,
+    "nx_axis": 1.5789591856218976e-11
+   },
+   "combined": 0.0001590041514109364
+  }
+ },
+ "wall_clock_min": 1276.9610615666668
+}

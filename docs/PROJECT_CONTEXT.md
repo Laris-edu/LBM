@@ -39,16 +39,20 @@ G1-W `PASSED`（**生产壁=v1.1 对称质量中性壁**）、G1a `PASSED`+`G1A_
 其余 Gate NOT_RUN（G5 默认 WAIVED_JASA_SCOPE）。
 A2a+QS-1 是基础论文首要物理锚；基础谐波目标 H2/L2-2f@20 kHz 的 G2 侧条件已闭合；
 脚本只能产出 PASSED/FAILED/SCOPED_CANDIDATE，scoped 升级、路线 A 启动、PRA 升级均属用户决策。
-G1b `FAILED` 闭卷（D5-4；耦合顺延 G4a；WP4 届时走 SCOPED_GO）。
-下一步 = **G4a**（合同 §9.1 canonical 等温热库；关键路径单点——同时承载论文主锚与耦合包络；
-须先解 canonical 几何双边界行缝腔伪影；设计输入清单 Phase5_STATUS §6）。
-多 run gate 沿用进程池并行（execute_cases，D5-3 跨机口径；settle 按箱弛豫时间迁移）。
-回答和文档均使用中文。
+G1b `FAILED` 闭卷（D5-4；其顺延的耦合包络已由 G4a 正面闭合）。
+**G4a `PASSED`（2026-08-01,WP2 入口 Gate 序列就此全部完成）**：帐篷双带架构
+（canonical 沉几何的双 v1.1 认证带实现）、状态匹配域高收敛 0.9975@−0.45°、
+**QS 判读=动力学非线性残差实锤（D_OP −2.83% vs 静态族 +2.4%,符号相反）**、
+耦合行重跑 1.0376@+1.05°（χ_0=0.016 基线膜）;报告 dc_protocol_report.md。
+下一步 = **WP3 首轮 8 信息单元 Go/No-Go（合同 §14,≈20–40 run;启动属用户决策）**
+——A2a 矩阵应围绕动力学非线性残差的标度/来源设计;WP4 届时走 SCOPED_GO。
+多 run gate 沿用进程池并行（execute_cases，D5-3 跨机口径；settle 按箱弛豫时间迁移;
+非依赖后续相并入主池）。回答和文档均使用中文。
 ```
 
 ## 2. 当前阶段与状态
 
-**当前阶段（2026-07-30）：Phase_5 WP2 已闭合 G0-B（scoped by user）、G3、G1-W（生产壁认证）、G1a（包络至 0.075）、G2-T/G2-A/G2-O（三门双频 PASSED，2026-07-30——`HARMONIC_CLAIM_LEVEL_L2_2F` 生效、H3 未触发豁免）；G1b `FAILED` 终判（D5-4 回退条款执行，耦合包络顺延 G4a 有沉几何）；当前次门 **G4a**（关键路径单点）。Phase_4/Phase_3 维护态。** 权威合同 `docs/Phase_5/Phase5_instruct_v1.2.md`（v1.2，评审基线=master `b86459c`，与冻结时 HEAD 一致）；状态标签与 Gate 现值唯一追踪处 `docs/Phase_5/Phase5_STATUS.md`。主路线=**路线 B 已确认**（2026-07-22 用户批准 `ROUTE_B_MAIN + 1D_REAL_AIR_BOUNDING`，`route_ab_decision_memo.md`；升级条件预注册）；基础投稿目标 JASA/JSV、PRA 条件升级；A2a+QS-1 为基础论文首要物理锚（D0-5）；基础谐波目标 H2/L2-2f@20 kHz（H3/30 kHz 条件项）。全部 Phase_5 Gate `NOT_RUN`（G5 默认 `WAIVED_JASA_SCOPE`）、`FINAL_PRODUCTION_NOT_CLAIMED`。执行顺序：WP1 独立仪器 → WP2 入口 Gate（G0→G3→G1-W→G1a→G1b→G2-T/A/O 10/20 kHz→G4a→条件项）→ WP3 首轮 8 信息单元 Go/No-Go → WP4 完整矩阵。维护基线：Phase_4（M4 digest `d69bf24d881e`、全量 158 绿）+ Phase_3（39 绿）；任何 core/config 变更须全量重验并评估合同 §23 定向复验矩阵。
+**当前阶段（2026-08-01）：Phase_5 WP2 入口 Gate 序列全部完成**——G0-B（scoped）、G3、G1-W、G1a、G2-T/A/O（L2-2F 生效）、**G4a `PASSED`（2026-08-01,关键路径单点闭卷:帐篷双带 canonical 沉几何认证、`DC_BASESTATE_STATE_MATCHED_PASSED`、QS 判读=`DYNAMIC_NONLINEAR_RESIDUAL_IDENTIFIED`[静态重求值族符号级失效=核心科学发现]、耦合行重跑 PASSED[G1b 顺延的耦合包络闭合]）**；G1b `FAILED` 闭卷。**下一步=WP3 首轮 8 信息单元 Go/No-Go（合同 §14,启动属用户决策）**。Phase_4/Phase_3 维护态。 权威合同 `docs/Phase_5/Phase5_instruct_v1.2.md`（v1.2，评审基线=master `b86459c`，与冻结时 HEAD 一致）；状态标签与 Gate 现值唯一追踪处 `docs/Phase_5/Phase5_STATUS.md`。主路线=**路线 B 已确认**（2026-07-22 用户批准 `ROUTE_B_MAIN + 1D_REAL_AIR_BOUNDING`，`route_ab_decision_memo.md`；升级条件预注册）；基础投稿目标 JASA/JSV、PRA 条件升级；A2a+QS-1 为基础论文首要物理锚（D0-5）；基础谐波目标 H2/L2-2f@20 kHz（H3/30 kHz 条件项）。全部 Phase_5 Gate `NOT_RUN`（G5 默认 `WAIVED_JASA_SCOPE`）、`FINAL_PRODUCTION_NOT_CLAIMED`。执行顺序：WP1 独立仪器 → WP2 入口 Gate（G0→G3→G1-W→G1a→G1b→G2-T/A/O 10/20 kHz→G4a→条件项）→ WP3 首轮 8 信息单元 Go/No-Go → WP4 完整矩阵。维护基线：Phase_4（M4 digest `d69bf24d881e`、全量 158 绿）+ Phase_3（39 绿）；任何 core/config 变更须全量重验并评估合同 §23 定向复验矩阵。
 
 > 谱系说明：以下两段是 Phase_4 期历史长摘要（2026-07-09 / 2026-07-11）。其中「不授权 Phase_5 / 决策前不行动」已由 2026-07-20 立项决策（§4）解除；E2/R2/digest 数值当前引用以 2026-07-11 审查修订段为准。
 
@@ -80,7 +84,8 @@ G1b `FAILED` 闭卷（D5-4；耦合顺延 G4a；WP4 届时走 SCOPED_GO）。
 | Phase_5 G1-W | **`PASSED`**（2026-07-27，run `20260727T083342Z`：§6.1 八行全过——**生产壁认证=v1.1 对称质量中性壁**（质量通量 1.4e-15、导纳回归 +3.98%/+1.96° vs lbm-equivalent 谱参考、夹具 ≤2.8e-9）；旧壁 `PRESSURE_PRESERVING_WALL_DIAGNOSTIC_ONLY` 生效；WP1-3 能量超额经 G0 α_eff(k) 高 k 扩展行归因闭合；报告 `docs/Phase_5/wall_nonlinearity_neutrality_report.md`） |
 | Phase_5 G1a | **`PASSED` + `G1A_PASSED_TO_0P05`**（2026-07-28，run `20260728T085824Z`：九行全过——幅值包络认证至 ε=0.075、ε=0.10 出能量审计包络（双通道漂移 1.41%>1%=场形幅值依赖实测）、H2q/ε≈0.51–0.54 干净标度、dx1p3 分辨率轴 mn 壁实测判死；报告 `docs/Phase_5/nonlinear_entry_gate_report.md` §A） |
 | Phase_5 G2-T/G2-A/G2-O | **三门 `PASSED`（2026-07-30，双频 10/20 kHz）**——G2-T `20260730T095502Z`（α_eff(k) 表携带传递 +3.98%/+1.96° / +5.49%/+3.37°）；G2-A `20260730T104402Z`（fixture v2；Â₋ ~0.2%、20 kHz 载体表征 +5.67% 色散/+4% 增益归档）；G2-O `20260730T125635Z`（S1 底板 ≤2.8e-9、S6 恒等实锤、滤波 ΔH2≤1.3%、v4 dispersion 承重件判死）。`HARMONIC_CLAIM_LEVEL_L2_2F` 生效；H3 未触发豁免。报告 `harmonic_transfer_report.md`+`harmonic_operator_ablation_report.md` |
-| Phase_5 其余 gates（G1b 除外：G4a/G4b） | `NOT_RUN`（G5 默认 `WAIVED_JASA_SCOPE`；30 kHz G2 与 G4b 为条件项） |
+| Phase_5 G4a | **`PASSED`**（2026-08-01，主 run `20260801T081856Z` + 耦合行重跑 `20260801T155507Z`：**帐篷双带架构**[canonical `T(H_s)=T_ambient` 的双 v1.1 认证带实现,场无缝跳变——WP1-3 判死几何的解]；域敏感 0.9975@−0.45°/0.9972@−0.33°、状态匹配三档精确、U_gov 1.6e-4；**QS 判读:D_OP −2.83% vs 静态族 +2.4% 符号相反=`DYNAMIC_NONLINEAR_RESIDUAL_IDENTIFIED`**（核心科学发现）；**耦合行 1.0376@+1.05°**（χ_0=0.016 基线膜,cv 记账+半隐式;G1b 顺延闭合）；χ_0=0.0129/χ_eff=0.0133。报告 `dc_protocol_report.md` |
+| Phase_5 其余 gates（G4b） | `NOT_RUN`（条件项,1D 先行；G5 默认 `WAIVED_JASA_SCOPE`；30 kHz G2 条件项未触发） |
 | Final production claim | `NOT_CLAIMED`（Phase_5 `FINAL_PRODUCTION_NOT_CLAIMED`） |
 
 **Phase_2 继承声明**：对紧致空气薄膜目标（10 kHz、`kL≈0.04<<1`、空气 `Pr<1`、薄膜法向=点阵轴），气体核硬物理相关门全过；剩余残差有界且对该目标物理无关：对角声衰减约 1.31、high-mode 5-12x 过阻尼、Pr=2 鲁棒性。该结论满足进入 Phase_3 的条件，但不等价于 unrestricted/final production pass。
@@ -147,6 +152,10 @@ G1b `FAILED` 闭卷（D5-4；耦合顺延 G4a；WP4 届时走 SCOPED_GO）。
 - 不把 G2-A 的 20 kHz 载体表征（c +5.67%、~+4%/跨度空间增益）读作介质缺陷、失败或重标定授权：粗声学载体 c0 旋钮=M4 单频标定（仅 10 kHz 判门），20 kHz 数值是**已认证仪器属性**，任何经此载体的 20 kHz 定量声学量必须携带；近场 L2-2f 由细栈（G2-T）承载，远场 2f SPL（L3）在 §1.6 排除项内。经典 ν×100 吸收+滤波公式对简化碰撞纵模不成立（G2-A v1 诊断实锤）——粗域衰减参考一律用实测模态符号（P2-6 口径）。
 - 不把 G2-O 的 S6 恒等（声学相位修正族）外推到其它几何/配置：恒等性=窄 nx rig 0 合格对角模 + 冻结高模因子 1.0 两个结构事实（机制测试+S6 双重守卫）；宽域或修改阈值/因子后须重证。也不把 v4 dispersion 消融判死读作可修栈缺陷：dispersion 修正是 G0 标定输运闭合与近壁非平衡有界性的承重件（壁守卫四算例实测），本就不是 §7.3 可摘除的壁后算子。
 - 跨频率迁移 settle/协议按**箱弛豫时间单位**（≥~11τ_box；τ_box=1.1 周期@10 kHz、1.47 周期@20 kHz 实测），不按周期数逐字照抄（G2-O 首次权威 S1 瞬态出门教训，双窗衰减比判别法在案）。
+- 不把 G4a 帐篷双带 rig 写成"新热沉模型"或 Robin 替代：沉带=v1.1 认证壁钉 θ_amb,是 canonical `T(H_s)=T_ambient` 的直接实现;双柱=同一 canonical 问题的并行实现（重复对照行）。也不把 WP1-3「等温盖判死」读作"两条回调行判死"——判死变量=缝上一阶场跳变×闭腔（wrap 相邻 wall|lid 对的全 Θ 跳变）;帐篷场处处连续,不在该族。反对称双温单行变体已探针否弃（行内碰撞抹平双温结构），不得复活。
+- 耦合回路中带簿记热流必须做 **cv 重钉扎精确扣除**（定密度行能量 E=cv·ρθ、cv=(D+S)/2,无 pdV;用 cp 过扣制造伪负导数项）:原始簿记直馈 ODE 含超 Nyquist 导数项（增益=cv·Σρ_row/(nx·C_A),跨 1 即步进振荡自激——G4a 主 run 失稳@180 步与 smoke 稳定的二分性被该增益 1.244/0.965 精确解释）。修正后气侧瞬时导 G_inst≈0=回路本征稳定（膜极点）;机制映射夹具在合同测试固化。
+- 不把 G4a 的 `DYNAMIC_NONLINEAR_RESIDUAL_IDENTIFIED` 读作 gate 失败或测量可疑：它是 §11.5 预注册三态判读的正式产出（D_OP 实测 −2.83% vs QS0/QS1 +2.4%,信号 180×U_gov、ε 线性 9e-5 排除幅值污染）——静态 α(T) 重求值族失效=合同核心问题句的实测答案,WP3 的首要物理输入。QS-BVP 的预注册操作化=G0 k1 温度律;k 分辨温度依赖是已识别机理嫌疑、非已证结论。
+- 耦合行认证域=χ_0=0.016 基线膜、canonical 几何、10 kHz(重跑 run `20260801T155507Z`);不外推到其它 C_A/几何;G4a 主 run 的耦合行失稳是已闭合的记账错误、不得引作"耦合不可行"证据。
 - 不把 A1 写成真实 Joule 加热协议：它是有符号零均值热功率数值消融（半周期主动抽热，D0-4）；A1 `D_G` 未跨 3% 不构成自动 NO_GO——A2a/QS-1 判别、经认证 H2 或严格上界是并列科学信号（D0-5/合同 §12.5）。
 - 不把 G3 `PASSED` 写成任何 LBM 侧 Gate 通过或非线性物理结论：G3 认证的是 1D NSF **参考仪器**（七行仪器硬认证）；`1D-lbm-equivalent` 正式定义是 k1 单点律 surrogate（禁外推到其它 k，freeze doc §4）。
 - 不把 A1 密闭 rig 的 p-side H2 底板上界（≤2.1e-5，G3 报告 §4.1）当作生产 p-side 判据：规定正弦热流下箱压 2f 被能量守恒压制、该 rig 按构造是 T-side 仪器；生产 p-side 谐波判据在 G1a（规定壁温）与 G2（LBM 出射模态）。
