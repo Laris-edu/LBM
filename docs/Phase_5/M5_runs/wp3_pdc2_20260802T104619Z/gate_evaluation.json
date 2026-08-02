@@ -1,0 +1,13 @@
+{
+ "gate": "WP3-PDC2",
+ "verdict": "COMPLETED",
+ "legality": {
+  "all_finite": true,
+  "stationarity_gate": 0.001,
+  "stationarity_base": 2.70907579025475e-06,
+  "state_match_dev": 4.2600143724258466e-05,
+  "state_match_gate": 0.01,
+  "domain_recheck_trigger": false
+ },
+ "note": "production runner: physics rows are data, not gates"
+}

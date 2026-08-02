@@ -1,0 +1,99 @@
+{
+ "gate": "WP3-PDC2",
+ "run_id": "20260802T104619Z",
+ "verdict": "COMPLETED",
+ "gate_status": "COMPLETED",
+ "scoped_limitations": [],
+ "smoke_mode": false,
+ "protocol": {
+  "theta_dc": 0.1,
+  "eps_ac": [
+   0.005,
+   0.02
+  ],
+  "hs_rows": 48,
+  "geometry": "G4a tent canonical verbatim"
+ },
+ "results": {
+  "qs_chi": {
+   "status": "ok",
+   "D_OP_measured": {
+    "re": 0.9459114540533273,
+    "im": -0.0432574560143698,
+    "abs": 0.9469000403475095,
+    "phase_deg": -2.618367772751536
+   },
+   "D_OP_QS0_pred": {
+    "re": 1.0474171829531727,
+    "im": 0.0014245913710393447,
+    "abs": 1.0474181517455836,
+    "phase_deg": 0.0779279012117573
+   },
+   "D_OP_QS1_pred": {
+    "re": 1.0463656439928921,
+    "im": 0.0033607241783971723,
+    "abs": 1.046371040977178,
+    "phase_deg": 0.1840223353326347
+   },
+   "qs0_residual": 0.11090490682580659,
+   "qs1_residual": 0.11074429556821178,
+   "chi_0": 0.012929616504063508,
+   "chi_eff": 0.013654679430912666,
+   "g4a_dop_005_reference": {
+    "abs_minus_1": -0.0283,
+    "run": "20260801T081856Z"
+   },
+   "trend_note": "monotonicity vs the G4a Theta_DC=0.05 point is the unit's main output"
+  },
+  "h2_by_case": {
+   "inc_cold": 0.001720645376493314,
+   "inc_dc010_eps0.02": 0.006051102261535078,
+   "inc_dc010_eps0.005": 0.0014543041430139006
+  },
+  "coupled": {
+   "status": "stable",
+   "Ts_hat_measured": {
+    "re": 0.0004822756561268051,
+    "im": -0.0008252786081341784,
+    "abs": 0.0009558632692683755,
+    "phase_deg": -59.69887307065792
+   },
+   "Ts_hat_ode_closed_form": {
+    "re": 0.00045047858427929674,
+    "im": -0.0008048503525631287,
+    "abs": 0.000922342151761087,
+    "phase_deg": -60.764052288295545
+   },
+   "consistency": {
+    "ratio": {
+     "re": 1.0361643875849944,
+     "im": 0.019265431986844057,
+     "abs": 1.0363434734531916,
+     "phase_deg": 1.0651792176376214
+    },
+    "amp_rel_err": 0.036343473453191555,
+    "phase_deg_err": 1.0651792176376214,
+    "amp_gate": 0.1,
+    "phase_gate_deg": 10.0,
+    "passed": true
+   },
+   "instrument": {
+    "c_row_cv": 18.203131808684088,
+    "G_inst": -5.696113799234684e-07,
+    "raw_gain_would_be": 1.2202088015267858
+   }
+  },
+  "p_mean_lu_per_area": 2.6032587579902335,
+  "legality": {
+   "all_finite": true,
+   "stationarity_gate": 0.001,
+   "stationarity_base": 2.70907579025475e-06,
+   "state_match_dev": 4.2600143724258466e-05,
+   "state_match_gate": 0.01,
+   "domain_recheck_trigger": false
+  }
+ },
+ "physics_core_digest": "218be68028b7",
+ "code_commit": "7bc9888cf3be1aaae3ac5e3bd46ce3db947edb31",
+ "wall_clock_min": 248.86479308333335
+}

@@ -1,0 +1,54 @@
+inheritance:
+  gas_config: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+  design_prereg: docs/Phase_5/wp3_go_nogo_decision.md
+  g4a_reference_run: docs/Phase_5/M5_runs/g4a_20260801T081856Z
+pdc2:
+  frequency_Hz: 1.0e4
+  hs_rows: 48
+  nx: 8
+  samples_per_period: 64
+  theta_dc: 0.1
+  eps_ac:
+  - 0.005
+  - 0.02
+  settle_periods: 5.0
+  drive_periods: 4.0
+  fit_skip_periods: 2.0
+  coupled_branch: true
+  coupled_chi0: 0.016
+  coupled_p1_over_pmean: 1.0
+  qs_alpha_temperature_exponent: 1.04
+  y_hs_si_w_m2k: 1393.4
+  chi_c_areal_si: 0.0007
+  alpha_extension_ny:
+  - 12
+  - 8
+  - 6
+pdc2_smoke:
+  frequency_Hz: 1.0e4
+  hs_rows: 12
+  nx: 4
+  samples_per_period: 32
+  theta_dc: 0.1
+  eps_ac:
+  - 0.005
+  - 0.02
+  settle_periods: 2.0
+  drive_periods: 2.0
+  fit_skip_periods: 1.0
+  coupled_branch: true
+  coupled_chi0: 0.016
+  coupled_p1_over_pmean: 1.0
+  qs_alpha_temperature_exponent: 1.04
+  y_hs_si_w_m2k: 1393.4
+  chi_c_areal_si: 0.0007
+  alpha_extension_ny:
+  - 12
+  - 8
+  - 6
+gates:
+  stationarity_per_period: 0.001
+  state_match_rel: 0.01
+  coupled_amp_rel: 0.1
+  coupled_phase_deg: 10.0
+  domain_recheck_dop_abs: 0.1

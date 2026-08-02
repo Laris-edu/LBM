@@ -10,23 +10,24 @@
 | `Phase5_instruct_v1.2.md` | contract/frozen | Phase_5 唯一规范性入口与生产合同（v1.2，2026-07-20 WP0 冻结；评审基线=master `b86459c`）。范围、Gate 定义与阈值、算例矩阵、数据合同、声明规则的权威出处。 | 实质修改必须升级版本号并更新 `Phase5_STATUS.md`（合同 §0.1/§23）；禁止静默覆盖。 |
 | `Phase5_STATUS.md` | status | Phase_5 当前状态、状态标签与 Gate 现值追踪、决策记录（含范围对齐）、验证记录、风险、下一步与更新日志。 | 阶段进度、Gate 状态、决策或交付物变化时更新。 |
 | `Phase5_Output_Files_Guide.md` | output-guide | Phase_5 跨目录总览：配置/验证/后处理/参考求解器/运行产物的落位关系与归档约定。 | 新增报告、配置、脚本、测试、run 归档或目录结构变化时更新。 |
-| `nonlinear_model_freeze.md` | gate-report/frozen | **G0-B 交付（2026-07-23）**：有效物性律冻结（表格口径：α_eff(T,k) 指数 1.0→5.4 随 k、k1 处 k_eff∝T^1.04、路径 LU 简并、各向同性）+ §5.3 门行（verdict `SCOPED_CANDIDATE`，升级属用户）+ 三个下游输出（1D 挂接/WP1-3 归因/G2 逐 k 物性）。权威 run `20260722T173919Z`（摘要归档 `M5_runs/`）。 | mapping/色散/滤波变化触发 §23 复验重跑；用户 scoped 决策后更新判定行。 |
-| `M5_runs/` | run-archive | 权威 run 精选摘要归档（summary/gate_evaluation/run_report 等；不含 h5）。当前：`g0_*`、`g3_*`、`g1w_*`、`g1a_*` 四个 PASSED + `g1b_failed_*` 四个（结构性 FAILED 证据链全部四次权威 run，B 机）。 | 新权威 run 归档时追加。 |
+| `nonlinear_model_freeze.md` | gate-report/frozen | **G0-B 交付（2026-07-23）**：有效物性律冻结（表格口径：α_eff(T,k) 指数 1.0→5.4 随 k、k1 处 k_eff∝T^1.04、路径 LU 简并、各向同性）+ 三个下游输出（1D 挂接/WP1-3 归因/G2 逐 k 物性）。权威 run `20260722T173919Z` 的脚本判定为 `SCOPED_CANDIDATE`；用户已按 D5-2 升级为 `SCOPED_PASSED_BY_USER`，围栏见 STATUS。 | mapping/色散/滤波变化触发 §23 复验重跑。 |
+| `M5_runs/` | run-archive | 权威/诊断 run 精选摘要归档（不含 h5），当前覆盖 G0、G3、G1-W、G1a、G1b 失败谱系、G2-T/A/O 与 G4a 主/耦合重跑；逐目录入口以本目录实际内容和 `Phase5_STATUS.md` 为准。 | 新权威 run 归档时追加。 |
 | `route_ab_decision_memo.md` | decision-memo | **WP1-5 交付（2026-07-22）**：双物性 1D 消融 + 独立验证（§2.1）+ D-AB-2 逐 QoI 判定 + **用户决策已记录（§7：2026-07-22 批准维持 `ROUTE_B_MAIN + 1D_REAL_AIR_BOUNDING`，升级条件预注册）** + G0 挂接复核（§8）+ **G3 闭合追记（§9：分支正式定义 + p-side 上界口径）**。 | 升级条件触发时重开。 |
-| `nonlinear_entry_gate_report.md` | gate-report | **G1a 交付（2026-07-28，§A）+ G1b `FAILED` 判定（2026-07-29，§B——密封无沉 rig 耦合回路结构性阻断，三馈路实测死亡证据链 §B.1，路线决策待用户 §B.2；证据 run 摘要归档 `M5_runs/g1b_failed_*/`）**：幅值包络九行认证 `PASSED`+`G1A_PASSED_TO_0P05`（生产矩阵解锁至 ε=0.075；ε=0.10 出能量包络=场形幅值依赖实测 §A.3；H2 阶梯 §A.4；细化双轴 §A.5——dx1p3 以 mn 壁 978 步实测判死）。权威 run `20260728T085824Z`（摘要归档 `M5_runs/g1a_20260728T085824Z/`）。 | G1b 落地扩展 §B；生产壁/谱修正/滤波/拟合器变更或 G0 α_eff 升版 → §23 复验。 |
+| `nonlinear_entry_gate_report.md` | gate-report | **G1a 交付（2026-07-28，§A）+ G1b `FAILED` 终判（2026-07-30，§B——密封无沉 rig 耦合回路结构性阻断，D5-4 回退已执行；证据 run 摘要归档 `M5_runs/g1b_failed_*/`）**：幅值包络九行认证 `PASSED`+`G1A_PASSED_TO_0P05`（生产矩阵解锁至 ε=0.075；ε=0.10 出能量包络=场形幅值依赖实测 §A.3；H2 阶梯 §A.4；细化双轴 §A.5——dx1p3 以 mn 壁 978 步实测判死）。权威 run `20260728T085824Z`（摘要归档 `M5_runs/g1a_20260728T085824Z/`）。 | 生产壁/谱修正/滤波/拟合器变更或 G0 α_eff 升版 → §23 复验。 |
 | `wall_nonlinearity_neutrality_report.md` | gate-report | **G1-W 交付（2026-07-27）**：热壁中性认证 `PASSED`（§6.1 八行 + Stage-1 归因闭合 §2 + 夹具重设计谱系 §3.2）+ **生产壁认证（v1.1 对称质量中性壁）** + 旧壁 `DIAGNOSTIC_ONLY` + 矩通道重标定常数（§23）。权威 run `20260727T083342Z`（摘要归档 `M5_runs/g1w_20260727T083342Z/`；首次尝试 `20260727T040121Z` FAILED 谱系在案）。 | 壁模块/审计/拟合器行为变更或 G0 α_eff 表升版 → §23 复验重跑。 |
 | `nonlinear_1d_reference_report.md` | gate-report | **G3 交付（2026-07-26）**：1D NSF 参考仪器认证 `PASSED`（§8.2 七行 + 密封绝热 ringdown 重设计与等温热沉伪影诊断 §3.1）+ 正式分支定义冻结（§2）+ p-side H2 复核与 A1 底板（§4）。权威 run `20260726T082938Z`（摘要归档 `M5_runs/g3_20260726T082938Z/`；首次尝试 `20260726T074420Z` FAILED 谱系在案）。 | physics-core（1D 求解器/拟合器）行为变更或 G0 实测律升版 → §23 复验重跑。 |
+| `harmonic_transfer_report.md` | gate-report | **G2-T/G2-A 交付（2026-07-30）**：10/20 kHz 热生成与纯声学传递链均 `PASSED`；20 kHz 载体的 +5.67% 色散与约 +4%/跨度增益作为下游携带属性归档。 | 生产壁、G0 表、传播载体或读出链变化时按合同 §23 复验。 |
+| `harmonic_operator_ablation_report.md` | gate-report | **G2-O 交付（2026-07-30）**：算子底板、滤波敏感性与结构恒等行认证 `PASSED`；`HARMONIC_CLAIM_LEVEL_L2_2F` 的算子侧条件闭合。 | 谱修正/滤波强度、次数或顺序变化时重跑 G2-O。 |
+| `dc_protocol_report.md` | gate-report | **G4a 交付（2026-08-01）**：帐篷双带 canonical 热沉、状态匹配域高、QS 判读与耦合行认证；`DYNAMIC_NONLINEAR_RESIDUAL_IDENTIFIED`。G4b 保持 `NOT_RUN`。 | canonical 热沉、`H_s` 角色、耦合记账或生产壁变化时复验。 |
+| `wp3_go_nogo_decision.md` | decision-material | **WP3 已启动（D5-5，2026-08-02）**：八信息单元学分记账、A1/P-DC2/P-1D 预注册与 §14.1 对照模板；权威 run 与最终用户决策待完成。 | WP3 权威 run、GO 条件或用户决策变化时更新。 |
+| `Paper1_Manuscript_Architecture.md` | manuscript-plan | **论文一稿件架构 `ARCHITECTURE_v0.1`（2026-08-02）**：实例化合同 §20，维护中心论点、八节职责、C1–C8 主张矩阵、7 张主图接口及 WP3/WP4 证据缺口。不是 Gate 或 WP4 授权文件。 | 论文中心主张、章节/主图接口、投稿范围或 WP3/WP4 证据路线变化时更新。 |
 
 ## 2. 合同规划交付物（尚未创建；落地时移入上表）
 
-按合同 §13/§17，以下文档随对应工作包/Gate 产出（当前均**不存在**，不得引用为已交付）：
+按合同 §13/§17，当前只剩以下规划文档尚未落地，不得引用为已交付：
 
 | 规划路径 | 归属 |
 |---|---|
-| `harmonic_transfer_report.md` | G2-T/G2-A |
-| `harmonic_operator_ablation_report.md` | G2-O |
-| `dc_protocol_report.md` | G4a/G4b |
-| `wp3_go_nogo_decision.md` | WP3 |
 | `nonlinear_production_report.md` | WP4 |
 
 合同 §17 树中另列 `论文一创新点评审与修订实施方案.md`（合同的上游评审文档），未随库提供；如需入库由用户提供原件。
@@ -35,6 +36,8 @@
 
 - 主要入口：`docs/Phase_5/Phase5_instruct_v1.2.md`
 - 阶段状态：`docs/Phase_5/Phase5_STATUS.md`
+- 论文架构：`docs/Phase_5/Paper1_Manuscript_Architecture.md`
+- WP3 决策材料：`docs/Phase_5/wp3_go_nogo_decision.md`
 - Gate schema（机器可读）：`verification/nonlinear/phase5_gate_schema.json`
 - 配置目录规范：`configs/phase5/README.md`
 - 继承授权与硬约束：`docs/Phase_3/M3/M3_Closure_Decision.md` §3/§4
@@ -42,8 +45,8 @@
 
 ## 4. 边界
 
-- WP0 合同冻结只是入口；**不等价任何 Gate 通过或生产授权**。当前全部 Gate `NOT_RUN`、`FINAL_PRODUCTION_NOT_CLAIMED`。
+- **WP2 入口 Gate 序列已完成（2026-08-01）**；其中 G1b 保持 `FAILED`，其顺延的 canonical 有沉耦合问题已在 G4a 单点闭合。WP3 已启动，但 WP4 尚未授权，仍为 `FINAL_PRODUCTION_NOT_CLAIMED`。
 - 所有 Phase_5 产出携带继承边界：M3 `SCOPED_ACCEPTED`（幅值 ±5.4%、单频 10 kHz、dx2p6 不换 dx/tau）；M4 `PASSED_WITH_SCOPED_RISK`（非 clear PASS）。
-- G1-W 通过前，`pressure_preserving` 热壁只作诊断；未通过 G2-O 前，2f/3f 不得解释为纯物理谐波；H3/30 kHz 为条件项。
+- 生产壁仅为 v1.1 对称质量中性壁；`pressure_preserving` 旧壁只作诊断。G2-T/A/O 已支持 L2-2f，H3/30 kHz 仍为未触发条件项，L3 远场谐波不在基础范围。
 - 脚本与报告只能产出 `PASSED/FAILED/SCOPED_CANDIDATE`；`SCOPED_PASSED_BY_USER`、路线 A 启动、PRA 升级均属用户决策。
 - 原始运行产物默认留在 `results/phase5/<族>/<run_id>/`（不入库）；只有精选摘要进入本目录（归档约定见 `Phase5_Output_Files_Guide.md`）。
