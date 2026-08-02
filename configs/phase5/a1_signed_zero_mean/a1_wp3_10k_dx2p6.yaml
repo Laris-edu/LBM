@@ -1,0 +1,46 @@
+# WP3 A1 单元(P-LIN/P-AC1/P-AC2/P-AC3)——权威配置(合同 §3.2/§15.1;预注册 wp3_go_nogo_decision.md §2)
+# 驱动=认证耦合功率驱动(膜 ODE、P̄=0 零均值、cv 记账+半隐式,G4a §A.4 谱系);
+# 密封 G1-W/G1a 谱系 rig;符号对协议常数=G1-W 权威口径逐字;ε→P₁ 解析映射(非调参)。
+
+inheritance:
+  gas_config: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+  design_prereg: docs/Phase_5/wp3_go_nogo_decision.md
+
+a1:                               # 权威协议(预注册;不得按结果逐点调整)
+  frequency_Hz: 1.0e4
+  ny: 48
+  nx: 8
+  samples_per_period: 64
+  eps_ladder: [0.001, 0.01, 0.05, 0.075]   # §14 首轮四点;0.10 被 G1a 授权边界截断
+  ramp_periods: 2.0               # G1-W 符号对协议逐字
+  periods: 14.0
+  fit_skip_periods: 12.0
+  chi0: 0.016                     # §1.3 基线膜(C_A 解析 LU 锚定,G4a 同款)
+  wall_contrast_eps: 0.05         # 旧壁 DIAGNOSTIC_ONLY 对照点(§15.1 热壁差异输出)
+  alpha_extension_ny: [12, 8, 6]  # 谱参考高 k 扩展行(G1-W 仪器逐字)
+  oned_legs: true                 # P-1D 的 A1 部分:双分支配对 @wall_contrast_eps
+  oned:
+    height_over_delta: 15.0       # G3 A1 协议口径
+    cells_per_delta: 12.0
+    ramp_cycles: 2.0
+    n_cycles: 14.0
+    settle_cycles: 12.0
+
+a1_smoke:                         # 机器链 smoke(小域短时;非权威)
+  frequency_Hz: 1.0e4
+  ny: 16
+  nx: 4
+  samples_per_period: 32
+  eps_ladder: [0.01, 0.05]
+  ramp_periods: 1.0
+  periods: 4.0
+  fit_skip_periods: 2.0
+  chi0: 0.016
+  wall_contrast_eps: 0.05
+  alpha_extension_ny: [12, 8, 6]
+  oned_legs: false
+
+gates:                            # 合法性行(生产 runner:物理数不判门)
+  mass_drift_max: 1.0e-8          # 密封 rig 全程质量漂移(G1-W 族)
+  pair_asymmetry_rel: 5.0e-2      # 奇组合 1f 的偶污染上界(物理上 O(ε²) 级)
+  floor_p2_rel_of_smallest: 1.0e-1  # 零驱 2f 底板 ≤ 最小 ε 点 1f 的 10%
