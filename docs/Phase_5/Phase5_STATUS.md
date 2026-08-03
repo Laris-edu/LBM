@@ -1,6 +1,7 @@
 # Phase_5 阶段状态
 
-**最后更新**：2026-08-02
+**最后更新**：2026-08-03
+**WP4(2026-08-03)**：用户批准 **D5-6 `SCOPED_GO`**——WP4 认证子矩阵(A2a 全地图 / A1 全阶梯 / A5 χ 地图)授权执行;决策记录 `wp3_go_nogo_decision.md` §7;`FINAL_PRODUCTION_NOT_CLAIMED` 不变。
 **路线决策（2026-07-22）**：用户批准 **`ROUTE_B_MAIN + 1D_REAL_AIR_BOUNDING`**（备忘录 `route_ab_decision_memo.md` 选项 1 = D0-3 预授权默认；升级条件预注册于备忘录 §5/§7）。
 **G0 决策（2026-07-23，D5-2）**：用户批准 **`SCOPED_PASSED_BY_USER`**（围栏=剪切 ν 不认证 + 低波数有限-k 表格口径，见 §4）；`MODEL_CLOSURE_PASSED_ROUTE_B`。
 **G3（2026-07-26）**：权威 run `20260726T082938Z` **`PASSED`**（脚本判定，七行全过；报告 `nonlinear_1d_reference_report.md`）——1D NSF 参考仪器正式认证 + 分支正式定义冻结 + p-side H2 复核闭合（备忘录 §9）。
@@ -16,7 +17,7 @@
 
 ## 1. 当前结论与状态标签
 
-WP0/WP1 已完成；WP2 入口 Gate 序列已闭合（G1b `FAILED` 的顺延问题由 G4a canonical 有沉几何单点闭合），WP3 已按 D5-5 启动。当前仍未获得 WP4 生产授权，`FINAL_PRODUCTION_NOT_CLAIMED`。状态标签（定义随合同 §0.3 冻结，本表是唯一现值追踪处）：
+WP0/WP1 已完成；WP2 入口 Gate 序列已闭合（G1b `FAILED` 的顺延问题由 G4a canonical 有沉几何单点闭合）；WP3 八单元于 2026-08-02 全部完成（D5-5）。**2026-08-03 用户批准 D5-6 `SCOPED_GO`：WP4 认证子矩阵（A2a / A1-H2 / A5）授权执行**——完整 `GO` 因 G1b 预注册不可达，子矩阵之外协议不在授权内。`FINAL_PRODUCTION_NOT_CLAIMED` 不变。状态标签（定义随合同 §0.3 冻结，本表是唯一现值追踪处）：
 
 ```text
 PHASE5_NONLINEAR_ENTRY_CONTRACT_v1.2
@@ -36,6 +37,7 @@ NONLINEAR_1D_REFERENCE_CERTIFIED
 DC_BASESTATE_STATE_MATCHED_PASSED（G4a，2026-08-01）
 DYNAMIC_NONLINEAR_RESIDUAL_IDENTIFIED（G4a QS 判读：静态重求值族符号级失效——核心科学发现）
 LEVELC_COUPLED_ROW_PASSED（G4a 耦合行重跑；G1b 顺延的耦合包络于沉几何闭合）
+WP3_SCOPED_GO_BY_USER（D5-6，2026-08-03；WP4 授权范围=A2a/A1-H2/A5 认证子矩阵）
 FINITE_WIDTH_2D_DEFERRED_JASA_SCOPE
 FINAL_PRODUCTION_NOT_CLAIMED
 ```
@@ -101,6 +103,7 @@ FINAL_PRODUCTION_NOT_CLAIMED
 
 | ID | 日期 | 决策 | 决策方 |
 |---|---|---|---|
+| D5-6 | 2026-08-03 | **WP3 Go/No-Go 正式判定：批准 `SCOPED_GO`（合同 §14.2 通道），启动 WP4**。依据=`wp3_go_nogo_decision.md` §14.1 对照终版（除条件 1 G1b 预注册不可达外全满足、条件 3 双臂超额）。授权范围=认证子矩阵 A2a 全地图/A1 全阶梯/A5 χ 地图（~25–35 run，双机口径）；A3/A2b/H3/F1 不在授权内；`FINAL_PRODUCTION_NOT_CLAIMED` 不变。决策全文 `wp3_go_nogo_decision.md` §7。 | 用户 |
 | D5-0 | 2026-07-20 | **Phase_5 立项**：采纳 `Phase5_instruct_v1.2.md` 为 Phase_5 唯一规范性入口与生产合同；执行 WP0；Phase_4 转维护态（基线 158 绿 + M4 digest `d69bf24d881e`）。本记录构成 WP0 要求的**用户范围对齐记录**；导师层面对齐记录如需另行留档，由用户后续补充。 | 用户 |
 | D5-0a | 2026-07-20 | WP0 落地口径：合同实际入库名 `Phase5_instruct_v1.2.md`（与合同"建议入库路径"等同，沿用仓库 `phaseN_instruction` 命名先例）；Gate schema 以机器可读 JSON 落于 `verification/nonlinear/phase5_gate_schema.json`（合同 §4/§16/§17 为规范源，JSON 为转录，冲突以合同为准并同步升级）；`configs/phase5/` 采用合同 §17 子目录制（区别于顶层扁平 configs，子目录随首个配置落地创建）；run_id 沿用 UTC 时间戳先例；G4a/G4b 结果目录族名 `g4a_dc_base`/`g4b_self_heating` 为落地约定（合同未显式冻结，schema 中已标注 convention）。 | 执行记录 |
 | D5-5 | 2026-08-02 | **启动 WP3 首轮八信息单元**：接受 `wp3_go_nogo_decision.md` 的学分记账与预注册；P-H2/P-DC1 复用 WP2 权威证据，其余六单元进入权威运行。WP3 文件只形成 §14.1 对照材料，`GO/SCOPED_GO/NO_GO` 最终判定仍属用户。 | 用户 |
@@ -122,18 +125,19 @@ FINAL_PRODUCTION_NOT_CLAIMED
 - **【已解除 2026-08-01】G4a 关键路径单点化**：G4a `PASSED`（帐篷架构解缝腔伪影、耦合行重跑闭合、QS 判读产出核心科学发现）——本风险行闭卷,详见 Gate 表 G4a 行与 `dc_protocol_report.md`。原文保留如下作历史:G1b 结构性 FAILED 使 G4a 同时承载论文主锚（A2a/QS-1）与耦合包络问题的顺延——其 canonical 等温热库几何必须先解决双边界行缝腔伪影（WP1-3 判死同族；设计输入=G0 α_eff(k) 表 + G1-W 缝注入定量 ≤6e-10 + G1b v2 钉扎/窗口算子资产）。§14.1 完整生产 GO 条件 1 因 G1b 不可满足 → **WP4 届时走 `SCOPED_GO`（须用户批准认证子矩阵）**；论文影响全评估见 `nonlinear_entry_gate_report.md` §B.2.2。
 - **`results/phase5/` 不入库**（`.gitignore` 沿用）；权威 run 精选摘要归档约定见 `Phase5_Output_Files_Guide.md`。
 
-## 6. 下一步（WP3 已启动；论文架构并行）
+## 6. 下一步（WP4 执行中；论文架构并行）
+
+**WP0–WP3 全部完成（2026-08-02）**;八单元数据与 §14.1 对照终版见 `wp3_go_nogo_decision.md`。
+**D5-6(2026-08-03):用户批准 `SCOPED_GO`,WP4 认证子矩阵执行中**(决策全文 `wp3_go_nogo_decision.md` §7)。
 
 当前执行顺序：
 
-1. 运行并归档 P-LIN/P-AC1/P-AC2/P-AC3、P-DC2 与 P-1D；P-H2/P-DC1 只按权威 run 学分记账，不重复烧算力。
-2. 在 `wp3_go_nogo_decision.md` 填完 §14.1 七项对照；任何 `SCOPED_GO` 建议必须等 A1/P-DC2/1D 权威证据齐全。
-3. 由用户决定是否批准 `SCOPED_GO`；批准前不启动 WP4。批准后只执行论文主图所需的 A2a/A1-H2/A5 认证子矩阵。
-4. 写作并行仅覆盖已锁定章节：Introduction、Methods、Verification 与 Results I 的 0.05 锚；最终摘要、标题和趋势结论等待 WP3/WP4。
+1. A2a 净新增点(Θ_DC=0.02)+ A1 净新增三点({0.003,0.02,0.03})——既有 runner 配置变体,回归族测试后直接派发。
+2. A5 χ 地图 runner(唯一净新增实现面)——复用 G4a 耦合仪器参数化 chi_0,合同测试 + smoke + A/B 纪律后派发。
+3. 双机分跑权威 run(D5-3),摘要归档 M5_runs;三张子矩阵汇总表(A2a 全地图/A1 全阶梯/A5 χ 地图)进本文件 §6.1 与论文素材。
+4. 写作并行覆盖已锁定章节:Introduction、Methods、Verification、Results I 骨架;最终摘要与趋势结论等 WP4 数据齐全。
 
-**WP0–WP3 全部完成（2026-08-02）**;八单元数据与 §14.1 对照终版见 `wp3_go_nogo_decision.md`。**用户已表达 WP4 意向(本会话末),正式 `SCOPED_GO` 决策记录留 WP4 会话首条(记 D5-6;D0-7 口径)**。
-
-**WP4 交接口径(SCOPED_GO 子矩阵=A2a / A1-H2 / A5,~25–35 run,合同 §15 为规范源)**:
+**WP4 执行口径(SCOPED_GO 子矩阵=A2a / A1-H2 / A5,~25–35 run,合同 §15 为规范源)**:
 
 1. **A2a 全地图**:Θ_DC={0, 0.02, 0.05, 0.10}×ε={0.005, 0.02}(§15.2)——已有 0/0.05/0.10 三点(G4a+P-DC2 runs 直接入表),**净新增=Θ_DC=0.02 点 + 残差标度律加密点(可选 0.075)**;runner=`phase5_a2a_operating_point.py` 配置变体即可(theta_dc 参数化已就绪);每点输出 D_OP/QS-0/QS-1/χ_eff/DC-on-H2/耦合一致性。
 2. **A1 全阶梯**:§15.1 八点 {0.001,0.003,0.01,0.02,0.03,0.05,0.075}(0.10 被 G1a 截断)——已有 4 点,**净新增 {0.003, 0.02, 0.03}**;runner=`phase5_a1_signed_zero_mean.py` 配置加点;H2/ε 恒定性与 m₂ 是主表。
@@ -145,6 +149,7 @@ FINAL_PRODUCTION_NOT_CLAIMED
 
 | 日期 | 更新 |
 |---|---|
+| 2026-08-03 | **D5-6 `SCOPED_GO` 批准、WP4 启动**:用户于 WP4 会话首条正式批准(D0-7 口径预留位兑现);决策记录 `wp3_go_nogo_decision.md` §7 + §4 决策表 + §1 标签 `WP3_SCOPED_GO_BY_USER`;§6 改写为 WP4 执行序。授权=A2a/A1-H2/A5 认证子矩阵;不改变 `FINAL_PRODUCTION_NOT_CLAIMED` 与全部既有围栏。 |
 | 2026-08-02 | **WP3 启动状态与论文架构同步**：记录用户决策 D5-5，`wp3_go_nogo_decision.md` 的八单元学分记账/预注册成为 WP3 当前执行入口；新增 `Paper1_Manuscript_Architecture.md`（`ARCHITECTURE_v0.1`），把合同 §20 实例化为中心论点、C1–C8 主张、八节职责、7 张主图和 WP3/WP4 证据接口。同步 README/Output Guide/PROJECT_CONTEXT；不改变任何 Gate、`SCOPED_GO` 权限或 `FINAL_PRODUCTION_NOT_CLAIMED`。 |
 | 2026-08-02 | **WP3 八信息单元全部完成(D5-5 启动 → 单日闭合;双机分跑首例)**:学分记账(P-H2=G2、P-DC1=G4a)+ 本轮六单元权威——**A1 四单元 B 机** `20260802T105444Z`(fixture v2=规定 θ 符号对+实测功率归一化;v1 耦合驱动在密封无沉 rig 探针否弃留痕[G1b 通道②族];**H2_q/ε=0.4253 四位恒定跨 75× 幅值窗、m₂=1.9987、D_G∝ε² 至 −2.85e-3≪3%**、零驱底板 e-14、旧壁对照 20×/反号/9 量级质量差)+ **P-DC2 A 机** `20260802T104619Z`(**D_OP(0.10)=−5.31%@−2.62°——动力学残差标度律成立:−5.18pp→−9.95pp≈线性于 Θ_DC**;三层参照层级 QS>1D 全非线性>LBM 反号;DC 压低 H2/ε ~13%;耦合点 1.0363@+1.07° 跨工作点稳健;χ_eff 单调 0.0129→0.0133→0.0137)+ **P-1D 双臂**(A1 腿双分支 + DC 臂:认证域互证一致,D_OP 分歧=发现本身)。验证链:合同测试 4 绿、双 smoke、A1 串/并 A/B 逐位、P-DC2 豁免预注册;D5-3 双机指纹在案(commit `7bc9888` 同源)。**§14.1 七条对照终版:除条件 1(G1b 预注册不可达)全满足、条件 3 双臂超额——材料完整支持 `SCOPED_GO`(A2a/A1-H2/A5 子矩阵,~25–35 run);正式决策待用户**。报告 `wp3_go_nogo_decision.md` 终版 + 两 run 归档 M5_runs |
 | 2026-08-01 | **G4a 权威认证 PASSED——WP2 入口 Gate 序列完成、关键路径单点闭卷（单日架构决策→双探针→权威 run→耦合机理三层闭合）**：帐篷双带架构（§A.0:两条 v1.1 认证带、场连续无缝跳变——WP1-3 等温盖判死变量[wrap 相邻 Θ 跳变×闭腔]的解;反对称双温单行变体探针否弃[碰撞抹平]）;壁行泛化（band≡roll 逐位、row0≡原壁逐位、回归 215 绿）;帐篷谱参考=认证系数双点源叠加 ≡ 变系数 QS-BVP(3e-14)+coth 锚;**精确带能量簿记通道**（免标定;判门量全比值化,cp 桥仅归档行[smoke 实测 γ 因子判别]）。主 run `20260801T081856Z`(17 算例 21.3 h):十一行全过——**域敏感 0.9975/0.9972@<0.5°(两 ε 四位一致)**、状态匹配 Θ_DC 三档精确+P_mean∝1/H_s、稳态 1.3e-6、初态 9.1e-7、ε 线性 1.000092、U_gov 1.6e-4;固定 P 分支 Θ_DC=0.0791/0.1008(k(T) 非线性实测)。**QS 判读=`DYNAMIC_NONLINEAR_RESIDUAL_IDENTIFIED`:D_OP 实测 −2.83% vs QS0 +2.40%/QS1 +2.35%——符号相反、180×U_gov、静态 α(T) 族整体失效=合同核心问题句首个实测答案**(机理嫌疑=G0 表 k 分辨温度依赖,WP3 判别单元输入)。**耦合行:主 run 失稳@step180 经三层机理诊断闭合**(①带簿记含自身重钉扎能量→超 Nyquist 导数项[gain=cv·Σρ/(nx·C_A)=1.244>1,smoke 0.965<1 二分性精确解释];②系数=cv 非 cp[定密度无 pdV,过扣量−0.9527 逐位对账];③cv 修正后 G_inst≈0=回路本征稳定)→ cv 记账+半隐式修正、**重跑 `20260801T155507Z` PASSED(1.0376@+1.05°)——G1b 顺延的耦合包络于沉几何+χ_0=0.016 基线膜认证闭合**。机制映射夹具固化合同测试(6 绿)。两 run 归档 M5_runs。**下一步 WP3 Go/No-Go(用户决策)** |

@@ -1,0 +1,59 @@
+# WP4 A2a 地图补全点 Θ_DC=0.02 权威配置(合同 §15.2;D5-6 SCOPED_GO 授权)
+# 几何/协议=G4a canonical 帐篷逐字(与 P-DC2 配置唯一差异=theta_dc 与命名;runner 同一)。
+# 域高敏感性引用 G4a 认证(触发条件 |D_OP−1|>10% 预注册,继承 P-DC2 口径)。
+
+inheritance:
+  gas_config: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+  design_prereg: docs/Phase_5/wp3_go_nogo_decision.md
+  g4a_reference_run: docs/Phase_5/M5_runs/g4a_20260801T081856Z
+  pdc2_reference_run: docs/Phase_5/M5_runs/wp3_pdc2_20260802T104619Z
+
+pdc2:                             # 权威协议(runner 键名沿用;单元=WP4-A2A-DC002)
+  unit_label: WP4-A2A-DC002
+  label_tag: dc002
+  frequency_Hz: 1.0e4
+  hs_rows: 48                     # canonical H_s(G4a 逐字)
+  nx: 8
+  samples_per_period: 64
+  theta_dc: 0.02                  # §15.2 地图净新增点(小 Θ_DC 端)
+  eps_ac: [0.005, 0.02]
+  settle_periods: 5.0
+  drive_periods: 4.0
+  fit_skip_periods: 2.0
+  coupled_branch: true
+  coupled_chi0: 0.016
+  coupled_p1_over_pmean: 1.0
+  qs_alpha_temperature_exponent: 1.04
+  y_hs_si_w_m2k: 1393.4
+  chi_c_areal_si: 7.0e-4
+  alpha_extension_ny: [12, 8, 6]
+  dop_reference_points:           # 已归档趋势链(单调性判读参照)
+    - {theta_dc: 0.05, dop_abs_minus_1: -0.0283, run: "20260801T081856Z"}
+    - {theta_dc: 0.10, dop_abs_minus_1: -0.0531, run: "20260802T104619Z"}
+
+pdc2_smoke:                       # 机器链 smoke(小域;非权威)
+  unit_label: WP4-A2A-DC002
+  label_tag: dc002
+  frequency_Hz: 1.0e4
+  hs_rows: 12
+  nx: 4
+  samples_per_period: 32
+  theta_dc: 0.02
+  eps_ac: [0.005, 0.02]
+  settle_periods: 2.0
+  drive_periods: 2.0
+  fit_skip_periods: 1.0
+  coupled_branch: true
+  coupled_chi0: 0.016
+  coupled_p1_over_pmean: 1.0
+  qs_alpha_temperature_exponent: 1.04
+  y_hs_si_w_m2k: 1393.4
+  chi_c_areal_si: 7.0e-4
+  alpha_extension_ny: [12, 8, 6]
+
+gates:                            # 合法性行(生产 runner;P-DC2 逐字)
+  stationarity_per_period: 1.0e-3
+  state_match_rel: 1.0e-2
+  coupled_amp_rel: 1.0e-1
+  coupled_phase_deg: 10.0
+  domain_recheck_dop_abs: 1.0e-1

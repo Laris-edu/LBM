@@ -1,0 +1,68 @@
+# WP4 A5 χ 地图权威配置(合同 §15.4/§3.5;D5-6 SCOPED_GO 授权)
+# 网格=chi_0 {0.01,0.1,0.3,1,3} × ε_AC {0.01,0.05}(0.10 未认证截断,§15.4);
+# 几何=G4a canonical 帐篷逐字 @Θ_DC=0.05;耦合仪器=G4a §A.4 认证回路逐字;
+# χ 轴=冷参照(合同 §15.4 表精确复现),chi_eff(工作点参照)逐点归档;
+# P₁ 闭式反解命中目标膜幅值;p1/pmean>1 的点=有符号总功率(D0-4 数值消融口径,逐点标记);
+# material_relevance 预注册:仅 0.01 为 supported(基线膜 χ₀=0.0129 邻域),其余 synthetic。
+# 统一耦合协议(不逐 χ 调参):drive 6 周期/skip 3——膜 AC 极点 χ=3 处 ≥2× 余量。
+
+inheritance:
+  gas_config: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+  design_prereg: docs/Phase_5/wp3_go_nogo_decision.md
+  g4a_reference_run: docs/Phase_5/M5_runs/g4a_20260801T081856Z
+  coupled_rerun_reference: docs/Phase_5/M5_runs/g4a_coupled_20260801T155507Z
+
+a5:                               # 权威协议(预注册;不得按结果逐点调整)
+  unit_label: WP4-A5
+  frequency_Hz: 1.0e4
+  hs_rows: 48                     # canonical H_s(G4a 逐字)
+  nx: 8
+  samples_per_period: 64
+  theta_dc: 0.05                  # canonical 工作点(A5 解释 A2a/QS-1 规律优先,§15.4)
+  eps_probe: 0.005                # 锚定增量(线性探针;G4a ε 谱系最小点)
+  chi_ladder: [0.01, 0.1, 0.3, 1.0, 3.0]   # §15.4 建议网格逐字
+  eps_targets: [0.01, 0.05]       # §15.4;0.10 被 G1a 授权边界截断
+  settle_periods: 5.0             # 箱弛豫 settle(G4a canonical 逐字)
+  drive_probe_periods: 4.0        # 锚定增量协议(A2a 逐字)
+  fit_skip_probe_periods: 2.0
+  drive_coupled_periods: 6.0      # 统一耦合协议(膜极点余量;预注册)
+  fit_skip_coupled_periods: 3.0
+  guard_factor: 5.0               # 失稳守卫(G4a 逐字)
+  y_hs_si_w_m2k: 1393.4           # SI 半空间导纳桥(C_A_si 归档;§15.4 表)
+  eps_realized_band: [0.5, 1.5]   # 实现幅值/目标 比带(合法行;宽带,精确一致性是物理输出)
+  eps_realized_max: 0.08          # G1a 授权包络硬守卫(0.075+裕量)
+  material_relevance:             # §3.5 预注册表(有材料数据后由用户更新)
+    "0.01": supported
+    "0.1": synthetic_regime_extension
+    "0.3": synthetic_regime_extension
+    "1": synthetic_regime_extension
+    "3": synthetic_regime_extension
+
+a5_smoke:                         # 机器链 smoke(小域短时;非权威)
+  unit_label: WP4-A5
+  frequency_Hz: 1.0e4
+  hs_rows: 12
+  nx: 4
+  samples_per_period: 32
+  theta_dc: 0.05
+  eps_probe: 0.005
+  chi_ladder: [0.016, 1.0]        # 认证基线邻点 + 大 χ 端
+  eps_targets: [0.01]
+  settle_periods: 2.0
+  drive_probe_periods: 2.0
+  fit_skip_probe_periods: 1.0
+  drive_coupled_periods: 3.0
+  fit_skip_coupled_periods: 1.5
+  guard_factor: 5.0
+  y_hs_si_w_m2k: 1393.4
+  eps_realized_band: [0.3, 2.0]   # smoke 域粗,带放宽
+  eps_realized_max: 0.08
+  material_relevance:
+    "0.016": supported
+    "1": synthetic_regime_extension
+
+gates:                            # 合法性行(生产 runner;物理数不判门)
+  stationarity_per_period: 1.0e-3
+  state_match_rel: 1.0e-2
+  coupled_amp_rel: 2.0e-1         # 一致性行归档口径(比 A2a 宽:跨 30× χ 窗;非判门)
+  coupled_phase_deg: 20.0

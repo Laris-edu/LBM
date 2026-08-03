@@ -1,6 +1,6 @@
 # LBM 项目上下文入口
 
-**最后更新**：2026-08-02
+**最后更新**：2026-08-03
 **用途**：新会话第一份必读文档，用于快速恢复项目阶段、读取路线、不可误判规则和下一步优先级。
 **定位**：全项目生命周期唯一上下文入口，不是某个阶段的专属文档。
 **维护原则**：只保留压缩摘要和入口索引；阶段流水、run 细节、完整数值和推导证据由对应 `PhaseN_STATUS.md`、M 报告和专项诊断报告维护，本文不复制。
@@ -49,8 +49,9 @@ G1b `FAILED` 闭卷（D5-4；其顺延的耦合包络已由 G4a 正面闭合）�
 `20260802T105444Z`(H2/ε 四位恒定、m₂=1.9987、D_G∝ε²≪3%)+ P-DC2 A 机 `20260802T104619Z`
 (**D_OP 残差标度律:−5.18pp→−9.95pp≈线性于 Θ_DC,三层参照层级实测**)+ P-1D 双臂;
 §14.1 对照终版=材料完整支持 `SCOPED_GO`(`wp3_go_nogo_decision.md`)。
-**最终 `SCOPED_GO` 仍须用户批准(将记 D5-6),WP4 未授权;WP4 交接口径=Phase5_STATUS §6**
-(净新增:A2a Θ_DC=0.02 点、A1 阶梯 {0.003,0.02,0.03}、A5 χ 地图 runner)。
+**D5-6(2026-08-03):用户批准 `SCOPED_GO`,WP4 认证子矩阵执行中**(A2a 全地图/A1 全阶梯/
+A5 χ 地图,~25–35 run;净新增:A2a Θ_DC=0.02 点、A1 {0.003,0.02,0.03}、A5 runner;
+执行口径=Phase5_STATUS §6,决策记录=`wp3_go_nogo_decision.md` §7)。
 论文架构入口=`Paper1_Manuscript_Architecture.md`：Results I=工作点非线性/QS 边界，
 Results II=A1/H2，Results III=`chi` regime map；A2a 矩阵围绕动力学残差标度/来源设计。
 多 run gate 沿用进程池并行（execute_cases，D5-3 跨机口径；settle 按箱弛豫时间迁移;
@@ -59,7 +60,7 @@ Results II=A1/H2，Results III=`chi` regime map；A2a 矩阵围绕动力学残�
 
 ## 2. 当前阶段与状态
 
-**当前阶段（2026-08-02）：Phase_5 WP3 首轮八信息单元执行中（D5-5）**。WP2 入口 Gate 序列已完成：G0-B（scoped）、G3、G1-W、G1a、G2-T/A/O（L2-2F 生效）、G4a `PASSED`；G1b `FAILED` 闭卷，其顺延耦合问题已由 G4a canonical 有沉几何单点闭合。P-H2/P-DC1 已记账，其余六单元待权威 run 与 §14.1 对照。完整 `GO` 因 G1b 不可达；`SCOPED_GO` 与 WP4 子矩阵均须用户批准。主路线=`ROUTE_B_MAIN + 1D_REAL_AIR_BOUNDING`；基础投稿 JASA/JSV，PRA 条件升级；H3/30 kHz、G4b、G5 为条件或 waived。`FINAL_PRODUCTION_NOT_CLAIMED`。状态与 Gate 现值只看 `docs/Phase_5/Phase5_STATUS.md`，论文叙事与图表接口看 `docs/Phase_5/Paper1_Manuscript_Architecture.md`。
+**当前阶段（2026-08-03）：Phase_5 WP4 认证子矩阵执行中（D5-6 `SCOPED_GO`）**。WP2 入口 Gate 序列已完成：G0-B（scoped）、G3、G1-W、G1a、G2-T/A/O（L2-2F 生效）、G4a `PASSED`；G1b `FAILED` 闭卷，其顺延耦合问题已由 G4a canonical 有沉几何单点闭合。WP3 八单元全部完成（2026-08-02），§14.1 对照终版支持 `SCOPED_GO`；**用户已于 2026-08-03 批准（D5-6），WP4 授权范围=A2a 全地图/A1 全阶梯/A5 χ 地图认证子矩阵**（完整 `GO` 因 G1b 预注册不可达；A3/A2b/H3/F1 不在授权内）。主路线=`ROUTE_B_MAIN + 1D_REAL_AIR_BOUNDING`；基础投稿 JASA/JSV，PRA 条件升级；H3/30 kHz、G4b、G5 为条件或 waived。`FINAL_PRODUCTION_NOT_CLAIMED`。状态与 Gate 现值只看 `docs/Phase_5/Phase5_STATUS.md`，论文叙事与图表接口看 `docs/Phase_5/Paper1_Manuscript_Architecture.md`。
 
 > 谱系说明：以下两段是 Phase_4 期历史长摘要（2026-07-09 / 2026-07-11）。其中「不授权 Phase_5 / 决策前不行动」已由 2026-07-20 立项决策（§4）解除；E2/R2/digest 数值当前引用以 2026-07-11 审查修订段为准。
 

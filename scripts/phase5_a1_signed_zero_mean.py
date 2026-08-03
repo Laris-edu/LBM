@@ -276,6 +276,8 @@ def run_a1(config_path: str | Path, output_root: str | Path | None = None,
 
     f_hz = float(proto["frequency_Hz"])
     ny, nx = int(proto["ny"]), int(proto["nx"])
+    # orchestration-level naming only: default preserves WP3 behavior bit-for-bit
+    unit = str(proto.get("unit_label", "WP3-A1"))
     eps_ladder = [float(e) for e in proto["eps_ladder"]]
     eps_ref = min(eps_ladder)
     spp = int(proto["samples_per_period"])
@@ -475,7 +477,7 @@ def run_a1(config_path: str | Path, output_root: str | Path | None = None,
         {"obs": obs, "ladder": ladder_rows, "old": old_obs, "floors": floors},
         sort_keys=True, default=str).encode()).hexdigest()[:12]
     summary = {
-        "gate": "WP3-A1", "run_id": run_id, "verdict": verdict,
+        "gate": unit, "run_id": run_id, "verdict": verdict,
         "gate_status": verdict, "scoped_limitations": [],
         "smoke_mode": bool(smoke),
         "protocol": {"eps_ladder": eps_ladder,
@@ -497,7 +499,7 @@ def run_a1(config_path: str | Path, output_root: str | Path | None = None,
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=1, default=float),
                                           encoding="utf-8")
     (out_dir / "gate_evaluation.json").write_text(json.dumps(
-        {"gate": "WP3-A1", "verdict": verdict, "legality": legal,
+        {"gate": unit, "verdict": verdict, "legality": legal,
          "note": "production runner: physics rows are data, not gates"},
         indent=1, default=float), encoding="utf-8")
     (out_dir / "harmonic_fit.json").write_text(json.dumps(
@@ -513,7 +515,7 @@ def run_a1(config_path: str | Path, output_root: str | Path | None = None,
          "finished_utc": datetime.now(timezone.utc).isoformat()},
         indent=1), encoding="utf-8")
     (out_dir / "run_report.md").write_text("\n".join(
-        [f"# WP3-A1 run {run_id}", "", f"verdict: **{verdict}**", "", "```text"]
+        [f"# {unit} run {run_id}", "", f"verdict: **{verdict}**", "", "```text"]
         + log_lines + ["```", ""]), encoding="utf-8")
     log(f"outputs -> {out_dir}")
     return {"verdict": verdict, "out_dir": str(out_dir), "summary": summary}

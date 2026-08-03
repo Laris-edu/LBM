@@ -17,14 +17,11 @@
 | `test_phase5_g2_operator_ablation.py` | **G2-O 合同测试（7 项，~2 min,含微型端到端）**：变异管路（dotted 路径必须预存于冻结配置——防 setdefault 静默死键;深拷贝隔离）+ 行为非退化（v2/v4 场发散、v1 逐位恒等）+ **结构恒等双事实钉死**（对角支 0 合格模@48×8/16×4 + 高模因子恰 1.0——任何重新激活算子的未来变更在此显形）+ 符号对仪器非退化（奇组合杀偶驱动 2f 至 ≤1e-10、保留符号线性算子 2f 于注入水平——S1 判别力实测）+ 双窗漂移检出 + 配置冻结断言（20 kHz settle 覆盖 ≥11τ_box）+ 微型端到端七文件合同/S6 管路/自基线归一化。权威判定属 gate run。 |
 | `test_phase5_g4a_dc_basestate.py` | **G4a 合同测试（6 项，<1 s,纯机制级）**：带泛化=认证壁重定位（row0 逐位≡原壁、任意行逐位≡roll 组合、钉扎/质量中性复核）;帐篷参考族恒等（双点源叠加≡变系数 BVP 1e-12、约束精确、coth 锚、α_eff 表敏感性非退化、QS 方向可测）;能量簿记对已知注入精确校准(1e-12);传导种子形状;**耦合回路机制映射夹具**（g=1.244 发散/0.965 稳/0 干净——生产/smoke 二分性代数钉死+cp 过扣量对账）;算例装配预注册断言（状态匹配按构造、阶梯 {48,72,96}、阈值冻结）。权威判定属 gate run。 |
 | `test_phase5_wp3_units.py` | **WP3 合同测试(4 项,<1 s)**:符号对分离代数定量夹具(奇留线性含瞬态/偶取 2f 杀瞬态;早窗三方对照=settle-12 纪律与配对窗口自由的牙齿)+ 冷仪器常数(c_row 精确、mn G_inst≈0=G4a A.4 记账)+ A1/P-DC2 预注册冻结断言(阶梯截断 0.075、G1-W 协议常数、Θ_DC=0.10/ε 合同冻结、域高复验触发线)。权威判定属生产 run。 |
+| `test_phase5_wp4_units.py` | **WP4 子矩阵合同测试(7 项,<1 s;D5-6 SCOPED_GO)**:A5 设计代数纯函数夹具——冷参照 χ 轴往返精确、闭式反解 \|P₁·G1_closed\|=ε·θ0 至 1e-13、chi_eff 工作点参照、**有符号功率 flag=谓词本身 + 现实锚下 ε=0.05 必然 signed(预注册期望钉死,防事后"修复")**、大 χ 驱动单调;C_A_si 经 y_hs 桥精确复现合同 §15.4 表(2% 舍入容差);fail-loud(坏锚必 raise);D_chi 残差配对(缺臂记 incomplete 不静默丢弃);A5/A2a-WP4/A1-WP4 三族配置预注册冻结断言(χ 网格逐字、ε 0.10 截断、material_relevance 齐全且大 C_A 必 synthetic、dop 趋势链携带、全阶梯 7 点、协议常数 G1-W 逐字)。耦合积分器机制夹具在 g4a 测试,不重测。权威判定属生产 run。 |
 | `test_phase5_g1b_levelc_amplitude.py` | **G1b 合同测试（4 项，~1 min，进程池 smoke）**：七文件合同 + §16.2/16.3 逐键 + 三态；机器级行（膜审计 1e-15、质量、耦合稳定性 growth）smoke 必过 + **保真度受限行必 FAIL**（ε 定标用生产 §23 常数在 smoke rig 必错 >20%→行有测量牙齿）；能量通道相消演示（干净点幅值 <10%）+ in-run recal 为真测非拷贝；`q_extraction`/`wall_bc` 枚举拒绝。G1b 判定 `FAILED`（结构性）见报告 §B；本测试守护仪器资产。 |
 | `test_phase5_g1_amplitude_envelope.py` | **G1a 合同测试（3 项，~30 s，进程池 smoke）**：七文件合同 + §16.2/16.3 逐键 + 三态 verdict；机器级行（质量/壁温/有限性/能量漂移/窗口）在 smoke 保真度也必须过 + **保真度受限行（小幅值回归相位、域细化 D_G 差）在 smoke 必须 FAIL**→脚本在非权威保真度拒发 PASSED；**反循环门断言**（细化行 gate 不得自含细化差分量——smoke 抓出的自满足门 bug 固化为回归）；能量漂移在 ε_min 按构造=0、其它点实测 >0；H2 随 ε 单调（真非线性实测）。G1b 落地时扩展本模块。权威判定属 gate run（STATUS §3）。 |
 | `test_phase5_g1w_wall_neutrality.py` | **G1-W 合同测试（4 项，~1.5 min）**：runner `--smoke`（诊断频率小密封 rig）单次模块夹具——七文件合同 + §16.2/16.3 逐键断言 + 三态 verdict；**壁判别非退化**（mn 中性行机器级真过 + 旧壁质量源实测高出 mn 千倍以上 → DIAGNOSTIC_ONLY 判定是测出来的非叙事）；**密封谱参考对独立闭式解的非重言锚**（常 α 输入必须复现 tanh 密封闭式 0.9202@+3.53° 于 3%/1.5° 内 + profile 钉扎/衰减形状）；α 高 k 扩展行归档且回升 >2× 在案。权威 G1-W 物理判定不在此断言（属 gate run，STATUS §3）。 |
 | `test_phase5_g3_nsf1d.py` | **G3 合同测试（5 项，~1.5 min）**：runner `--smoke`（toy 缩放）单次模块夹具——七文件 run 合同齐全、§16.2 59 metadata 键 + §16.3 27 结果键对 schema 逐键断言、verdict 限三态；**gate 逻辑非退化**（平衡/能量/泄漏/低马赫行在机器级物理上过，粗 smoke 阶梯实测阶 ~2 但最细两档 1% 行必须 FAIL → 脚本在粗设置下拒发 PASSED、阶梯差为真测非拷贝）；**正式分支定义冻结**（g0 实测律指数 +1.04/−0.60、id `1D-lbm-equivalent_g0_measured_k1_v1`、三分支 T0 锚定重合且 id 相异、summary 携带正式映射）；harmonic_fit 相位约定字符串 + detrend 预注册 + p-side 消融复核块三分支 H2 可测且相异。权威 G3 物理判定不在此断言（属 gate run，STATUS §3）。 |
-
-## 规划测试（合同交付物，随 WP2 落地；当前不存在）
-
-`test_phase5_g2_harmonic_transfer.py` · `test_phase5_g2_operator_ablation.py`（G1b 测试已随判定交付）
 
 ## 纪律
 

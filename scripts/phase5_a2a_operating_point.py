@@ -18,6 +18,12 @@ trigger: |D_OP(0.10)| > 10%).
 Production runner: legality rows gate the exit code; physics numbers feed
 wp3_go_nogo_decision.md. All instruments imported from the certified G4a
 module (zero re-implementation).
+
+WP4 (D5-6 SCOPED_GO): the same runner serves every A2a map point — theta_dc,
+label_tag and unit_label are config-driven (defaults preserve the WP3 P-DC2
+config behavior bit-for-bit). WP4 configs: a2a_wp4_dc002 (the §15.2 map
+completion point) and a2a_wp4_dc0075 (pre-registered optional densification
+point for the residual scaling law).
 """
 
 from __future__ import annotations
@@ -85,6 +91,10 @@ def run_pdc2(config_path: str | Path, output_root: str | Path | None = None,
     ny = 2 * hs_rows
     nx = int(proto["nx"])
     theta_dc = float(proto["theta_dc"])
+    # orchestration-level naming only (physics untouched): defaults preserve
+    # the WP3 P-DC2 config behavior bit-for-bit; WP4 configs override both.
+    tag = str(proto.get("label_tag", "dc010"))
+    unit = str(proto.get("unit_label", "WP3-PDC2"))
     eps_list = [float(e) for e in proto["eps_ac"]]
     spp = int(proto["samples_per_period"])
     settle = float(proto["settle_periods"])
@@ -94,13 +104,13 @@ def run_pdc2(config_path: str | Path, output_root: str | Path | None = None,
     common = dict(gas_cfg=gas_cfg, ny=ny, nx=nx, frequency_hz=f_hz,
                   samples_per_period=spp, settle_periods=settle)
     payloads: list[dict[str, Any]] = [
-        {**common, "label": "base_dc010", "kind": "base",
+        {**common, "label": f"base_{tag}", "kind": "base",
          "theta_dc": theta_dc, "eps_ac": 0.0, "drive_periods": 0.0},
         {**common, "label": "inc_cold", "kind": "increment",
          "theta_dc": 0.0, "eps_ac": min(eps_list), "drive_periods": drive_p},
     ]
     for eps in eps_list:
-        payloads.append({**common, "label": f"inc_dc010_eps{eps:g}",
+        payloads.append({**common, "label": f"inc_{tag}_eps{eps:g}",
                          "kind": "increment", "theta_dc": theta_dc,
                          "eps_ac": eps, "drive_periods": drive_p})
 
@@ -123,9 +133,9 @@ def run_pdc2(config_path: str | Path, output_root: str | Path | None = None,
             for lb in results if run_of(lb) is not None
             and run_of(lb).get("drive") is not None}
 
-    # ---- coupled point at 0.10 (corrected accounting; sequential follow-up)
-    base = run_of("base_dc010")
-    canon_inc = f"inc_dc010_eps{max(eps_list):g}"
+    # ---- coupled point at the working point (corrected accounting; sequential)
+    base = run_of(f"base_{tag}")
+    canon_inc = f"inc_{tag}_eps{max(eps_list):g}"
     coupled_row: dict[str, Any] = {"status": "not_run"}
     if proto.get("coupled_branch", True) and base is not None and canon_inc in y_by:
         run_c = run_of(canon_inc)
@@ -136,14 +146,14 @@ def run_pdc2(config_path: str | Path, output_root: str | Path | None = None,
         p_mean_area = base["q_hot_dc_lu"] / base["nx"]
         p1_over = float(proto["coupled_p1_over_pmean"])
         ts_exp = abs(p1_over * p_mean_area / (1j * om_step * c_a_lu + y_area))
-        cpl_payload = {**common, "label": "coupled_dc010", "kind": "coupled",
+        cpl_payload = {**common, "label": f"coupled_{tag}", "kind": "coupled",
                        "theta_dc": theta_dc, "eps_ac": 0.0,
                        "drive_periods": drive_p,
                        "coupled": {"c_areal_lu": c_a_lu, "p1_over_pmean": p1_over,
                                    "guard_factor": 5.0,
                                    "expected_ts_hat_lu": ts_exp}}
         cres = execute_cases([cpl_payload], 1, log, worker=_g4a_case_worker)
-        cr = cres.get("coupled_dc010")
+        cr = cres.get(f"coupled_{tag}")
         if cr and cr.get("ok") and cr["run"].get("drive") is not None and cr["run"]["finite"]:
             rr = cr["run"]
             if not rr["drive"]["coupled"]["unstable"]:
@@ -160,7 +170,7 @@ def run_pdc2(config_path: str | Path, output_root: str | Path | None = None,
                                    ts1 / pred, float(gates["coupled_amp_rel"]),
                                    float(gates["coupled_phase_deg"])),
                                "instrument": rr.get("coupled_instrument")}
-                log(f"coupled@0.10: ratio={abs(ts1/pred):.4f}"
+                log(f"coupled@{theta_dc:g}: ratio={abs(ts1/pred):.4f}"
                     f"@{math.degrees(math.atan2((ts1/pred).imag, (ts1/pred).real)):+.2f}deg")
             else:
                 coupled_row = {"status": "unstable",
@@ -215,9 +225,10 @@ def run_pdc2(config_path: str | Path, output_root: str | Path | None = None,
               "chi_eff": float(om_si * c_a_si / (2.0 * y_wp_si)),
               "g4a_dop_005_reference": {"abs_minus_1": -0.0283,
                                         "run": "20260801T081856Z"},
-              "trend_note": "monotonicity vs the G4a Theta_DC=0.05 point "
-                            "is the unit's main output"}
-        log(f"D_OP(0.10)={abs(d_op):.4f}@{math.degrees(math.atan2(d_op.imag, d_op.real)):+.2f} "
+              "dop_reference_points": proto.get("dop_reference_points"),
+              "trend_note": "monotonicity vs the archived Theta_DC reference "
+                            "points is the unit's main output"}
+        log(f"D_OP({theta_dc:g})={abs(d_op):.4f}@{math.degrees(math.atan2(d_op.imag, d_op.real)):+.2f} "
             f"QS0 {abs(d_qs0):.4f} QS1 {abs(d_qs1):.4f} chi_eff={qs['chi_eff']:.4f}")
 
     # DC-on-H2: increment 2f content per eps at 0.10 vs cold
@@ -260,7 +271,7 @@ def run_pdc2(config_path: str | Path, output_root: str | Path | None = None,
         {"qs": qs, "h2": h2_rows, "coupled": coupled_row},
         sort_keys=True, default=str).encode()).hexdigest()[:12]
     summary = {
-        "gate": "WP3-PDC2", "run_id": run_id, "verdict": verdict,
+        "gate": unit, "run_id": run_id, "verdict": verdict,
         "gate_status": verdict, "scoped_limitations": [],
         "smoke_mode": bool(smoke),
         "protocol": {"theta_dc": theta_dc, "eps_ac": eps_list, "hs_rows": hs_rows,
@@ -276,7 +287,7 @@ def run_pdc2(config_path: str | Path, output_root: str | Path | None = None,
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=1, default=float),
                                           encoding="utf-8")
     (out_dir / "gate_evaluation.json").write_text(json.dumps(
-        {"gate": "WP3-PDC2", "verdict": verdict, "legality": legal,
+        {"gate": unit, "verdict": verdict, "legality": legal,
          "note": "production runner: physics rows are data, not gates"},
         indent=1, default=float), encoding="utf-8")
     (out_dir / "harmonic_fit.json").write_text(json.dumps(
@@ -292,7 +303,7 @@ def run_pdc2(config_path: str | Path, output_root: str | Path | None = None,
          "finished_utc": datetime.now(timezone.utc).isoformat()},
         indent=1), encoding="utf-8")
     (out_dir / "run_report.md").write_text("\n".join(
-        [f"# WP3 P-DC2 run {run_id}", "", f"verdict: **{verdict}**", "", "```text"]
+        [f"# {unit} run {run_id}", "", f"verdict: **{verdict}**", "", "```text"]
         + log_lines + ["```", ""]), encoding="utf-8")
     log(f"outputs -> {out_dir}")
     return {"verdict": verdict, "out_dir": str(out_dir), "summary": summary}
