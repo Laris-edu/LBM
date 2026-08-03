@@ -45,8 +45,12 @@ G1b `FAILED` 闭卷（D5-4；其顺延的耦合包络已由 G4a 正面闭合）�
 （canonical 沉几何的双 v1.1 认证带实现）、状态匹配域高收敛 0.9975@−0.45°、
 **QS 判读=动力学非线性残差实锤（D_OP −2.83% vs 静态族 +2.4%,符号相反）**、
 耦合行重跑 1.0376@+1.05°（χ_0=0.016 基线膜）;报告 dc_protocol_report.md。
-**WP3 已由用户决策 D5-5 启动（2026-08-02）**：P-H2/P-DC1 已按 WP2 权威 run 记账，
-其余六单元按 `wp3_go_nogo_decision.md` 预注册执行；最终 `SCOPED_GO` 仍须用户批准，WP4 未授权。
+**WP3 八单元全部完成（D5-5 启动,2026-08-02 当日闭合;双机分跑首例）**：A1 四单元 B 机
+`20260802T105444Z`(H2/ε 四位恒定、m₂=1.9987、D_G∝ε²≪3%)+ P-DC2 A 机 `20260802T104619Z`
+(**D_OP 残差标度律:−5.18pp→−9.95pp≈线性于 Θ_DC,三层参照层级实测**)+ P-1D 双臂;
+§14.1 对照终版=材料完整支持 `SCOPED_GO`(`wp3_go_nogo_decision.md`)。
+**最终 `SCOPED_GO` 仍须用户批准(将记 D5-6),WP4 未授权;WP4 交接口径=Phase5_STATUS §6**
+(净新增:A2a Θ_DC=0.02 点、A1 阶梯 {0.003,0.02,0.03}、A5 χ 地图 runner)。
 论文架构入口=`Paper1_Manuscript_Architecture.md`：Results I=工作点非线性/QS 边界，
 Results II=A1/H2，Results III=`chi` regime map；A2a 矩阵围绕动力学残差标度/来源设计。
 多 run gate 沿用进程池并行（execute_cases，D5-3 跨机口径；settle 按箱弛豫时间迁移;
