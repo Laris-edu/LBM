@@ -131,7 +131,15 @@ FINAL_PRODUCTION_NOT_CLAIMED
 3. 由用户决定是否批准 `SCOPED_GO`；批准前不启动 WP4。批准后只执行论文主图所需的 A2a/A1-H2/A5 认证子矩阵。
 4. 写作并行仅覆盖已锁定章节：Introduction、Methods、Verification 与 Results I 的 0.05 锚；最终摘要、标题和趋势结论等待 WP3/WP4。
 
-**WP2 入口 Gate 序列全部完成（2026-08-01）**：G0（scoped）、G3、G1-W、G1a、G2-T/A/O、**G4a（关键路径单点,含耦合行闭合）**；G1b `FAILED` 闭卷（其顺延问题已由 G4a 沉几何正面解决）；G4b=条件项（1D 先行,§9.2）、G5 默认 WAIVED。**WP3 已由 D5-5 启动（2026-08-02）**：先完成 P-LIN/P-AC1/P-AC2/P-AC3/P-DC2/P-1D 权威 run 和 §14.1 对照，再由用户决定 `SCOPED_GO`；WP4 不得预启动。WP3 可直接消费的 G4a 资产：① 帐篷 canonical 几何+基态协议（状态匹配阶梯口径冻结）;② 实测 χ_0/χ_eff 与 D_OP 链（含冷锚算例族）;③ **动力学非线性残差发现**（QS 静态族符号级失效——Results I 候选主结论,WP3 A2a 矩阵应围绕其标度/来源设计信息单元）;④ 耦合闭环仪器（cv 记账+半隐式,χ_0=0.016 认证点）;⑤ QS-BVP 参考族（k1 律操作化;k 分辨温度依赖=已识别机理嫌疑,WP3 可设计判别单元）。论文并行任务以 `Paper1_Manuscript_Architecture.md` 为入口：现在可写 Introduction/Methods/Verification，Results 主趋势与最终摘要等待 WP3/WP4。执行纪律沿用：进程池并行、跨机 D5-3、settle 弛豫时间迁移、**编排教训:非依赖后续相并入主池**。注意 §14.1 完整生产 GO 条件 1 因 G1b 不可满足→WP4 只能走用户批准的 `SCOPED_GO` 认证子矩阵。
+**WP0–WP3 全部完成（2026-08-02）**;八单元数据与 §14.1 对照终版见 `wp3_go_nogo_decision.md`。**用户已表达 WP4 意向(本会话末),正式 `SCOPED_GO` 决策记录留 WP4 会话首条(记 D5-6;D0-7 口径)**。
+
+**WP4 交接口径(SCOPED_GO 子矩阵=A2a / A1-H2 / A5,~25–35 run,合同 §15 为规范源)**:
+
+1. **A2a 全地图**:Θ_DC={0, 0.02, 0.05, 0.10}×ε={0.005, 0.02}(§15.2)——已有 0/0.05/0.10 三点(G4a+P-DC2 runs 直接入表),**净新增=Θ_DC=0.02 点 + 残差标度律加密点(可选 0.075)**;runner=`phase5_a2a_operating_point.py` 配置变体即可(theta_dc 参数化已就绪);每点输出 D_OP/QS-0/QS-1/χ_eff/DC-on-H2/耦合一致性。
+2. **A1 全阶梯**:§15.1 八点 {0.001,0.003,0.01,0.02,0.03,0.05,0.075}(0.10 被 G1a 截断)——已有 4 点,**净新增 {0.003, 0.02, 0.03}**;runner=`phase5_a1_signed_zero_mean.py` 配置加点;H2/ε 恒定性与 m₂ 是主表。
+3. **A5 χ 地图**:§15.4(χ_0×ε_AC;按 chi_0 设计、按 chi_eff 解释,大 C_A 点标 `material_relevance`)——耦合仪器已跨工作点认证(cv 记账+半隐式);新 runner 可复用 G4a coupled 分支参数化 chi0(唯一净新增实现面)。
+4. **纪律**:双机分跑(D5-3,发跑前同 commit;A/B 逐位先例已立)、settle 弛豫时间迁移、非依赖后续相并入主池、`results/` 不入库+M5_runs 摘要归档、脚本只产 SCOPED_CANDIDATE 族 verdict。
+5. **写作并行轨**:`Paper1_Manuscript_Architecture.md` 已建立;Methods/Verification/Results I 骨架可与 WP4 并行动笔(全部 Gate 数值在 M5_runs 与各报告)。
 
 ## 7. 更新日志
 
