@@ -1,0 +1,13 @@
+{
+ "gate": "WP4-A2A-DC002",
+ "verdict": "COMPLETED",
+ "legality": {
+  "all_finite": true,
+  "stationarity_gate": 0.001,
+  "stationarity_base": 3.260733281400978e-07,
+  "state_match_dev": 3.9266136119375794e-05,
+  "state_match_gate": 0.01,
+  "domain_recheck_trigger": false
+ },
+ "note": "production runner: physics rows are data, not gates"
+}

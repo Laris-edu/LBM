@@ -1,0 +1,16 @@
+{
+ "run_id": "20260803T185101Z",
+ "family": "a2a_operating_point",
+ "argv": [
+  "scripts/phase5_a2a_operating_point.py",
+  "--config",
+  "configs/phase5/a2a_operating_point/a2a_wp4_dc0075_10k_dx2p6.yaml",
+  "--workers",
+  "6"
+ ],
+ "machine": "LARIS-JIXIE",
+ "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+ "workers": 6,
+ "started_utc": "2026-08-03T14:27:43.935896+00:00",
+ "finished_utc": "2026-08-03T18:51:01.298022+00:00"
+}

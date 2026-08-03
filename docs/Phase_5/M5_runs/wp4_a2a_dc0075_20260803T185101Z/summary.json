@@ -1,0 +1,111 @@
+{
+ "gate": "WP4-A2A-DC0075",
+ "run_id": "20260803T185101Z",
+ "verdict": "COMPLETED",
+ "gate_status": "COMPLETED",
+ "scoped_limitations": [],
+ "smoke_mode": false,
+ "protocol": {
+  "theta_dc": 0.075,
+  "eps_ac": [
+   0.005,
+   0.02
+  ],
+  "hs_rows": 48,
+  "geometry": "G4a tent canonical verbatim"
+ },
+ "results": {
+  "qs_chi": {
+   "status": "ok",
+   "D_OP_measured": {
+    "re": 0.9583518306407648,
+    "im": -0.033752028158422265,
+    "abs": 0.9589459998859748,
+    "phase_deg": -2.017056509125378
+   },
+   "D_OP_QS0_pred": {
+    "re": 1.0358006291272353,
+    "im": 0.0010498195867933919,
+    "abs": 1.03580116114124,
+    "phase_deg": 0.058071224602018634
+   },
+   "D_OP_QS1_pred": {
+    "re": 1.0350113737856779,
+    "im": 0.0025172112701836195,
+    "abs": 1.0350144347874066,
+    "phase_deg": 0.13934658228605462
+   },
+   "qs0_residual": 0.0849086862074728,
+   "qs1_residual": 0.08480650496227474,
+   "chi_0": 0.012929616504063508,
+   "chi_eff": 0.01348315390606033,
+   "g4a_dop_005_reference": {
+    "abs_minus_1": -0.0283,
+    "run": "20260801T081856Z"
+   },
+   "dop_reference_points": [
+    {
+     "theta_dc": 0.05,
+     "dop_abs_minus_1": -0.0283,
+     "run": "20260801T081856Z"
+    },
+    {
+     "theta_dc": 0.1,
+     "dop_abs_minus_1": -0.0531,
+     "run": "20260802T104619Z"
+    }
+   ],
+   "trend_note": "monotonicity vs the archived Theta_DC reference points is the unit's main output"
+  },
+  "h2_by_case": {
+   "inc_dc0075_eps0.005": 0.0015145939695254736,
+   "inc_dc0075_eps0.02": 0.006286944431287902,
+   "inc_cold": 0.001720645376493314
+  },
+  "coupled": {
+   "status": "stable",
+   "Ts_hat_measured": {
+    "re": 0.00034955044338365164,
+    "im": -0.0006126203660316195,
+    "abs": 0.0007053291609925277,
+    "phase_deg": -60.29167688309297
+   },
+   "Ts_hat_ode_closed_form": {
+    "re": 0.0003261359423586265,
+    "im": -0.0005969103709366492,
+    "abs": 0.000680196033382934,
+    "phase_deg": -61.34898180701216
+   },
+   "consistency": {
+    "ratio": {
+     "re": 1.03677327852159,
+     "im": 0.019134218028157502,
+     "abs": 1.036949829719816,
+     "phase_deg": 1.057304923919189
+    },
+    "amp_rel_err": 0.036949829719816085,
+    "phase_deg_err": 1.057304923919189,
+    "amp_gate": 0.1,
+    "phase_gate_deg": 10.0,
+    "passed": true
+   },
+   "instrument": {
+    "c_row_cv": 18.618151663847875,
+    "G_inst": -4.3586291973270477e-07,
+    "raw_gain_would_be": 1.2323514669448739
+   }
+  },
+  "p_mean_lu_per_area": 1.9445452897381599,
+  "legality": {
+   "all_finite": true,
+   "stationarity_gate": 0.001,
+   "stationarity_base": 2.1515713778201326e-06,
+   "state_match_dev": 4.155976027064856e-05,
+   "state_match_gate": 0.01,
+   "domain_recheck_trigger": false
+  }
+ },
+ "physics_core_digest": "68f2b0883e13",
+ "code_commit": "fefee6b7318820ca02151f527f4b02a0f115b2b5",
+ "wall_clock_min": 263.28930735
+}

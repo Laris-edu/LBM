@@ -122,8 +122,13 @@ def test_amplitude_residual_pairing():
 def test_a5_pre_registration_frozen():
     cfg = load_config(A5_CFG)
     a5 = cfg["a5"]
-    # §15.4 grid verbatim; eps 0.10 truncated by the G1a authorization boundary
-    assert [float(c) for c in a5["chi_ladder"]] == [0.01, 0.1, 0.3, 1.0, 3.0]
+    # §15.4 grid with the v2 small-end substitution: the suggested chi_0=0.01
+    # endpoint was measured UNREACHABLE by the certified explicit loop (v1
+    # authoritative run 20260803T142638Z: free-loop divergence at drive~0,
+    # raw_gain 1.94 vs the 1.24 certified-stable ceiling) -> replaced by the
+    # certified baseline film chi=0.016 (raw_gain 1.21, inside the three-run
+    # stable precedent). Same truncation family as "eps 0.10 not certified".
+    assert [float(c) for c in a5["chi_ladder"]] == [0.016, 0.1, 0.3, 1.0, 3.0]
     assert [float(e) for e in a5["eps_targets"]] == [0.01, 0.05]
     assert max(float(e) for e in a5["eps_targets"]) <= 0.075
     # canonical working point + G4a tent geometry verbatim
@@ -139,6 +144,7 @@ def test_a5_pre_registration_frozen():
     for chi0 in a5["chi_ladder"]:
         assert f"{float(chi0):g}" in rel
     assert set(rel.values()) <= {"supported", "synthetic_regime_extension"}
+    assert rel["0.016"] == "supported"        # the certified baseline film
     assert rel["1"] == "synthetic_regime_extension"
     assert rel["3"] == "synthetic_regime_extension"
     # G1a envelope hard guard

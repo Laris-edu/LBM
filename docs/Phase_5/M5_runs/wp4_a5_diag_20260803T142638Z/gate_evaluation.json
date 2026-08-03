@@ -1,0 +1,22 @@
+{
+ "gate": "WP4-A5",
+ "verdict": "LEGALITY_FAILED",
+ "legality": {
+  "setup_all_finite": true,
+  "stationarity_gate": 0.001,
+  "stationarity_base": 1.3499445182000907e-06,
+  "state_match_dev": 4.0517906797599146e-05,
+  "state_match_gate": 0.01,
+  "all_points_stable": false,
+  "n_stable": 8,
+  "n_points": 10,
+  "eps_realized_band": [
+   0.5,
+   1.5
+  ],
+  "eps_realized_band_ok": true,
+  "eps_realized_max_authorized": 0.08,
+  "eps_realized_max_ok": true
+ },
+ "note": "production runner: physics rows are data, not gates"
+}

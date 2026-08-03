@@ -1,0 +1,56 @@
+inheritance:
+  gas_config: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+  design_prereg: docs/Phase_5/wp3_go_nogo_decision.md
+  wp3_reference_run: docs/Phase_5/M5_runs/wp3_a1_20260802T105444Z_B
+a1:
+  unit_label: WP4-A1-FULL
+  frequency_Hz: 1.0e4
+  ny: 48
+  nx: 8
+  samples_per_period: 64
+  eps_ladder:
+  - 0.001
+  - 0.003
+  - 0.01
+  - 0.02
+  - 0.03
+  - 0.05
+  - 0.075
+  ramp_periods: 2.0
+  periods: 14.0
+  fit_skip_periods: 12.0
+  wall_contrast_eps: 0.05
+  alpha_extension_ny:
+  - 12
+  - 8
+  - 6
+  oned_legs: true
+  oned:
+    height_over_delta: 15.0
+    cells_per_delta: 12.0
+    ramp_cycles: 2.0
+    n_cycles: 14.0
+    settle_cycles: 12.0
+a1_smoke:
+  unit_label: WP4-A1-FULL
+  frequency_Hz: 1.0e4
+  ny: 16
+  nx: 4
+  samples_per_period: 32
+  eps_ladder:
+  - 0.003
+  - 0.02
+  - 0.03
+  ramp_periods: 1.0
+  periods: 4.0
+  fit_skip_periods: 2.0
+  wall_contrast_eps: 0.05
+  alpha_extension_ny:
+  - 12
+  - 8
+  - 6
+  oned_legs: false
+gates:
+  mass_drift_max: 1.0e-08
+  pair_asymmetry_rel: 0.05
+  floor_p2_rel_of_smallest: 0.1

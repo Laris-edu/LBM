@@ -1,0 +1,15 @@
+{
+ "gate": "WP4-A1-FULL",
+ "verdict": "COMPLETED",
+ "legality": {
+  "all_finite": true,
+  "mass_gate": 1e-08,
+  "mass_worst": 3.027933459520682e-11,
+  "old_wall_mass_drift_archived": 0.01564523395906403,
+  "pair_asymmetry_gate": 0.05,
+  "pair_asymmetry_worst": 1.0049487996265219e-06,
+  "floor_gate_p2_rel": 0.1,
+  "floor_p2_over_smallest_p1": 7.515170862634378e-10
+ },
+ "note": "production runner: physics rows are data, not gates"
+}
