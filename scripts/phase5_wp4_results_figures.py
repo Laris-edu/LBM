@@ -18,8 +18,8 @@ WARNs — CVD 7.6 floor band and light-orange contrast — are covered by the
 mandatory secondary encoding: distinct markers, linestyles and direct
 labels on every series). One axis per panel; no dual axes.
 
-Output: results/phase5/figures/fig_results_{I,II,III}.{pdf,png}
-(results/ stays untracked; the script itself is the reproducible artifact).
+Output: figures/fig_results_{I,II,III}.{pdf,png} (repo-top figures/ per user
+request, 2026-08-04; the script remains the reproducible artifact).
 """
 
 from __future__ import annotations
@@ -36,7 +36,7 @@ import numpy as np  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 M5 = REPO_ROOT / "docs" / "Phase_5" / "M5_runs"
-OUT = REPO_ROOT / "results" / "phase5" / "figures"
+OUT = REPO_ROOT / "figures"
 
 # Okabe-Ito subset (validated): entity -> color, fixed order, never cycled
 C_LBM = "#0072B2"      # measured LBM
