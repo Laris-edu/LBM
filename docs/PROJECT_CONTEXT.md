@@ -49,9 +49,15 @@ G1b `FAILED` 闭卷（D5-4；其顺延的耦合包络已由 G4a 正面闭合）�
 `20260802T105444Z`(H2/ε 四位恒定、m₂=1.9987、D_G∝ε²≪3%)+ P-DC2 A 机 `20260802T104619Z`
 (**D_OP 残差标度律:−5.18pp→−9.95pp≈线性于 Θ_DC,三层参照层级实测**)+ P-1D 双臂;
 §14.1 对照终版=材料完整支持 `SCOPED_GO`(`wp3_go_nogo_decision.md`)。
-**D5-6(2026-08-03):用户批准 `SCOPED_GO`,WP4 认证子矩阵执行中**(A2a 全地图/A1 全阶梯/
-A5 χ 地图,~25–35 run;净新增:A2a Θ_DC=0.02 点、A1 {0.003,0.02,0.03}、A5 runner;
-执行口径=Phase5_STATUS §6,决策记录=`wp3_go_nogo_decision.md` §7)。
+**D5-6(2026-08-03)批准 `SCOPED_GO` → WP4 认证子矩阵已全部权威闭合(2026-08-04,
+Phase5_STATUS §6.1 为数据唯一家)**:A2a 全地图=动力学残差标度律五点实测
+(残差 −2.12→−9.95pp 近线性于 Θ_DC 0.02–0.10,QS 静态族逐点反号,加密点落内插线 0.04pp);
+A1 全阶梯七点=H2_q/ε 四位恒定 0.4253 跨 75× 窗、D_G∝ε² 教科书;A5 χ 地图=气控→容控
+regime 全实测(传递滚降 7.1×、相位→−86°、D_chi 全图幅值线性;**χ₀=0.01 端点被显式耦合回路
+离散稳定性边界实测判死**[raw_gain 1.94 vs 认证上界 1.24,边界∈冷 χ (0.010,0.0155)],
+v2 阶梯换认证基线 0.016——「ε=0.10 截断」同族预注册处理);1D DC 臂五点双分支脚本化系列
+(δ/24 收敛 0.001pp,取代 WP3 scratch 对)。A3/A2b/H3/F1 不在授权内未执行;
+`WP4_SUBMATRIX_COMPLETE`;下一步=论文写作轨(Results I/II/III 素材齐)。
 论文架构入口=`Paper1_Manuscript_Architecture.md`：Results I=工作点非线性/QS 边界，
 Results II=A1/H2，Results III=`chi` regime map；A2a 矩阵围绕动力学残差标度/来源设计。
 多 run gate 沿用进程池并行（execute_cases，D5-3 跨机口径；settle 按箱弛豫时间迁移;
@@ -60,7 +66,7 @@ Results II=A1/H2，Results III=`chi` regime map；A2a 矩阵围绕动力学残�
 
 ## 2. 当前阶段与状态
 
-**当前阶段（2026-08-03）：Phase_5 WP4 认证子矩阵执行中（D5-6 `SCOPED_GO`）**。WP2 入口 Gate 序列已完成：G0-B（scoped）、G3、G1-W、G1a、G2-T/A/O（L2-2F 生效）、G4a `PASSED`；G1b `FAILED` 闭卷，其顺延耦合问题已由 G4a canonical 有沉几何单点闭合。WP3 八单元全部完成（2026-08-02），§14.1 对照终版支持 `SCOPED_GO`；**用户已于 2026-08-03 批准（D5-6），WP4 授权范围=A2a 全地图/A1 全阶梯/A5 χ 地图认证子矩阵**（完整 `GO` 因 G1b 预注册不可达；A3/A2b/H3/F1 不在授权内）。主路线=`ROUTE_B_MAIN + 1D_REAL_AIR_BOUNDING`；基础投稿 JASA/JSV，PRA 条件升级；H3/30 kHz、G4b、G5 为条件或 waived。`FINAL_PRODUCTION_NOT_CLAIMED`。状态与 Gate 现值只看 `docs/Phase_5/Phase5_STATUS.md`，论文叙事与图表接口看 `docs/Phase_5/Paper1_Manuscript_Architecture.md`。
+**当前阶段（2026-08-04）：Phase_5 WP4 认证子矩阵已完成（D5-6 `SCOPED_GO` 授权范围完整兑现），下一步=论文写作轨**。WP2 入口 Gate 序列已完成：G0-B（scoped）、G3、G1-W、G1a、G2-T/A/O（L2-2F 生效）、G4a `PASSED`；G1b `FAILED` 闭卷，其顺延耦合问题已由 G4a canonical 有沉几何单点闭合。WP3 八单元全部完成（2026-08-02）；**WP4 三支子矩阵（A2a 全地图/A1 全阶梯/A5 χ 地图）+ 1D DC 臂于 2026-08-04 全部权威闭合**（五 LBM 权威 run 双机分跑 + 诊断 run 归档 M5_runs；数据唯一家=`Phase5_STATUS.md` §6.1）。完整 `GO` 因 G1b 预注册不可达；A3/A2b/H3/F1 不在授权内、未执行；`WP4_SUBMATRIX_COMPLETE`、`FINAL_PRODUCTION_NOT_CLAIMED`。主路线=`ROUTE_B_MAIN + 1D_REAL_AIR_BOUNDING`；基础投稿 JASA/JSV，PRA 条件升级；H3/30 kHz、G4b、G5 为条件或 waived。`FINAL_PRODUCTION_NOT_CLAIMED`。状态与 Gate 现值只看 `docs/Phase_5/Phase5_STATUS.md`，论文叙事与图表接口看 `docs/Phase_5/Paper1_Manuscript_Architecture.md`。
 
 > 谱系说明：以下两段是 Phase_4 期历史长摘要（2026-07-09 / 2026-07-11）。其中「不授权 Phase_5 / 决策前不行动」已由 2026-07-20 立项决策（§4）解除；E2/R2/digest 数值当前引用以 2026-07-11 审查修订段为准。
 

@@ -1,0 +1,71 @@
+inheritance:
+  gas_config: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+  design_prereg: docs/Phase_5/wp3_go_nogo_decision.md
+  g4a_reference_run: docs/Phase_5/M5_runs/g4a_20260801T081856Z
+  coupled_rerun_reference: docs/Phase_5/M5_runs/g4a_coupled_20260801T155507Z
+a5:
+  unit_label: WP4-A5
+  frequency_Hz: 1.0e4
+  hs_rows: 48
+  nx: 8
+  samples_per_period: 64
+  theta_dc: 0.05
+  eps_probe: 0.005
+  chi_ladder:
+  - 0.016
+  - 0.1
+  - 0.3
+  - 1.0
+  - 3.0
+  eps_targets:
+  - 0.01
+  - 0.05
+  settle_periods: 5.0
+  drive_probe_periods: 4.0
+  fit_skip_probe_periods: 2.0
+  drive_coupled_periods: 6.0
+  fit_skip_coupled_periods: 3.0
+  guard_factor: 5.0
+  y_hs_si_w_m2k: 1393.4
+  eps_realized_band:
+  - 0.5
+  - 1.5
+  eps_realized_max: 0.08
+  material_relevance:
+    '0.016': supported
+    '0.1': synthetic_regime_extension
+    '0.3': synthetic_regime_extension
+    '1': synthetic_regime_extension
+    '3': synthetic_regime_extension
+a5_smoke:
+  unit_label: WP4-A5
+  frequency_Hz: 1.0e4
+  hs_rows: 12
+  nx: 4
+  samples_per_period: 32
+  theta_dc: 0.05
+  eps_probe: 0.005
+  chi_ladder:
+  - 0.016
+  - 1.0
+  eps_targets:
+  - 0.01
+  settle_periods: 2.0
+  drive_probe_periods: 2.0
+  fit_skip_probe_periods: 1.0
+  drive_coupled_periods: 3.0
+  fit_skip_coupled_periods: 1.5
+  guard_factor: 5.0
+  y_hs_si_w_m2k: 1393.4
+  eps_realized_band:
+  - 0.3
+  - 2.0
+  eps_realized_max: 0.08
+  material_relevance:
+    '0.016': supported
+    '1': synthetic_regime_extension
+gates:
+  stationarity_per_period: 0.001
+  state_match_rel: 0.01
+  coupled_amp_rel: 0.2
+  coupled_phase_deg: 20.0
