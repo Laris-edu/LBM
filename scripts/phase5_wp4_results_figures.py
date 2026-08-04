@@ -77,6 +77,7 @@ def fig_results_I() -> Path:
         0.10: _load("wp3_pdc2_20260802T104619Z/summary.json")["results"]["qs_chi"],
     }
     oned = _load("wp4_oned_dc_arm_20260803T083909Z/summary.json")["branches"]
+    qs1k = _load("wp4_qs1k_20260804T090947Z/summary.json")["points"]
     th = np.array(sorted(rows))
     dop = np.array([abs(_c(rows[t]["D_OP_measured"])) - 1.0 for t in th]) * 100.0
     qs0 = np.array([abs(_c(rows[t]["D_OP_QS0_pred"])) - 1.0 for t in th]) * 100.0
@@ -94,6 +95,9 @@ def fig_results_I() -> Path:
     th0 = np.concatenate([[0.0], th])
     z = np.zeros(1)
     ax.axhline(0.0, color="#bbbbbb", lw=0.8, zorder=1)
+    d1k = np.array([qs1k[f"{t:g}"]["D_QS1k_pct"] for t in th])
+    ax.plot(th0, np.concatenate([z, d1k]), "*-.", color="#000000", mfc="white",
+            ms=7, label="QS-1k (static, k-resolved)")
     ax.plot(th0, np.concatenate([z, qs0]), "s--", color=C_QS0, mfc="white", label="QS-0 (static, scalar)")
     ax.plot(th0, np.concatenate([z, qs1]), "D-.", color=C_QS1, mfc="white", label="QS-1 (static, base state)")
     ax.plot(th0, np.concatenate([z, d1l]), "^:", color=C_1DL, mfc="white", label="1D NSF (lbm-equivalent)")
@@ -102,7 +106,7 @@ def fig_results_I() -> Path:
     ax.set_xlabel(r"operating point  $\Theta_{DC}$")
     ax.set_ylabel(r"incremental-gain change  $|D_{OP}|-1$  (%)")
     ax.set_title("(a)  measured vs static re-evaluation vs 1D", loc="left")
-    ax.legend(loc="lower left", handlelength=2.4)
+    ax.legend(loc="upper left", handlelength=2.4)
 
     bx.axhline(0.0, color="#bbbbbb", lw=0.8, zorder=1)
     slope = float(np.sum(resid * th) / np.sum(th * th))     # through-origin LSQ
