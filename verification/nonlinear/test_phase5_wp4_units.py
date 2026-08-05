@@ -119,6 +119,46 @@ def test_amplitude_residual_pairing():
     assert rows["0.3"]["status"] == "incomplete"
 
 
+def test_tangent_fit_mechanism():
+    from scripts.phase5_wp4_tangent_response import tangent_fit
+
+    eps = np.array([0.00125, 0.0025, 0.005])
+    y0, c = 2.3e-3 * np.exp(1j * 0.8), 4.0e-2 * np.exp(-1j * 0.3)
+    ys = y0 + c * eps ** 2
+    got0, gotc, resid = tangent_fit(eps, ys)
+    # exact recovery of the pre-registered (1, eps^2) model
+    assert abs(got0 - y0) / abs(y0) < 1e-12
+    assert abs(gotc - c) / abs(c) < 1e-9
+    assert resid < 1e-12
+    # non-degeneracy: out-of-basis (cubic) contamination must SHOW in the
+    # archived fit residual, never be silently absorbed
+    ys_bad = ys + 0.5 * abs(y0) * (eps / eps[-1]) ** 3
+    _, _, resid_bad = tangent_fit(eps, ys_bad)
+    assert resid_bad > 1e-3
+    with pytest.raises(ValueError):
+        tangent_fit(eps[:2], ys[:2])
+
+
+def test_field_highk_fraction_mechanism():
+    from scripts.phase5_wp4_tangent_response import field_highk_fraction
+
+    n, k1 = 96, 0.0982
+    y = np.arange(n)
+    lo = np.exp(2j * np.pi * 1 * y / n)          # k = 0.0654 < k1
+    hi = np.exp(2j * np.pi * 8 * y / n)          # k = 0.5236 > k1
+    frac, bands = field_highk_fraction(2.0 * lo + 1.0 * hi, k1)
+    # exact Parseval bookkeeping: (1^2) / (2^2 + 1^2); each complex mode is a
+    # single FFT bin
+    assert frac == pytest.approx(1.0 / 5.0, rel=1e-12)
+    # k=0 mean offset is excluded from the budget
+    frac2, _ = field_highk_fraction(2.0 * lo + 1.0 * hi + 7.0, k1)
+    assert frac2 == pytest.approx(frac, rel=1e-12)
+    # boundary: the k1 bin itself counts as low (strict >)
+    k1_mode = np.exp(2j * np.pi * 3 * y / n)     # k = 0.19635 ... > k1 -> high
+    frac3, _ = field_highk_fraction(k1_mode, 0.19635)
+    assert frac3 == pytest.approx(0.0, abs=1e-12)
+
+
 def test_a5_pre_registration_frozen():
     cfg = load_config(A5_CFG)
     a5 = cfg["a5"]

@@ -1,0 +1,38 @@
+# WP4-TAN 切线响应诊断配置(_diag:诊断单元,非生产协议;用户指令 2026-08-04)
+# 目的:实测热基态(Θ_DC=0.05/0.10)上完整 LBM 动力学的小信号切线(ε→0)响应,
+# 并对 1f 响应场做 vs QS-1k 静态预测场的 k 谱解剖(QS-1k 否证后的机理定位单元)。
+# 几何/协议=G4a canonical 帐篷逐字;ε 阶梯向下扩展 4×(全部深居 G1a 认证包络内);
+# 判读 R1/R2 与容差预注册于 runner docstring(先提交后出数,QS-1k 同族两步纪律)。
+
+inheritance:
+  gas_config: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+  mechanism_prereg: scripts/phase5_wp4_qs1k_mechanism.py
+  qs1k_result: docs/Phase_5/M5_runs/wp4_qs1k_20260804T090947Z
+
+tan:                              # 权威协议(预注册;不得按结果逐点调整)
+  unit_label: WP4-TAN-DIAG
+  frequency_Hz: 1.0e4
+  hs_rows: 48
+  nx: 8
+  samples_per_period: 64
+  theta_points: [0.05, 0.10]      # 用户指定的两个工作点(冷锚 0 自动包含)
+  eps_ladder: [0.00125, 0.0025, 0.005]   # 切线三点(生产增量 0.005 向下 4×)
+  settle_periods: 5.0
+  drive_periods: 4.0
+  fit_skip_periods: 2.0
+
+tan_smoke:                        # 机器链 smoke(小域短时;非权威)
+  unit_label: WP4-TAN-DIAG
+  frequency_Hz: 1.0e4
+  hs_rows: 12
+  nx: 4
+  samples_per_period: 32
+  theta_points: [0.05]
+  eps_ladder: [0.0025, 0.00354, 0.005]
+  settle_periods: 2.0
+  drive_periods: 2.0
+  fit_skip_periods: 1.0
+
+gates:                            # 合法性行(诊断 runner;R1/R2 是标签行不判门)
+  stationarity_per_period: 1.0e-3
+  state_match_rel: 1.0e-2
