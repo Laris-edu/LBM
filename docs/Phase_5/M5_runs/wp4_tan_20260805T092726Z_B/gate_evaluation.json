@@ -1,0 +1,13 @@
+{
+ "gate": "WP4-TAN-DIAG",
+ "verdict": "COMPLETED",
+ "legality": {
+  "all_finite": true,
+  "stationarity_gate": 0.001,
+  "stationarity_worst": 2.709075811912576e-06,
+  "state_match_gate": 0.01,
+  "state_match_worst": 4.260014372703402e-05,
+  "smallest_eps_signal_proxy": 1.280630213391409e-06
+ },
+ "note": "diagnostic unit: R1/R2 are labelled rows, not gates"
+}
