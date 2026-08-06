@@ -78,6 +78,11 @@ def fig_results_I() -> Path:
     }
     oned = _load("wp4_oned_dc_arm_20260803T083909Z/summary.json")["branches"]
     qs1k = _load("wp4_qs1k_20260804T090947Z/summary.json")["points"]
+    tan = _load("wp4_tan_20260805T092726Z_B/summary.json")["results"]
+    # U_gov: the G4a-certified deterministic family value on the D_OP ratio
+    # (1.6e-4 relative -> +/-0.016 pp on the percent scale); smaller than the
+    # markers — drawn as error bars and stated in the annotation.
+    ugov_pp = 0.016
     th = np.array(sorted(rows))
     dop = np.array([abs(_c(rows[t]["D_OP_measured"])) - 1.0 for t in th]) * 100.0
     qs0 = np.array([abs(_c(rows[t]["D_OP_QS0_pred"])) - 1.0 for t in th]) * 100.0
@@ -90,7 +95,9 @@ def fig_results_I() -> Path:
     d1l, d1a = oned_series("lbm_equivalent_g0"), oned_series("physical_air")
     resid = dop - qs1
 
-    fig, (ax, bx) = plt.subplots(1, 2, figsize=(7.0, 2.9), constrained_layout=True)
+    fig, (ax, bx, cx) = plt.subplots(
+        1, 3, figsize=(9.2, 2.9), constrained_layout=True,
+        gridspec_kw={"width_ratios": [1.2, 1.0, 1.0]})
 
     th0 = np.concatenate([[0.0], th])
     z = np.zeros(1)
@@ -102,7 +109,9 @@ def fig_results_I() -> Path:
     ax.plot(th0, np.concatenate([z, qs1]), "D-.", color=C_QS1, mfc="white", label="QS-1 (static, base state)")
     ax.plot(th0, np.concatenate([z, d1l]), "^:", color=C_1DL, mfc="white", label="1D NSF (lbm-equivalent)")
     ax.plot(th0, np.concatenate([z, d1a]), "v:", color=C_1DA, mfc="white", label="1D NSF (physical air)")
-    ax.plot(th0, np.concatenate([z, dop]), "o-", color=C_LBM, zorder=5, label="LBM measured")
+    ax.errorbar(th0, np.concatenate([z, dop]), yerr=ugov_pp, fmt="o-",
+                color=C_LBM, zorder=5, capsize=2.0, elinewidth=0.9,
+                label="LBM measured")
     ax.set_xlabel(r"operating point  $\Theta_{DC}$")
     ax.set_ylabel(r"incremental-gain change  $|D_{OP}|-1$  (%)")
     ax.set_title("(a)  measured vs static re-evaluation vs 1D", loc="left")
@@ -113,15 +122,47 @@ def fig_results_I() -> Path:
     tt = np.linspace(0.0, 0.105, 50)
     bx.plot(tt, slope * tt, "-", color=C_REF, lw=1.1,
             label=f"linear fit through origin ({slope:.0f} pp per unit)")
-    bx.plot(np.concatenate([[0.0], th]), np.concatenate([[0.0], resid]),
-            "o", color=C_LBM, zorder=5, label="measured $-$ QS-1")
+    bx.errorbar(np.concatenate([[0.0], th]), np.concatenate([[0.0], resid]),
+                yerr=ugov_pp, fmt="o", color=C_LBM, zorder=5, capsize=2.0,
+                elinewidth=0.9, label="measured $-$ QS-1")
     for t, r in zip(th, resid):
         bx.annotate(f"{r:+.2f}", (t, r), textcoords="offset points",
                     xytext=(6, -11), fontsize=7, color="#333333")
+    bx.annotate(r"$U_{gov}$ band $\pm$" + f"{ugov_pp:g} pp\n(smaller than markers)",
+                (0.004, -8.6), fontsize=6.8, color="#555555")
     bx.set_xlabel(r"operating point  $\Theta_{DC}$")
-    bx.set_ylabel("dynamic residual  (pp)")
-    bx.set_title("(b)  residual scaling law", loc="left")
+    bx.set_ylabel("dynamic–quasi-static discrepancy  (pp)")
+    bx.set_title("(b)  dynamic–quasi-static discrepancy", loc="left")
     bx.legend(loc="lower left")
+
+    # (c) tangent extrapolation (WP4-TAN R1): |Y(eps)|/|Y0| - 1 vs eps^2 —
+    # the production increments sit ON the eps->0 tangent (ppm-level curvature)
+    tan_style = {"0": dict(marker="o", color=C_REF, label=r"cold ($\Theta$=0)"),
+                 "0.05": dict(marker="s", color=C_LBM, label=r"$\Theta_{DC}$=0.05"),
+                 "0.1": dict(marker="D", color=C_QS0, label=r"$\Theta_{DC}$=0.10")}
+    for key, st in tan_style.items():
+        tf = tan["tangent_fits"][key]
+        y0 = _c(tf["Y0_tangent"])
+        curv = _c(tf["curvature_c"])
+        es = np.array(sorted(float(e) for e in tf["Y_at_eps"]))
+        yv = np.array([abs(_c(tf["Y_at_eps"][f"{e:g}"])) for e in es])
+        rel_ppm = (yv / abs(y0) - 1.0) * 1e6
+        e2 = es ** 2 * 1e5
+        slope_ppm = float(np.real(curv / y0)) * 1e6 / 1e5
+        ee = np.linspace(0.0, e2[-1] * 1.05, 20)
+        cx.plot(ee, slope_ppm * ee, "-", color=st["color"], lw=1.0, alpha=0.7)
+        cx.plot(e2, rel_ppm, ls="none", marker=st["marker"], color=st["color"],
+                mfc="white", label=st["label"], zorder=5)
+    cx.axhline(0.0, color="#bbbbbb", lw=0.8)
+    r1 = tan["R1_tangent_identity"]["rows"]
+    cx.annotate("$\\epsilon\\to 0$ tangent = production $D_{OP}$\n"
+                f"dev {r1['0.05']['deviation_pp']:+.3f} / "
+                f"{r1['0.1']['deviation_pp']:+.3f} pp",
+                (0.08, 6.6), fontsize=6.8, color="#333333")
+    cx.set_xlabel(r"$\epsilon_{AC}^{2}\ \times 10^{-5}$")
+    cx.set_ylabel(r"$|Y(\epsilon)|/|Y_0|-1$  (ppm)")
+    cx.set_title("(c)  tangent extrapolation", loc="left")
+    cx.legend(loc="lower right", handlelength=1.6)
 
     fig.savefig(OUT / "fig_results_I.pdf")
     fig.savefig(OUT / "fig_results_I.png")
