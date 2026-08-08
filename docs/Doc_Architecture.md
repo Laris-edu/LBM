@@ -28,7 +28,7 @@
 | 入口层 | 全项目结论 / 口径 / 链接 | `docs/PROJECT_CONTEXT.md` | 最低；最先读 |
 | 阶段流水层 | 当前阶段详细日志、数值、风险、更新日志 | `docs/Phase_N/PhaseN_STATUS.md` | 高 |
 | 证据层 | 推导、反例、专项分析 | `docs/Phase_N/<主题>/*.md` | 中 |
-| 产物 / 归档层 | run 摘要、digest、长期留档 | `results/`（不入库）→ `docs/Phase_2/M2/M2_runs/` | 高 |
+| 产物 / 归档层 | run 摘要、digest、长期留档 | `results/`（不入库）→ `archive/M2_runs/` | 高 |
 
 铁规：**入口层绝不放 run 数值或推导**——否则「先读一份」退化成「读一本书」。
 

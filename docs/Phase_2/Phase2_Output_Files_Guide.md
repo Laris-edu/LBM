@@ -97,7 +97,7 @@ Phase_2 阶段结束后（2026-06-25 整理），本目录按主题归类：
 正式留档不直接提交整个 `results/` 目录。若某次 M2 run 需要长期保存，应优先：
 
 - 在 `docs/Phase_2/M2/M2_Verification_Report.md` 中写入 run digest、配置路径、状态和摘要哈希；
-- 或将精选摘要复制到 `docs/Phase_2/M2/M2_runs/` 目录（见其 `README.md`）；
+- 或将精选摘要复制到 `archive/M2_runs/` 目录（见其 `README.md`）；
 - 同步更新 `docs/Phase_2/Phase2_STATUS.md` 的验证记录和更新日志。
 
 ## 4. 当前实现边界

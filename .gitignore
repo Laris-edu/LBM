@@ -66,5 +66,8 @@ File/Paper/
 .tmp.driveupload/
 .tmp.drivedownload
 
+# ===== 论文手稿（不入库）=====
+Manuscript/
+
 # ===== 杂项文件夹 =====
 X/

@@ -8,7 +8,7 @@
 inheritance:
   gas_config: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
   design_prereg: docs/Phase_5/wp3_go_nogo_decision.md
-  wp3_reference_run: docs/Phase_5/M5_runs/wp3_a1_20260802T105444Z_B
+  wp3_reference_run: archive/M5_runs/wp3_a1_20260802T105444Z_B
 
 a1:                               # 权威协议(预注册;不得按结果逐点调整)
   unit_label: WP4-A1-FULL

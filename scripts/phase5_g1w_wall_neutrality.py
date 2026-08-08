@@ -74,7 +74,7 @@ from verification.thermal_diffusion_measurement import (
 GATE_ID = "G1-W"
 CASE_FAMILY = "g1w_wall_neutrality"
 PHASE5_CONTRACT_VERSION = "v1.2"
-G0_TABLE_CSV = Path("docs/Phase_5/M5_runs/g0_20260722T173919Z/property_table.csv")
+G0_TABLE_CSV = Path("archive/M5_runs/g0_20260722T173919Z/property_table.csv")
 PARENT_BASELINE_RUN = "g0_effective_properties/20260722T173919Z"
 GAMMA_EFF_G0_K1 = 1.4230  # G0 sensitivity variant (nonlinear_model_freeze.md §1)
 

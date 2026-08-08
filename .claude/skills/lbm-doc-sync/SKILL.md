@@ -10,51 +10,72 @@ description: >-
   phase transition.
 ---
 
-# LBM 文档同步（分层混合架构）
+# LBM documentation sync (hybrid-layered architecture)
 
-项目执行中，**代码 / run / 决策的变化必须同步到文档**。本 skill 是同步流程清单。
+During project execution, **every change to code / runs / decisions MUST be synced to the
+documentation in the same change set**. This skill is the sync checklist.
 
-## 文档分层职责（铁律：每个事实只有一个家，不重复、不臃肿）
+## Layered document responsibilities (iron rule: every fact has exactly ONE home — no duplication, no bloat)
 
-> 架构核心逻辑与「一个事实该去哪个家」的决策规则见 `docs/Doc_Architecture.md`。
+> The architecture rationale and the "which home does a fact belong to" decision rules live
+> in `docs/Doc_Architecture.md`.
 
-| 文档 | 职责 | 不该放什么 |
+| Document | Responsibility | What does NOT belong here |
 |---|---|---|
-| `docs/PROJECT_CONTEXT.md` | 全项目唯一**入口**：结论、判断口径、链接 | run 细节、完整数值、推导、长表格 |
-| `docs/Phase_N/PhaseN_STATUS.md` | 当前阶段**详细流水**：run 记录、数值、更新日志、风险 | — |
-| 各代码/配置目录 `README.md` | 该目录**逐文件**说明（local 索引） | 跨目录关系 |
-| `docs/Phase_2/Phase2_Output_Files_Guide.md` | **跨目录总览**：结构图、专题文档索引、运行产物/归档约定、实现边界 | 逐文件表（已下放到目录 README，这里只留指针） |
+| `docs/PROJECT_CONTEXT.md` | The project's single **entry point**: conclusions, interpretation guardrails, links | run details, full numbers, derivations, long tables |
+| `docs/Phase_N/PhaseN_STATUS.md` (current: `docs/Phase_5/Phase5_STATUS.md`) | The current phase's **detailed ledger**: run records, numbers, changelog, risks | — |
+| Per-directory `README.md` (code/config dirs) | **File-by-file** index local to that directory | cross-directory relationships |
+| `docs/Phase_N/PhaseN_Output_Files_Guide.md` (current: `Phase5_Output_Files_Guide.md`) | **Cross-directory overview**: structure map, topic-doc index, run-output/archive conventions, implementation boundaries | file-by-file tables (those live in directory READMEs; keep pointers only) |
 
-## 执行清单
+## Checklist
 
-### 1. 判断是否触发
-本次改动是否命中以下任一（命中即必须更新入口文档与阶段状态；权威清单见 `PROJECT_CONTEXT.md §7`）：
-- 阶段完成/启动或当前阶段指针变化
-- M2/M3/M4 阶段决策变化；新的权威 run
-- P2-4/5/6/7/9 或后续阶段关键测试状态变化
-- collision / unit mapping / heat-flux 定义 / bulk viscosity policy / lattice scaling 变化
-- Phase_3 启动口径或 Level A/B/C 边界变化
-- 下一步优先级变化
+### 1. Decide whether the sync is triggered
+Does this change hit ANY of the following (a hit makes updating the entry doc and the phase
+status MANDATORY; the authoritative trigger list is `PROJECT_CONTEXT.md` §7):
+- A phase completed/started, or the current-phase pointer changed
+- An M2/M3/M4/M5-level decision changed; a new authoritative run exists
+- A key test status changed (P2-4/5/6/7/9 or any later-phase gate/test)
+- collision / unit mapping / heat-flux definition / bulk-viscosity policy / lattice-scaling changed
+- Phase-entry scope or Level A/B/C boundaries changed
+- The next-step priority changed
 
-### 2. 更新入口文档 `docs/PROJECT_CONTEXT.md`
-至少检查并更新：`最后更新`、`新会话最小读取`、`当前阶段与状态`、`不可误判规则`、`当前关键决策`、`下一步优先级`。
-**保持薄**——run 数值、推导写进 STATUS，不回填入口文档。
+### 2. Update the entry doc `docs/PROJECT_CONTEXT.md`
+Check and update at least: `最后更新` (last-updated), the minimal new-session reading list,
+current phase & status, the no-misread rules, current key decisions, next-step priority.
+**Keep it thin** — run numbers and derivations go into STATUS, never backfilled into the
+entry doc.
 
-### 3. 更新阶段状态 `docs/Phase_N/PhaseN_STATUS.md`
-把本次 run / 结论 / 数值追加到流水与更新日志；新增脚本或文档时在对应章节登记。
+### 3. Update the phase status `docs/Phase_N/PhaseN_STATUS.md`
+Append this run / conclusion / numbers to the ledger and the changelog; register new
+scripts or documents in the relevant section.
 
-### 4. 有文件输出 → 按分层混合落位
-- 代码/配置目录**新增或改动文件** → 更新该目录 `README.md` 的逐文件表。
-- 新的**跨目录专题文档**（如 closure/acoustic/robustness/M2）→ 更新 `Phase2_Output_Files_Guide.md` 的索引与 docs 结构图，并归入对应子目录。
-- 新的 **results run** → 归档约定：`results/` 不提交（在 `.gitignore`）；digest 写进 `docs/Phase_2/M2/M2_Verification_Report.md`；需长期留档则把精选摘要（summary.json + 报告 md，不含 h5/figures）复制到 `docs/Phase_2/M2/M2_runs/`。
-- **给目录新建/补了 README 时**：把 `Output_Files_Guide` 里对应的逐文件表退化成指针，避免重复漂移。
+### 4. File outputs → place them per the hybrid layering
+- **New or changed files in a code/config directory** → update that directory's
+  `README.md` file-by-file table.
+- **New cross-directory topic document** (closure/acoustic/robustness/gate-report class)
+  → update the current phase's `Output_Files_Guide` index and docs structure map, and file
+  it under the right subdirectory.
+- **New results run** → archive convention: `results/` is never committed (`.gitignore`);
+  the digest goes into the relevant verification/gate report; for long-term retention copy
+  the curated summary set (summary.json + report md — no h5/figures) into the current
+  phase's archive directory (current: `archive/M5_runs/`; legacy example:
+  `archive/M2_runs/`).
+- **When a directory README is created or backfilled**: degrade the corresponding
+  file-by-file table inside the `Output_Files_Guide` to a pointer, so the two copies
+  cannot drift apart.
 
-### 5. 移动 / 重命名文件
-- 用 `git mv` 保留历史。
-- grep 找全所有交叉引用并同步：docs 内路径、脚本 `--report-out`/`--out` 默认值、文档里的 `python -m scripts.X` 调用、测试里的 `from scripts.X import`。
-- 注意 `scripts/` 是扁平命名空间包（脚本以 `scripts.X` 互引、被测试导入），**不要移进子目录**；分类靠命名前缀 + `scripts/README.md`。
+### 5. Moving / renaming files
+- Use `git mv` to preserve history.
+- Grep for ALL cross-references and sync them: paths inside docs, script `--report-out`/
+  `--out` defaults, `python -m scripts.X` invocations in docs, `from scripts.X import`
+  in tests.
+- Remember `scripts/` is a FLAT namespace package (scripts import each other as
+  `scripts.X` and are imported by tests) — **never move scripts into subdirectories**;
+  categorize via name prefixes + `scripts/README.md`.
 
-### 6. 验证
-- 所有被引用路径存在（grep 校验，0 死链）。
-- 动了代码就跑相关测试（至少 `verification/test_phase1_reference_data_integrity.py` + 受影响测试）。
-- 向用户报告本次同步改了哪些文档。**提交 / PR 由用户掌控，除非明确要求。**
+### 6. Verify
+- Every referenced path exists (grep check, zero dead links).
+- If code was touched, run the affected tests (at minimum
+  `verification/test_phase1_reference_data_integrity.py` plus whatever the change touches).
+- Report to the user which documents this sync changed. **Commits / PRs remain under the
+  user's control unless explicitly requested.**

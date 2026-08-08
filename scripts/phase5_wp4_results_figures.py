@@ -35,7 +35,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-M5 = REPO_ROOT / "docs" / "Phase_5" / "M5_runs"
+M5 = REPO_ROOT / "archive" / "M5_runs"
 OUT = REPO_ROOT / "figures"
 
 # Okabe-Ito subset (validated): entity -> color, fixed order, never cycled

@@ -4,7 +4,7 @@
 |---|---|
 | 日期 | 2026-07-26 |
 | Gate | G3（合同 `Phase5_instruct_v1.2.md` §8） |
-| 权威 run | `results/phase5/g3_nsf1d/20260726T082938Z`（physics-core digest `5758666fd20d`、config digest `43706cc43408`、commit `18f2de4a27d1`；精选摘要归档 `docs/Phase_5/M5_runs/g3_20260726T082938Z/`） |
+| 权威 run | `results/phase5/g3_nsf1d/20260726T082938Z`（physics-core digest `5758666fd20d`、config digest `43706cc43408`、commit `18f2de4a27d1`；精选摘要归档 `archive/M5_runs/g3_20260726T082938Z/`） |
 | 判定 | **`PASSED`**（脚本三态判定；G3 七行均为仪器硬认证、无预定义 scoped 行） |
 | 求解器 | `reference/nonlinear_nsf_1d.py`（`nonlinear_nsf_1d_fv_central_rk4_v1`，WP1-2 交付） |
 | Runner / 测试 | `scripts/phase5_g3_nsf1d_reference.py` / `verification/nonlinear/test_phase5_g3_nsf1d.py`（5 绿；仪器 11 绿） |

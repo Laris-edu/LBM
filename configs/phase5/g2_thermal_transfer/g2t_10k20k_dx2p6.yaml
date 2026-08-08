@@ -13,7 +13,7 @@ inheritance:
   phase5_contract: docs/Phase_5/Phase5_instruct_v1.2.md
   g1w_certified_run: results/phase5/g1w_wall_neutrality/20260727T083342Z
   g1a_certified_run: results/phase5/g1a_wall_amplitude/20260728T085824Z
-  g1a_summary: docs/Phase_5/M5_runs/g1a_20260728T085824Z/summary.json   # §7.4 H3 触发评估输入
+  g1a_summary: archive/M5_runs/g1a_20260728T085824Z/summary.json   # §7.4 H3 触发评估输入
 
 g2t:                              # 权威协议（预注册；不得按结果逐点调整）
   frequencies_Hz: [1.0e4, 2.0e4]  # 10/20 kHz 强制；30 kHz 条件项由 §7.4 触发评估行处理

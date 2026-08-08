@@ -4,7 +4,7 @@
 inheritance:
   gas_config: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
   design_prereg: docs/Phase_5/wp3_go_nogo_decision.md
-  g4a_reference_run: docs/Phase_5/M5_runs/g4a_20260801T081856Z
+  g4a_reference_run: archive/M5_runs/g4a_20260801T081856Z
 
 pdc2:                             # 权威协议(预注册)
   frequency_Hz: 1.0e4

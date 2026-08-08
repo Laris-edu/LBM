@@ -80,7 +80,7 @@ from scripts.phase2_m2_verification import load_config  # noqa: E402
 from scripts.phase5_g1w_wall_neutrality import G0_TABLE_CSV, load_g0_alpha_rows  # noqa: E402
 from scripts.phase5_g4a_dc_basestate import tent_spectral_reference  # noqa: E402
 
-M5 = REPO_ROOT / "docs" / "Phase_5" / "M5_runs"
+M5 = REPO_ROOT / "archive" / "M5_runs"
 GAS_CFG = REPO_ROOT / "configs" / "gas_air_10k_d2q37_levelc_dx2p6.yaml"
 
 # frozen archived working points (Theta_DC -> summary path)

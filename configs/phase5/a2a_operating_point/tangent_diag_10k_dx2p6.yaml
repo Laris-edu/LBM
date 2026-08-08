@@ -7,7 +7,7 @@
 inheritance:
   gas_config: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
   mechanism_prereg: scripts/phase5_wp4_qs1k_mechanism.py
-  qs1k_result: docs/Phase_5/M5_runs/wp4_qs1k_20260804T090947Z
+  qs1k_result: archive/M5_runs/wp4_qs1k_20260804T090947Z
 
 tan:                              # 权威协议(预注册;不得按结果逐点调整)
   unit_label: WP4-TAN-DIAG

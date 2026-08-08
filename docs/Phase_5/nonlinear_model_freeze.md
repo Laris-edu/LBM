@@ -4,7 +4,7 @@
 |---|---|
 | 日期 | 2026-07-23 |
 | Gate | G0-B（合同 `Phase5_instruct_v1.2.md` §5） |
-| 权威 run | `results/phase5/g0_effective_properties/20260722T173919Z`（表 digest `8bbacf242674`；精选摘要归档 `docs/Phase_5/M5_runs/g0_20260722T173919Z/`） |
+| 权威 run | `results/phase5/g0_effective_properties/20260722T173919Z`（表 digest `8bbacf242674`；精选摘要归档 `archive/M5_runs/g0_20260722T173919Z/`） |
 | 判定 | **`SCOPED_PASSED_BY_USER`**（2026-07-23 用户决策 D5-2；脚本产出 `SCOPED_CANDIDATE` 保持于 run 归档不改。围栏：剪切 ν 不认证[需剪切的声明不可用，G5 复审触发重开]、低波数层仅有限波数表格口径[k→0 外推不认证]。决策记录 `Phase5_STATUS.md` §4） |
 | Fixture | 冻结 dx2p6 mapping（`configs/gas_air_10k_d2q37_levelc_dx2p6.yaml`，全部背景温度同一 UnitMapping/tau/闭合——按构造满足 §5.1）；T_b∈{270,300,330,360} K；等压主路径 + 等密度诊断；双低波数层 + k1/kbox/k2/k3；壁面法向 y 主轴 + x 各向异性对照；runner `scripts/phase5_g0_effective_properties.py`、配置 `configs/phase5/g0_effective_properties/g0_10k_dx2p6.yaml`、测试 `verification/nonlinear/test_phase5_g0_effective_properties.py`（3 绿） |
 

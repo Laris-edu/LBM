@@ -20,7 +20,6 @@
 | `harmonic_operator_ablation_report.md` | gate-report | **G2-O 交付（2026-07-30）**：算子底板、滤波敏感性与结构恒等行认证 `PASSED`；`HARMONIC_CLAIM_LEVEL_L2_2F` 的算子侧条件闭合。 | 谱修正/滤波强度、次数或顺序变化时重跑 G2-O。 |
 | `dc_protocol_report.md` | gate-report | **G4a 交付（2026-08-01）**：帐篷双带 canonical 热沉、状态匹配域高、QS 判读与耦合行认证；`DYNAMIC_NONLINEAR_RESIDUAL_IDENTIFIED`。G4b 保持 `NOT_RUN`。 | canonical 热沉、`H_s` 角色、耦合记账或生产壁变化时复验。 |
 | `wp3_go_nogo_decision.md` | decision-material | **WP3 已启动（D5-5，2026-08-02）**：八信息单元学分记账、A1/P-DC2/P-1D 预注册与 §14.1 对照模板；权威 run 与最终用户决策待完成。 | WP3 权威 run、GO 条件或用户决策变化时更新。 |
-| `Paper1_Manuscript_Architecture.md` | manuscript-plan | **论文一稿件架构 `ARCHITECTURE_v0.1`（2026-08-02）**：实例化合同 §20，维护中心论点、八节职责、C1–C8 主张矩阵、7 张主图接口及 WP3/WP4 证据缺口。不是 Gate 或 WP4 授权文件。 | 论文中心主张、章节/主图接口、投稿范围或 WP3/WP4 证据路线变化时更新。 |
 
 ## 2. 合同规划交付物（尚未创建；落地时移入上表）
 
@@ -36,7 +35,7 @@
 
 - 主要入口：`docs/Phase_5/Phase5_instruct_v1.2.md`
 - 阶段状态：`docs/Phase_5/Phase5_STATUS.md`
-- 论文架构：`docs/Phase_5/Paper1_Manuscript_Architecture.md`
+- 论文架构（跨目录、按用户要求不入库）：`Manuscript/Paper1_Manuscript_Architecture.md`（`ARCHITECTURE_v0.3`；一主两辅、5 节、5 图）
 - WP3 决策材料：`docs/Phase_5/wp3_go_nogo_decision.md`
 - Gate schema（机器可读）：`verification/nonlinear/phase5_gate_schema.json`
 - 配置目录规范：`configs/phase5/README.md`
@@ -45,8 +44,8 @@
 
 ## 4. 边界
 
-- **WP2 入口 Gate 序列已完成（2026-08-01）**；其中 G1b 保持 `FAILED`，其顺延的 canonical 有沉耦合问题已在 G4a 单点闭合。WP3 已启动，但 WP4 尚未授权，仍为 `FINAL_PRODUCTION_NOT_CLAIMED`。
+- **WP2 入口 Gate 序列、WP3 八信息单元和 D5-6 授权的 WP4 认证子矩阵均已完成（2026-08-04）**；其中 G1b 保持 `FAILED`，其顺延的 canonical 有沉耦合问题已在 G4a 单点闭合。当前进入论文写作轨，仍为 `FINAL_PRODUCTION_NOT_CLAIMED`。
 - 所有 Phase_5 产出携带继承边界：M3 `SCOPED_ACCEPTED`（幅值 ±5.4%、单频 10 kHz、dx2p6 不换 dx/tau）；M4 `PASSED_WITH_SCOPED_RISK`（非 clear PASS）。
 - 生产壁仅为 v1.1 对称质量中性壁；`pressure_preserving` 旧壁只作诊断。G2-T/A/O 已支持 L2-2f，H3/30 kHz 仍为未触发条件项，L3 远场谐波不在基础范围。
-- 脚本与报告只能产出 `PASSED/FAILED/SCOPED_CANDIDATE`；`SCOPED_PASSED_BY_USER`、路线 A 启动、PRA 升级均属用户决策。
+- 脚本与报告只能产出 `PASSED/FAILED/SCOPED_CANDIDATE`；`SCOPED_PASSED_BY_USER` 与路线 A 启动均属用户决策。冻结合同中的 PRA 升级路线保留为历史范围设计，但当前毕业导向稿件不启动该扩项。
 - 原始运行产物默认留在 `results/phase5/<族>/<run_id>/`（不入库）；只有精选摘要进入本目录（归档约定见 `Phase5_Output_Files_Guide.md`）。
