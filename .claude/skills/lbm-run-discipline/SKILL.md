@@ -66,8 +66,17 @@ the runner writes files at the END by default.
   Session-tied background shells die with the session — do not use them for
   multi-hour runs.
 - **B machine (ssh)**: `schtasks` one-shot dispatch; `Start-Process` dies with the
-  ssh session (measured, WP4 dispatch). Both machines: same commit before dispatch,
+  ssh session (measured, WP4 dispatch). Create ONCE tasks with an already-past
+  `/ST` (a future `/ST` re-fires — the A1 23:59 replay incident) and delete the
+  task definition after the run. Both machines: same commit before dispatch,
   machine fingerprint into provenance (D5-3).
+- **Win11 EcoQoS throttling (B, measured 2026-08-09)**: schtasks-launched python
+  ran at ~6% duty — Windows 11 power-throttles BelowNormal/background processes
+  onto parked E-cores on hybrid CPUs. Fix (persistent, per-exe):
+  `powercfg /powerthrottling disable /path <base-python.exe>` AND the venv
+  `python.exe`, then verify duty via two `TotalProcessorTime` samples (~99%
+  expected). Post-launch duty verification is part of rule 2 on any newly
+  provisioned machine.
 
 ## 5. Scratchpad hygiene
 

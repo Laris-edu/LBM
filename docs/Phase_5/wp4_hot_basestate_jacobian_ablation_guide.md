@@ -3,7 +3,7 @@
 **版本**：`GUIDE_v1.0`  
 **日期**：2026-08-08  
 **文档类型**：专项数值诊断指导，不是 Gate 报告、权威 run 或生产授权  
-**当前状态**：`GUIDANCE_ONLY`；执行前必须由用户单独授权并完成预注册  
+**当前状态**：`EXECUTED`（用户 2026-08-08 授权 → 权威 run `20260809T195359Z` `COMPLETED`，标签 `JAB_COUPLED_CANDIDATE_A2_A3`；结果唯一家=`wp4_jacobian_ablation_report.md`，本文保持规范原文不回改）  
 **适用范围**：Route-B、10 kHz、dx2p6、平面周期 canonical sink、v1.1 对称质量中性热壁
 
 > 本文回答：如果未来要继续追查“完整时域 LBM 切线为负，而 QS-0/QS-1/QS-1k 均为正”的内部来源，应怎样构造热基态切线，并怎样逐项消融。本文不改变 `WP4_SUBMATRIX_COMPLETE`、`FINAL_PRODUCTION_NOT_CLAIMED`，也不改变当前“论文写作轨、投稿前不新增模拟”的决定。

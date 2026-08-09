@@ -613,9 +613,12 @@ def run_jab(config_path: str | Path, output_root: str | Path | None = None,
                                 "FD direction check"}
     elif have_core:
         result_rows = build_result_rows(table, wave1_variants, thetas, refs)
+        # YAML reference keys are quoted decimals ("0.10"); normalize to float
+        # keys the same way build_result_rows treats qs1_dop_pct
+        dop_ref = {float(k): float(v) for k, v in refs["dop_tan_pct"].items()}
         v4_rows = {}
         for th in thetas:
-            ref_pct = float(refs["dop_tan_pct"][f"{th:g}"])
+            ref_pct = dop_ref[th]
             dev = result_rows["d_full_pct"][f"{th:g}"] - ref_pct
             v4_rows[f"{th:g}"] = {"d_OP_tan_pct": result_rows["d_full_pct"][f"{th:g}"],
                                   "archived_tan_pct": ref_pct, "deviation_pp": dev,

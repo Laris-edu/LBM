@@ -1,6 +1,6 @@
 # LBM 项目上下文入口
 
-**最后更新**：2026-08-06(本次:入口文档瘦身——历史长摘要压缩为指针,事实回各自权威家;§3 规则一条未删)
+**最后更新**：2026-08-10(本次:WP4-JAB 切线消融权威闭合——机理内部来源定位为带重构×宏观/平衡两块耦合,§3 对应规则更新)
 **用途**：新会话第一份必读文档，用于快速恢复项目阶段、读取路线、不可误判规则和下一步优先级。
 **定位**：全项目生命周期唯一上下文入口，不是某个阶段的专属文档。
 **维护原则**：只保留压缩摘要和入口索引；阶段流水、run 细节、完整数值和推导证据由对应 `PhaseN_STATUS.md`、M 报告和专项诊断报告维护，本文不复制。
@@ -54,7 +54,7 @@ docs/Phase_5/Phase5_STATUS.md（Gate 现值 + §6.1 WP4 数据）。
 - 跨频率迁移 settle/协议按**箱弛豫时间单位**（≥~11τ_box；τ_box=1.1 周期@10 kHz、1.47 周期@20 kHz 实测），不按周期数逐字照抄（G2-O 首次权威 S1 瞬态出门教训，双窗衰减比判别法在案）。
 - 不把 G4a 帐篷双带 rig 写成"新热沉模型"或 Robin 替代：沉带=v1.1 认证壁钉 θ_amb,是 canonical `T(H_s)=T_ambient` 的直接实现;双柱=同一 canonical 问题的并行实现（重复对照行）。也不把 WP1-3「等温盖判死」读作"两条回调行判死"——判死变量=缝上一阶场跳变×闭腔（wrap 相邻 wall|lid 对的全 Θ 跳变）;帐篷场处处连续,不在该族。反对称双温单行变体已探针否弃（行内碰撞抹平双温结构），不得复活。
 - 耦合回路中带簿记热流必须做 **cv 重钉扎精确扣除**（定密度行能量 E=cv·ρθ、cv=(D+S)/2,无 pdV;用 cp 过扣制造伪负导数项）:原始簿记直馈 ODE 含超 Nyquist 导数项（增益=cv·Σρ_row/(nx·C_A),跨 1 即步进振荡自激——G4a 主 run 失稳@180 步与 smoke 稳定的二分性被该增益 1.244/0.965 精确解释）。修正后气侧瞬时导 G_inst≈0=回路本征稳定（膜极点）;机制映射夹具在合同测试固化。
-- 不把 G4a 的 `DYNAMIC_NONLINEAR_RESIDUAL_IDENTIFIED` 读作 gate 失败或测量可疑：它是 §11.5 预注册判读的正式产出（D_OP 实测 −2.83% vs QS0/QS1 +2.4%，信号远高于 `U_gov`）——静态工作点重求值族失效是合同核心问题句的实测答案。QS-1k 进一步表明波数分辨静态重求值仍不能恢复负号；WP4-TAN R1 表明生产 D_OP 与完整时域 LBM 的数值方向切线一致（偏差 ≤0.007 pp），排除了有限幅值解释。TAN R2 只表明未发现随工作点增强的高波数局域异常（高波数分数低于冷底板），因此结果**与低波数或全局响应一致，但唯一因果机制仍开放**；不得写成已经证明由箱基模、全局动力学或色散耦合导致，也不使用“不可约机理已证明”。
+- 不把 G4a 的 `DYNAMIC_NONLINEAR_RESIDUAL_IDENTIFIED` 读作 gate 失败或测量可疑：它是 §11.5 预注册判读的正式产出（D_OP 实测 −2.83% vs QS0/QS1 +2.4%，信号远高于 `U_gov`）——静态工作点重求值族失效是合同核心问题句的实测答案。QS-1k 进一步表明波数分辨静态重求值仍不能恢复负号；WP4-TAN R1 表明生产 D_OP 与完整时域 LBM 的数值方向切线一致（偏差 ≤0.007 pp），排除了有限幅值解释。TAN R2 只表明未发现随工作点增强的高波数局域异常（高波数分数低于冷底板），因此结果**与低波数或全局响应一致**。【2026-08-10 后：WP4-JAB 切线消融（`JAB_COUPLED_CANDIDATE_A2_A3`）把该负号差异的 **LBM 内部来源**定位为 v1.1 带重构与宏观恢复/平衡分布两个导数块的近可加耦合（双冻结后工作点响应近消失；应力/热流/streaming/滤波/声学族排除）——这是**算子内部导数块归因，不是真实物理机制声明**；不得写成任一单块是唯一原因、质量中性壁普遍错误或 thermophone 新物理已发现；升级为物理机制仍需独立二维连续体切线或实验（报告 §5）】
 - 耦合行认证域=χ_0=0.016 基线膜、canonical 几何、10 kHz(重跑 run `20260801T155507Z`);不外推到其它 C_A/几何;G4a 主 run 的耦合行失稳是已闭合的记账错误、不得引作"耦合不可行"证据。【WP4 后:A5 v2 已把耦合稳定域实测扩至冷 χ₀∈[0.016,3](十点);χ₀=0.01 端点=显式回路离散稳定性边界实测判死(v1 诊断归档),不得当作物理悬崖】
 - 不把 A1 写成真实 Joule 加热协议：它是有符号零均值热功率数值消融（半周期主动抽热，D0-4）；A1 `D_G` 未跨 3% 不构成自动 NO_GO——A2a/QS-1 判别、经认证 H2 或严格上界是并列科学信号（D0-5/合同 §12.5）。
 - 不把 G3 `PASSED` 写成任何 LBM 侧 Gate 通过或非线性物理结论：G3 认证的是 1D NSF **参考仪器**（七行仪器硬认证）；`1D-lbm-equivalent` 正式定义是 k1 单点律 surrogate（禁外推到其它 k，freeze doc §4）。
@@ -121,6 +121,7 @@ docs/Phase_5/Phase5_STATUS.md（Gate 现值 + §6.1 WP4 数据）。
 
 ## 4. 当前关键决策
 
+- **WP4-JAB 切线消融执行（2026-08-08 用户授权 → 08-10 闭合）**：写作轨内用户指令诊断单元（TAN 先例）；两步 commit 预注册纪律；结果=`JAB_COUPLED_CANDIDATE_A2_A3`（唯一家=`wp4_jacobian_ablation_report.md` + STATUS §6.1）。不改变「投稿前不新增模拟」默认与任何 Gate；第二轮（细粒度/趋势复核）为新算力、须用户另行授权。
 - **论文架构收缩与投稿目标切换（2026-08-06，用户决定）**：`Manuscript/Paper1_Manuscript_Architecture.md` 升为 `ARCHITECTURE_v0.3`，以尽快满足毕业录用条件为目标，采用“一主两辅、5 节、5 图”。Results I 是完整时域 LBM 与准静态/1D 工作点趋势差异的唯一中心；Results II 是 A1/H2 独立弱非线性控制，Results III 是膜热容传递背景，均不裁决或界定主差异。投稿前不再补 A3/A2b/H3/30 kHz/频扫/有限宽/路线 A；机理口径由“箱尺度/全局效应”校准为“无随工作点增强的高波数局域特征，唯一机制开放”。
 - **D5-6 `SCOPED_GO` + WP4 完成（2026-08-03 批准 → 08-04 闭合;机理判别至 08-05）**：认证子矩阵 A2a/A1-H2/A5 全部权威闭合;QS-1k 判别 `MECHANISM_NOT_CLOSED`(静态族三级失效)、WP4-TAN `TANGENT_CONFIRMED`+`GLOBAL_OR_LOWK_LOCALIZED`。数据=STATUS §6.1,决策全文=`wp3_go_nogo_decision.md` §7。
 - **D5-5 WP3 启动（2026-08-02;历史节点）**：八信息单元单日闭合(双机分跑首例);§14.1 对照支持 `SCOPED_GO`;当时建立的 `ARCHITECTURE_v0.1` 已由 v0.3 取代。
@@ -150,7 +151,7 @@ docs/Phase_5/Phase5_STATUS.md（Gate 现值 + §6.1 WP4 数据）。
 - WP3 首轮预注册与 Go/No-Go 材料（§7=D5-6 决策全文）：`docs/Phase_5/wp3_go_nogo_decision.md`
 - 论文架构（v0.3,一主两辅;不入库）：`Manuscript/Paper1_Manuscript_Architecture.md`
 - 论文结果素材层（整理自 docs/Phase_5;不入库）：`results/Phase5_Result/`
-- Gate 报告族：`nonlinear_model_freeze.md`(G0)、`nonlinear_1d_reference_report.md`(G3)、`wall_nonlinearity_neutrality_report.md`(G1-W)、`nonlinear_entry_gate_report.md`(G1a §A/G1b §B)、`harmonic_transfer_report.md`(G2-T/A)、`harmonic_operator_ablation_report.md`(G2-O)、`dc_protocol_report.md`(G4a)——均在 `docs/Phase_5/`
+- Gate 报告族：`nonlinear_model_freeze.md`(G0)、`nonlinear_1d_reference_report.md`(G3)、`wall_nonlinearity_neutrality_report.md`(G1-W)、`nonlinear_entry_gate_report.md`(G1a §A/G1b §B)、`harmonic_transfer_report.md`(G2-T/A)、`harmonic_operator_ablation_report.md`(G2-O)、`dc_protocol_report.md`(G4a)、`wp4_jacobian_ablation_report.md`(WP4-JAB 诊断单元)——均在 `docs/Phase_5/`
 - 权威 run 摘要归档：`archive/M5_runs/`(25 项;原始 signals.h5 双机镜像于两机 `results/mirror_from_*`)
 - Gate schema（机器可读，合同 §4/§16 转录）：`verification/nonlinear/phase5_gate_schema.json`
 - Phase_5 配置目录规范（子目录制）：`configs/phase5/README.md`
