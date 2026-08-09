@@ -1,6 +1,6 @@
 # Phase_5 输出文件导览（跨目录总览）
 
-**最后更新**：2026-08-06
+**最后更新**：2026-08-08
 **定位**：Phase_5 的跨目录结构图、落位关系与运行产物/归档约定。逐文件说明在各目录 `README.md`（就近原则）；Gate 定义与阈值在合同；本文只维护跨目录关系，不复制两者。
 
 ## 1. 跨目录结构与落位关系
@@ -21,7 +21,9 @@ docs/Phase_5/Phase5_instruct_v1.2.md          # 权威合同（Gate/矩阵/数�
         │
         ├─ docs/Phase_5/*.md                   # Gate 报告/决策/状态（逐文件见 README.md）
         │    ├─ Phase5_STATUS.md               # 状态标签与 Gate 现值唯一追踪处
-        │    └─ wp3_go_nogo_decision.md        # WP3 预注册与用户决策材料
+        │    ├─ wp3_go_nogo_decision.md        # WP3 预注册与用户决策材料
+        │    └─ wp4_hot_basestate_jacobian_ablation_guide.md
+        │                                      # 可选后续机理诊断指导；未授权执行
         ├─ Manuscript/Paper1_Manuscript_Architecture.md
         │                                      # 一主两辅、5 节、5 图的毕业导向稿件架构（不入库）
         └─ figures/fig_results_I|II|III.png     # 三张结果工作图；最终图号按稿件架构重排
@@ -52,6 +54,7 @@ docs/Phase_5/Phase5_instruct_v1.2.md          # 权威合同（Gate/矩阵/数�
 | G4a DC 基态门(帐篷架构) | `scripts/phase5_g4a_dc_basestate.py` + `boundary` v1.1 带泛化 | **已交付 + 权威认证 `PASSED`（2026-08-01）**：主 run `20260801T081856Z`(摘要 `M5_runs/g4a_20260801T081856Z/`)+ 耦合行重跑 `20260801T155507Z`(摘要 `M5_runs/g4a_coupled_20260801T155507Z/`);QS 判读=动力学非线性残差(核心发现);报告 `dc_protocol_report.md`;测试 6 绿 |
 | WP3 决策材料与 runner | `docs/Phase_5/wp3_go_nogo_decision.md` + `scripts/phase5_a1_signed_zero_mean.py` + `scripts/phase5_a2a_operating_point.py` | **八单元全部完成（D5-5，2026-08-02;双机分跑 D5-3）**：A1 B 机 `20260802T105444Z`、P-DC2 A 机 `20260802T104619Z`(摘要归档 `M5_runs/wp3_*`);§14.1 对照终版=材料支持 `SCOPED_GO`;**D5-6(2026-08-03)用户批准 `SCOPED_GO`**(决策记录 §7) |
 | WP4 认证子矩阵 runner 族(D5-6) | A2a 点=`scripts/phase5_a2a_operating_point.py`(配置 `a2a_wp4_dc002`/`a2a_wp4_dc0075`)+ A1 全阶梯=`scripts/phase5_a1_signed_zero_mean.py`(配置 `a1_wp4_full_ladder`)+ **A5 χ 地图=`scripts/phase5_a5_chi_map.py`(净新增)** + 1D DC 臂=`scripts/phase5_wp4_oned_dc_arm.py` | **全部权威闭合(2026-08-04,STATUS §6.1 为数据唯一家)**:A1 B 机 `20260803T113507Z`、A2a A 机 `20260803T185241Z`(dc002)/`20260803T185101Z`(dc0075 加密)、A5 v2 A 机 `20260804T002154Z`(v1 `20260803T142638Z`=χ₀=0.01 仪器边界诊断归档);摘要归档 `M5_runs/wp4_*`;合同测试 7 绿(v2 阶梯断言) |
+| WP4 热基态 Jacobian/切线消融指导 | `docs/Phase_5/wp4_hot_basestate_jacobian_ablation_guide.md` | **指导文档已交付（2026-08-08，`GUIDANCE_ONLY`）**：定义矩阵无关完整切线、TAN 身份门、A0–A6 消融与停止条件；未创建代码/配置/run，不改变当前“投稿前不新增模拟”与任何 Gate 状态 |
 | 论文一稿件架构 | `Manuscript/Paper1_Manuscript_Architecture.md` | **已升级（2026-08-06，`ARCHITECTURE_v0.3`）**：毕业导向“一主两辅、5 节、5 图”；Results I 为模型层级间工作点趋势差异的中心发现，Results II/III 分别为 A1/H2 独立控制和膜热容传递背景，不裁决或界定主差异；不改变任何 Gate 或生产状态 |
 | Gate 测试 `test_phase5_*.py` | `verification/nonlinear/` | 已创建：`test_phase5_g0_effective_properties.py`（G0）、`test_phase5_g3_nsf1d.py`（G3）、`test_phase5_g1w_wall_neutrality.py`（G1-W）、`test_phase5_g1_amplitude_envelope.py`（G1a，G1b 落地时扩展）、`test_phase5_g2_harmonic_transfer.py`（G2-T/A，12 项）、`test_phase5_g2_operator_ablation.py`（G2-O，7 项）、`test_phase5_g4a_dc_basestate.py`（G4a，6 项）、`test_phase5_wp3_units.py`（WP3，4 项）、`test_phase5_wp4_units.py`（WP4，7 项） |
 

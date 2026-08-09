@@ -19,6 +19,7 @@
 | `harmonic_transfer_report.md` | gate-report | **G2-T/G2-A 交付（2026-07-30）**：10/20 kHz 热生成与纯声学传递链均 `PASSED`；20 kHz 载体的 +5.67% 色散与约 +4%/跨度增益作为下游携带属性归档。 | 生产壁、G0 表、传播载体或读出链变化时按合同 §23 复验。 |
 | `harmonic_operator_ablation_report.md` | gate-report | **G2-O 交付（2026-07-30）**：算子底板、滤波敏感性与结构恒等行认证 `PASSED`；`HARMONIC_CLAIM_LEVEL_L2_2F` 的算子侧条件闭合。 | 谱修正/滤波强度、次数或顺序变化时重跑 G2-O。 |
 | `dc_protocol_report.md` | gate-report | **G4a 交付（2026-08-01）**：帐篷双带 canonical 热沉、状态匹配域高、QS 判读与耦合行认证；`DYNAMIC_NONLINEAR_RESIDUAL_IDENTIFIED`。G4b 保持 `NOT_RUN`。 | canonical 热沉、`H_s` 角色、耦合记账或生产壁变化时复验。 |
+| `wp4_hot_basestate_jacobian_ablation_guide.md` | topical-guide | **可选后续机理诊断指导（2026-08-08）**：规定完整热基态矩阵无关切线、TAN 身份验证、A0–A6 粗细消融、判读与停止条件。仅为 `GUIDANCE_ONLY`，不授权新增模拟，不改变论文写作轨或任何 Gate。 | 用户授权启动该诊断、切线接口/消融矩阵变化或产生权威结果时更新。 |
 | `wp3_go_nogo_decision.md` | decision-material | **WP3 已启动（D5-5，2026-08-02）**：八信息单元学分记账、A1/P-DC2/P-1D 预注册与 §14.1 对照模板；权威 run 与最终用户决策待完成。 | WP3 权威 run、GO 条件或用户决策变化时更新。 |
 
 ## 2. 合同规划交付物（尚未创建；落地时移入上表）
@@ -37,6 +38,7 @@
 - 阶段状态：`docs/Phase_5/Phase5_STATUS.md`
 - 论文架构（跨目录、按用户要求不入库）：`Manuscript/Paper1_Manuscript_Architecture.md`（`ARCHITECTURE_v0.3`；一主两辅、5 节、5 图）
 - WP3 决策材料：`docs/Phase_5/wp3_go_nogo_decision.md`
+- 可选机理诊断指导：`docs/Phase_5/wp4_hot_basestate_jacobian_ablation_guide.md`（`GUIDANCE_ONLY`，未授权执行）
 - Gate schema（机器可读）：`verification/nonlinear/phase5_gate_schema.json`
 - 配置目录规范：`configs/phase5/README.md`
 - 继承授权与硬约束：`docs/Phase_3/M3/M3_Closure_Decision.md` §3/§4
