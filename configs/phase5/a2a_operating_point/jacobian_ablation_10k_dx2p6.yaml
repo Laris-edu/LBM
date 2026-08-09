@@ -1,0 +1,152 @@
+# WP4-JAB 热基态 Jacobian 逐项切线消融配置(诊断单元;用户授权执行 2026-08-08)
+# 规范源: docs/Phase_5/wp4_hot_basestate_jacobian_ablation_guide.md (GUIDE_v1.0)
+# 目的: 在已解析 DC 热基态上构造完整一步离散推进的矩阵无关切线(F=H∘A∘B∘S∘C),
+#   先以 0.2pp 身份门复现 WP4-TAN,再逐块冻结基态依赖(A1-A5),定位负趋势的 LBM 内部来源。
+# 预注册纪律: 本文件在任何热态切线数值产生之前冻结判读规则与消融矩阵;
+#   JVP 步长窗按 §4.3 只允许用冷态 smoke 选择,选定后回填 jvp.h_ladder 并置
+#   jvp.h_frozen=true —— runner 在 h_frozen=false 时拒绝任何热态切线运行(fail-loud)。
+# 本单元不改变 WP4_SUBMATRIX_COMPLETE / FINAL_PRODUCTION_NOT_CLAIMED / 论文写作轨。
+
+inheritance:
+  gas_config: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+  tan_config: configs/phase5/a2a_operating_point/tangent_diag_10k_dx2p6.yaml
+  guide: docs/Phase_5/wp4_hot_basestate_jacobian_ablation_guide.md
+  tan_reference_run: archive/M5_runs/wp4_tan_20260805T092726Z_B
+
+jab:                              # 权威协议(TAN 网格/窗口逐字)
+  unit_label: WP4-JAB
+  frequency_Hz: 1.0e4
+  hs_rows: 48
+  nx: 8
+  samples_per_period: 64
+  theta_points: [0.05, 0.10]      # 热工作点(冷锚 0 自动包含)
+  settle_periods: 5.0
+  drive_periods: 4.0
+  fit_skip_periods: 2.0
+
+jab_smoke:                        # 机器链 smoke(小域;非权威;冷态 smoke=步长窗选择运行)
+  unit_label: WP4-JAB
+  frequency_Hz: 1.0e4
+  hs_rows: 12
+  nx: 4
+  samples_per_period: 32
+  theta_points: [0.05]
+  settle_periods: 2.0
+  drive_periods: 2.0
+  fit_skip_periods: 1.0
+  fd_eps_ladder: [0.0025, 0.00354, 0.005]   # smoke 网格有限差分 TAN 方向对照(测试 8)
+
+jvp:                              # 矩阵无关中心差分 JVP(§4.3)
+  # 宏观归一化: s = max(|δρ|/ρ0, |δθ|/θ0, |δu|/c0, |δT_w|/θ0), c0=sqrt(γ·θ_ref);
+  # 归一化基一律取传播(热)基态线性化,每步一次,±h 两支与全部阶段共享同一 v=δ/s。
+  # 冷态 smoke 选择运行 20260808T101116Z_select_h(9 档扫描 1e-3..1e-7):
+  # 偶组合比值 9.0-11.1 ≈ (3.16)² = 干净 h² 区覆盖 [1e-5,1e-3],h<1e-6 触底;
+  # 奇组合两两偏差在 [3e-4,3e-5] 区间 ~1e-10 ≪ 1e-7 —— 默认三档位于稳定区中心,
+  # 按 selection_rule 采纳并冻结(2026-08-08,先于任何热态数值)。
+  h_ladder: [1.0e-4, 5.0e-5, 2.5e-5]   # FROZEN
+  h_frozen: true
+  h_scan: [1.0e-3, 3.0e-4, 1.0e-4, 3.0e-5, 1.0e-5, 3.0e-6, 1.0e-6, 3.0e-7, 1.0e-7]
+  selection_rule: >-
+    冷态 smoke 基态 + 确定性伪随机探针(seed 20260808)与 η=1 输入探针;逐 h 记录
+    奇组合(JVP 估计)与偶组合范数。接受连续三档: 三档内 JVP 两两相对偏差 ≤1e-7,
+    且偶组合随 h 减半按 ~h^2 衰减(比值∈[3,5])或已低于绝对底板。默认三档通过则冻结
+    默认;否则在 h_scan 中选取。选定值回填 h_ladder 并置 h_frozen=true,先于任何热态结果。
+
+snapshot:                         # §4.1 基态快照冻结字段
+  fields: [f_bar, g_bar, theta_wall_bar, theta_amb, hs, band_rows,
+           reference_triple_recorded, stage_intermediates, r_F,
+           stationarity_per_period, theta_dc_measured, dc_closure_rel,
+           column_duplicate_rel, provenance]
+  stage_intermediates: [post_C, post_S, post_B, post_A, post_H]
+  pressure_memory_trace: assert_absent   # 生产配置 trace_bulk_policy=ghost_orthogonal_local
+  # 冷 smoke 实测 r_F=5.6e-16 ≤1e-6 → 按预注册规则冻 1e-5(2026-08-08;
+  # 热基态每步漂移解析估计 ~ 每周期 stationarity/steps_per_period ~ 5e-11,裕量充足)
+  r_f_max: 1.0e-5
+
+variants:                         # §6.2 第一轮消融矩阵(阶段级;细粒度 §7 归第二轮)
+  A0: 完整热态切线(全部阶段/块热态导数;TAN 身份基线)
+  A1: >-
+    声学相位参考态: 相位修正算子参考三元组 (rho_ref,u_ref,theta_ref) 固定为冷态值。
+    结构事实: 本 rig(nx=8) 对角低模 0 合格模 + 高模因子 1.0 + spectral trace 政策关闭
+    => 声学修正族恒等(G2-O S6 同族,须 runtime assert 在本几何重证,不得外推)。
+    assert 通过时 A1≡A0 按构造,S_A1=0 记 by_construction=structural_identity,
+    不重复消耗传播算力;assert 失败则必须实现完整 A 阶段 JVP 后才准继续(fail-loud)。
+  A2: 质量中性带重构(B 阶段=热带+沉带两次 v1.1 重构)基态导数替换为冷态版本;δT_w 输入不变
+  A3: 宏观恢复与平衡分布块(recover_macro + equilibrium_fg)基态输入替换为冷态
+  A4: 应力闭合块(_regularized_f_collision + 守恒矩修正)基态输入替换为冷态
+  A5: >-
+    热流与能量修正块(_regularized_heat_flux_collision + 守恒矩修正)基态输入替换为冷态。
+    delta_G 能量修正块是精确线性泛函(E_tot=0.5Σf|c|²+Σg),无基态依赖,记录为结构事实。
+  A6: >-
+    阴性对照: streaming 与固定系数滤波由精确线性作用替换为冷态基点中心差分
+    JVP(应为数值零)
+  combo_rule: >-
+    组合波(第二波)前冻结: 取 A1-A5 中 mean(|S_i(.05)|,|S_i(.10)|) 最大的两个模块,
+    两块同时替换为冷态导数,3 点。协同/重叠判据: |S_combo|>1.25|S_a+S_b| 且偏差>0.25pp
+    记协同;|S_combo|<0.75|S_a+S_b| 且偏差>0.25pp 记重叠;其余记近可加。
+  cold_anchor_shared: >-
+    Θ=0 点热基态≡冷基态,任何消融按构造与 A0 逐位等价 —— 冷锚每 h 档只算一次
+    (A0 机器),全部变体共享;记 shared_by_construction,不重复运行。
+
+gates:                            # V0-V5 硬验证(§5;全过才有消融解释资格)
+  # V0 基态合法性(TAN/G4a 口径逐字)
+  stationarity_per_period: 1.0e-3
+  state_match_rel: 1.0e-2
+  dc_closure_rel: 1.0e-3          # G4a 权威实测 ≤4.8e-5;门取 G4a gate 值
+  # V1 +h/-h 对称性(选择规则内嵌于 jvp.selection_rule;权威基态上复核)
+  v1_odd_pairwise_rel: 1.0e-6
+  # V2 三档外推稳定性(与 h 窗同批冻结 2026-08-08): 单步探针 h 敏感度 ~1e-10,
+  # 传播累计后预期 ~1e-9..1e-8;门=1e-5 留 3 个量级裕量,仍低于上限 10×
+  v2_y_h_spread_rel: 1.0e-5
+  v2_y_h_spread_cap: 1.0e-4
+  # V3 冷态回归 vs 归档 TAN Y0_tangent(Θ=0)
+  v3_cold_amp_rel: 1.0e-3
+  v3_cold_phase_deg: 0.1
+  # V4 热态身份门(guide §2.1 冻结)
+  v4_tan_identity_pp: 0.2
+  # V5 切线守恒。门槛按中心差分仪器舍入底板推导(冷态仪器标定,先于任何热态数值):
+  # 每步 FD 舍入 ~eps_mach·(格点总量)/(2h),随 √N_steps 随机游走 —— 权威网格
+  # (M≈750,N≈2e5,h=5e-5) 质量底板 ~1e-9 rel、能量账底板 ~1e-7 rel;门=底板×~100 裕量,
+  # 而真实簿记/泄漏错误在 ≥1e-4~1e-3 量级,判别力保持 ≥3 个量级。
+  # 质量切线漂移: |Σδf| 相对基态格点总质量;能量账: 逐步闭合残差相对 max|δq|。
+  v5_mass_tangent_rel: 1.0e-7
+  v5_energy_account_rel: 1.0e-5
+  # 阴性对照线(A6 与结构性 A1;超过即硬停止 §9.2)
+  negative_control_max_abs_S_pp: 0.01
+
+references:                       # 冻结锚点(归档权威 run,transcribe-with-source)
+  dop_tan_pct:                    # WP4-TAN R1 切线值(V4 比较对象)
+    "0.05": -2.8345129628396526
+    "0.10": -5.317059432017945
+  dop_production_pct:             # 生产归档(展示行)
+    "0.05": -2.83
+    "0.10": -5.31
+  y0_tangent_cold:                # V3 比较对象(TAN Θ=0 切线外推)
+    re: 0.0004998504790122509
+    im: 0.0009596626597796605
+  qs1_dop_pct:                    # R_dyn=d_OP-d_OP_QS1 的 QS-1 参照(|D_OP_QS1|-1)*100
+    "0.05": 2.3503622251387405
+    "0.10": 4.637104097717805
+  qs1_source_runs:
+    "0.05": archive/M5_runs/g4a_20260801T081856Z
+    "0.10": archive/M5_runs/wp3_pdc2_20260802T104619Z
+
+interpretation:                   # §8 判读(冻结;C_i=1-|R_dyn^(-i)|/|R_dyn^full|)
+  close_line_frac: 0.5
+  rules:
+    primary_candidate: 同一模块在两个热工作点均闭合 ≥50% 且结果稳定向 QS-1 方向移动
+    coupled_candidate: 单项均 <50% 但预注册组合在两点稳定跨过 50%
+    local_sensitivity: 仅单点有效或方向相反 —— 记工作点局部敏感性,不称主机制
+    not_closed: 全部单项与有限组合无显著作用 —— 保持 MECHANISM_NOT_CLOSED
+  hard_stops:                     # §9.2 任一即停,不解释消融结果
+    - 完整切线未全过 V0-V5
+    - +h/-h 两支不同缓存或不同参考算子
+    - 阴性对照偏移与主要候选同量级
+    - 为符号翻转逐点调整步长/拟合窗/系数
+    - 消融破坏质量中性/壁温钉扎/能量守恒
+    - 生产求解器行为变化未触发合同 §23 定向复验
+
+output:
+  results_root: results/phase5/wp4_jacobian_ablation
+  archive_root: archive/M5_runs      # 摘要归档须用户批准后执行(不含原始 h5)
+  verdict_family: SCOPED_CANDIDATE   # D0-7: 脚本只产 COMPLETED/LEGALITY_FAILED + 标签行

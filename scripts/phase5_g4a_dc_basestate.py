@@ -220,7 +220,8 @@ def run_tent(gas_cfg: dict, *, ny: int, nx: int, theta_dc: float,
              settle_periods: float, drive_periods: float,
              samples_per_period: int, init: str = "seed",
              theta_hot_mean_override: float | None = None,
-             coupled: dict | None = None, log=print) -> dict[str, Any]:
+             coupled: dict | None = None, snapshot: bool = False,
+             log=print) -> dict[str, Any]:
     """One tent-rig case: DC settle then (optional) AC drive.
 
     Phase 1 (settle): both bands at their mean setpoints; the analytic
@@ -331,6 +332,20 @@ def run_tent(gas_cfg: dict, *, ny: int, nx: int, theta_dc: float,
     e_scale = float(getattr(solver.mapping, "energy_si_per_lu", 0.0)) or None
     out["p_mean_lu_per_area"] = q_hot_dc / (nx * dx_m)
     out["energy_si_per_lu"] = e_scale
+
+    if snapshot:
+        # WP4-JAB read-only DC base-state snapshot (guide section 4.1): the raw
+        # settled state + band identity. Stage intermediates are recomputed by
+        # core/tangent_step.py from these fields via the SAME production stage
+        # functions, so no derived state is duplicated here. No behavior change
+        # when the flag is off (default).
+        out["snapshot"] = {
+            "f": solver.f.copy(), "g": solver.g.copy(),
+            "theta_hot_mean": float(theta_hot_mean),
+            "theta_amb": float(theta_amb), "hs": int(hs),
+            "ny": int(ny), "nx": int(nx),
+            "theta_dc_target": float(theta_dc),
+        }
 
     if eps_ac <= 0.0 and coupled is None:
         return out
@@ -471,7 +486,8 @@ def _g4a_case_worker(payload: dict[str, Any]) -> tuple[str, dict[str, Any]]:
                        samples_per_period=payload["samples_per_period"],
                        init=payload.get("init", "seed"),
                        theta_hot_mean_override=payload.get("theta_hot_mean_override"),
-                       coupled=payload.get("coupled"), log=wlog)
+                       coupled=payload.get("coupled"),
+                       snapshot=payload.get("snapshot", False), log=wlog)
         # keep payload identity for the evaluator
         run["label"] = label
         run["payload_kind"] = payload.get("kind", "base")
