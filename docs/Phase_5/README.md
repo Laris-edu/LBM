@@ -20,7 +20,7 @@
 | `harmonic_operator_ablation_report.md` | gate-report | **G2-O 交付（2026-07-30）**：算子底板、滤波敏感性与结构恒等行认证 `PASSED`；`HARMONIC_CLAIM_LEVEL_L2_2F` 的算子侧条件闭合。 | 谱修正/滤波强度、次数或顺序变化时重跑 G2-O。 |
 | `dc_protocol_report.md` | gate-report | **G4a 交付（2026-08-01）**：帐篷双带 canonical 热沉、状态匹配域高、QS 判读与耦合行认证；`DYNAMIC_NONLINEAR_RESIDUAL_IDENTIFIED`。G4b 保持 `NOT_RUN`。 | canonical 热沉、`H_s` 角色、耦合记账或生产壁变化时复验。 |
 | `wp4_hot_basestate_jacobian_ablation_guide.md` | topical-guide | **机理诊断指导（2026-08-08 交付；已执行）**：规定完整热基态矩阵无关切线、TAN 身份验证、A0–A6 粗细消融、判读与停止条件。用户 2026-08-08 授权执行，结果见 `wp4_jacobian_ablation_report.md`；规范原文冻结不回改。 | 切线接口/消融矩阵变化或第二轮（细粒度/趋势复核）授权时更新。 |
-| `WP4_JAB_next_simulation_guide_simple.md` | topical-plan | **JAB 第二轮计划（PLAN_v1.1，2026-08-10）**：A2 五子项+A3 四子项细粒度定位、冻结判读线（σ≥0.5/80%/0.2× 闭合线）、仪器重构与锚定要求（第 0 步）、NSF 仲裁三情况决策规则。`PLAN_READY`，执行待用户发令+预注册 commit。 | 预注册冻结、执行启动或判读线变化时更新。 |
+| `WP4_JAB_next_simulation_guide_simple.md` | topical-plan | **JAB 第二轮计划（PLAN_v1.1；已执行）**：A2 五子项+A3 四子项细粒度定位、冻结判读线与分类路由。权威 run `20260810T144425Z`：**A2=单项 A2-5（内能重钉扎）、A3=两族抵消束、路由 LBM 边界方法学**——结果唯一家=`wp4_jacobian_ablation_report.md` §7。 | 第三轮（边界方案复测/NSF 仲裁）授权时更新。 |
 | `wp4_jacobian_ablation_report.md` | gate-report 族（诊断单元） | **WP4-JAB 权威结果（2026-08-09/10，run `20260809T195359Z` `COMPLETED`）**：V0–V5 全过（V4 身份门偏差 −0.000pp）；**`JAB_COUPLED_CANDIDATE_A2_A3`**——带重构 × 宏观/平衡两块热基态导数近可加承载全部工作点响应（双冻结后 d_OP=+0.006%/+0.020%），应力/热流/streaming/滤波/声学族实测排除。 | 第二轮消融、趋势复核或归档执行时更新。 |
 | `wp3_go_nogo_decision.md` | decision-material | **WP3 已启动（D5-5，2026-08-02）**：八信息单元学分记账、A1/P-DC2/P-1D 预注册与 §14.1 对照模板；权威 run 与最终用户决策待完成。 | WP3 权威 run、GO 条件或用户决策变化时更新。 |
 

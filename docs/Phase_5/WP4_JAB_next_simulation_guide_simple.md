@@ -1,7 +1,7 @@
 # WP4-JAB 下一步关键模拟计划（第二轮：A2/A3 细粒度定位）
 
 **版本**：PLAN_v1.1（用户初稿 2026-08-10；执行侧技术补强同日——物理逻辑不变，补齐仪器、合法性与预注册层）
-**状态**：`PLAN_READY`；执行前按第 0 步完成预注册冻结（两步 commit 纪律，第一轮 `dce99e6` 先例）
+**状态**：`EXECUTED`（预注册 `67c97f0` → 权威 run `20260810T144425Z` `COMPLETED`，2026-08-10；标签 `JAB2_A2_MAIN_A2_5 / A3_DISTRIBUTED / PAIR_NOT_CLOSED / ROUTE_LBM_BOUNDARY`；结果唯一家=`wp4_jacobian_ablation_report.md` §7，本文规范文本冻结）
 **上游**：guide `wp4_hot_basestate_jacobian_ablation_guide.md` §7（细粒度消融）；第一轮结果=`wp4_jacobian_ablation_report.md`（`JAB_COUPLED_CANDIDATE_A2_A3`）
 
 ## 目标
