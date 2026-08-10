@@ -1,0 +1,95 @@
+# WP4-JAB 第二轮配置(A2/A3 细粒度定位;计划 docs/Phase_5/WP4_JAB_next_simulation_guide_simple.md PLAN_v1.1)
+# 预注册纪律: 判读线/子映射语义/分类表先于任何热态数值冻结(第一轮 dce99e6 先例);
+# 仪器=core/tangent_substep.py 链式子映射 JVP,差分口径=**混合基点联合中心差分**:
+#   每个子映射一对 ±h 求值,评估点 P 上各槽位取各自(热/冷)基值——与逐槽位差分和
+#   同一 P 上的 Jacobian 逐槽作用同阶等价(合同测试锚定),但 FD 结构与变体无关
+#   (hot≡cold 时全变体与 A0r2 逐位恒等)且成本 ~第一轮 1.2×(A0r2 须重过 V4 身份门)。
+# 不改变任何 Gate/FINAL_PRODUCTION_NOT_CLAIMED/写作轨默认。
+
+inheritance:
+  gas_config: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+  round1_config: configs/phase5/a2a_operating_point/jacobian_ablation_10k_dx2p6.yaml
+  round1_report: docs/Phase_5/wp4_jacobian_ablation_report.md
+  plan: docs/Phase_5/WP4_JAB_next_simulation_guide_simple.md
+
+jab2:                             # 权威协议(网格/窗口=第一轮逐字)
+  unit_label: WP4-JAB2
+  frequency_Hz: 1.0e4
+  hs_rows: 48
+  nx: 8
+  samples_per_period: 64
+  theta_points: [0.05, 0.10]
+  settle_periods: 5.0
+  drive_periods: 4.0
+  fit_skip_periods: 2.0
+  trend_theta: 0.075              # 主项组合确认时的可选加固列(计划第三步)
+
+jab2_smoke:
+  unit_label: WP4-JAB2
+  frequency_Hz: 1.0e4
+  hs_rows: 12
+  nx: 4
+  samples_per_period: 32
+  theta_points: [0.05]
+  settle_periods: 2.0
+  drive_periods: 2.0
+  fit_skip_periods: 1.0
+
+jvp:                              # 第一轮冻结值逐字继承(不重选)
+  h_ladder: [1.0e-4, 5.0e-5, 2.5e-5]
+  h_frozen: true
+
+variants:                         # 子映射语义(core/tangent_substep.py R2_SINGLE_VARIANTS 为机器实现)
+  A0r2: 全槽位热态(逐槽位仪器基线;须重过 V4)
+  A2-1: band.W 的 rho_w 槽位冷基(壁平衡对密度的敏感度)
+  A2-2: band.W 的 theta_w 槽位冷基(壁平衡对壁温的导数基点;η 输入通道不变)
+  A2-3: band.N 全槽位冷基(内部 neq 复制/混合)
+  A2-4: band.C 全槽位冷基(质量/动量平衡增量清除)
+  A2-5: band.P 全槽位冷基(内能目标与 g 重钉扎)
+  A3-1: macro.T 的 rho 槽位冷基(θ 恢复密度交叉项)
+  A3-2: macro.U 的 rho 槽位冷基(u 恢复密度交叉项)
+  A3-3: macro.E1 的 theta 槽位冷基(f_eq 温度矩)
+  A3-4: macro.E2 全槽位冷基(g_eq 内能零矩+高阶矩)
+  CTRLr2: band.L + macro.R(纯线性提取槽位;第二轮结构零阴性对照)
+  A2ALL/A3ALL: 块并集锚(须复现第一轮整块消融;兼作 σ 分母)
+
+interpretation:                   # 冻结判读线(计划 v1.1)
+  sigma_major: 0.5                # 子项份额 σ_i=S_i/S_块 ≥0.5 且两点同向 → 主项
+  confirm_frac: 0.8               # 前二子项组合复现整块效应 ≥80% → 确认
+  combo_close_frac: 0.2           # |d_OP^{major组合}| ≤ 0.2×|d_OP^full| 两点 → 子项层闭合
+  negative_control_max_abs_S_pp: 0.01
+  block_anchor_tol_pp: 0.05       # |S_ALL(r2) − S_块(r1 归档)| 容差(FD 噪声级余量)
+  legality:                       # §7.2 切线口径(实测精化 2026-08-10,micro rig 锚定)
+    mass_u_exact: 全变体机器级
+    theta_pin_exact_except: A2-5
+    theta_pin_a2_5_gate: 2.0      # |δθ_row−η| ≤ 2·Θ_DC·η(被冻结的钉扎密度敏感度)
+  classification:                 # 计划第四步路由表(冻结;情况 3 以 A2 归类为准)
+    discrete_boundary: [A2-3, A2-4, A2-5]
+    continuum_physical: [A2-1, A2-2, A3-1, A3-2, A3-3, A3-4]
+    split_line: 0.7               # A2 前二子项份额均 <0.7 → 判 A2_SPLIT,直接 NSF 仲裁
+
+gates:                            # V 门(第一轮冻结值继承;A0r2 重锚必过)
+  stationarity_per_period: 1.0e-3
+  state_match_rel: 1.0e-2
+  dc_closure_rel: 1.0e-3
+  v2_y_h_spread_rel: 1.0e-5
+  v3_cold_amp_rel: 1.0e-3
+  v3_cold_phase_deg: 0.1
+  v4_tan_identity_pp: 0.2
+  v5_mass_tangent_rel: 1.0e-7
+  v5_energy_account_rel: 1.0e-5
+  r_f_max: 1.0e-5
+  chain_vs_singleshot_rel: 1.0e-5   # V1r2:R2 链式 JVP vs 单射全步 FD 一致性
+
+references:                       # 冻结锚(第一轮权威 run 20260809T195359Z + TAN)
+  dop_tan_pct: {"0.05": -2.8345129628396526, "0.10": -5.317059432017945}
+  y0_tangent_cold: {re: 0.0004998504790122509, im: 0.0009596626597796605}
+  qs1_dop_pct: {"0.05": 2.3503622251387405, "0.10": 4.637104097717805}
+  r1_S_pp:                        # 第一轮整块 S(块并集锚比较对象;σ 分母用本轮 A2ALL/A3ALL 实测)
+    A2: {"0.05": 8.821894043559286, "0.10": 17.38899557792344}
+    A3: {"0.05": -5.531605917627281, "0.10": -10.35726723909589}
+  r1_dop_full_pct: {"0.05": -2.8345242913226043, "0.10": -5.317083547607404}
+
+output:
+  results_root: results/phase5/wp4_jacobian_ablation_r2
+  verdict_family: SCOPED_CANDIDATE
