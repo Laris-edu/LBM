@@ -1,0 +1,18 @@
+{
+ "run_id": "20260809T195359Z",
+ "family": "wp4_jacobian_ablation",
+ "argv": [
+  "scripts/phase5_wp4_jacobian_ablation.py"
+ ],
+ "machine": "LARIS-JIXIE",
+ "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+ "workers": 14,
+ "pre_registration": {
+  "config_sha256": "7579e250b934d760",
+  "tangent_step_sha256": "5ce8b7ee984e3639",
+  "runner_sha256": "1619a6171157b1fb",
+  "frozen_before_execution_utc": "2026-08-09T17:55:02.681237+00:00"
+ },
+ "started_utc": "2026-08-09T17:55:02.681237+00:00",
+ "finished_utc": "2026-08-09T19:53:59.760123+00:00"
+}

@@ -14,6 +14,8 @@ config_resolved.yaml、provenance.json、run_report.md、harmonic_fit.json;**不
   归档内各 run 的历史文件按冻结原样保留,其中出现的旧路径字符串不回改)。
 - `M2_runs/` — Phase_2 legacy 归档(2026-08-08 自 `docs/Phase_2/M2/M2_runs` 迁入,同口径;
   含 m2 / m2_d2q37_diagnostic_current / phase2_acoustic_attenuation_anisotropy 族与自带 README)。
-- 命名约定:`<gate|单元>_<run_id>[_B]`(B=B 机产出);诊断 run 带 `_diag`/`failed_` 标记。
+- `WP4_jacobian_LBM/` — WP4-JAB 切线消融权威 run `20260809T195359Z` 摘要(用户指定路径,
+  2026-08-10;六文件精选摘要 + 纯数据 CSV 五件[无判读列];报告=`docs/Phase_5/wp4_jacobian_ablation_report.md`)。
+- 命名约定:`<gate|单元>_<run_id>[_B]`(B=B 机产出);诊断 run 带 `_diag`/`failed_` 标记;用户指定名目录在其行内注明。
 - 生产代码依赖:G0 物性表 `archive/M5_runs/g0_20260722T173919Z/property_table.csv`
   (`scripts/phase5_g1w_wall_neutrality.py::G0_TABLE_CSV` 单一常量,谱参考/QS-1k/TAN 均经它加载)。

@@ -1,0 +1,176 @@
+{
+ "gate": "WP4-JAB",
+ "verdict": "COMPLETED",
+ "verification": {
+  "V0": {
+   "all_bases_finite": true,
+   "stationarity_worst": 2.70907579025475e-06,
+   "state_match_worst": 4.2600143724258466e-05,
+   "dc_closure_worst": 4.816001796004962e-05,
+   "dc_closure_cold_recorded": 2.0853403141361255,
+   "passed": true
+  },
+  "V1": {
+   "rows": {
+    "0": {
+     "rows": [
+      {
+       "h": 0.0001,
+       "odd_norm": 0.342944755015299,
+       "even_norm": 1.4640038881380438e-10,
+       "dq_hot_odd": 0.07432084707659214,
+       "chain_vs_singleshot_rel": 7.088575974416637e-11
+      },
+      {
+       "h": 5e-05,
+       "odd_norm": 0.342944755016284,
+       "even_norm": 3.659993811479155e-11,
+       "dq_hot_odd": 0.07432084743186351,
+       "chain_vs_singleshot_rel": 1.4305651231882614e-10
+      },
+      {
+       "h": 2.5e-05,
+       "odd_norm": 0.34294475501462657,
+       "even_norm": 9.149792416955521e-12,
+       "dq_hot_odd": 0.07432084743186351,
+       "chain_vs_singleshot_rel": 2.872864141313669e-10
+      }
+     ],
+     "odd_pairwise_rel": [
+      1.4136827003200136e-10,
+      2.8493908903049974e-10
+     ],
+     "even_ratios": [
+      4.000017386768147,
+      4.000083985180695
+     ],
+     "probe_seed": 20260808,
+     "scale_applied": 572.7695272610083
+    },
+    "0.05": {
+     "rows": [
+      {
+       "h": 0.0001,
+       "odd_norm": 0.3427608568866652,
+       "even_norm": 1.496579146937561e-10,
+       "dq_hot_odd": 0.07261947196468554,
+       "chain_vs_singleshot_rel": 7.124593408010215e-11
+      },
+      {
+       "h": 5e-05,
+       "odd_norm": 0.3427608568857879,
+       "even_norm": 3.7414561976202065e-11,
+       "dq_hot_odd": 0.07261947203573982,
+       "chain_vs_singleshot_rel": 1.3944115536813747e-10
+      },
+      {
+       "h": 2.5e-05,
+       "odd_norm": 0.3427608568877087,
+       "even_norm": 9.353732154397066e-12,
+       "dq_hot_odd": 0.07261947189363127,
+       "chain_vs_singleshot_rel": 2.803924308405525e-10
+      }
+     ],
+     "odd_pairwise_rel": [
+      1.3819306876936656e-10,
+      2.773006712812758e-10
+     ],
+     "even_ratios": [
+      3.999991094081166,
+      3.999960802663563
+     ],
+     "probe_seed": 20260808,
+     "scale_applied": 572.6563309664457
+    },
+    "0.1": {
+     "rows": [
+      {
+       "h": 0.0001,
+       "odd_norm": 0.3427257729082247,
+       "even_norm": 1.5308920615445228e-10,
+       "dq_hot_odd": 0.07111448731222936,
+       "chain_vs_singleshot_rel": 6.564927414948549e-11
+      },
+      {
+       "h": 5e-05,
+       "odd_norm": 0.34272577290710493,
+       "even_norm": 3.8272319679926154e-11,
+       "dq_hot_odd": 0.07111448738328363,
+       "chain_vs_singleshot_rel": 1.3049722873733855e-10
+      },
+      {
+       "h": 2.5e-05,
+       "odd_norm": 0.34272577290728723,
+       "even_norm": 9.568069416345119e-12,
+       "dq_hot_odd": 0.07111448780960927,
+       "chain_vs_singleshot_rel": 2.652020935936969e-10
+      }
+     ],
+     "odd_pairwise_rel": [
+      1.351958861853135e-10,
+      2.662007394290931e-10
+     ],
+     "even_ratios": [
+      3.99999810397559,
+      4.000004391120491
+     ],
+     "probe_seed": 20260808,
+     "scale_applied": 572.2860206808754
+    }
+   },
+   "passed": true
+  },
+  "V2": {
+   "gate": 1e-05,
+   "worst": 2.512870072645363e-08,
+   "passed": true
+  },
+  "V3": {
+   "ratio": {
+    "re": 0.9999996626351763,
+    "im": 4.031321675148803e-07,
+    "abs": 0.9999996626352575,
+    "phase_deg": 2.3097779576940636e-05
+   },
+   "amp_rel_err": 3.3736474247536563e-07,
+   "phase_deg_err": 2.3097779576940636e-05,
+   "gate_amp": 0.001,
+   "gate_phase_deg": 0.1,
+   "passed": true
+  },
+  "V4": {
+   "rows": {
+    "0.05": {
+     "d_OP_tan_pct": -2.8345242913226043,
+     "archived_tan_pct": -2.8345129628396526,
+     "deviation_pp": -1.1328482951711294e-05,
+     "within": true
+    },
+    "0.1": {
+     "d_OP_tan_pct": -5.317083547607404,
+     "archived_tan_pct": -5.317059432017945,
+     "deviation_pp": -2.4115589458695297e-05,
+     "within": true
+    }
+   },
+   "passed": true
+  },
+  "V5": {
+   "mass_worst": 7.080505626202503e-10,
+   "energy_account_worst": 8.852225397613392e-07,
+   "gate_mass": 1e-07,
+   "gate_energy": 1e-05,
+   "passed": true
+  },
+  "r_F": {
+   "values": {
+    "0": 3.417257899085285e-16,
+    "0.05": 4.144628779983486e-12,
+    "0.1": 7.41844748583419e-12
+   },
+   "gate": 1e-05,
+   "passed": true
+  }
+ },
+ "note": "diagnostic unit (D0-7): labelled rows, not gates; no change to WP4_SUBMATRIX_COMPLETE / FINAL_PRODUCTION_NOT_CLAIMED"
+}

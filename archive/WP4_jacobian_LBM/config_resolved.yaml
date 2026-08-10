@@ -1,0 +1,138 @@
+inheritance:
+  gas_config: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+  tan_config: configs/phase5/a2a_operating_point/tangent_diag_10k_dx2p6.yaml
+  guide: docs/Phase_5/wp4_hot_basestate_jacobian_ablation_guide.md
+  tan_reference_run: archive/M5_runs/wp4_tan_20260805T092726Z_B
+jab:
+  unit_label: WP4-JAB
+  frequency_Hz: 1.0e4
+  hs_rows: 48
+  nx: 8
+  samples_per_period: 64
+  theta_points:
+  - 0.05
+  - 0.1
+  settle_periods: 5.0
+  drive_periods: 4.0
+  fit_skip_periods: 2.0
+jab_smoke:
+  unit_label: WP4-JAB
+  frequency_Hz: 1.0e4
+  hs_rows: 12
+  nx: 4
+  samples_per_period: 32
+  theta_points:
+  - 0.05
+  settle_periods: 2.0
+  drive_periods: 2.0
+  fit_skip_periods: 1.0
+  fd_eps_ladder:
+  - 0.0025
+  - 0.00354
+  - 0.005
+jvp:
+  h_ladder:
+  - 0.0001
+  - 5.0e-05
+  - 2.5e-05
+  h_frozen: true
+  h_scan:
+  - 0.001
+  - 0.0003
+  - 0.0001
+  - 3.0e-05
+  - 1.0e-05
+  - 3.0e-06
+  - 1.0e-06
+  - 3.0e-07
+  - 1.0e-07
+  selection_rule: '冷态 smoke 基态 + 确定性伪随机探针(seed 20260808)与 η=1 输入探针;逐 h 记录 奇组合(JVP
+    估计)与偶组合范数。接受连续三档: 三档内 JVP 两两相对偏差 ≤1e-7, 且偶组合随 h 减半按 ~h^2 衰减(比值∈[3,5])或已低于绝对底板。默认三档通过则冻结
+    默认;否则在 h_scan 中选取。选定值回填 h_ladder 并置 h_frozen=true,先于任何热态结果。'
+snapshot:
+  fields:
+  - f_bar
+  - g_bar
+  - theta_wall_bar
+  - theta_amb
+  - hs
+  - band_rows
+  - reference_triple_recorded
+  - stage_intermediates
+  - r_F
+  - stationarity_per_period
+  - theta_dc_measured
+  - dc_closure_rel
+  - column_duplicate_rel
+  - provenance
+  stage_intermediates:
+  - post_C
+  - post_S
+  - post_B
+  - post_A
+  - post_H
+  pressure_memory_trace: assert_absent
+  r_f_max: 1.0e-05
+variants:
+  A0: 完整热态切线(全部阶段/块热态导数;TAN 身份基线)
+  A1: '声学相位参考态: 相位修正算子参考三元组 (rho_ref,u_ref,theta_ref) 固定为冷态值。 结构事实: 本 rig(nx=8) 对角低模
+    0 合格模 + 高模因子 1.0 + spectral trace 政策关闭 => 声学修正族恒等(G2-O S6 同族,须 runtime assert
+    在本几何重证,不得外推)。 assert 通过时 A1≡A0 按构造,S_A1=0 记 by_construction=structural_identity,
+    不重复消耗传播算力;assert 失败则必须实现完整 A 阶段 JVP 后才准继续(fail-loud)。'
+  A2: 质量中性带重构(B 阶段=热带+沉带两次 v1.1 重构)基态导数替换为冷态版本;δT_w 输入不变
+  A3: 宏观恢复与平衡分布块(recover_macro + equilibrium_fg)基态输入替换为冷态
+  A4: 应力闭合块(_regularized_f_collision + 守恒矩修正)基态输入替换为冷态
+  A5: 热流与能量修正块(_regularized_heat_flux_collision + 守恒矩修正)基态输入替换为冷态。 delta_G 能量修正块是精确线性泛函(E_tot=0.5Σf|c|²+Σg),无基态依赖,记录为结构事实。
+  A6: '阴性对照: streaming 与固定系数滤波由精确线性作用替换为冷态基点中心差分 JVP(应为数值零)'
+  combo_rule: '组合波(第二波)前冻结: 取 A1-A5 中 mean(|S_i(.05)|,|S_i(.10)|) 最大的两个模块, 两块同时替换为冷态导数,3
+    点。协同/重叠判据: |S_combo|>1.25|S_a+S_b| 且偏差>0.25pp 记协同;|S_combo|<0.75|S_a+S_b| 且偏差>0.25pp
+    记重叠;其余记近可加。'
+  cold_anchor_shared: Θ=0 点热基态≡冷基态,任何消融按构造与 A0 逐位等价 —— 冷锚每 h 档只算一次 (A0 机器),全部变体共享;记
+    shared_by_construction,不重复运行。
+gates:
+  stationarity_per_period: 0.001
+  state_match_rel: 0.01
+  dc_closure_rel: 0.001
+  v1_odd_pairwise_rel: 1.0e-06
+  v2_y_h_spread_rel: 1.0e-05
+  v2_y_h_spread_cap: 0.0001
+  v3_cold_amp_rel: 0.001
+  v3_cold_phase_deg: 0.1
+  v4_tan_identity_pp: 0.2
+  v5_mass_tangent_rel: 1.0e-07
+  v5_energy_account_rel: 1.0e-05
+  negative_control_max_abs_S_pp: 0.01
+references:
+  dop_tan_pct:
+    '0.05': -2.8345129628396526
+    '0.10': -5.317059432017945
+  dop_production_pct:
+    '0.05': -2.83
+    '0.10': -5.31
+  y0_tangent_cold:
+    re: 0.0004998504790122509
+    im: 0.0009596626597796605
+  qs1_dop_pct:
+    '0.05': 2.3503622251387406
+    '0.10': 4.637104097717805
+  qs1_source_runs:
+    '0.05': archive/M5_runs/g4a_20260801T081856Z
+    '0.10': archive/M5_runs/wp3_pdc2_20260802T104619Z
+interpretation:
+  close_line_frac: 0.5
+  rules:
+    primary_candidate: 同一模块在两个热工作点均闭合 ≥50% 且结果稳定向 QS-1 方向移动
+    coupled_candidate: 单项均 <50% 但预注册组合在两点稳定跨过 50%
+    local_sensitivity: 仅单点有效或方向相反 —— 记工作点局部敏感性,不称主机制
+    not_closed: 全部单项与有限组合无显著作用 —— 保持 MECHANISM_NOT_CLOSED
+  hard_stops:
+  - 完整切线未全过 V0-V5
+  - +h/-h 两支不同缓存或不同参考算子
+  - 阴性对照偏移与主要候选同量级
+  - 为符号翻转逐点调整步长/拟合窗/系数
+  - 消融破坏质量中性/壁温钉扎/能量守恒
+  - 生产求解器行为变化未触发合同 §23 定向复验
+output:
+  results_root: results/phase5/wp4_jacobian_ablation
+  archive_root: archive/M5_runs
+  verdict_family: SCOPED_CANDIDATE
