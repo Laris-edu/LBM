@@ -421,7 +421,7 @@ def run_jab2(config_path: str | Path, output_root: str | Path | None = None,
     picks: dict[str, Any] = {}
     if verified and not smoke:
         sig_line = float(interp_cfg["sigma_major"])
-        split_line = float(interp_cfg["split_line"])
+        split_line = float(interp_cfg["classification"]["split_line"])
 
         def sigma_stage(singles, union_key, stage_tag):
             # singles already computed in wave 1; _collect is idempotent
