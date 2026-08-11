@@ -1,0 +1,12 @@
+metric,theta_dc,measured
+V4r2_deviation_pp,0.05,-1.1793267762350013e-05
+V4r2_deviation_pp,0.1,-2.4097800599420793e-05
+V1r2_chain_vs_singleshot_rel,0.05,1.8858820589056016e-10
+V1r2_chain_vs_singleshot_rel,0.1,1.9464787656747907e-10
+V5_mass_tangent_rel_worst,,4.609885760272059e-10
+V5_energy_account_rel_worst,,1.2530624523467656e-06
+CTRLr2_worst_abs_S_pp,,9.112304244496272e-08
+block_anchor_dev_pp[A2ALL|0.05],,5.466000310150321e-07
+block_anchor_dev_pp[A2ALL|0.1],,-1.7427079797016631e-06
+block_anchor_dev_pp[A3ALL|0.05],,2.7040637284869717e-08
+block_anchor_dev_pp[A3ALL|0.1],,-1.0940596002484426e-06

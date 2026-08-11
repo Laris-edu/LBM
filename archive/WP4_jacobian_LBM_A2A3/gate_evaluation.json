@@ -1,0 +1,91 @@
+{
+ "gate": "WP4-JAB2",
+ "verdict": "COMPLETED",
+ "verification": {
+  "V0": {
+   "all_bases_finite": true,
+   "stationarity_worst": 2.7090758589573902e-06,
+   "state_match_worst": 4.2600143676962965e-05,
+   "dc_closure_worst": 5.046626881532808e-05,
+   "passed": true
+  },
+  "V1r2": {
+   "rows": {
+    "0.05": 1.8858820589056016e-10,
+    "0.1": 1.9464787656747907e-10
+   },
+   "passed": true
+  },
+  "V2": {
+   "worst": 7.150685296610299e-08,
+   "gate": 1e-05,
+   "passed": true
+  },
+  "V3": {
+   "amp_rel_err": 3.3170563040751944e-07,
+   "phase_deg_err": 2.3421178854771733e-05,
+   "passed": true
+  },
+  "V4": {
+   "rows": {
+    "0.05": {
+     "d_OP_pct": -2.834524756107415,
+     "deviation_pp": -1.1793267762350013e-05,
+     "within": true
+    },
+    "0.1": {
+     "d_OP_pct": -5.317083529818545,
+     "deviation_pp": -2.4097800599420793e-05,
+     "within": true
+    }
+   },
+   "passed": true
+  },
+  "V5": {
+   "mass_worst": 4.609885760272059e-10,
+   "energy_worst": 1.2530624523467656e-06,
+   "passed": true
+  },
+  "r_F": {
+   "values": {
+    "0.05": 4.144500627996903e-12,
+    "0.1": 7.418535773976665e-12
+   },
+   "passed": true
+  },
+  "control": {
+   "worst_abs_S_pp": 9.112304244496272e-08,
+   "clean": true
+  },
+  "block_anchors": {
+   "rows": {
+    "A2ALL|0.05": {
+     "S_pp": 8.821894590159317,
+     "r1_S_pp": 8.821894043559286,
+     "dev_pp": 5.466000310150321e-07,
+     "within": true
+    },
+    "A2ALL|0.1": {
+     "S_pp": 17.38899383521546,
+     "r1_S_pp": 17.38899557792344,
+     "dev_pp": -1.7427079797016631e-06,
+     "within": true
+    },
+    "A3ALL|0.05": {
+     "S_pp": -5.531605890586643,
+     "r1_S_pp": -5.531605917627281,
+     "dev_pp": 2.7040637284869717e-08,
+     "within": true
+    },
+    "A3ALL|0.1": {
+     "S_pp": -10.35726833315549,
+     "r1_S_pp": -10.35726723909589,
+     "dev_pp": -1.0940596002484426e-06,
+     "within": true
+    }
+   },
+   "passed": true
+  }
+ },
+ "note": "diagnostic unit (D0-7): labelled rows, not gates"
+}
