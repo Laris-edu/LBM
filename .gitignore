@@ -71,3 +71,6 @@ Manuscript/
 
 # ===== 杂项文件夹 =====
 X/
+# docs/Phase_5/x/ = tracked gate-report home (user-designated name, 2026-08-10);
+# scoped un-ignore against the generic X/ junk-dir rule above
+!docs/Phase_5/x/

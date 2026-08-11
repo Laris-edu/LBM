@@ -11,7 +11,7 @@
 2. 当前阶段状态：`docs/Phase_5/Phase5_STATUS.md`（状态标签 + Gate 现值唯一追踪处；WP4 数据唯一家=§6.1）
 3. Phase_5 冻结合同：`docs/Phase_5/Phase5_instruct_v1.2.md`（v1.2 权威；WP0 已冻结）
 4. Phase_5 目录 / 规范：`docs/Phase_5/README.md`、`docs/Phase_5/Phase5_Output_Files_Guide.md`、`configs/phase5/README.md`、gate schema `verification/nonlinear/phase5_gate_schema.json`
-5. WP3 与论文接口：`docs/Phase_5/wp3_go_nogo_decision.md`、`Manuscript/Paper1_Manuscript_Architecture.md`
+5. WP3 与论文接口：`docs/Phase_5/x/wp3_go_nogo_decision.md`、`Manuscript/Paper1_Manuscript_Architecture.md`
 6. 继承授权与硬约束（Phase_5 内仍有效）：`docs/Phase_3/M3/M3_Closure_Decision.md`（§3 授权边界、§4 停放项）
 7. Phase_4 继承边界（维护态）：`docs/Phase_4/Phase4_STATUS.md`、`docs/Phase_4/phase4_instruction_v1.0.md`、`docs/Phase_4/M4/M4_Verification_Report.md`
 8. 主线气侧配置（冻结，不换 dx/tau）：`configs/gas_air_10k_d2q37_levelc_dx2p6.yaml`、`configs/README.md`
@@ -66,7 +66,7 @@ docs/Phase_5/Phase5_STATUS.md（Gate 现值 + §6.1 WP4 数据）。
 - 不把 `G1A_PASSED_TO_0P05` 读成 G1a 失败或把 G1a 读成全幅值窗认证：ε=0.10 出的是**能量审计包络**（双通道漂移=场形幅值依赖实测，基频增益本身跨 100× 窗线性 0.15%）；生产矩阵授权至 ε=0.075，0.10 点按合同 §6.2 记标签。矩通道热流读出在 ε>0.075 须按 G1a 报告 §A.3 漂移带解释。
 - 不把 gate runner 的进程池并行当作物理/协议变更：它只在编排层调度独立算例（装配阶梯序、调度不变），上权威 run 前须有串行/并行 A/B 逐位一致验证（G1a 先例）。
 - 跨机运行按"每机逐位、跨机容差"口径（用户决策 D5-3，2026-07-29；详录 `scripts/README.md`）：不得把跨机 run 声明为逐位复现；权威 run 的 provenance 必须记机器指纹；A/B 两机 digest 与归因在案。
-- 不把 G1b `FAILED` 读作生产壁或 G1a/G2/A2a 链失效：阻断的是**密封无沉 rig 上的 Level C 薄膜耦合回路**（五通道证据链 `nonlinear_entry_gate_report.md` §B）；G1a 规定壁温无回路不受影响、G2 用规定壁温协议、A2a 用 canonical 热沉几何。也不得把旧壁 M3 耦合稳定读作可迁移——其稳定=质量泄漏伪热沉+grad 场 DC 标定两个隐藏前提。
+- 不把 G1b `FAILED` 读作生产壁或 G1a/G2/A2a 链失效：阻断的是**密封无沉 rig 上的 Level C 薄膜耦合回路**（五通道证据链 `x/nonlinear_entry_gate_report.md` §B）；G1a 规定壁温无回路不受影响、G2 用规定壁温协议、A2a 用 canonical 热沉几何。也不得把旧壁 M3 耦合稳定读作可迁移——其稳定=质量泄漏伪热沉+grad 场 DC 标定两个隐藏前提。
 - 不把 `q_extraction="energy_balance"`/`"hybrid_ac_dc"` 用于密封无沉 rig 的生产耦合：前者箱模 ω 放大自激、后者的因果滞后去 DC 算子在自驱动 DC 回路内**原理性自激**（v1/v2/v2.1 三轮实测，conjugate docstring 与报告 §B.2 冻结）；hybrid 资产仅作 G4a 有沉几何的设计输入。
 - 不把耦合态的 in-run recal（run#3/#4 的 ~1.07@+70°）当作 §23 常数失效或新标定：热态背景/回路瞬态污染下的读数不构成标定更新；§23 常数（3.055@17.5°）的定义域=规定壁温协议冷背景 1f。
 - 不把「固定 `P_mean` 改 `H_s` 后结果变化」判成数值域高不收敛：`H_s` 是 DC 热阻模型参数，该变化是热沉物理敏感性；G4a 域高检查必须状态匹配（重匹配 `P_mean` 使 `Theta_DC` 1% 内一致，或保持等效热阻，D0-13）。
@@ -123,7 +123,7 @@ docs/Phase_5/Phase5_STATUS.md（Gate 现值 + §6.1 WP4 数据）。
 
 - **WP4-JAB 切线消融执行（2026-08-08 用户授权 → 08-10 闭合）**：写作轨内用户指令诊断单元（TAN 先例）；两步 commit 预注册纪律；结果=`JAB_COUPLED_CANDIDATE_A2_A3`（唯一家=`wp4_jacobian_ablation_report.md` + STATUS §6.1）。不改变「投稿前不新增模拟」默认与任何 Gate；第二轮（细粒度/趋势复核）为新算力、须用户另行授权。
 - **论文架构收缩与投稿目标切换（2026-08-06，用户决定）**：`Manuscript/Paper1_Manuscript_Architecture.md` 升为 `ARCHITECTURE_v0.3`，以尽快满足毕业录用条件为目标，采用“一主两辅、5 节、5 图”。Results I 是完整时域 LBM 与准静态/1D 工作点趋势差异的唯一中心；Results II 是 A1/H2 独立弱非线性控制，Results III 是膜热容传递背景，均不裁决或界定主差异。投稿前不再补 A3/A2b/H3/30 kHz/频扫/有限宽/路线 A；机理口径由“箱尺度/全局效应”校准为“无随工作点增强的高波数局域特征，唯一机制开放”。
-- **D5-6 `SCOPED_GO` + WP4 完成（2026-08-03 批准 → 08-04 闭合;机理判别至 08-05）**：认证子矩阵 A2a/A1-H2/A5 全部权威闭合;QS-1k 判别 `MECHANISM_NOT_CLOSED`(静态族三级失效)、WP4-TAN `TANGENT_CONFIRMED`+`GLOBAL_OR_LOWK_LOCALIZED`。数据=STATUS §6.1,决策全文=`wp3_go_nogo_decision.md` §7。
+- **D5-6 `SCOPED_GO` + WP4 完成（2026-08-03 批准 → 08-04 闭合;机理判别至 08-05）**：认证子矩阵 A2a/A1-H2/A5 全部权威闭合;QS-1k 判别 `MECHANISM_NOT_CLOSED`(静态族三级失效)、WP4-TAN `TANGENT_CONFIRMED`+`GLOBAL_OR_LOWK_LOCALIZED`。数据=STATUS §6.1,决策全文=`x/wp3_go_nogo_decision.md` §7。
 - **D5-5 WP3 启动（2026-08-02;历史节点）**：八信息单元单日闭合(双机分跑首例);§14.1 对照支持 `SCOPED_GO`;当时建立的 `ARCHITECTURE_v0.1` 已由 v0.3 取代。
 - **WP2 Gate 认证链（2026-07-22→08-01,脚本判定+两项用户 scoped 决策）**：G0-B `SCOPED_PASSED_BY_USER`(D5-2,围栏=剪切 ν 不认证+有限-k 表格口径)→ G3(1D 参考仪器+分支正式定义冻结)→ G1-W(**生产壁=v1.1 对称质量中性壁**,矩通道重标定 3.055@+17.5°)→ G1a(+`G1A_PASSED_TO_0P05`,生产矩阵解锁至 0.075;进程池并行首创)→ G1b `FAILED` 闭卷(D5-4,耦合顺延 G4a)→ G2-T/A/O(双频,L2-2F 生效)→ G4a(帐篷双带+QS 判读+耦合行闭合)。各 gate 权威 run/数值/报告=STATUS §1 表与对应报告。
 - **D5-3 跨机口径（2026-07-29,用户）**："每机逐位、跨机容差";权威 run 记机器指纹;详录 `scripts/README.md`。
@@ -148,10 +148,10 @@ docs/Phase_5/Phase5_STATUS.md（Gate 现值 + §6.1 WP4 数据）。
 - Phase_5 当前状态（状态标签 + Gate 现值唯一追踪处;WP4 数据=§6.1）：`docs/Phase_5/Phase5_STATUS.md`
 - Phase_5 文档目录索引：`docs/Phase_5/README.md`
 - Phase_5 输出导览（跨目录落位 + 归档约定）：`docs/Phase_5/Phase5_Output_Files_Guide.md`
-- WP3 首轮预注册与 Go/No-Go 材料（§7=D5-6 决策全文）：`docs/Phase_5/wp3_go_nogo_decision.md`
+- WP3 首轮预注册与 Go/No-Go 材料（§7=D5-6 决策全文）：`docs/Phase_5/x/wp3_go_nogo_decision.md`
 - 论文架构（v0.3,一主两辅;不入库）：`Manuscript/Paper1_Manuscript_Architecture.md`
 - 论文结果素材层（整理自 docs/Phase_5;不入库）：`results/Phase5_Result/`
-- Gate 报告族：`nonlinear_model_freeze.md`(G0)、`nonlinear_1d_reference_report.md`(G3)、`wall_nonlinearity_neutrality_report.md`(G1-W)、`nonlinear_entry_gate_report.md`(G1a §A/G1b §B)、`harmonic_transfer_report.md`(G2-T/A)、`harmonic_operator_ablation_report.md`(G2-O)、`dc_protocol_report.md`(G4a)、`wp4_jacobian_ablation_report.md`(WP4-JAB 诊断单元)——均在 `docs/Phase_5/`
+- Gate 报告族：`x/nonlinear_model_freeze.md`(G0)、`x/nonlinear_1d_reference_report.md`(G3)、`x/wall_nonlinearity_neutrality_report.md`(G1-W)、`x/nonlinear_entry_gate_report.md`(G1a §A/G1b §B)、`x/harmonic_transfer_report.md`(G2-T/A)、`x/harmonic_operator_ablation_report.md`(G2-O)、`x/dc_protocol_report.md`(G4a)、`wp4_jacobian_ablation_report.md`(WP4-JAB 诊断单元)——均在 `docs/Phase_5/x/`
 - 权威 run 摘要归档：`archive/M5_runs/`(25 项;原始 signals.h5 双机镜像于两机 `results/mirror_from_*`)
 - Gate schema（机器可读，合同 §4/§16 转录）：`verification/nonlinear/phase5_gate_schema.json`
 - Phase_5 配置目录规范（子目录制）：`configs/phase5/README.md`
