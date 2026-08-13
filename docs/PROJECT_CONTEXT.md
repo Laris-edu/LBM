@@ -1,6 +1,6 @@
 # LBM 项目上下文入口
 
-**最后更新**：2026-08-10(本次:JAB2 第二轮闭合——A2 块定位到单项 A2-5 内能重钉扎、A3=两族抵消束、路由 LBM 边界方法学;§3 规则同步)
+**最后更新**：2026-08-11(本次:NSF 仲裁 + A2-5 修复性反证双单元闭合——`WALLFIX_FAMILY_NULL`:四不变量内无壁可修异常,A2-5=湿节点重钉扎范式结构性质;`ROUTE_LBM_BOUNDARY` 三重独立强化;§3 规则同步)
 **用途**：新会话第一份必读文档，用于快速恢复项目阶段、读取路线、不可误判规则和下一步优先级。
 **定位**：全项目生命周期唯一上下文入口，不是某个阶段的专属文档。
 **维护原则**：只保留压缩摘要和入口索引；阶段流水、run 细节、完整数值和推导证据由对应 `PhaseN_STATUS.md`、M 报告和专项诊断报告维护，本文不复制。
@@ -55,6 +55,8 @@ docs/Phase_5/Phase5_STATUS.md（Gate 现值 + §6.1 WP4 数据）。
 - 不把 G4a 帐篷双带 rig 写成"新热沉模型"或 Robin 替代：沉带=v1.1 认证壁钉 θ_amb,是 canonical `T(H_s)=T_ambient` 的直接实现;双柱=同一 canonical 问题的并行实现（重复对照行）。也不把 WP1-3「等温盖判死」读作"两条回调行判死"——判死变量=缝上一阶场跳变×闭腔（wrap 相邻 wall|lid 对的全 Θ 跳变）;帐篷场处处连续,不在该族。反对称双温单行变体已探针否弃（行内碰撞抹平双温结构），不得复活。
 - 耦合回路中带簿记热流必须做 **cv 重钉扎精确扣除**（定密度行能量 E=cv·ρθ、cv=(D+S)/2,无 pdV;用 cp 过扣制造伪负导数项）:原始簿记直馈 ODE 含超 Nyquist 导数项（增益=cv·Σρ_row/(nx·C_A),跨 1 即步进振荡自激——G4a 主 run 失稳@180 步与 smoke 稳定的二分性被该增益 1.244/0.965 精确解释）。修正后气侧瞬时导 G_inst≈0=回路本征稳定（膜极点）;机制映射夹具在合同测试固化。
 - 不把 G4a 的 `DYNAMIC_NONLINEAR_RESIDUAL_IDENTIFIED` 读作 gate 失败或测量可疑：它是 §11.5 预注册判读的正式产出（D_OP 实测 −2.83% vs QS0/QS1 +2.4%，信号远高于 `U_gov`）——静态工作点重求值族失效是合同核心问题句的实测答案。QS-1k 进一步表明波数分辨静态重求值仍不能恢复负号；WP4-TAN R1 表明生产 D_OP 与完整时域 LBM 的数值方向切线一致（偏差 ≤0.007 pp），排除了有限幅值解释。TAN R2 只表明未发现随工作点增强的高波数局域异常（高波数分数低于冷底板），因此结果**与低波数或全局响应一致**。【2026-08-10 后：WP4-JAB 切线消融（`JAB_COUPLED_CANDIDATE_A2_A3`）把该负号差异的 **LBM 内部来源**定位为 v1.1 带重构与宏观恢复/平衡分布两个导数块的近可加耦合；**JAB2 第二轮进一步定位：A2 块=单一子项 A2-5（壁面内能目标与 g 重钉扎的基态密度敏感度，σ=1.000 两点、Y 与整块 7 位一致），A3 补偿=ρ 交叉族×平衡构造族近抵消束（无单一主项，`A3_DISTRIBUTED`）；冻结分类路由 `ROUTE_LBM_BOUNDARY`（A2-5∈离散边界操作）**——这些是**算子内部导数块归因，不是真实物理机制声明**；不得写成质量中性壁普遍错误（其认证的质量中性/钉扎/小幅值行为不受影响）、不得写成 thermophone 新物理已发现；「离散边界项主导」若要升级为方法学结论需在改进边界方案上复测（报告 §5/§7.3）】
+- 不把 wallfix 反证(2026-08-11)的 `WALLFIX_FAMILY_NULL` 读作「质量中性壁普遍错误」或「LBM 不可用」:它证明的是**范式内不可修性**(四不变量锁死切线标量通道+合法微观自由度实测惰性 |S|≤1.1e-6 pp)——壁在认证域(冷态/小幅值/质量中性/钉扎)行为逐位不变,受影响面仅有限温升下的工作点切线趋势;也不把「修复入口=面/通量一致钉扎」读作已验证方案——该族改冷态标定,须 G1-W 级重认证(未立项)。唯一家=`docs/Phase_5/wallfix_a2a5_counterproof_report.md`。
+- 不把 NSF 热基态切线仲裁(2026-08-11)常数输运分支的「情况 B 字面触发」(full −1.38/−2.68%)读作连续动态机制候选或 thermophone finite-bias physics 重开条件:其负号 ~82% 由冻结 k 的**静态分层系数**携带(no-gradient 诊断仍负)、两个 boxed 梯度动态耦合项三分支一致仅 −0.26/−0.51 pp(≈LBM 动力学残差的 5%)、NSF 相位 ≤0.2° 无法产生 LBM 相位签名;对认证 LBM-equivalent 介质(G0 实测律 k∝T^{+1.04})full NSF 为正(情况 A/D,与 QS-1/1D DC 臂同向且与归档 DC 臂系列四位一致)。判决唯一家=`docs/Phase_5/NSF_hot_basestate_tangent_arbitration_report.md`;`ROUTE_LBM_BOUNDARY` 维持,升级为方法学结论仍需改进边界方案复测。
 - 耦合行认证域=χ_0=0.016 基线膜、canonical 几何、10 kHz(重跑 run `20260801T155507Z`);不外推到其它 C_A/几何;G4a 主 run 的耦合行失稳是已闭合的记账错误、不得引作"耦合不可行"证据。【WP4 后:A5 v2 已把耦合稳定域实测扩至冷 χ₀∈[0.016,3](十点);χ₀=0.01 端点=显式回路离散稳定性边界实测判死(v1 诊断归档),不得当作物理悬崖】
 - 不把 A1 写成真实 Joule 加热协议：它是有符号零均值热功率数值消融（半周期主动抽热，D0-4）；A1 `D_G` 未跨 3% 不构成自动 NO_GO——A2a/QS-1 判别、经认证 H2 或严格上界是并列科学信号（D0-5/合同 §12.5）。
 - 不把 G3 `PASSED` 写成任何 LBM 侧 Gate 通过或非线性物理结论：G3 认证的是 1D NSF **参考仪器**（七行仪器硬认证）；`1D-lbm-equivalent` 正式定义是 k1 单点律 surrogate（禁外推到其它 k，freeze doc §4）。
@@ -121,6 +123,8 @@ docs/Phase_5/Phase5_STATUS.md（Gate 现值 + §6.1 WP4 数据）。
 
 ## 4. 当前关键决策
 
+- **A2-5 修复性反证执行（2026-08-11 用户指令当日闭合）**：判决=`WALLFIX_FAMILY_NULL`——严格四不变量（质量中性/u=0/θ 精确钉扎/簿记闭合）内不存在能改变热基态切线响应的壁修改；A2-5 异常=湿节点逐步重钉扎**范式**的结构性质；修复唯一入口=放宽行钉扎语义（G1-W 级重认证新单元，未立项，用户决定）。`ROUTE_LBM_BOUNDARY` 三重独立强化（JAB2 定位 → NSF 排除连续机制 → 本单元证范式内不可修）。唯一家=`wallfix_a2a5_counterproof_report.md`+STATUS §6.1。
+- **NSF 热基态切线仲裁执行（2026-08-11 用户计划书当日下达当日闭合）**：写作轨内用户指令诊断单元（JAB 先例；零新 LBM 算力、A 机单机分钟级）。判决=连续 NSF 热基态动力学（含全部梯度耦合项）不能产生 LBM 负工作点趋势与相位签名；LBM-equivalent 介质情况 A/D 为正——**`ROUTE_LBM_BOUNDARY` 维持强化，thermophone finite-bias physics 不重开**。唯一家=`NSF_hot_basestate_tangent_arbitration_report.md`+STATUS §6.1。不改变「投稿前不新增模拟」默认与任何 Gate。
 - **WP4-JAB 切线消融执行（2026-08-08 用户授权 → 08-10 闭合）**：写作轨内用户指令诊断单元（TAN 先例）；两步 commit 预注册纪律；结果=`JAB_COUPLED_CANDIDATE_A2_A3`（唯一家=`wp4_jacobian_ablation_report.md` + STATUS §6.1）。不改变「投稿前不新增模拟」默认与任何 Gate；第二轮（细粒度/趋势复核）为新算力、须用户另行授权。
 - **论文架构收缩与投稿目标切换（2026-08-06，用户决定）**：`Manuscript/Paper1_Manuscript_Architecture.md` 升为 `ARCHITECTURE_v0.3`，以尽快满足毕业录用条件为目标，采用“一主两辅、5 节、5 图”。Results I 是完整时域 LBM 与准静态/1D 工作点趋势差异的唯一中心；Results II 是 A1/H2 独立弱非线性控制，Results III 是膜热容传递背景，均不裁决或界定主差异。投稿前不再补 A3/A2b/H3/30 kHz/频扫/有限宽/路线 A；机理口径由“箱尺度/全局效应”校准为“无随工作点增强的高波数局域特征，唯一机制开放”。
 - **D5-6 `SCOPED_GO` + WP4 完成（2026-08-03 批准 → 08-04 闭合;机理判别至 08-05）**：认证子矩阵 A2a/A1-H2/A5 全部权威闭合;QS-1k 判别 `MECHANISM_NOT_CLOSED`(静态族三级失效)、WP4-TAN `TANGENT_CONFIRMED`+`GLOBAL_OR_LOWK_LOCALIZED`。数据=STATUS §6.1,决策全文=`x/wp3_go_nogo_decision.md` §7。
@@ -152,7 +156,7 @@ docs/Phase_5/Phase5_STATUS.md（Gate 现值 + §6.1 WP4 数据）。
 - 论文架构（v0.3,一主两辅;不入库）：`Manuscript/Paper1_Manuscript_Architecture.md`
 - 论文结果素材层（整理自 docs/Phase_5;不入库）：`results/Phase5_Result/`
 - Gate 报告族：`x/nonlinear_model_freeze.md`(G0)、`x/nonlinear_1d_reference_report.md`(G3)、`x/wall_nonlinearity_neutrality_report.md`(G1-W)、`x/nonlinear_entry_gate_report.md`(G1a §A/G1b §B)、`x/harmonic_transfer_report.md`(G2-T/A)、`x/harmonic_operator_ablation_report.md`(G2-O)、`x/dc_protocol_report.md`(G4a)、`wp4_jacobian_ablation_report.md`(WP4-JAB 诊断单元)——均在 `docs/Phase_5/x/`
-- 权威 run 摘要归档：`archive/M5_runs/`(25 项;原始 signals.h5 双机镜像于两机 `results/mirror_from_*`)
+- 权威 run 摘要归档：`archive/M5_runs/`(27 项;原始 signals.h5 双机镜像于两机 `results/mirror_from_*`)
 - Gate schema（机器可读，合同 §4/§16 转录）：`verification/nonlinear/phase5_gate_schema.json`
 - Phase_5 配置目录规范（子目录制）：`configs/phase5/README.md`
 

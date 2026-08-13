@@ -1,0 +1,197 @@
+{
+ "unit": "WP4-WALLFIX",
+ "run_id": "20260811T081743Z",
+ "mode": "smoke",
+ "verdict": "COMPLETED",
+ "protocol": {
+  "hs_rows": 12,
+  "nx": 4,
+  "samples_per_period": 32,
+  "theta_points": [
+   0.05
+  ],
+  "settle_periods": 2.0,
+  "drive_periods": 2.0,
+  "fit_skip_periods": 1.0,
+  "h_ladder": [
+   5e-05
+  ],
+  "frequency_Hz": 10000.0,
+  "ny": 24,
+  "variants": [
+   "PROD",
+   "V2EQ",
+   "V2LIN",
+   "V2EQL"
+  ],
+  "gas_config": "configs/gas_air_10k_d2q37_levelc_dx2p6.yaml",
+  "gates": {
+   "stationarity": 0.001,
+   "dc_closure": 0.001,
+   "r_f": 1e-05,
+   "v5_mass": 1e-07,
+   "v5_energy": 1e-05,
+   "prod_identity_pp": 0.2,
+   "class_nsf_band_pp": 1.0,
+   "class_move_frac": 0.25
+  }
+ },
+ "legality_settle": {
+  "PROD_th0.05": {
+   "stationarity_per_period": 1.6781229497458333e-14,
+   "dc_closure_rel": 1.8878580048965297e-11,
+   "theta_dc_measured": 0.04998915939834501,
+   "mass_drift_settle": 4.614753024156926e-12,
+   "pass": true
+  },
+  "PROD_th0": {
+   "stationarity_per_period": 1.2191491515247505e-14,
+   "dc_closure_rel": 2.009129530868661,
+   "theta_dc_measured": -1.1474344955527065e-15,
+   "mass_drift_settle": 5.735634189818484e-12,
+   "pass": true
+  },
+  "V2EQ_th0.05": {
+   "stationarity_per_period": 9.753193212198005e-15,
+   "dc_closure_rel": 1.9380417957188548e-11,
+   "theta_dc_measured": 0.049989159398346444,
+   "mass_drift_settle": 4.616529380996326e-12,
+   "pass": true
+  },
+  "V2EQ_th0": {
+   "stationarity_per_period": 1.0757198395806623e-14,
+   "dc_closure_rel": 2.032033426183844,
+   "theta_dc_measured": 4.3028793583226493e-16,
+   "mass_drift_settle": 5.728084673251033e-12,
+   "pass": true
+  },
+  "V2LIN_th0": {
+   "stationarity_per_period": 1.5490365689961536e-14,
+   "dc_closure_rel": 1.9856611208406307,
+   "theta_dc_measured": -7.171465597204416e-16,
+   "mass_drift_settle": 5.679456904772451e-12,
+   "pass": true
+  },
+  "V2LIN_th0.05": {
+   "stationarity_per_period": 8.089413193646581e-14,
+   "dc_closure_rel": 1.5357524673662733e-11,
+   "theta_dc_measured": 0.04998915939795072,
+   "mass_drift_settle": 5.0530690742789375e-12,
+   "pass": true
+  },
+  "V2EQL_th0": {
+   "stationarity_per_period": 1.2048062203303418e-14,
+   "dc_closure_rel": 1.9988154210639673,
+   "theta_dc_measured": 7.171465597204416e-16,
+   "mass_drift_settle": 5.658140622699648e-12,
+   "pass": true
+  },
+  "V2EQL_th0.05": {
+   "stationarity_per_period": 3.212816587547578e-14,
+   "dc_closure_rel": 1.519806066018527e-11,
+   "theta_dc_measured": 0.04998915939795316,
+   "mass_drift_settle": 5.050404539019837e-12,
+   "pass": true
+  }
+ },
+ "prod_identity": {
+  "0.05": {
+   "d_op_pct": 0.9740162538345754,
+   "jab1_smoke_ref_pct": 0.974,
+   "dev_pp": 1.625383457537488e-05,
+   "soft_anchor": true
+  }
+ },
+ "results": {
+  "PROD": {
+   "0.05": {
+    "d_op_pct": 0.9740162538345754,
+    "phase_deg": -1.5712495087742964,
+    "per_h": {
+     "5e-05": {
+      "d_op_pct": 0.9740162538345754,
+      "phase_deg": -1.5712495087742964
+     }
+    },
+    "h_spread_pp": 0.0
+   }
+  },
+  "V2EQ": {
+   "0.05": {
+    "d_op_pct": 0.9740164288309483,
+    "phase_deg": -1.571249294000181,
+    "per_h": {
+     "5e-05": {
+      "d_op_pct": 0.9740164288309483,
+      "phase_deg": -1.571249294000181
+     }
+    },
+    "h_spread_pp": 0.0
+   }
+  },
+  "V2LIN": {
+   "0.05": {
+    "d_op_pct": 0.9740180491242034,
+    "phase_deg": -1.5712483716488674,
+    "per_h": {
+     "5e-05": {
+      "d_op_pct": 0.9740180491242034,
+      "phase_deg": -1.5712483716488674
+     }
+    },
+    "h_spread_pp": 0.0
+   }
+  },
+  "V2EQL": {
+   "0.05": {
+    "d_op_pct": 0.9740176339092077,
+    "phase_deg": -1.5712484020654436,
+    "per_h": {
+     "5e-05": {
+      "d_op_pct": 0.9740176339092077,
+      "phase_deg": -1.5712484020654436
+     }
+    },
+    "h_spread_pp": 0.0
+   }
+  }
+ },
+ "classification": {
+  "V2EQ": {
+   "label": "SCREEN_WEAK",
+   "S_vs_prod_pp": [
+    1.7499637294804415e-07
+   ]
+  },
+  "V2LIN": {
+   "label": "SCREEN_WEAK",
+   "S_vs_prod_pp": [
+    1.7952896280704067e-06
+   ]
+  },
+  "V2EQL": {
+   "label": "SCREEN_WEAK",
+   "S_vs_prod_pp": [
+    1.3800746323511248e-06
+   ]
+  }
+ },
+ "external_references": {
+  "tan_dop_pct": {
+   "0.05": -2.8345129628396526,
+   "0.1": -5.317059432017945
+  },
+  "nsf_g0_dop_pct": {
+   "0.05": 1.1816679235497007,
+   "0.1": 2.344498614853485
+  },
+  "provenance": "TAN=archive/M5_runs/wp4_tan_20260805T092726Z_B; NSF=results/phase5/nsf_arbitration/20260811T055850Z (archived M5_runs/nsf_arb_20260811T055850Z)"
+ },
+ "machine": {
+  "node": "Laris-jixie",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.14.2",
+  "numpy": "2.4.4",
+  "git_commit": "860b4df"
+ }
+}

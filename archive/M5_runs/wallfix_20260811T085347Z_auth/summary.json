@@ -1,0 +1,315 @@
+{
+ "unit": "WP4-WALLFIX",
+ "run_id": "20260811T085347Z",
+ "mode": "auth",
+ "verdict": "COMPLETED",
+ "protocol": {
+  "hs_rows": 48,
+  "nx": 8,
+  "samples_per_period": 64,
+  "theta_points": [
+   0.05,
+   0.1
+  ],
+  "settle_periods": 5.0,
+  "drive_periods": 4.0,
+  "fit_skip_periods": 2.0,
+  "h_ladder": [
+   0.0001,
+   5e-05
+  ],
+  "frequency_Hz": 10000.0,
+  "ny": 96,
+  "variants": [
+   "PROD",
+   "V2EQ",
+   "V2LIN",
+   "V2EQL"
+  ],
+  "gas_config": "configs/gas_air_10k_d2q37_levelc_dx2p6.yaml",
+  "gates": {
+   "stationarity": 0.001,
+   "dc_closure": 0.001,
+   "r_f": 1e-05,
+   "v5_mass": 1e-07,
+   "v5_energy": 1e-05,
+   "prod_identity_pp": 0.2,
+   "class_nsf_band_pp": 1.0,
+   "class_move_frac": 0.25
+  }
+ },
+ "legality_settle": {
+  "PROD_th0": {
+   "stationarity_per_period": 7.028036285260327e-14,
+   "dc_closure_rel": 2.0853403141361255,
+   "theta_dc_measured": -8.605758716645299e-16,
+   "mass_drift_settle": 1.4834800055041342e-12,
+   "pass": true
+  },
+  "PROD_th0.05": {
+   "stationarity_per_period": 1.3499445182000907e-06,
+   "dc_closure_rel": 4.816001796004962e-05,
+   "theta_dc_measured": 0.04999797410466012,
+   "mass_drift_settle": 1.1821654766208667e-12,
+   "pass": true
+  },
+  "PROD_th0.1": {
+   "stationarity_per_period": 2.70907579025475e-06,
+   "dc_closure_rel": 4.7007701818024606e-05,
+   "theta_dc_measured": 0.09999573998562758,
+   "mass_drift_settle": 1.2714274078007293e-12,
+   "pass": true
+  },
+  "V2EQ_th0.1": {
+   "stationarity_per_period": 2.709075888360399e-06,
+   "dc_closure_rel": 4.7007701608241725e-05,
+   "theta_dc_measured": 0.09999573998562844,
+   "mass_drift_settle": 1.2732037646401295e-12,
+   "pass": true
+  },
+  "V2EQ_th0": {
+   "stationarity_per_period": 2.4971043209465773e-13,
+   "dc_closure_rel": 2.0377216144850996,
+   "theta_dc_measured": 7.171465597204416e-16,
+   "mass_drift_settle": 1.475042310516983e-12,
+   "pass": true
+  },
+  "V2EQ_th0.05": {
+   "stationarity_per_period": 1.3499445402882048e-06,
+   "dc_closure_rel": 4.816002175755731e-05,
+   "theta_dc_measured": 0.0499979741046617,
+   "mass_drift_settle": 1.1781686737322161e-12,
+   "pass": true
+  },
+  "V2LIN_th0": {
+   "stationarity_per_period": 1.6795572428652742e-13,
+   "dc_closure_rel": 1.9896630934150077,
+   "theta_dc_measured": -1.2908638074967948e-15,
+   "mass_drift_settle": 1.4652723479002816e-12,
+   "pass": true
+  },
+  "V2LIN_th0.05": {
+   "stationarity_per_period": 1.349944554631136e-06,
+   "dc_closure_rel": 4.816001559643482e-05,
+   "theta_dc_measured": 0.04999797410464506,
+   "mass_drift_settle": 1.1786127629420662e-12,
+   "pass": true
+  },
+  "V2LIN_th0.1": {
+   "stationarity_per_period": 2.709075911595948e-06,
+   "dc_closure_rel": 4.7007702711829785e-05,
+   "theta_dc_measured": 0.0999957399855639,
+   "mass_drift_settle": 1.2787548797632553e-12,
+   "pass": true
+  },
+  "V2EQL_th0": {
+   "stationarity_per_period": 1.1632117198665562e-13,
+   "dc_closure_rel": 2.048084759576202,
+   "theta_dc_measured": 1.0040051836086182e-15,
+   "mass_drift_settle": 1.4648282586904315e-12,
+   "pass": true
+  },
+  "V2EQL_th0.05": {
+   "stationarity_per_period": 1.3499446570396647e-06,
+   "dc_closure_rel": 4.816001529707729e-05,
+   "theta_dc_measured": 0.04999797410464649,
+   "mass_drift_settle": 1.1797229859666913e-12,
+   "pass": true
+  },
+  "V2EQL_th0.1": {
+   "stationarity_per_period": 2.709075956345893e-06,
+   "dc_closure_rel": 4.70077003832089e-05,
+   "theta_dc_measured": 0.09999573998556505,
+   "mass_drift_settle": 1.2754242106893798e-12,
+   "pass": true
+  }
+ },
+ "prod_identity": {
+  "0.05": {
+   "d_op_pct": -2.834524313878617,
+   "tan_ref_pct": -2.8345129628396526,
+   "dev_pp": 1.1351038964324545e-05,
+   "pass": true
+  },
+  "0.1": {
+   "d_op_pct": -5.317082959761644,
+   "tan_ref_pct": -5.317059432017945,
+   "dev_pp": 2.352774369818178e-05,
+   "pass": true
+  }
+ },
+ "results": {
+  "PROD": {
+   "0.05": {
+    "d_op_pct": -2.834524313878617,
+    "phase_deg": -1.383923969840351,
+    "per_h": {
+     "5e-05": {
+      "d_op_pct": -2.834524313878617,
+      "phase_deg": -1.383923969840351
+     }
+    },
+    "h_spread_pp": 0.0
+   },
+   "0.1": {
+    "d_op_pct": -5.317082959761644,
+    "phase_deg": -2.620826387221709,
+    "per_h": {
+     "5e-05": {
+      "d_op_pct": -5.317082959761644,
+      "phase_deg": -2.620826387221709
+     }
+    },
+    "h_spread_pp": 0.0
+   }
+  },
+  "V2EQ": {
+   "0.05": {
+    "d_op_pct": -2.8345248374908483,
+    "phase_deg": -1.3839242584146172,
+    "per_h": {
+     "0.0001": {
+      "d_op_pct": -2.8345254569061784,
+      "phase_deg": -1.38392410496689
+     },
+     "5e-05": {
+      "d_op_pct": -2.8345248374908483,
+      "phase_deg": -1.3839242584146172
+     }
+    },
+    "h_spread_pp": 6.194153301386507e-07
+   },
+   "0.1": {
+    "d_op_pct": -5.317084062472932,
+    "phase_deg": -2.6208265636260095,
+    "per_h": {
+     "0.0001": {
+      "d_op_pct": -5.317083933967071,
+      "phase_deg": -2.6208266517269796
+     },
+     "5e-05": {
+      "d_op_pct": -5.317084062472932,
+      "phase_deg": -2.6208265636260095
+     }
+    },
+    "h_spread_pp": 1.2850586106338824e-07
+   }
+  },
+  "V2LIN": {
+   "0.05": {
+    "d_op_pct": -2.834524523295179,
+    "phase_deg": -1.3839239664840575,
+    "per_h": {
+     "5e-05": {
+      "d_op_pct": -2.834524523295179,
+      "phase_deg": -1.3839239664840575
+     }
+    },
+    "h_spread_pp": 0.0
+   },
+   "0.1": {
+    "d_op_pct": -5.3170833577821375,
+    "phase_deg": -2.620826091558125,
+    "per_h": {
+     "5e-05": {
+      "d_op_pct": -5.3170833577821375,
+      "phase_deg": -2.620826091558125
+     }
+    },
+    "h_spread_pp": 0.0
+   }
+  },
+  "V2EQL": {
+   "0.05": {
+    "d_op_pct": -2.8345246756618647,
+    "phase_deg": -1.3839238582783497,
+    "per_h": {
+     "5e-05": {
+      "d_op_pct": -2.8345246756618647,
+      "phase_deg": -1.3839238582783497
+     }
+    },
+    "h_spread_pp": 0.0
+   },
+   "0.1": {
+    "d_op_pct": -5.317083361762154,
+    "phase_deg": -2.6208261005765108,
+    "per_h": {
+     "5e-05": {
+      "d_op_pct": -5.317083361762154,
+      "phase_deg": -2.6208261005765108
+     }
+    },
+    "h_spread_pp": 0.0
+   }
+  }
+ },
+ "classification": {
+  "V2EQ": {
+   "label": "WALLFIX_NULL",
+   "d_op_pct": [
+    -2.8345248374908483,
+    -5.317084062472932
+   ],
+   "move_frac": [
+    -1.303752909214591e-07,
+    -1.439273703169489e-07
+   ],
+   "nsf_ref_pct": [
+    1.1816679235497007,
+    2.344498614853485
+   ]
+  },
+  "V2LIN": {
+   "label": "WALLFIX_NULL",
+   "d_op_pct": [
+    -2.834524523295179,
+    -5.3170833577821375
+   ],
+   "move_frac": [
+    -5.2143062256263425e-08,
+    -5.1950173736408516e-08
+   ],
+   "nsf_ref_pct": [
+    1.1816679235497007,
+    2.344498614853485
+   ]
+  },
+  "V2EQL": {
+   "label": "WALLFIX_NULL",
+   "d_op_pct": [
+    -2.8345246756618647,
+    -5.317083361762154
+   ],
+   "move_frac": [
+    -9.008115807620955e-08,
+    -5.246965085451493e-08
+   ],
+   "nsf_ref_pct": [
+    1.1816679235497007,
+    2.344498614853485
+   ]
+  },
+  "_family": {
+   "label": "WALLFIX_FAMILY_NULL"
+  }
+ },
+ "external_references": {
+  "tan_dop_pct": {
+   "0.05": -2.8345129628396526,
+   "0.1": -5.317059432017945
+  },
+  "nsf_g0_dop_pct": {
+   "0.05": 1.1816679235497007,
+   "0.1": 2.344498614853485
+  },
+  "provenance": "TAN=archive/M5_runs/wp4_tan_20260805T092726Z_B; NSF=results/phase5/nsf_arbitration/20260811T055850Z (archived M5_runs/nsf_arb_20260811T055850Z)"
+ },
+ "machine": {
+  "node": "Laris-jixie",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.14.2",
+  "numpy": "2.4.4",
+  "git_commit": "860b4df"
+ }
+}
