@@ -125,6 +125,45 @@ def aliveness_check(base_cfg: dict) -> dict[str, Any]:
             "pass": bool(rel >= LINE_ALIVENESS_REL)}
 
 
+def partition_ht(settles: dict[str, Any], ht_list: list[float],
+                 thetas: list[float]) -> tuple[dict, dict]:
+    """Per-ht settle legality partition (pure; unit-tested).
+
+    Returns (legality rows per label, ht_status per ht with ok/reason).
+    A ladder point survives only if ALL its settles (cold + hot) exist,
+    are finite and pass the JAB legality gates.
+    """
+
+    legality: dict[str, Any] = {}
+    ht_status: dict[str, dict] = {}
+    for ht in ht_list:
+        ok = True
+        reasons: list[str] = []
+        for th in [0.0] + list(thetas):
+            lbl = f"ht{ht:g}_th{th:g}"
+            run = settles.get(lbl, {})
+            if "worker_exception" in run or not run.get("finite"):
+                legality[lbl] = {"pass": False, "reason": run.get(
+                    "worker_exception", "non-finite or missing settle")}
+                ok = False
+                reasons.append(f"{lbl}: {legality[lbl]['reason']}")
+                continue
+            row = {k: run[k] for k in (
+                "stationarity_per_period", "dc_closure_rel",
+                "theta_dc_measured", "mass_drift_settle")}
+            row["pass"] = bool(
+                run["stationarity_per_period"] <= GATE_STATIONARITY
+                and (th == 0.0 or run["dc_closure_rel"] <= GATE_DC_CLOSURE)
+                and math.isfinite(run["mass_drift_settle"]))
+            legality[lbl] = row
+            if not row["pass"]:
+                ok = False
+                reasons.append(f"{lbl}: legality gate")
+        ht_status[f"{ht:g}"] = {"ok": ok,
+                                "reason": "; ".join(reasons) or "all PASS"}
+    return legality, ht_status
+
+
 def _dop(y_hot: complex, y_cold: complex) -> dict[str, float]:
     d = y_hot / y_cold
     return {"d_op_pct": (abs(d) - 1.0) * 100.0,
@@ -160,28 +199,22 @@ def run_stage(mode: str, base_cfg: dict, ht_list: list[float], workers: int,
                 "ckpt_dir": str(ckpt),
             })
     settles = execute_cases(settle_payloads, workers, log, worker=_settle_worker)
-    legality = {}
-    ok = True
-    for lbl, run in settles.items():
-        if "worker_exception" in run or not run.get("finite"):
-            legality[lbl] = {"pass": False, "reason": run.get(
-                "worker_exception", "non-finite settle")}
-            ok = False
-            continue
-        th = run["snapshot"]["theta_dc_target"]
-        row = {k: run[k] for k in ("stationarity_per_period", "dc_closure_rel",
-                                   "theta_dc_measured", "mass_drift_settle")}
-        row["pass"] = bool(
-            run["stationarity_per_period"] <= GATE_STATIONARITY
-            and (th == 0.0 or run["dc_closure_rel"] <= GATE_DC_CLOSURE)
-            and math.isfinite(run["mass_drift_settle"]))
-        legality[lbl] = row
-        ok = ok and row["pass"]
-        log(f"settle {lbl}: stat={row['stationarity_per_period']:.1e} "
-            f"dc={row['dc_closure_rel']:.1e} -> "
-            f"{'PASS' if row['pass'] else 'FAIL'}")
-    if not ok:
-        return {"stage_verdict": "LEGALITY_FAILED", "legality": legality}
+    legality, ht_status = partition_ht(settles, ht_list, thetas)
+    for lbl, row in legality.items():
+        log(f"settle {lbl}: {row}")
+    ht_ok = [ht for ht in ht_list if ht_status[f"{ht:g}"]["ok"]]
+    for ht in ht_list:
+        if ht not in ht_ok:
+            # A5 chi=0.01 precedent: an unstable ladder POINT is a measured
+            # instrument-stability boundary, archived — not a scan failure.
+            log(f"ht={ht:g}: MEASURED_UNSTABLE_OR_ILLEGAL "
+                f"({ht_status[f'{ht:g}']['reason']}) — dropped from the "
+                f"tangent wave, archived as a stability-boundary finding")
+    if 1.0 not in ht_ok or len(ht_ok) < 2:
+        return {"stage_verdict": "LEGALITY_FAILED", "legality": legality,
+                "ht_status": ht_status,
+                "reason": "anchor ht=1.0 dead or <2 surviving ladder points"}
+    ht_list = ht_ok
 
     # ---- tangent wave: ht x (cold + hot points), single frozen h ----
     tang_payloads = []
@@ -204,38 +237,56 @@ def run_stage(mode: str, base_cfg: dict, ht_list: list[float], workers: int,
                                   "hot_run": settles[f"ht{ht:g}_th{th:g}"]})
     tangs = execute_cases(tang_payloads, workers, log, worker=_tangent_worker)
 
-    audits_ok = True
+    anchor_ok = True
+    tangent_failed: dict[str, str] = {}
     rows: dict[str, dict] = {}
     for ht in ht_list:
-        rc = tangs.get(f"ht{ht:g}_cold", {})
-        if "Y" not in rc:
-            audits_ok = False
-            log(f"MISSING cold leg ht={ht:g}")
-            continue
-        yc = complex(rc["Y"]["re"], rc["Y"]["im"])
-        per_theta = {"Y0_abs": abs(yc)}
-        for th in thetas:
-            rh = tangs.get(f"ht{ht:g}_th{th:g}_hot", {})
-            if "Y" not in rh:
-                audits_ok = False
-                log(f"MISSING hot leg ht={ht:g} th={th:g}")
-                continue
-            for r, lbl in ((rh, f"ht{ht:g}_th{th:g}_hot"),
-                           (rc, f"ht{ht:g}_cold")):
-                a = r["audits"]
-                if not (a["mass_tangent_rel_worst"] <= GATE_V5_MASS
-                        and a["energy_account_rel_worst"] <= GATE_V5_ENERGY
-                        and r["r_f_worst"] <= GATE_R_F):
-                    audits_ok = False
-                    log(f"AUDIT FAIL {lbl}: {a} r_f={r['r_f_worst']:.1e}")
-            yh = complex(rh["Y"]["re"], rh["Y"]["im"])
-            per_theta[f"{th:g}"] = _dop(yh, yc)
-        rows[f"{ht:g}"] = per_theta
-        shown = {k: (round(v["d_op_pct"], 4) if isinstance(v, dict) else
-                     round(v, 6)) for k, v in per_theta.items()}
-        log(f"ht={ht:g}: {shown}")
-    return {"stage_verdict": "COMPLETED" if audits_ok else "LEGALITY_FAILED",
-            "legality": legality, "rows": rows,
+        ht_ok_t = True
+        reasons: list[str] = []
+
+        def _leg(lbl):
+            nonlocal ht_ok_t
+            r = tangs.get(lbl, {})
+            if "Y" not in r:
+                ht_ok_t = False
+                reasons.append(f"{lbl}: missing/failed")
+                return None
+            a = r["audits"]
+            if not (a["mass_tangent_rel_worst"] <= GATE_V5_MASS
+                    and a["energy_account_rel_worst"] <= GATE_V5_ENERGY
+                    and r["r_f_worst"] <= GATE_R_F):
+                ht_ok_t = False
+                reasons.append(f"{lbl}: audit gate ({a}, r_f={r['r_f_worst']:.1e})")
+                return None
+            return r
+
+        rc = _leg(f"ht{ht:g}_cold")
+        per_theta: dict[str, Any] = {}
+        if rc is not None:
+            yc = complex(rc["Y"]["re"], rc["Y"]["im"])
+            per_theta["Y0_abs"] = abs(yc)
+            for th in thetas:
+                rh = _leg(f"ht{ht:g}_th{th:g}_hot")
+                if rh is not None:
+                    yh = complex(rh["Y"]["re"], rh["Y"]["im"])
+                    per_theta[f"{th:g}"] = _dop(yh, yc)
+        if ht_ok_t:
+            rows[f"{ht:g}"] = per_theta
+            shown = {k: (round(v["d_op_pct"], 4) if isinstance(v, dict) else
+                         round(v, 6)) for k, v in per_theta.items()}
+            log(f"ht={ht:g}: {shown}")
+        else:
+            # anchor failure kills the stage; a scan point failing in the
+            # TANGENT wave (after a legal settle) is archived and dropped —
+            # same measured-boundary caliber as the settle partition.
+            tangent_failed[f"{ht:g}"] = "; ".join(reasons)
+            log(f"ht={ht:g}: TANGENT_FAILED ({tangent_failed[f'{ht:g}']})")
+            if ht == 1.0:
+                anchor_ok = False
+    stage_ok = anchor_ok and len(rows) >= 2
+    return {"stage_verdict": "COMPLETED" if stage_ok else "LEGALITY_FAILED",
+            "legality": legality, "ht_status": ht_status,
+            "tangent_failed": tangent_failed, "rows": rows,
             "thetas": [f"{t:g}" for t in thetas]}
 
 

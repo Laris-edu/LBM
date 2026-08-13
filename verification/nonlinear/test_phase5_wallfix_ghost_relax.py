@@ -32,6 +32,7 @@ from scripts.phase5_wallfix_ghost_relax_scan import (
     LINE_SCAN_NULL_PP,
     aliveness_check,
     classify,
+    partition_ht,
     scan_gas_cfg,
 )
 
@@ -96,6 +97,31 @@ def test_checkpoint_labels_unique_across_ladder():
         cold = f"ht{ht:g}_cold"
         assert cold not in labels
         labels.add(cold)
+
+
+def test_partition_ht_drops_unstable_points_only():
+    def good(th):
+        return {"finite": True, "stationarity_per_period": 1e-6,
+                "dc_closure_rel": 5e-5, "theta_dc_measured": th,
+                "mass_drift_settle": 1e-13,
+                "snapshot": {"theta_dc_target": th}}
+
+    settles = {
+        "ht1_th0": good(0.0), "ht1_th0.05": good(0.05),
+        # ht1.5: hot settle crashed (the measured smoke instability)
+        "ht1.5_th0": good(0.0),
+        "ht1.5_th0.05": {"worker_exception":
+                         "RuntimeError: non-positive streamed wall-row density"},
+        # ht1.2: legality gate failure (stationarity too large)
+        "ht1.2_th0": good(0.0),
+        "ht1.2_th0.05": {**good(0.05), "stationarity_per_period": 1.0},
+    }
+    legality, status = partition_ht(settles, [1.0, 1.2, 1.5], [0.05])
+    assert status["1"]["ok"]
+    assert not status["1.5"]["ok"] and "ht1.5_th0.05" in status["1.5"]["reason"]
+    assert not status["1.2"]["ok"] and "legality gate" in status["1.2"]["reason"]
+    assert legality["ht1_th0.05"]["pass"]
+    assert not legality["ht1.2_th0.05"]["pass"]
 
 
 def test_classify_branches():
