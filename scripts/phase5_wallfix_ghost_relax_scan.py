@@ -85,7 +85,14 @@ from scripts.phase5_wallfix_arbitration import (  # noqa: E402
 UNIT = "WP4-GHOSTSCAN"
 
 # ---- frozen scan protocol ----
-HIGH_TAU_LADDER = (1.0, 1.05, 1.1, 1.2, 1.5)
+# Ladder v2 (extension pre-registered 2026-08-13 BEFORE any auth tangent
+# number existed): the first B smoke wave measured the fourth_order stability
+# boundary inside (1.05, 1.1) on the steep smoke rig, leaving only two
+# surviving points — too coarse for the DELTA d_OP vs (1 - 1/high_tau) curve
+# and it idled 18/24 workers. v2 densifies INSIDE the measured stable window
+# (1.01/1.02/1.03/1.08) and keeps the original upper points (cheap fast-crash
+# rows that map the stability boundary per grid). Judgement lines unchanged.
+HIGH_TAU_LADDER = (1.0, 1.01, 1.02, 1.03, 1.05, 1.08, 1.1, 1.2, 1.5)
 CLOSURE = "fourth_order"
 H_JVP = 5.0e-5                       # frozen mid-ladder JVP step (JAB caliber)
 LINE_ALIVENESS_REL = 1.0e-6          # dead-key guard (probe measured 2.2e-4)
