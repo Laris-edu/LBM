@@ -85,14 +85,24 @@ from scripts.phase5_wallfix_arbitration import (  # noqa: E402
 UNIT = "WP4-GHOSTSCAN"
 
 # ---- frozen scan protocol ----
-# Ladder v2 (extension pre-registered 2026-08-13 BEFORE any auth tangent
-# number existed): the first B smoke wave measured the fourth_order stability
-# boundary inside (1.05, 1.1) on the steep smoke rig, leaving only two
-# surviving points — too coarse for the DELTA d_OP vs (1 - 1/high_tau) curve
-# and it idled 18/24 workers. v2 densifies INSIDE the measured stable window
-# (1.01/1.02/1.03/1.08) and keeps the original upper points (cheap fast-crash
-# rows that map the stability boundary per grid). Judgement lines unchanged.
-HIGH_TAU_LADDER = (1.0, 1.01, 1.02, 1.03, 1.05, 1.08, 1.1, 1.2, 1.5)
+# Ladder v3 (2026-08-14). HONEST PROVENANCE: unlike v2, this extension was
+# chosen AFTER the v2 auth numbers were known. v2 covered only high_tau > 1
+# (ghost RETENTION, factor 1-1/high_tau > 0) and measured GHOST_RELAX_ACTIVE
+# in the WRONG direction (retaining ghosts drives d_OP further from the
+# continuum: -2.830 -> -4.241 at Theta=0.05 across the stable window, which
+# ends at high_tau 1.08). The complementary branch high_tau < 1 is standard
+# MRT OVER-relaxation (omega = 1/tau in (1,2), negative retention factor); by
+# the measured slopes (-47.5 / -91.6 pp per unit factor) a linear
+# extrapolation puts the continuum crossing near factor -0.084 (high_tau
+# ~0.922) at BOTH working points. An A-machine 0.3-period probe on the auth
+# grid found that branch stable only down to ~high_tau 0.95 (factor -0.053,
+# already visibly diverging) and hard-crashing at 0.93 and below -- i.e. the
+# extrapolated crossing sits INSIDE the unstable region. v3 measures the
+# stable part of that branch properly (legal 5-period settles + tangent)
+# instead of relying on extrapolation. Judgement lines, gates and
+# classification are UNCHANGED; ht=1.0 rows resume from the v2 checkpoints
+# (labels carry high_tau, so the anchor is reused, not recomputed).
+HIGH_TAU_LADDER = (1.0, 0.995, 0.99, 0.98, 0.97, 0.96, 0.95)
 CLOSURE = "fourth_order"
 H_JVP = 5.0e-5                       # frozen mid-ladder JVP step (JAB caliber)
 LINE_ALIVENESS_REL = 1.0e-6          # dead-key guard (probe measured 2.2e-4)
