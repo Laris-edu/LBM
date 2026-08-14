@@ -1,0 +1,1064 @@
+{
+ "unit": "CROSSSTACK-1A",
+ "run_id": "20260814T090824Z",
+ "mode": "full",
+ "plan": "docs/Phase_5/crossstack_1a_plan_v1.0.md",
+ "protocol": {
+  "gas_config": "configs/gas_air_10k_d2q37_levelc_dx2p6.yaml",
+  "frequency_Hz": 10000.0,
+  "h_jvp": 5e-05,
+  "wall": "production v1.1 symmetric mass-neutral (unchanged)",
+  "variants": {
+   "PROD": "production SMRT central-Hermite regularized stress (anchor)",
+   "BGK": "textbook two-relaxation-time BGK, (tau_f,tau_g) derived from the frozen nu_lu/alpha_lu",
+   "DEVMEAS": "deviatoric stress rebuilt from the MEASURED non-equilibrium second moment instead of the strain rate",
+   "TRTAU22": "trace/bulk channel relaxed at tau22 instead of the ghost-orthogonal local hydrodynamic reconstruction",
+   "TRZERO": "trace/bulk channel zeroed (D2Q37 transport-candidate baseline)",
+   "REGBGK": "both hydrodynamic channels from the measured non-equilibrium moment = closest available analogue of a textbook regularized-BGK closure",
+   "CTRL4TH": "fourth_order at the full-regularization limit = structurally INERT positive control for the live-key gate"
+  },
+  "variant_collision_cfg": {
+   "PROD": {},
+   "BGK": {},
+   "DEVMEAS": {
+    "deviatoric_stress_policy": "measured"
+   },
+   "TRTAU22": {
+    "trace_bulk_policy": "tau22"
+   },
+   "TRZERO": {
+    "trace_bulk_policy": "current_zero"
+   },
+   "REGBGK": {
+    "deviatoric_stress_policy": "measured",
+    "trace_bulk_policy": "tau22"
+   },
+   "CTRL4TH": {
+    "central_moment_closure": "fourth_order",
+    "high_order_relaxation": 1.0
+   }
+  },
+  "lines": {
+   "aliveness_rel": 1e-06,
+   "livekey_y0_rel": 0.0001,
+   "anchor_pp": 0.2,
+   "class_pp": 1.0,
+   "xcal_y0_rel": 0.3,
+   "xcal_alpha_rel": 0.02,
+   "bgk_cold_anchor_rel": 0.1,
+   "spectral_radius": 1.000001
+  },
+  "legality_gates": {
+   "stationarity": 0.001,
+   "dc_closure": 0.001,
+   "r_f": 1e-05,
+   "v5_mass": 1e-07,
+   "v5_energy": 1e-05
+  }
+ },
+ "external_references": {
+  "tan_dop_pct": {
+   "0.05": -2.8345129628396526,
+   "0.1": -5.317059432017945
+  },
+  "nsf_g0_dop_pct": {
+   "0.05": 1.1816679235497007,
+   "0.1": 2.344498614853485
+  },
+  "provenance": "TAN=archive/M5_runs/wp4_tan_20260805T092726Z_B; NSF=archive/M5_runs/nsf_arb_20260811T055850Z; G0 alpha_eff table=archive/M5_runs/g0_20260722T173919Z"
+ },
+ "machine": {
+  "node": "DESKTOP-AO7JVJI",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.14.6",
+  "numpy": "2.4.4",
+  "git_commit": "111f757",
+  "workers": 22
+ },
+ "aliveness": {
+  "PROD": {
+   "rel_diff_vs_prod": 0.0,
+   "live": true
+  },
+  "BGK": {
+   "rel_diff_vs_prod": 0.005530103369805962,
+   "live": true
+  },
+  "DEVMEAS": {
+   "rel_diff_vs_prod": 1.0451998745863168e-05,
+   "live": true
+  },
+  "TRTAU22": {
+   "rel_diff_vs_prod": 6.822005243732333e-05,
+   "live": true
+  },
+  "TRZERO": {
+   "rel_diff_vs_prod": 7.526281153002545e-07,
+   "live": false
+  },
+  "REGBGK": {
+   "rel_diff_vs_prod": 6.822005243712607e-05,
+   "live": true
+  },
+  "CTRL4TH": {
+   "rel_diff_vs_prod": 1.5052562302060031e-06,
+   "live": true
+  }
+ },
+ "bgk_stability": {
+  "line_spectral_radius": 1.000001,
+  "prod_reference": {
+   "ny": 8,
+   "nx": 4,
+   "dim": 2368,
+   "h": 1e-07,
+   "tol": 1e-06,
+   "spectral_radius": 1.0000000071234623,
+   "top_magnitudes": [
+    1.0000000071234623,
+    0.9999999986409001,
+    0.9999999986409001,
+    0.9999999960690682,
+    0.9519250650207202,
+    0.9519250650207202,
+    0.9328127993783604,
+    0.9328127993783604
+   ],
+   "unstable_mode_count": 0,
+   "fixed_point_residual": 4.198030811863873e-16,
+   "acoustic_stage_identity": true
+  },
+  "matched_params": {
+   "model": "BGK_two_relaxation_time_fg_diagnostic",
+   "tau_f": 0.5931915265811021,
+   "tau_g": 0.6836851115058792,
+   "theta_transport_lu": 0.04837849258185211,
+   "D": 2,
+   "S": 3,
+   "nu_lu": 0.0045084655773953205,
+   "alpha_lu": 0.006384726960390406,
+   "Pr_lu": 0.7061328707343253,
+   "retention_f": -0.6857961639532597,
+   "retention_g": -0.462661659835488
+  },
+  "alpha_preserving_branch": [
+   {
+    "tau_f": 0.5932,
+    "tau_g": 0.6836738136140154,
+    "feasible": true,
+    "spectral_radius": 2.015629477834561,
+    "unstable_mode_count": 48,
+    "alpha_over_nominal": 1.0000000000000002,
+    "nu_over_nominal": 1.0000909247783434,
+    "retention_f": -0.6857720836142955,
+    "retention_g": -0.46268583070899116,
+    "stable": false
+   },
+   {
+    "tau_f": 0.62,
+    "tau_g": 0.647940480280682,
+    "feasible": true,
+    "spectral_radius": 1.8904557722566018,
+    "unstable_mode_count": 42,
+    "alpha_over_nominal": 1.0000000000000002,
+    "nu_over_nominal": 1.2876707185987262,
+    "retention_f": -0.6129032258064517,
+    "retention_g": -0.5433516355804919,
+    "stable": false
+   },
+   {
+    "tau_f": 0.65,
+    "tau_g": 0.6079404802806819,
+    "feasible": true,
+    "spectral_radius": 1.7608573535811247,
+    "unstable_mode_count": 38,
+    "alpha_over_nominal": 1.0000000000000002,
+    "nu_over_nominal": 1.6095883982484078,
+    "retention_f": -0.5384615384615383,
+    "retention_g": -0.6448978681898381,
+    "stable": false
+   },
+   {
+    "tau_f": 0.68,
+    "tau_g": 0.5679404802806819,
+    "feasible": true,
+    "spectral_radius": 1.640706957260226,
+    "unstable_mode_count": 38,
+    "alpha_over_nominal": 1.0000000000000002,
+    "nu_over_nominal": 1.9315060778980897,
+    "retention_f": -0.47058823529411753,
+    "retention_g": -0.7607478859506369,
+    "stable": false
+   },
+   {
+    "tau_f": 0.7,
+    "tau_g": 0.5412738136140153,
+    "feasible": true,
+    "spectral_radius": 1.5653507950772603,
+    "unstable_mode_count": 38,
+    "alpha_over_nominal": 0.9999999999999999,
+    "nu_over_nominal": 2.14611786433121,
+    "retention_f": -0.4285714285714286,
+    "retention_g": -0.8474937727416172,
+    "stable": false
+   },
+   {
+    "tau_f": 0.72,
+    "tau_g": 0.5146071469473487,
+    "feasible": true,
+    "spectral_radius": 1.4939105190412378,
+    "unstable_mode_count": 38,
+    "alpha_over_nominal": 1.0000000000000002,
+    "nu_over_nominal": 2.360729650764331,
+    "retention_f": -0.38888888888888884,
+    "retention_g": -0.9432299102956563,
+    "stable": false
+   },
+   {
+    "tau_f": 0.73,
+    "tau_g": 0.5012738136140152,
+    "feasible": true,
+    "spectral_radius": 1.459878497623392,
+    "unstable_mode_count": 38,
+    "alpha_over_nominal": 0.9999999999999999,
+    "nu_over_nominal": 2.4680355439808914,
+    "retention_f": -0.36986301369863006,
+    "retention_g": -0.9949176933666992,
+    "stable": false
+   }
+  ],
+  "pr1_branch": [
+   {
+    "tau": 0.632,
+    "spectral_radius": 1.8373879044109283,
+    "unstable_mode_count": 42,
+    "alpha_over_nominal": 1.0001932831931153,
+    "nu_over_nominal": 1.4164377904585987,
+    "retention": -0.5822784810126582,
+    "stable": false
+   },
+   {
+    "tau": 0.7,
+    "spectral_radius": 1.5802183495484716,
+    "unstable_mode_count": 18,
+    "alpha_over_nominal": 1.5154443684744165,
+    "nu_over_nominal": 2.14611786433121,
+    "retention": -0.4285714285714286,
+    "stable": false
+   },
+   {
+    "tau": 0.8,
+    "spectral_radius": 1.2792506288101202,
+    "unstable_mode_count": 14,
+    "alpha_over_nominal": 2.2731665527116265,
+    "nu_over_nominal": 3.2191767964968157,
+    "retention": -0.25,
+    "stable": false
+   },
+   {
+    "tau": 0.9,
+    "spectral_radius": 1.0450439419915423,
+    "unstable_mode_count": 4,
+    "alpha_over_nominal": 3.0308887369488344,
+    "nu_over_nominal": 4.292235728662421,
+    "retention": -0.11111111111111116,
+    "stable": false
+   },
+   {
+    "tau": 0.95,
+    "spectral_radius": 0.9999999997776989,
+    "unstable_mode_count": 0,
+    "alpha_over_nominal": 3.409749829067438,
+    "nu_over_nominal": 4.828765194745222,
+    "retention": -0.05263157894736836,
+    "stable": true
+   },
+   {
+    "tau": 1.0,
+    "spectral_radius": 0.999999999784111,
+    "unstable_mode_count": 0,
+    "alpha_over_nominal": 3.7886109211860424,
+    "nu_over_nominal": 5.365294660828026,
+    "retention": 0.0,
+    "stable": true
+   },
+   {
+    "tau": 1.1,
+    "spectral_radius": 1.0000000007318726,
+    "unstable_mode_count": 0,
+    "alpha_over_nominal": 4.546333105423253,
+    "nu_over_nominal": 6.438353592993631,
+    "retention": 0.09090909090909094,
+    "stable": true
+   },
+   {
+    "tau": 1.2,
+    "spectral_radius": 1.0000000020514361,
+    "unstable_mode_count": 0,
+    "alpha_over_nominal": 5.304055289660459,
+    "nu_over_nominal": 7.511412525159235,
+    "retention": 0.16666666666666663,
+    "stable": true
+   },
+   {
+    "tau": 1.5,
+    "spectral_radius": 0.999999999937891,
+    "unstable_mode_count": 0,
+    "alpha_over_nominal": 7.577221842372085,
+    "nu_over_nominal": 10.730589321656051,
+    "retention": 0.33333333333333337,
+    "stable": true
+   }
+  ],
+  "alpha_preserving_tau_f_upper_bound": 0.7309553602105114,
+  "min_spectral_radius_alpha_preserving": 1.459878497623392,
+  "first_stable_pr1_tau": 0.95,
+  "first_stable_pr1_alpha_over_nominal": 3.409749829067438,
+  "verdict": "BGK_LINEARLY_UNSTABLE_ON_THE_PRODUCTION_PROBLEM"
+ },
+ "transport": {
+  "alpha_nominal_lu": 0.0063847269603904055,
+  "nu_nominal_lu": 0.0045084655773953205,
+  "g0_reference_alpha_eff_k64_lu": 0.006495461,
+  "prod_vs_g0_table_rel_dev": 4.457831704796078e-05,
+  "line_cross_calibration_alpha_rel": 0.02,
+  "by_variant": {
+   "PROD": {
+    "thermal_ny64": {
+     "measured_lu": 0.00649517144328017,
+     "finite": true,
+     "k_lu": 0.09817477042468103,
+     "error": null
+    },
+    "shear_ny64": {
+     "measured_lu": 0.002985967032471065,
+     "finite": true,
+     "k_lu": 0.09817477042468103,
+     "error": null
+    },
+    "thermal_ny96": {
+     "measured_lu": 0.008503200735108657,
+     "finite": true,
+     "k_lu": 0.06544984694978735,
+     "error": null
+    },
+    "shear_ny96": {
+     "measured_lu": 0.001963041891109581,
+     "finite": true,
+     "k_lu": 0.06544984694978735,
+     "error": null
+    },
+    "alpha_eff_shift_vs_prod": 0.0,
+    "cross_calibration_caveat": false
+   },
+   "BGK": {
+    "thermal_ny64": {
+     "measured_lu": NaN,
+     "finite": false,
+     "k_lu": 0.09817477042468103,
+     "error": null
+    },
+    "shear_ny64": {
+     "measured_lu": NaN,
+     "finite": false,
+     "k_lu": 0.09817477042468103,
+     "error": null
+    },
+    "thermal_ny96": {
+     "measured_lu": NaN,
+     "finite": false,
+     "k_lu": 0.06544984694978735,
+     "error": null
+    },
+    "shear_ny96": {
+     "measured_lu": NaN,
+     "finite": false,
+     "k_lu": 0.06544984694978735,
+     "error": null
+    },
+    "alpha_eff_shift_vs_prod": NaN,
+    "cross_calibration_caveat": false
+   },
+   "DEVMEAS": {
+    "thermal_ny64": {
+     "measured_lu": 0.006511412191706307,
+     "finite": true,
+     "k_lu": 0.09817477042468103,
+     "error": null
+    },
+    "shear_ny64": {
+     "measured_lu": 0.012014068215802899,
+     "finite": true,
+     "k_lu": 0.09817477042468103,
+     "error": null
+    },
+    "thermal_ny96": {
+     "measured_lu": 0.008507597410843278,
+     "finite": true,
+     "k_lu": 0.06544984694978735,
+     "error": null
+    },
+    "shear_ny96": {
+     "measured_lu": 0.012158009622432586,
+     "finite": true,
+     "k_lu": 0.06544984694978735,
+     "error": null
+    },
+    "alpha_eff_shift_vs_prod": 0.0025004341406476005,
+    "cross_calibration_caveat": false
+   },
+   "TRTAU22": {
+    "thermal_ny64": {
+     "measured_lu": 0.0065174307859285395,
+     "finite": true,
+     "k_lu": 0.09817477042468103,
+     "error": null
+    },
+    "shear_ny64": {
+     "measured_lu": 0.002985967029220265,
+     "finite": true,
+     "k_lu": 0.09817477042468103,
+     "error": null
+    },
+    "thermal_ny96": {
+     "measured_lu": 0.00850892653388809,
+     "finite": true,
+     "k_lu": 0.06544984694978735,
+     "error": null
+    },
+    "shear_ny96": {
+     "measured_lu": 0.0019630418926727543,
+     "finite": true,
+     "k_lu": 0.06544984694978735,
+     "error": null
+    },
+    "alpha_eff_shift_vs_prod": 0.0034270600618862,
+    "cross_calibration_caveat": false
+   },
+   "TRZERO": {
+    "thermal_ny64": {
+     "measured_lu": 0.0064991595144255464,
+     "finite": true,
+     "k_lu": 0.09817477042468103,
+     "error": null
+    },
+    "shear_ny64": {
+     "measured_lu": 0.0029859670286368238,
+     "finite": true,
+     "k_lu": 0.09817477042468103,
+     "error": null
+    },
+    "thermal_ny96": {
+     "measured_lu": 0.008505167996244923,
+     "finite": true,
+     "k_lu": 0.06544984694978735,
+     "error": null
+    },
+    "shear_ny96": {
+     "measured_lu": 0.0019630418873651163,
+     "finite": true,
+     "k_lu": 0.06544984694978735,
+     "error": null
+    },
+    "alpha_eff_shift_vs_prod": 0.0006140055239809428,
+    "cross_calibration_caveat": false
+   },
+   "REGBGK": {
+    "thermal_ny64": {
+     "measured_lu": NaN,
+     "finite": false,
+     "k_lu": 0.09817477042468103,
+     "error": null
+    },
+    "shear_ny64": {
+     "measured_lu": NaN,
+     "finite": false,
+     "k_lu": 0.09817477042468103,
+     "error": null
+    },
+    "thermal_ny96": {
+     "measured_lu": NaN,
+     "finite": false,
+     "k_lu": 0.06544984694978735,
+     "error": null
+    },
+    "shear_ny96": {
+     "measured_lu": NaN,
+     "finite": false,
+     "k_lu": 0.06544984694978735,
+     "error": null
+    },
+    "alpha_eff_shift_vs_prod": NaN,
+    "cross_calibration_caveat": false
+   },
+   "CTRL4TH": {
+    "thermal_ny64": {
+     "measured_lu": 0.006504288966292203,
+     "finite": true,
+     "k_lu": 0.09817477042468103,
+     "error": null
+    },
+    "shear_ny64": {
+     "measured_lu": 0.0029278538542489596,
+     "finite": true,
+     "k_lu": 0.09817477042468103,
+     "error": null
+    },
+    "thermal_ny96": {
+     "measured_lu": 0.008508597555380085,
+     "finite": true,
+     "k_lu": 0.06544984694978735,
+     "error": null
+    },
+    "shear_ny96": {
+     "measured_lu": 0.0019371735798263472,
+     "finite": true,
+     "k_lu": 0.06544984694978735,
+     "error": null
+    },
+    "alpha_eff_shift_vs_prod": 0.0014037386220906445,
+    "cross_calibration_caveat": false
+   }
+  }
+ },
+ "stage_smoke": {
+  "stage_verdict": "COMPLETED",
+  "legality": {
+   "PROD_th0": {
+    "stationarity_per_period": 1.5633795001905626e-14,
+    "dc_closure_rel": 1.9931532902244198,
+    "theta_dc_measured": -1.0040051836086182e-15,
+    "mass_drift_settle": 8.332001755206875e-12,
+    "pass": true
+   },
+   "PROD_th0.05": {
+    "stationarity_per_period": 1.2191491515247505e-14,
+    "dc_closure_rel": 1.3614340538723507e-11,
+    "theta_dc_measured": 0.0499891593983453,
+    "mass_drift_settle": 7.960743175772222e-12,
+    "pass": true
+   },
+   "BGK_th0": {
+    "pass": false,
+    "reason": "RuntimeError: non-positive streamed wall-row density"
+   },
+   "BGK_th0.05": {
+    "pass": false,
+    "reason": "RuntimeError: blended non-equilibrium exceeds wall density"
+   },
+   "DEVMEAS_th0": {
+    "stationarity_per_period": 1.3769213946632478e-14,
+    "dc_closure_rel": 1.9987497961624174,
+    "theta_dc_measured": -1.2908638074967948e-15,
+    "mass_drift_settle": 8.021805442126606e-12,
+    "pass": true
+   },
+   "DEVMEAS_th0.05": {
+    "stationarity_per_period": 2.5817276149935894e-14,
+    "dc_closure_rel": 2.943869922962863e-11,
+    "theta_dc_measured": 0.04998081521305969,
+    "mass_drift_settle": 8.030021092508832e-12,
+    "pass": true
+   },
+   "TRTAU22_th0": {
+    "stationarity_per_period": 8.749188028589387e-15,
+    "dc_closure_rel": 1.9890773431791084,
+    "theta_dc_measured": -1.5777224313849714e-15,
+    "mass_drift_settle": 8.382627925129782e-12,
+    "pass": true
+   },
+   "TRTAU22_th0.05": {
+    "pass": false,
+    "reason": "RuntimeError: non-positive streamed wall-row density"
+   },
+   "TRZERO_th0": {
+    "stationarity_per_period": 1.0757198395806623e-14,
+    "dc_closure_rel": 2.017399584487535,
+    "theta_dc_measured": -8.605758716645299e-16,
+    "mass_drift_settle": 8.319345212726148e-12,
+    "pass": true
+   },
+   "TRZERO_th0.05": {
+    "stationarity_per_period": 3.4423034866581195e-14,
+    "dc_closure_rel": 2.899221404975352e-11,
+    "theta_dc_measured": 0.04998916592495916,
+    "mass_drift_settle": 7.93853871527972e-12,
+    "pass": true
+   },
+   "REGBGK_th0": {
+    "pass": false,
+    "reason": "RuntimeError: non-positive streamed wall-row density"
+   },
+   "REGBGK_th0.05": {
+    "pass": false,
+    "reason": "RuntimeError: blended non-equilibrium exceeds wall density"
+   },
+   "CTRL4TH_th0": {
+    "stationarity_per_period": 1.2048062203303418e-14,
+    "dc_closure_rel": 2.0022136377446937,
+    "theta_dc_measured": -1.4342931194408831e-15,
+    "mass_drift_settle": 8.182565736092329e-12,
+    "pass": true
+   },
+   "CTRL4TH_th0.05": {
+    "stationarity_per_period": 2.6821281333544514e-14,
+    "dc_closure_rel": 2.5704142458585034e-11,
+    "theta_dc_measured": 0.0499891757793069,
+    "mass_drift_settle": 7.720712957848264e-12,
+    "pass": true
+   }
+  },
+  "variant_status": {
+   "PROD": {
+    "ok": true,
+    "reason": "all PASS"
+   },
+   "BGK": {
+    "ok": false,
+    "reason": "BGK_th0: RuntimeError: non-positive streamed wall-row density; BGK_th0.05: RuntimeError: blended non-equilibrium exceeds wall density"
+   },
+   "DEVMEAS": {
+    "ok": true,
+    "reason": "all PASS"
+   },
+   "TRTAU22": {
+    "ok": false,
+    "reason": "TRTAU22_th0.05: RuntimeError: non-positive streamed wall-row density"
+   },
+   "TRZERO": {
+    "ok": true,
+    "reason": "all PASS"
+   },
+   "REGBGK": {
+    "ok": false,
+    "reason": "REGBGK_th0: RuntimeError: non-positive streamed wall-row density; REGBGK_th0.05: RuntimeError: blended non-equilibrium exceeds wall density"
+   },
+   "CTRL4TH": {
+    "ok": true,
+    "reason": "all PASS"
+   }
+  },
+  "tangent_failed": {},
+  "rows": {
+   "PROD": {
+    "Y0_abs": 0.001341745476630939,
+    "0.05": {
+     "d_op_pct": 0.9740178253326404,
+     "phase_deg": -1.5712493936147158
+    }
+   },
+   "DEVMEAS": {
+    "Y0_abs": 0.0010715371893192762,
+    "0.05": {
+     "d_op_pct": 2.532195966110451,
+     "phase_deg": -2.312498630950435
+    }
+   },
+   "TRZERO": {
+    "Y0_abs": 0.0013412729083870842,
+    "0.05": {
+     "d_op_pct": 0.9777927572082179,
+     "phase_deg": -1.5696841134727901
+    }
+   },
+   "CTRL4TH": {
+    "Y0_abs": 0.00134059356064378,
+    "0.05": {
+     "d_op_pct": 0.9823299145898634,
+     "phase_deg": -1.567826292179355
+    }
+   }
+  },
+  "thetas": [
+   "0.05"
+  ],
+  "ny": 24,
+  "nx": 4,
+  "steps_per_period": 51051
+ },
+ "classification_smoke": {
+  "per_variant": {
+   "DEVMEAS": {
+    "label": "CROSSSTACK_ABSENT",
+    "d_op_pct": [
+     2.532195966110451
+    ],
+    "delta_dop_pp": [
+     1.5581781407778106
+    ],
+    "y0_abs_shift_rel": -0.20138565176321177,
+    "live_key": true,
+    "cross_calibration_caveat": false,
+    "evidence": true
+   },
+   "TRZERO": {
+    "label": "CROSSSTACK_ABSENT",
+    "d_op_pct": [
+     0.9777927572082179
+    ],
+    "delta_dop_pp": [
+     0.0037749318755775363
+    ],
+    "y0_abs_shift_rel": -0.00035220408943836823,
+    "live_key": true,
+    "cross_calibration_caveat": false,
+    "evidence": true
+   },
+   "CTRL4TH": {
+    "label": "CROSSSTACK_ABSENT",
+    "d_op_pct": [
+     0.9823299145898634
+    ],
+    "delta_dop_pp": [
+     0.008312089257223043
+    ],
+    "y0_abs_shift_rel": -0.0008585204923152734,
+    "live_key": true,
+    "cross_calibration_caveat": false,
+    "evidence": true
+   }
+  },
+  "family": "CROSSSTACK_FAMILY_ABSENT",
+  "live_variant_count": 3,
+  "nsf_ref_pct": {
+   "0.05": 1.1816679235497007
+  }
+ },
+ "cold_context_smoke": {
+  "PROD": {
+   "y0_abs": 0.001341745476630939,
+   "ratio_vs_halfspace": 1.5136001693397407,
+   "ratio_vs_tent_bvp": 1.8932363456606713,
+   "tent_bvp_over_halfspace": 0.7994776631079037
+  },
+  "DEVMEAS": {
+   "y0_abs": 0.0010715371893192762,
+   "ratio_vs_halfspace": 1.2087828127283495,
+   "ratio_vs_tent_bvp": 1.5119657102479958,
+   "tent_bvp_over_halfspace": 0.7994776631079037
+  },
+  "TRZERO": {
+   "y0_abs": 0.0013412729083870842,
+   "ratio_vs_halfspace": 1.5130670731703248,
+   "ratio_vs_tent_bvp": 1.8925695400774563,
+   "tent_bvp_over_halfspace": 0.7994776631079037
+  },
+  "CTRL4TH": {
+   "y0_abs": 0.00134059356064378,
+   "ratio_vs_halfspace": 1.5123007125771908,
+   "ratio_vs_tent_bvp": 1.8916109634611256,
+   "tent_bvp_over_halfspace": 0.7994776631079037
+  }
+ },
+ "smoke_soft_anchor": {
+  "d_op_pct": 0.9740178253326404,
+  "jab1_smoke_ref_pct": 0.974,
+  "dev_pp": 1.782533264038655e-05,
+  "soft_anchor": true
+ },
+ "stage_auth": {
+  "stage_verdict": "COMPLETED",
+  "legality": {
+   "PROD_th0": {
+    "stationarity_per_period": 5.722829546569123e-14,
+    "dc_closure_rel": 1.9927104042412194,
+    "theta_dc_measured": -2.868586238881766e-16,
+    "mass_drift_settle": 2.0241586184965854e-12,
+    "pass": true
+   },
+   "PROD_th0.05": {
+    "stationarity_per_period": 1.3499445668226275e-06,
+    "dc_closure_rel": 4.8160082188637176e-05,
+    "theta_dc_measured": 0.049997974104660406,
+    "mass_drift_settle": 2.1369572777985013e-12,
+    "pass": true
+   },
+   "PROD_th0.1": {
+    "stationarity_per_period": 2.709075811912576e-06,
+    "dc_closure_rel": 4.700773117746063e-05,
+    "theta_dc_measured": 0.0999957399856273,
+    "mass_drift_settle": 2.2601920335318937e-12,
+    "pass": true
+   },
+   "BGK_th0": {
+    "pass": false,
+    "reason": "RuntimeError: non-positive streamed wall-row density"
+   },
+   "BGK_th0.05": {
+    "pass": false,
+    "reason": "RuntimeError: non-positive streamed wall-row density"
+   },
+   "BGK_th0.1": {
+    "pass": false,
+    "reason": "RuntimeError: non-positive streamed wall-row density"
+   },
+   "DEVMEAS_th0": {
+    "stationarity_per_period": 1.080022718938985e-13,
+    "dc_closure_rel": 1.9742953377060808,
+    "theta_dc_measured": -4.3028793583226493e-16,
+    "mass_drift_settle": 2.0867751970854442e-12,
+    "pass": true
+   },
+   "DEVMEAS_th0.05": {
+    "stationarity_per_period": 2.350750489778258e-06,
+    "dc_closure_rel": 8.923525579105711e-05,
+    "theta_dc_measured": 0.04999792204788979,
+    "mass_drift_settle": 2.134736831749251e-12,
+    "pass": true
+   },
+   "DEVMEAS_th0.1": {
+    "stationarity_per_period": 4.778475088570748e-06,
+    "dc_closure_rel": 8.803503358590933e-05,
+    "theta_dc_measured": 0.09999568274742689,
+    "mass_drift_settle": 2.2533086507792177e-12,
+    "pass": true
+   },
+   "TRTAU22_th0": {
+    "pass": false,
+    "reason": "RuntimeError: non-positive streamed wall-row density"
+   },
+   "TRTAU22_th0.05": {
+    "pass": false,
+    "reason": "RuntimeError: blended non-equilibrium exceeds wall density"
+   },
+   "TRTAU22_th0.1": {
+    "pass": false,
+    "reason": "RuntimeError: non-positive streamed wall-row density"
+   },
+   "TRZERO_th0": {
+    "stationarity_per_period": 9.236847689199287e-14,
+    "dc_closure_rel": 1.9525312294543062,
+    "theta_dc_measured": -7.171465597204416e-16,
+    "mass_drift_settle": 2.0101698083863084e-12,
+    "pass": true
+   },
+   "TRZERO_th0.05": {
+    "stationarity_per_period": 1.3471331096261275e-06,
+    "dc_closure_rel": 4.8061232913413314e-05,
+    "theta_dc_measured": 0.0499979751417401,
+    "mass_drift_settle": 2.1314061626753755e-12,
+    "pass": true
+   },
+   "TRZERO_th0.1": {
+    "stationarity_per_period": 2.7027982563065664e-06,
+    "dc_closure_rel": 4.690025255301394e-05,
+    "theta_dc_measured": 0.09999574227270248,
+    "mass_drift_settle": 2.2519763831496675e-12,
+    "pass": true
+   },
+   "REGBGK_th0": {
+    "pass": false,
+    "reason": "RuntimeError: non-positive streamed wall-row density"
+   },
+   "REGBGK_th0.05": {
+    "pass": false,
+    "reason": "RuntimeError: blended non-equilibrium exceeds wall density"
+   },
+   "REGBGK_th0.1": {
+    "pass": false,
+    "reason": "RuntimeError: non-positive streamed wall-row density"
+   },
+   "CTRL4TH_th0": {
+    "stationarity_per_period": 1.384092860260452e-13,
+    "dc_closure_rel": 1.9959035047792444,
+    "theta_dc_measured": -1.434293119440883e-16,
+    "mass_drift_settle": 1.9746426715983034e-12,
+    "pass": true
+   },
+   "CTRL4TH_th0.05": {
+    "stationarity_per_period": 1.3430876121600783e-06,
+    "dc_closure_rel": 4.791938402893601e-05,
+    "theta_dc_measured": 0.04999797535344177,
+    "mass_drift_settle": 2.135625010168951e-12,
+    "pass": true
+   },
+   "CTRL4TH_th0.1": {
+    "stationarity_per_period": 2.6937594291334475e-06,
+    "dc_closure_rel": 4.674595945324927e-05,
+    "theta_dc_measured": 0.09999574278432172,
+    "mass_drift_settle": 2.249533892495492e-12,
+    "pass": true
+   }
+  },
+  "variant_status": {
+   "PROD": {
+    "ok": true,
+    "reason": "all PASS"
+   },
+   "BGK": {
+    "ok": false,
+    "reason": "BGK_th0: RuntimeError: non-positive streamed wall-row density; BGK_th0.05: RuntimeError: non-positive streamed wall-row density; BGK_th0.1: RuntimeError: non-positive streamed wall-row density"
+   },
+   "DEVMEAS": {
+    "ok": true,
+    "reason": "all PASS"
+   },
+   "TRTAU22": {
+    "ok": false,
+    "reason": "TRTAU22_th0: RuntimeError: non-positive streamed wall-row density; TRTAU22_th0.05: RuntimeError: blended non-equilibrium exceeds wall density; TRTAU22_th0.1: RuntimeError: non-positive streamed wall-row density"
+   },
+   "TRZERO": {
+    "ok": true,
+    "reason": "all PASS"
+   },
+   "REGBGK": {
+    "ok": false,
+    "reason": "REGBGK_th0: RuntimeError: non-positive streamed wall-row density; REGBGK_th0.05: RuntimeError: blended non-equilibrium exceeds wall density; REGBGK_th0.1: RuntimeError: non-positive streamed wall-row density"
+   },
+   "CTRL4TH": {
+    "ok": true,
+    "reason": "all PASS"
+   }
+  },
+  "tangent_failed": {},
+  "rows": {
+   "PROD": {
+    "Y0_abs": 0.001082036114443536,
+    "0.05": {
+     "d_op_pct": -2.8345256005818498,
+     "phase_deg": -1.383923564059911
+    },
+    "0.1": {
+     "d_op_pct": -5.3170840495610605,
+     "phase_deg": -2.620826689906637
+    }
+   },
+   "DEVMEAS": {
+    "Y0_abs": 0.0010286328919199466,
+    "0.05": {
+     "d_op_pct": -2.412147863863323,
+     "phase_deg": -1.4421882149066736
+    },
+    "0.1": {
+     "d_op_pct": -4.519417658186198,
+     "phase_deg": -2.7165085385911145
+    }
+   },
+   "TRZERO": {
+    "Y0_abs": 0.0010818027645743307,
+    "0.05": {
+     "d_op_pct": -2.832490853708658,
+     "phase_deg": -1.383912975533406
+    },
+    "0.1": {
+     "d_op_pct": -5.313253071227897,
+     "phase_deg": -2.620676705746751
+    }
+   },
+   "CTRL4TH": {
+    "Y0_abs": 0.0010814518706233046,
+    "0.05": {
+     "d_op_pct": -2.8298466664182786,
+     "phase_deg": -1.3841896295061507
+    },
+    "0.1": {
+     "d_op_pct": -5.308258663327347,
+     "phase_deg": -2.621040410016471
+    }
+   }
+  },
+  "thetas": [
+   "0.05",
+   "0.1"
+  ],
+  "ny": 96,
+  "nx": 8,
+  "steps_per_period": 51051
+ },
+ "classification_auth": {
+  "per_variant": {
+   "DEVMEAS": {
+    "label": "CROSSSTACK_ROBUST",
+    "d_op_pct": [
+     -2.412147863863323,
+     -4.519417658186198
+    ],
+    "delta_dop_pp": [
+     0.42237773671852663,
+     0.7976663913748627
+    ],
+    "y0_abs_shift_rel": -0.049354380885016425,
+    "live_key": true,
+    "cross_calibration_caveat": false,
+    "evidence": true
+   },
+   "TRZERO": {
+    "label": "CROSSSTACK_ROBUST",
+    "d_op_pct": [
+     -2.832490853708658,
+     -5.313253071227897
+    ],
+    "delta_dop_pp": [
+     0.0020347468731918283,
+     0.0038309783331635927
+    ],
+    "y0_abs_shift_rel": -0.00021565811537194168,
+    "live_key": true,
+    "cross_calibration_caveat": false,
+    "evidence": true
+   },
+   "CTRL4TH": {
+    "label": "CROSSSTACK_ROBUST",
+    "d_op_pct": [
+     -2.8298466664182786,
+     -5.308258663327347
+    ],
+    "delta_dop_pp": [
+     0.004678934163571125,
+     0.008825386233713317
+    ],
+    "y0_abs_shift_rel": -0.0005399485400096049,
+    "live_key": true,
+    "cross_calibration_caveat": false,
+    "evidence": true
+   }
+  },
+  "family": "CROSSSTACK_FAMILY_ROBUST",
+  "live_variant_count": 3,
+  "nsf_ref_pct": {
+   "0.05": 1.1816679235497007,
+   "0.1": 2.344498614853485
+  }
+ },
+ "cold_context_auth": {
+  "PROD": {
+   "y0_abs": 0.001082036114443536,
+   "ratio_vs_halfspace": 1.2206264709502255,
+   "ratio_vs_tent_bvp": 1.2485295964160366,
+   "tent_bvp_over_halfspace": 0.9776512102348968
+  },
+  "DEVMEAS": {
+   "y0_abs": 0.0010286328919199466,
+   "ratio_vs_halfspace": 1.1603832071846145,
+   "ratio_vs_tent_bvp": 1.1869091911683038,
+   "tent_bvp_over_halfspace": 0.9776512102348968
+  },
+  "TRZERO": {
+   "y0_abs": 0.0010818027645743307,
+   "ratio_vs_halfspace": 1.220363232945927,
+   "ratio_vs_tent_bvp": 1.2482603408762873,
+   "tent_bvp_over_halfspace": 0.9776512102348968
+  },
+  "CTRL4TH": {
+   "y0_abs": 0.0010814518706233046,
+   "ratio_vs_halfspace": 1.2199673954693389,
+   "ratio_vs_tent_bvp": 1.247855454683293,
+   "tent_bvp_over_halfspace": 0.9776512102348968
+  }
+ },
+ "anchor_auth": {
+  "0.05": {
+   "d_op_pct": -2.8345256005818498,
+   "tan_ref_pct": -2.8345129628396526,
+   "dev_pp": 1.2637742197174617e-05,
+   "pass": true
+  },
+  "0.1": {
+   "d_op_pct": -5.3170840495610605,
+   "tan_ref_pct": -5.317059432017945,
+   "dev_pp": 2.4617543115112994e-05,
+   "pass": true
+  }
+ },
+ "verdict": "COMPLETED"
+}
