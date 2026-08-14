@@ -1,0 +1,598 @@
+{
+ "unit": "WP4-GHOSTSCAN",
+ "run_id": "20260813T100957Z",
+ "mode": "full",
+ "protocol": {
+  "closure": "fourth_order",
+  "high_tau_ladder": [
+   1.0,
+   1.01,
+   1.02,
+   1.03,
+   1.05,
+   1.08,
+   1.1,
+   1.2,
+   1.5
+  ],
+  "h_jvp": 5e-05,
+  "gas_config": "configs/gas_air_10k_d2q37_levelc_dx2p6.yaml",
+  "wall": "PROD (production v1.1, unchanged)",
+  "lines": {
+   "aliveness_rel": 1e-06,
+   "anchor_pp": 0.2,
+   "scan_null_pp": 0.3
+  }
+ },
+ "aliveness": {
+  "rel_diff_1p5_vs_1p0": 0.004450875110912431,
+  "pass": true
+ },
+ "machine": {
+  "node": "DESKTOP-AO7JVJI",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.14.6",
+  "numpy": "2.4.4",
+  "git_commit": "6754802"
+ },
+ "stage_smoke": {
+  "stage_verdict": "COMPLETED",
+  "legality": {
+   "ht1_th0": {
+    "stationarity_per_period": 1.2048062203303418e-14,
+    "dc_closure_rel": 2.0022136377446937,
+    "theta_dc_measured": -1.4342931194408831e-15,
+    "mass_drift_settle": 8.182565736092329e-12,
+    "pass": true
+   },
+   "ht1_th0.05": {
+    "stationarity_per_period": 2.6821281333544514e-14,
+    "dc_closure_rel": 2.5704142458585034e-11,
+    "theta_dc_measured": 0.0499891757793069,
+    "mass_drift_settle": 7.720712957848264e-12,
+    "pass": true
+   },
+   "ht1.01_th0": {
+    "stationarity_per_period": 8.749188028589387e-15,
+    "dc_closure_rel": 1.9966534197866554,
+    "theta_dc_measured": -5.737172477763532e-16,
+    "mass_drift_settle": 8.215872426831083e-12,
+    "pass": true
+   },
+   "ht1.01_th0.05": {
+    "stationarity_per_period": 2.0080103672172362e-14,
+    "dc_closure_rel": 9.99011324737735e-12,
+    "theta_dc_measured": 0.04998424670783804,
+    "mass_drift_settle": 8.003375739917828e-12,
+    "pass": true
+   },
+   "ht1.02_th0": {
+    "stationarity_per_period": 7.458324221092592e-15,
+    "dc_closure_rel": 1.9845869866174435,
+    "theta_dc_measured": -4.3028793583226493e-16,
+    "mass_drift_settle": 8.434364318077314e-12,
+    "pass": true
+   },
+   "ht1.02_th0.05": {
+    "stationarity_per_period": 2.4669841654383188e-14,
+    "dc_closure_rel": 1.0646320717776542e-11,
+    "theta_dc_measured": 0.04997951368696083,
+    "mass_drift_settle": 7.670308832530282e-12,
+    "pass": true
+   },
+   "ht1.03_th0": {
+    "stationarity_per_period": 6.74117766137215e-15,
+    "dc_closure_rel": 1.9983897660687928,
+    "theta_dc_measured": -1.0040051836086182e-15,
+    "mass_drift_settle": 8.511635840591225e-12,
+    "pass": true
+   },
+   "ht1.03_th0.05": {
+    "stationarity_per_period": 2.137096747966916e-14,
+    "dc_closure_rel": 6.848457638126901e-12,
+    "theta_dc_measured": 0.049974965222348025,
+    "mass_drift_settle": 8.695044684259301e-12,
+    "pass": true
+   },
+   "ht1.05_th0": {
+    "stationarity_per_period": 1.2478350139135683e-14,
+    "dc_closure_rel": 1.9889051094890513,
+    "theta_dc_measured": -1.0040051836086182e-15,
+    "mass_drift_settle": 8.526068739911352e-12,
+    "pass": true
+   },
+   "ht1.05_th0.05": {
+    "stationarity_per_period": 1.692465880940242e-14,
+    "dc_closure_rel": 7.886048361574754e-12,
+    "theta_dc_measured": 0.04996637624034802,
+    "mass_drift_settle": 8.360423464637279e-12,
+    "pass": true
+   },
+   "ht1.08_th0": {
+    "stationarity_per_period": 9.32290527636574e-15,
+    "dc_closure_rel": 2.00169423958541,
+    "theta_dc_measured": -1.2908638074967948e-15,
+    "mass_drift_settle": 8.425038444670463e-12,
+    "pass": true
+   },
+   "ht1.08_th0.05": {
+    "pass": false,
+    "reason": "RuntimeError: blended non-equilibrium exceeds wall density"
+   },
+   "ht1.1_th0": {
+    "stationarity_per_period": 1.176120357941524e-14,
+    "dc_closure_rel": 1.9981253988513081,
+    "theta_dc_measured": -1.4342931194408831e-15,
+    "mass_drift_settle": 8.381739746710082e-12,
+    "pass": true
+   },
+   "ht1.1_th0.05": {
+    "pass": false,
+    "reason": "RuntimeError: blended non-equilibrium exceeds wall density"
+   },
+   "ht1.2_th0": {
+    "stationarity_per_period": 7.171465597204415e-15,
+    "dc_closure_rel": 2.0003979782703865,
+    "theta_dc_measured": -1.5777224313849714e-15,
+    "mass_drift_settle": 8.375744542377106e-12,
+    "pass": true
+   },
+   "ht1.2_th0.05": {
+    "pass": false,
+    "reason": "RuntimeError: non-positive streamed wall-row density"
+   },
+   "ht1.5_th0": {
+    "pass": false,
+    "reason": "RuntimeError: non-positive streamed wall-row density"
+   },
+   "ht1.5_th0.05": {
+    "pass": false,
+    "reason": "RuntimeError: non-positive streamed wall-row density"
+   }
+  },
+  "ht_status": {
+   "1": {
+    "ok": true,
+    "reason": "all PASS"
+   },
+   "1.01": {
+    "ok": true,
+    "reason": "all PASS"
+   },
+   "1.02": {
+    "ok": true,
+    "reason": "all PASS"
+   },
+   "1.03": {
+    "ok": true,
+    "reason": "all PASS"
+   },
+   "1.05": {
+    "ok": true,
+    "reason": "all PASS"
+   },
+   "1.08": {
+    "ok": false,
+    "reason": "ht1.08_th0.05: RuntimeError: blended non-equilibrium exceeds wall density"
+   },
+   "1.1": {
+    "ok": false,
+    "reason": "ht1.1_th0.05: RuntimeError: blended non-equilibrium exceeds wall density"
+   },
+   "1.2": {
+    "ok": false,
+    "reason": "ht1.2_th0.05: RuntimeError: non-positive streamed wall-row density"
+   },
+   "1.5": {
+    "ok": false,
+    "reason": "ht1.5_th0: RuntimeError: non-positive streamed wall-row density; ht1.5_th0.05: RuntimeError: non-positive streamed wall-row density"
+   }
+  },
+  "tangent_failed": {},
+  "rows": {
+   "1": {
+    "Y0_abs": 0.00134059356064378,
+    "0.05": {
+     "d_op_pct": 0.9823299145898634,
+     "phase_deg": -1.567826292179355
+    }
+   },
+   "1.01": {
+    "Y0_abs": 0.0017654142450527288,
+    "0.05": {
+     "d_op_pct": -0.8621827035786622,
+     "phase_deg": -0.8833252559919681
+    }
+   },
+   "1.02": {
+    "Y0_abs": 0.0021945129856385907,
+    "0.05": {
+     "d_op_pct": -2.0581052739757633,
+     "phase_deg": -0.5553327416671936
+    }
+   },
+   "1.03": {
+    "Y0_abs": 0.0026235618142940505,
+    "0.05": {
+     "d_op_pct": -2.8787039771099643,
+     "phase_deg": -0.3760616761725408
+    }
+   },
+   "1.05": {
+    "Y0_abs": 0.0034753325748576058,
+    "0.05": {
+     "d_op_pct": -3.9149215870286858,
+     "phase_deg": -0.19933249264269362
+    }
+   }
+  },
+  "thetas": [
+   "0.05"
+  ]
+ },
+ "classification_smoke": {
+  "label": "GHOST_RELAX_ACTIVE",
+  "per_ht": {
+   "1.01": {
+    "delta_dop_pp": [
+     -1.8445126181685256
+    ],
+    "y0_abs_shift_rel": 0.3168899932690572,
+    "active": true
+   },
+   "1.02": {
+    "delta_dop_pp": [
+     -3.0404351885656267
+    ],
+    "y0_abs_shift_rel": 0.6369711522295702,
+    "active": true
+   },
+   "1.03": {
+    "delta_dop_pp": [
+     -3.8610338916998277
+    ],
+    "y0_abs_shift_rel": 0.957015079972608,
+    "active": true
+   },
+   "1.05": {
+    "delta_dop_pp": [
+     -4.897251501618549
+    ],
+    "y0_abs_shift_rel": 1.592383461239871,
+    "active": true
+   }
+  },
+  "nsf_ref_pct": {
+   "0.05": 1.1816679235497007
+  }
+ },
+ "smoke_soft_anchor": {
+  "d_op_pct": 0.9823299145898634,
+  "jab1_smoke_ref_pct": 0.974,
+  "dev_pp": 0.00832991458986343,
+  "soft_anchor": true
+ },
+ "stage_auth": {
+  "stage_verdict": "COMPLETED",
+  "legality": {
+   "ht1_th0": {
+    "stationarity_per_period": 1.384092860260452e-13,
+    "dc_closure_rel": 1.9959035047792444,
+    "theta_dc_measured": -1.434293119440883e-16,
+    "mass_drift_settle": 1.9746426715983034e-12,
+    "pass": true
+   },
+   "ht1_th0.05": {
+    "stationarity_per_period": 1.3430876121600783e-06,
+    "dc_closure_rel": 4.791938402893601e-05,
+    "theta_dc_measured": 0.04999797535344177,
+    "mass_drift_settle": 2.135625010168951e-12,
+    "pass": true
+   },
+   "ht1_th0.1": {
+    "stationarity_per_period": 2.6937594291334475e-06,
+    "dc_closure_rel": 4.674595945324927e-05,
+    "theta_dc_measured": 0.09999574278432172,
+    "mass_drift_settle": 2.249533892495492e-12,
+    "pass": true
+   },
+   "ht1.01_th0": {
+    "stationarity_per_period": 1.2593093588690954e-13,
+    "dc_closure_rel": 1.9910443995963674,
+    "theta_dc_measured": -2.868586238881766e-16,
+    "mass_drift_settle": 2.0239365738916604e-12,
+    "pass": true
+   },
+   "ht1.01_th0.05": {
+    "stationarity_per_period": 2.2349126371378034e-07,
+    "dc_closure_rel": 7.607400366542729e-06,
+    "theta_dc_measured": 0.049997601272577095,
+    "mass_drift_settle": 2.135402965564026e-12,
+    "pass": true
+   },
+   "ht1.01_th0.1": {
+    "stationarity_per_period": 4.674834399357682e-07,
+    "dc_closure_rel": 7.74610319048508e-06,
+    "theta_dc_measured": 0.0999950267221715,
+    "mass_drift_settle": 2.2442048219772914e-12,
+    "pass": true
+   },
+   "ht1.02_th0": {
+    "stationarity_per_period": 1.1689488923443196e-13,
+    "dc_closure_rel": 1.9790881458966567,
+    "theta_dc_measured": -5.737172477763532e-16,
+    "mass_drift_settle": 2.0519141941122143e-12,
+    "pass": true
+   },
+   "ht1.02_th0.05": {
+    "stationarity_per_period": 3.422497074798999e-08,
+    "dc_closure_rel": 1.121401576841807e-06,
+    "theta_dc_measured": 0.0499973126766998,
+    "mass_drift_settle": 2.1234125568980744e-12,
+    "pass": true
+   },
+   "ht1.02_th0.1": {
+    "stationarity_per_period": 7.408147584719839e-08,
+    "dc_closure_rel": 1.1827849052641956e-06,
+    "theta_dc_measured": 0.09999446638936144,
+    "mass_drift_settle": 2.2444268665822165e-12,
+    "pass": true
+   },
+   "ht1.03_th0": {
+    "stationarity_per_period": 5.894944720902029e-14,
+    "dc_closure_rel": 1.9926944563816071,
+    "theta_dc_measured": -4.3028793583226493e-16,
+    "mass_drift_settle": 2.119415754009424e-12,
+    "pass": true
+   },
+   "ht1.03_th0.05": {
+    "stationarity_per_period": 4.30439698387233e-09,
+    "dc_closure_rel": 1.3654355875307338e-07,
+    "theta_dc_measured": 0.04999707770664282,
+    "mass_drift_settle": 2.112532371256748e-12,
+    "pass": true
+   },
+   "ht1.03_th0.1": {
+    "stationarity_per_period": 9.449483652166765e-09,
+    "dc_closure_rel": 1.46178188956377e-07,
+    "theta_dc_measured": 0.09999400569458086,
+    "mass_drift_settle": 2.241540286718191e-12,
+    "pass": true
+   },
+   "ht1.05_th0": {
+    "stationarity_per_period": 9.251190620393695e-14,
+    "dc_closure_rel": 1.9739847715736043,
+    "theta_dc_measured": -4.3028793583226493e-16,
+    "mass_drift_settle": 2.12851958281135e-12,
+    "pass": true
+   },
+   "ht1.05_th0.05": {
+    "stationarity_per_period": 1.1810729720829535e-10,
+    "dc_closure_rel": 3.4130808885490694e-09,
+    "theta_dc_measured": 0.049996709600968844,
+    "mass_drift_settle": 2.0667911826421914e-12,
+    "pass": true
+   },
+   "ht1.05_th0.1": {
+    "stationarity_per_period": 3.3677202444471933e-10,
+    "dc_closure_rel": 4.8265550236628485e-09,
+    "theta_dc_measured": 0.09999327671567333,
+    "mass_drift_settle": 2.0801138589376933e-12,
+    "pass": true
+   },
+   "ht1.08_th0": {
+    "stationarity_per_period": 0.028814110503971823,
+    "dc_closure_rel": 0.00023928380396930182,
+    "theta_dc_measured": 6.073933950687489e-06,
+    "mass_drift_settle": 2.2364332608049153e-12,
+    "pass": false
+   },
+   "ht1.08_th0.05": {
+    "stationarity_per_period": 0.028942644585346608,
+    "dc_closure_rel": 0.003793031212205353,
+    "theta_dc_measured": 0.050006421359760744,
+    "mass_drift_settle": 2.1871393585115584e-12,
+    "pass": false
+   },
+   "ht1.08_th0.1": {
+    "stationarity_per_period": 0.02141668111816754,
+    "dc_closure_rel": 0.005456361021731233,
+    "theta_dc_measured": 0.09999792970818991,
+    "mass_drift_settle": 2.289723965986923e-12,
+    "pass": false
+   },
+   "ht1.1_th0": {
+    "pass": false,
+    "reason": "RuntimeError: non-positive streamed wall-row density"
+   },
+   "ht1.1_th0.05": {
+    "pass": false,
+    "reason": "RuntimeError: non-positive streamed wall-row density"
+   },
+   "ht1.1_th0.1": {
+    "pass": false,
+    "reason": "RuntimeError: blended non-equilibrium exceeds wall density"
+   },
+   "ht1.2_th0": {
+    "pass": false,
+    "reason": "RuntimeError: non-positive streamed wall-row density"
+   },
+   "ht1.2_th0.05": {
+    "pass": false,
+    "reason": "RuntimeError: non-positive streamed wall-row density"
+   },
+   "ht1.2_th0.1": {
+    "pass": false,
+    "reason": "RuntimeError: non-positive streamed wall-row density"
+   },
+   "ht1.5_th0": {
+    "pass": false,
+    "reason": "RuntimeError: non-positive streamed wall-row density"
+   },
+   "ht1.5_th0.05": {
+    "pass": false,
+    "reason": "RuntimeError: non-positive streamed wall-row density"
+   },
+   "ht1.5_th0.1": {
+    "pass": false,
+    "reason": "RuntimeError: non-positive streamed wall-row density"
+   }
+  },
+  "ht_status": {
+   "1": {
+    "ok": true,
+    "reason": "all PASS"
+   },
+   "1.01": {
+    "ok": true,
+    "reason": "all PASS"
+   },
+   "1.02": {
+    "ok": true,
+    "reason": "all PASS"
+   },
+   "1.03": {
+    "ok": true,
+    "reason": "all PASS"
+   },
+   "1.05": {
+    "ok": true,
+    "reason": "all PASS"
+   },
+   "1.08": {
+    "ok": false,
+    "reason": "ht1.08_th0: legality gate; ht1.08_th0.05: legality gate; ht1.08_th0.1: legality gate"
+   },
+   "1.1": {
+    "ok": false,
+    "reason": "ht1.1_th0: RuntimeError: non-positive streamed wall-row density; ht1.1_th0.05: RuntimeError: non-positive streamed wall-row density; ht1.1_th0.1: RuntimeError: blended non-equilibrium exceeds wall density"
+   },
+   "1.2": {
+    "ok": false,
+    "reason": "ht1.2_th0: RuntimeError: non-positive streamed wall-row density; ht1.2_th0.05: RuntimeError: non-positive streamed wall-row density; ht1.2_th0.1: RuntimeError: non-positive streamed wall-row density"
+   },
+   "1.5": {
+    "ok": false,
+    "reason": "ht1.5_th0: RuntimeError: non-positive streamed wall-row density; ht1.5_th0.05: RuntimeError: non-positive streamed wall-row density; ht1.5_th0.1: RuntimeError: non-positive streamed wall-row density"
+   }
+  },
+  "tangent_failed": {},
+  "rows": {
+   "1": {
+    "Y0_abs": 0.0010814518706233046,
+    "0.05": {
+     "d_op_pct": -2.8298466664182786,
+     "phase_deg": -1.3841896295061507
+    },
+    "0.1": {
+     "d_op_pct": -5.308258663327347,
+     "phase_deg": -2.621040410016471
+    }
+   },
+   "1.01": {
+    "Y0_abs": 0.0011462225593081913,
+    "0.05": {
+     "d_op_pct": -3.3003328883696392,
+     "phase_deg": -1.2523216270021462
+    },
+    "0.1": {
+     "d_op_pct": -6.215465394333696,
+     "phase_deg": -2.3915839138702775
+    }
+   },
+   "1.02": {
+    "Y0_abs": 0.0011994713712400037,
+    "0.05": {
+     "d_op_pct": -3.6113337591554884,
+     "phase_deg": -1.1296473763002022
+    },
+    "0.1": {
+     "d_op_pct": -6.82248525228778,
+     "phase_deg": -2.172617960462066
+    }
+   },
+   "1.03": {
+    "Y0_abs": 0.0012461864404841832,
+    "0.05": {
+     "d_op_pct": -3.8532885333449785,
+     "phase_deg": -1.0215794960196585
+    },
+    "0.1": {
+     "d_op_pct": -7.29459411528206,
+     "phase_deg": -1.9773999702027807
+    }
+   },
+   "1.05": {
+    "Y0_abs": 0.0013277555233707462,
+    "0.05": {
+     "d_op_pct": -4.240908311678249,
+     "phase_deg": -0.8530388295779924
+    },
+    "0.1": {
+     "d_op_pct": -8.043796184550821,
+     "phase_deg": -1.6699662167856972
+    }
+   }
+  },
+  "thetas": [
+   "0.05",
+   "0.1"
+  ]
+ },
+ "classification_auth": {
+  "label": "GHOST_RELAX_ACTIVE",
+  "per_ht": {
+   "1.01": {
+    "delta_dop_pp": [
+     -0.4704862219513606,
+     -0.9072067310063492
+    ],
+    "y0_abs_shift_rel": 0.059892345137426695,
+    "active": true
+   },
+   "1.02": {
+    "delta_dop_pp": [
+     -0.7814870927372097,
+     -1.5142265889604332
+    ],
+    "y0_abs_shift_rel": 0.10913060841873401,
+    "active": true
+   },
+   "1.03": {
+    "delta_dop_pp": [
+     -1.0234418669266998,
+     -1.9863354519547132
+    ],
+    "y0_abs_shift_rel": 0.1523272318775799,
+    "active": true
+   },
+   "1.05": {
+    "delta_dop_pp": [
+     -1.41106164525997,
+     -2.735537521223474
+    ],
+    "y0_abs_shift_rel": 0.22775276407398715,
+    "active": true
+   }
+  },
+  "nsf_ref_pct": {
+   "0.05": 1.1816679235497007,
+   "0.1": 2.344498614853485
+  }
+ },
+ "anchor_auth": {
+  "0.05": {
+   "d_op_pct": -2.8298466664182786,
+   "tan_ref_pct": -2.8345129628396526,
+   "dev_pp": 0.00466629642137395,
+   "pass": true
+  },
+  "0.1": {
+   "d_op_pct": -5.308258663327347,
+   "tan_ref_pct": -5.317059432017945,
+   "dev_pp": 0.008800768690598204,
+   "pass": true
+  }
+ },
+ "verdict": "COMPLETED"
+}

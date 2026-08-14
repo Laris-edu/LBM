@@ -45,9 +45,9 @@ d_OP=(|D_OP|−1)×100%，@ 后为 arg D_OP；Θ_DC 主判决点 {0.05, 0.10}，
 
 | 模型 | d_OP(0.05) | d_OP(0.10) | 相位(0.05/0.10) | 出处 |
 |---|---:|---:|---|---|
-| QS-1（LBM 静态族） | +2.35% | +4.64% | — | STATUS §6.1 |
+| QS-1（LBM 静态族） | +2.35% | +4.64% | — | STATUS §3 |
 | 现有 1D NSF（DC 臂 raw，g0 分支） | +1.18% | +2.34% | −0.021°/−0.045° | run `20260803T083909Z` |
-| LBM TAN 切线 | −2.835% | −5.317% | −1.38°/−2.62°（生产行） | STATUS §6.1 |
+| LBM TAN 切线 | −2.835% | −5.317% | −1.38°/−2.62°（生产行） | STATUS §3 |
 | **Full hot-base NSF·常数输运（计划字面主行）** | **−1.385%** | **−2.676%** | +0.008°/+0.015° | 本 run |
 | **No-gradient NSF·常数输运** | **−1.130%** | **−2.189%** | −0.066°/−0.127° | 本 run |
 | **Full hot-base NSF·lbm-equivalent(g0)** | **+1.182%** | **+2.344%** | −0.028°/−0.057° | 本 run |
@@ -95,7 +95,8 @@ d_OP=(|D_OP|−1)×100%，@ 后为 arg D_OP；Θ_DC 主判决点 {0.05, 0.10}，
 ## 7. 数据与产物（唯一家）
 
 - 权威 run：`results/phase5/nsf_arbitration/20260811T055850Z/summary.json`（A 机 `Laris-jixie`，commit `860b4df`，numpy 2.4.4；含全部 30 算例 × 4 网格阶梯、审计、V6 行、分类与外部参照常数）；摘要归档 `archive/M5_runs/nsf_arb_20260811T055850Z/`（summary.json + 控制台 log）。
-- 冻结判读线与外部参照数值（LBM 生产/TAN/QS/DC 臂 raw）内嵌于 runner 常数区，出处注释指向 STATUS §6.1 与 DC 臂 run `20260803T083909Z`。
+- 冻结判读线与外部参照数值（LBM 生产/TAN/QS/DC 臂 raw）内嵌于 runner 常数区，出处注释指向 STATUS §3 与 DC 臂 run `20260803T083909Z`。
 - 合同测试：`verification/nonlinear/test_phase5_nsf_hot_base_arbitration.py`（8 项：基态闭式×2、dk/dT 解析、冷退化+锚、线性+审计、网格阶、no-grad 手术局部性+非退化、fail-loud）。
 - smoke：`20260811T055736Z`（scratchpad，--skip-time-domain）——BVP 矩阵与权威 run 逐位同源（同代码确定性）。
-- 本报告为结果唯一家；STATUS §6.1 只保留摘要块与指针。
+- 本报告为结果唯一家；STATUS §3 只保留摘要块与指针。
+

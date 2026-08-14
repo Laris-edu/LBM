@@ -87,7 +87,15 @@ V2EQ 双 h 档 spread=1.3e-7 pp（V2 稳定）。**家族级判决 `WALLFIX_FAMI
 
 ## 7. 数据与产物（唯一家）
 
-- 交付：`boundary/wall_thermal_mass_neutral_v2.py`（v2 壁族）、`core/tangent_wallfix.py`（切线层）、`scripts/phase5_wallfix_arbitration.py`（runner，判读线冻结于常数区）、`verification/nonlinear/test_phase5_wallfix_boundary.py`（5 项绿：逐位锚链×4 + 不变量 + 非退化 + fail-loud）。
+- 交付：`boundary/wall_thermal_mass_neutral_v2.py`（v2 壁族）、`core/tangent_wallfix.py`（切线层）、`scripts/phase5_wallfix_arbitration.py`（runner，判读线冻结于常数区）、`verification/nonlinear/test_phase5_wallfix_boundary.py`（5 项绿：逐位锚链×4 + 不变量 + 非退化 + fail-loud）。ghost 扫描单元的交付物见 `ghost_relax_scan_report.md` §7。
+- §8 权威 run（**B 机 `DESKTOP-AO7JVJI`，24 workers，跨机口径 D5-3**）：`20260813T100957Z_full`（τ>1，commit `6754802`）与 `20260813T194351Z_full`（τ<1，commit `e9d116f`）；B 机原件镜像于 A 机 `results/phase5/wallfix_ghost_relax/mirror_from_B/`；逐例检查点跨 run 复用（τ=1.0 锚点未重算，实证续跑纪律）。
 - 权威 run：`results/phase5/wallfix_arbitration/20260811T085347Z_auth/`（summary.json + checkpoints_auth_849699bb/ 逐例断点）；smoke：`20260811T081743Z_smoke/`。摘要归档 `archive/M5_runs/wallfix_20260811T085347Z_auth/`（auth summary + smoke summary + 控制台 log）。
 - 外部参照（冻结于 runner 常数区，出处注释在案）：TAN 切线值（`M5_runs/wp4_tan_20260805T092726Z_B`）、NSF g0 连续参照（`M5_runs/nsf_arb_20260811T055850Z`）。
 - 两步纪律（会话内等价物）：判读线/分类/门全部先于 v2 族任何热数值写入 runner 常数区；smoke 先行验证机器链后才发权威波。
+
+
+## 8. 后续单元：ghost 自由弛豫参数扫描（结论指针）
+
+§1 的结构论证与 §5 的实测只覆盖**边界重构侧**的自由度。文献核查（`literature_check_wallfix_novelty_v1.md` §4b）随后指出，离散效应传统的标准补救是**调碰撞侧的 ghost 自由弛豫参数**，因此另立单元实测——**报告=`ghost_relax_scan_report.md`（数据与判读唯一家，勿在本文重复）**。
+
+其结论对本报告的影响只有一句：**碰撞侧双向扫描同样失败**（τ>1 加重伪迹并在 τ≥1.08 失稳；τ<1 方向正确但格式先失稳，外推穿越点需 −28% 冷态导纳代价）。因此 §6 的 `WALLFIX_FAMILY_NULL` 适用面由"壁修改"扩展到 **"壁修改 + ghost 弛豫补救"**——边界侧与碰撞侧的全部合法自由度都无法移除该伪迹。

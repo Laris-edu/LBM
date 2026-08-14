@@ -1,0 +1,515 @@
+{
+ "unit": "WP4-GHOSTSCAN",
+ "run_id": "20260813T194351Z",
+ "mode": "full",
+ "protocol": {
+  "closure": "fourth_order",
+  "high_tau_ladder": [
+   1.0,
+   0.995,
+   0.99,
+   0.98,
+   0.97,
+   0.96,
+   0.95
+  ],
+  "h_jvp": 5e-05,
+  "gas_config": "configs/gas_air_10k_d2q37_levelc_dx2p6.yaml",
+  "wall": "PROD (production v1.1, unchanged)",
+  "lines": {
+   "aliveness_rel": 1e-06,
+   "anchor_pp": 0.2,
+   "scan_null_pp": 0.3
+  }
+ },
+ "aliveness": {
+  "rel_diff_1p5_vs_1p0": 0.004450875110912431,
+  "pass": true
+ },
+ "machine": {
+  "node": "DESKTOP-AO7JVJI",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.14.6",
+  "numpy": "2.4.4",
+  "git_commit": "e9d116f"
+ },
+ "stage_smoke": {
+  "stage_verdict": "COMPLETED",
+  "legality": {
+   "ht1_th0": {
+    "stationarity_per_period": 1.2048062203303418e-14,
+    "dc_closure_rel": 2.0022136377446937,
+    "theta_dc_measured": -1.4342931194408831e-15,
+    "mass_drift_settle": 8.182565736092329e-12,
+    "pass": true
+   },
+   "ht1_th0.05": {
+    "stationarity_per_period": 2.6821281333544514e-14,
+    "dc_closure_rel": 2.5704142458585034e-11,
+    "theta_dc_measured": 0.0499891757793069,
+    "mass_drift_settle": 7.720712957848264e-12,
+    "pass": true
+   },
+   "ht0.995_th0": {
+    "stationarity_per_period": 5.0200259180430905e-15,
+    "dc_closure_rel": 2.006594576882117,
+    "theta_dc_measured": -4.3028793583226493e-16,
+    "mass_drift_settle": 8.171907595055927e-12,
+    "pass": true
+   },
+   "ht0.995_th0.05": {
+    "stationarity_per_period": 3.614418660991025e-14,
+    "dc_closure_rel": 1.9949651547250526e-11,
+    "theta_dc_measured": 0.049991716978838585,
+    "mass_drift_settle": 7.895906151134113e-12,
+    "pass": true
+   },
+   "ht0.99_th0": {
+    "stationarity_per_period": 1.3052067386912036e-14,
+    "dc_closure_rel": 2.002530844669409,
+    "theta_dc_measured": -5.737172477763532e-16,
+    "mass_drift_settle": 8.215872426831083e-12,
+    "pass": true
+   },
+   "ht0.99_th0.05": {
+    "stationarity_per_period": 3.155444862769943e-14,
+    "dc_closure_rel": 3.5371077800007456e-11,
+    "theta_dc_measured": 0.049994310302839524,
+    "mass_drift_settle": 8.048672839322535e-12,
+    "pass": true
+   },
+   "ht0.98_th0": {
+    "stationarity_per_period": 1.1330915643582976e-14,
+    "dc_closure_rel": 2.0046889160329404,
+    "theta_dc_measured": -1.434293119440883e-16,
+    "mass_drift_settle": 7.91255949650349e-12,
+    "pass": true
+   },
+   "ht0.98_th0.05": {
+    "stationarity_per_period": 3.4279605554637104e-14,
+    "dc_closure_rel": 8.284955483511364e-11,
+    "theta_dc_measured": 0.04999965008211132,
+    "mass_drift_settle": 8.251399563619088e-12,
+    "pass": true
+   },
+   "ht0.97_th0": {
+    "stationarity_per_period": 1.936295711245192e-14,
+    "dc_closure_rel": 2.007034441026675,
+    "theta_dc_measured": -1.434293119440883e-16,
+    "mass_drift_settle": 7.136957691500356e-12,
+    "pass": true
+   },
+   "ht0.97_th0.05": {
+    "stationarity_per_period": 6.411290243900747e-14,
+    "dc_closure_rel": 6.519231946560842e-10,
+    "theta_dc_measured": 0.050005146835093155,
+    "mass_drift_settle": 7.648548461247628e-12,
+    "pass": true
+   },
+   "ht0.96_th0": {
+    "stationarity_per_period": 5.450313853875356e-15,
+    "dc_closure_rel": 2.004929038837427,
+    "theta_dc_measured": -5.737172477763532e-16,
+    "mass_drift_settle": 7.085221298552824e-12,
+    "pass": true
+   },
+   "ht0.96_th0.05": {
+    "stationarity_per_period": 9.638449762642735e-14,
+    "dc_closure_rel": 3.3294044787295596e-11,
+    "theta_dc_measured": 0.05001023530153441,
+    "mass_drift_settle": 7.964073844846098e-12,
+    "pass": true
+   },
+   "ht0.95_th0": {
+    "stationarity_per_period": 6.082555132386734e-05,
+    "dc_closure_rel": 2.0000000005528142,
+    "theta_dc_measured": -0.0007111552444595932,
+    "mass_drift_settle": 1.0197176436577138e-11,
+    "pass": true
+   },
+   "ht0.95_th0.05": {
+    "stationarity_per_period": 1.7498376057178772e-13,
+    "dc_closure_rel": 4.940382376440471e-11,
+    "theta_dc_measured": 0.04934251723976407,
+    "mass_drift_settle": 9.695577674051492e-12,
+    "pass": true
+   }
+  },
+  "ht_status": {
+   "1": {
+    "ok": true,
+    "reason": "all PASS"
+   },
+   "0.995": {
+    "ok": true,
+    "reason": "all PASS"
+   },
+   "0.99": {
+    "ok": true,
+    "reason": "all PASS"
+   },
+   "0.98": {
+    "ok": true,
+    "reason": "all PASS"
+   },
+   "0.97": {
+    "ok": true,
+    "reason": "all PASS"
+   },
+   "0.96": {
+    "ok": true,
+    "reason": "all PASS"
+   },
+   "0.95": {
+    "ok": true,
+    "reason": "all PASS"
+   }
+  },
+  "tangent_failed": {},
+  "rows": {
+   "1": {
+    "Y0_abs": 0.00134059356064378,
+    "0.05": {
+     "d_op_pct": 0.9823299145898634,
+     "phase_deg": -1.567826292179355
+    }
+   },
+   "0.995": {
+    "Y0_abs": 0.0011330103988394708,
+    "0.05": {
+     "d_op_pct": 2.27954958301404,
+     "phase_deg": -2.213781643236118
+    }
+   },
+   "0.99": {
+    "Y0_abs": 0.0009326999270184227,
+    "0.05": {
+     "d_op_pct": 3.8725946783590537,
+     "phase_deg": -3.2880997126063267
+    }
+   },
+   "0.98": {
+    "Y0_abs": 0.000590188892464402,
+    "0.05": {
+     "d_op_pct": 6.113180545731711,
+     "phase_deg": -8.443054438413528
+    }
+   },
+   "0.97": {
+    "Y0_abs": 0.0004961242836851473,
+    "0.05": {
+     "d_op_pct": -8.675964089040544,
+     "phase_deg": -14.782555651674022
+    }
+   },
+   "0.96": {
+    "Y0_abs": 0.0007520920809354453,
+    "0.05": {
+     "d_op_pct": -17.682988191434955,
+     "phase_deg": -7.881546031472409
+    }
+   },
+   "0.95": {
+    "Y0_abs": 0.001042680504234926,
+    "0.05": {
+     "d_op_pct": -18.639414869602177,
+     "phase_deg": -3.1206660971044644
+    }
+   }
+  },
+  "thetas": [
+   "0.05"
+  ]
+ },
+ "classification_smoke": {
+  "label": "GHOST_RELAX_ACTIVE",
+  "per_ht": {
+   "0.995": {
+    "delta_dop_pp": [
+     1.2972196684241766
+    ],
+    "y0_abs_shift_rel": -0.15484421818692284,
+    "active": true
+   },
+   "0.99": {
+    "delta_dop_pp": [
+     2.8902647637691903
+    ],
+    "y0_abs_shift_rel": -0.30426345881407835,
+    "active": true
+   },
+   "0.98": {
+    "delta_dop_pp": [
+     5.130850631141848
+    ],
+    "y0_abs_shift_rel": -0.5597555368079037,
+    "active": true
+   },
+   "0.97": {
+    "delta_dop_pp": [
+     -9.658294003630408
+    ],
+    "y0_abs_shift_rel": -0.629921925444056,
+    "active": true
+   },
+   "0.96": {
+    "delta_dop_pp": [
+     -18.66531810602482
+    ],
+    "y0_abs_shift_rel": -0.4389857574921697,
+    "active": true
+   },
+   "0.95": {
+    "delta_dop_pp": [
+     -19.62174478419204
+    ],
+    "y0_abs_shift_rel": -0.22222474070798182,
+    "active": true
+   }
+  },
+  "nsf_ref_pct": {
+   "0.05": 1.1816679235497007
+  }
+ },
+ "smoke_soft_anchor": {
+  "d_op_pct": 0.9823299145898634,
+  "jab1_smoke_ref_pct": 0.974,
+  "dev_pp": 0.00832991458986343,
+  "soft_anchor": true
+ },
+ "stage_auth": {
+  "stage_verdict": "COMPLETED",
+  "legality": {
+   "ht1_th0": {
+    "stationarity_per_period": 1.384092860260452e-13,
+    "dc_closure_rel": 1.9959035047792444,
+    "theta_dc_measured": -1.434293119440883e-16,
+    "mass_drift_settle": 1.9746426715983034e-12,
+    "pass": true
+   },
+   "ht1_th0.05": {
+    "stationarity_per_period": 1.3430876121600783e-06,
+    "dc_closure_rel": 4.791938402893601e-05,
+    "theta_dc_measured": 0.04999797535344177,
+    "mass_drift_settle": 2.135625010168951e-12,
+    "pass": true
+   },
+   "ht1_th0.1": {
+    "stationarity_per_period": 2.6937594291334475e-06,
+    "dc_closure_rel": 4.674595945324927e-05,
+    "theta_dc_measured": 0.09999574278432172,
+    "mass_drift_settle": 2.249533892495492e-12,
+    "pass": true
+   },
+   "ht0.995_th0": {
+    "stationarity_per_period": 9.279876482782513e-14,
+    "dc_closure_rel": 2.0149160190523943,
+    "theta_dc_measured": -1.434293119440883e-16,
+    "mass_drift_settle": 2.006617094707508e-12,
+    "pass": true
+   },
+   "ht0.995_th0.05": {
+    "stationarity_per_period": 3.237464701238924e-06,
+    "dc_closure_rel": 0.000118965457073801,
+    "theta_dc_measured": 0.04999821488057358,
+    "mass_drift_settle": 2.135402965564026e-12,
+    "pass": true
+   },
+   "ht0.995_th0.1": {
+    "stationarity_per_period": 6.347709760247152e-06,
+    "dc_closure_rel": 0.00011342362737897122,
+    "theta_dc_measured": 0.09999619424816275,
+    "mass_drift_settle": 2.2537527399890678e-12,
+    "pass": true
+   },
+   "ht0.99_th0": {
+    "stationarity_per_period": 8.935646134116702e-14,
+    "dc_closure_rel": 2.0329729008143103,
+    "theta_dc_measured": -5.737172477763532e-16,
+    "mass_drift_settle": 1.9910739723627557e-12,
+    "pass": true
+   },
+   "ht0.99_th0.05": {
+    "stationarity_per_period": 7.754091861311683e-06,
+    "dc_closure_rel": 0.0002956712972474221,
+    "theta_dc_measured": 0.049998513898352984,
+    "mass_drift_settle": 2.1325163857000007e-12,
+    "pass": true
+   },
+   "ht0.99_th0.1": {
+    "stationarity_per_period": 1.4860890277947392e-05,
+    "dc_closure_rel": 0.0002755162126611555,
+    "theta_dc_measured": 0.0999967485564595,
+    "mass_drift_settle": 2.261302256556519e-12,
+    "pass": true
+   },
+   "ht0.98_th0": {
+    "stationarity_per_period": 4.345908151905876e-13,
+    "dc_closure_rel": 2.0290069870844802,
+    "theta_dc_measured": -4.3028793583226493e-16,
+    "mass_drift_settle": 1.9804158313263542e-12,
+    "pass": true
+   },
+   "ht0.98_th0.05": {
+    "stationarity_per_period": 4.47606030908597e-05,
+    "dc_closure_rel": 0.0019809629700354267,
+    "theta_dc_measured": 0.04999963460256349,
+    "mass_drift_settle": 2.12763140439165e-12,
+    "pass": false
+   },
+   "ht0.98_th0.1": {
+    "stationarity_per_period": 8.313231082148245e-05,
+    "dc_closure_rel": 0.0017758271421405036,
+    "theta_dc_measured": 0.09999866869584971,
+    "mass_drift_settle": 2.262190434976219e-12,
+    "pass": false
+   },
+   "ht0.97_th0": {
+    "pass": false,
+    "reason": "RuntimeError: non-positive streamed wall-row density"
+   },
+   "ht0.97_th0.05": {
+    "pass": false,
+    "reason": "RuntimeError: blended non-equilibrium exceeds wall density"
+   },
+   "ht0.97_th0.1": {
+    "pass": false,
+    "reason": "RuntimeError: blended non-equilibrium exceeds wall density"
+   },
+   "ht0.96_th0": {
+    "pass": false,
+    "reason": "LinAlgError: Singular matrix"
+   },
+   "ht0.96_th0.05": {
+    "pass": false,
+    "reason": "RuntimeError: non-positive streamed wall-row density"
+   },
+   "ht0.96_th0.1": {
+    "pass": false,
+    "reason": "RuntimeError: blended non-equilibrium exceeds wall density"
+   },
+   "ht0.95_th0": {
+    "pass": false,
+    "reason": "RuntimeError: non-positive streamed wall-row density"
+   },
+   "ht0.95_th0.05": {
+    "pass": false,
+    "reason": "RuntimeError: blended non-equilibrium exceeds wall density"
+   },
+   "ht0.95_th0.1": {
+    "pass": false,
+    "reason": "RuntimeError: blended non-equilibrium exceeds wall density"
+   }
+  },
+  "ht_status": {
+   "1": {
+    "ok": true,
+    "reason": "all PASS"
+   },
+   "0.995": {
+    "ok": true,
+    "reason": "all PASS"
+   },
+   "0.99": {
+    "ok": true,
+    "reason": "all PASS"
+   },
+   "0.98": {
+    "ok": false,
+    "reason": "ht0.98_th0.05: legality gate; ht0.98_th0.1: legality gate"
+   },
+   "0.97": {
+    "ok": false,
+    "reason": "ht0.97_th0: RuntimeError: non-positive streamed wall-row density; ht0.97_th0.05: RuntimeError: blended non-equilibrium exceeds wall density; ht0.97_th0.1: RuntimeError: blended non-equilibrium exceeds wall density"
+   },
+   "0.96": {
+    "ok": false,
+    "reason": "ht0.96_th0: LinAlgError: Singular matrix; ht0.96_th0.05: RuntimeError: non-positive streamed wall-row density; ht0.96_th0.1: RuntimeError: blended non-equilibrium exceeds wall density"
+   },
+   "0.95": {
+    "ok": false,
+    "reason": "ht0.95_th0: RuntimeError: non-positive streamed wall-row density; ht0.95_th0.05: RuntimeError: blended non-equilibrium exceeds wall density; ht0.95_th0.1: RuntimeError: blended non-equilibrium exceeds wall density"
+   }
+  },
+  "tangent_failed": {},
+  "rows": {
+   "1": {
+    "Y0_abs": 0.0010814518706233046,
+    "0.05": {
+     "d_op_pct": -2.8298466664182786,
+     "phase_deg": -1.3841896295061507
+    },
+    "0.1": {
+     "d_op_pct": -5.308258663327347,
+     "phase_deg": -2.621040410016471
+    }
+   },
+   "0.995": {
+    "Y0_abs": 0.001041224274227568,
+    "0.05": {
+     "d_op_pct": -2.4548688132722707,
+     "phase_deg": -1.4478310135569337
+    },
+    "0.1": {
+     "d_op_pct": -4.599917730373971,
+     "phase_deg": -2.726625915606643
+    }
+   },
+   "0.99": {
+    "Y0_abs": 0.0009910986365141768,
+    "0.05": {
+     "d_op_pct": -1.8498118561347976,
+     "phase_deg": -1.5012796692166543
+    },
+    "0.1": {
+     "d_op_pct": -3.4856284433794404,
+     "phase_deg": -2.8058832057170684
+    }
+   }
+  },
+  "thetas": [
+   "0.05",
+   "0.1"
+  ]
+ },
+ "classification_auth": {
+  "label": "GHOST_RELAX_ACTIVE",
+  "per_ht": {
+   "0.995": {
+    "delta_dop_pp": [
+     0.37497785314600796,
+     0.7083409329533765
+    ],
+    "y0_abs_shift_rel": -0.0371977685632473,
+    "active": true
+   },
+   "0.99": {
+    "delta_dop_pp": [
+     0.980034810283481,
+     1.8226302199479067
+    ],
+    "y0_abs_shift_rel": -0.0835480862010547,
+    "active": true
+   }
+  },
+  "nsf_ref_pct": {
+   "0.05": 1.1816679235497007,
+   "0.1": 2.344498614853485
+  }
+ },
+ "anchor_auth": {
+  "0.05": {
+   "d_op_pct": -2.8298466664182786,
+   "tan_ref_pct": -2.8345129628396526,
+   "dev_pp": 0.00466629642137395,
+   "pass": true
+  },
+  "0.1": {
+   "d_op_pct": -5.308258663327347,
+   "tan_ref_pct": -5.317059432017945,
+   "dev_pp": 0.008800768690598204,
+   "pass": true
+  }
+ },
+ "verdict": "COMPLETED"
+}
