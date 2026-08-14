@@ -119,12 +119,14 @@
 
 **smoke 阶段的筛查行**（陡 rig，按构造不复现生产符号——PROD 自身在 smoke 上是 **+0.9740**，故 smoke 上的 `CROSSSTACK_ABSENT` 标签是**空洞的**，"翻正"只是因为基准本来就是正的；smoke 只用来读 Δd_OP 与活键）：
 
-| 变体 | smoke d_OP(Θ=0.05) | Δ vs PROD | 冷态 \|Y₀\| 相对位移 | 活键 |
-|---|---:|---:|---:|---|
-| `PROD` | +0.9740178 | —（软锚：JAB1 参照 0.974，**偏差 1.78e-05 pp**） | — | — |
-| `DEVMEAS` | +2.5322 | **+1.5582 pp** | −20.1% | 是 |
-| `TRZERO` | +0.9778 | +0.0038 pp | −0.035% | 是（勉强） |
-| `CTRL4TH` | +0.9823 | +0.0083 pp | −0.086% | 是（勉强） |
+| 变体 | smoke d_OP(Θ=0.05)（B 机） | Δ vs PROD | 冷态 \|Y₀\| 相对位移 | 活键 | A 机同项之差 |
+|---|---:|---:|---:|---|---:|
+| `PROD` | +0.9740178 | —（软锚：JAB1 参照 0.974，**偏差 1.78e-05 pp**；A 机 1.63e-05 pp） | — | — | 1.57e-06 pp |
+| `DEVMEAS` | +2.5321960 | **+1.5582 pp** | −20.1% | 是 | 9.5e-07 pp |
+| `TRZERO` | +0.9777928 | +0.0038 pp | −0.035% | 是（勉强） | 5.8e-07 pp |
+| `CTRL4TH` | +0.9823299 | +0.0083 pp | −0.086% | 是（勉强） | 2.7e-07 pp |
+
+**跨机一致性（D5-3"每机逐位、跨机容差"）**：A 机 `20260814T092631Z_smoke` 与 B 机同阶段逐变体 d_OP 最大差 **1.57e-06 pp**（约为 auth 锚点门 0.2 pp 的 1/10⁵），冷态 |Y₀| 位移差 **5.3e-09**；存活分区两机逐项一致。两机 `COMPLETED`。
 
 三点读数：**①** PROD 软锚 1.78e-05 pp 复现冻结 JAB1 smoke 值——切线链在这条 rig 上逐位可信；**②** 在存活的配置键里，只有**偏应力闭合**（`DEVMEAS`）对切线响应有真正的杠杆（1.56 pp），迹通道清零与 `fourth_order` 完全正则化极限都 <0.01 pp；**③** `CTRL4TH` 这个"结构惰性阳性对照"在陡 smoke rig 上其实**勉强越过了 1e-4 活键线**（0.086%）——与合同测试记录的"陡 rig 上 `fourth_order@1.0` 对 `second_order` 的投影基差 1.5e-6（生产态 7.8e-10）"一致；在 auth 网格上应回到惰性，该行由 auth 判定。
 
@@ -165,7 +167,7 @@ BGK 轴已可写死的一句：
 
 - **交付代码**：`core/collision_bgk.py`、`core/tangent_bgk.py`、`scripts/phase5_crossstack_collision_scan.py`、`verification/nonlinear/test_phase5_crossstack_collision.py`（20 项绿）。复用未改动：`core/tangent_step.py`、`core/collision_smrt.py`、`core/solver.py`、`boundary/wall_thermal_mass_neutral.py`、`scripts/phase5_g4a_dc_basestate.py`、`scripts/phase5_wallfix_arbitration.py`（协议/门/参照常数）。
 - **两步纪律**：预注册 commit `111f757`（判读线 + 变体表 + 仪器，先于任何变体热态数值）；结果 commit 在后。
-- **权威 run**：A 机 `Laris-jixie` preflight `20260814T090438Z_preflight`（12 workers，`COMPLETED`）+ smoke `20260814T092631Z_smoke`（14 workers）；B 机 `DESKTOP-AO7JVJI` full `20260814T090824Z_full`（22 workers，schtasks 一次性派发，跨机口径 D5-3，两机同 commit `111f757`）。跨机一致性：preflight α_eff 逐变体相对差 ~8e-9（"每机逐位、跨机容差"）；smoke 存活分区两机逐项一致。
+- **权威 run**：A 机 `Laris-jixie` preflight `20260814T090438Z_preflight`（12 workers，`COMPLETED`）+ smoke `20260814T092631Z_smoke`（14 workers，`COMPLETED`）；B 机 `DESKTOP-AO7JVJI` full `20260814T090824Z_full`（22 workers，schtasks 一次性派发，跨机口径 D5-3，两机同 commit `111f757`）。跨机一致性（D5-3）：preflight α_eff 逐变体相对差 ~8e-9；smoke 逐变体 d_OP 最大差 1.57e-06 pp、|Y₀| 位移差 5.3e-09、存活分区逐项一致。
 - **收尾待办**（auth 落地后）：把 B 机 `summary.json` + 控制台 log 归档到 `archive/M5_runs/crossstack_1a_20260814_B/`，填 §4.3 并升 REPORT_v1.0，同步 STATUS §2 / `Phase5_Output_Files_Guide.md`；**删除 B 机一次性任务定义 `schtasks /Delete /TN LBM_CROSSSTACK_1A /F`** 与临时文件 `E:\LBM\sync_1a.bundle`、`run_crossstack.bat`、`crossstack_status.bat`（run-discipline 规则 4/5）。
 - **外部参照**（冻结于 runner 常数区）：TAN 切线值 `archive/M5_runs/wp4_tan_20260805T092726Z_B`（−2.8345 / −5.3171 pp）；NSF g0 连续参照 `archive/M5_runs/nsf_arb_20260811T055850Z`（+1.1817 / +2.3445 pp）；G0 α_eff 表 `archive/M5_runs/g0_20260722T173919Z/property_table.csv`。
 - **关联文档**：计划书=`crossstack_1a_plan_v1.0.md`；上游=`wallfix_a2a5_counterproof_report.md`（壁侧全零）+ `ghost_relax_scan_report.md`（碰撞 ghost 侧双向失败）+ `wp4_jacobian_ablation_report.md` §7（A2-5 定位）；投稿定位=`literature_check_wallfix_novelty_v1.md`。
