@@ -112,10 +112,12 @@
 
 | 变体 | smoke（hs=12） | auth（hs=48，判决网格） |
 |---|---|---|
-| `PROD` / `DEVMEAS` / `TRZERO` / `CTRL4TH` | 全部合法（stationarity ≤4e-14、dc_closure ≤3e-11、质量漂移 ≤9e-12） | 全部合法，进入切线波 |
-| `BGK` | 冷+热 settle 全死 | 三个工作点 settle 全死 |
-| `REGBGK` | 冷+热 settle 全死 | 三个工作点 settle 全死 |
-| `TRTAU22` | Θ=0.05 settle 死 | 三个工作点 settle 全死 |
+| `PROD` / `DEVMEAS` / `TRZERO` / `CTRL4TH` | 全部合法（stationarity ≤4e-14、dc_closure ≤3e-11、质量漂移 ≤9e-12） | 全部合法，进入切线波（stationarity ≤4.8e-6、dc_closure ≤8.9e-5、质量漂移 ≤2.3e-12，均在 JAB 门 1e-3/1e-3 内；实测 Θ_DC = 0.0499979 / 0.0999957） |
+| `BGK` | 冷+热 settle 全死 | **三个工作点 settle 全死** |
+| `REGBGK` | 冷+热 settle 全死 | **三个工作点 settle 全死** |
+| `TRTAU22` | Θ=0.05 settle 死 | **三个工作点 settle 全死** |
+
+判决网格的切线波因此是 `PROD`（锚点）+ `DEVMEAS` + `TRZERO` + `CTRL4TH` 共 12 例（4 变体 × 冷 + 两个工作点）。
 
 **smoke 阶段的筛查行**（陡 rig，按构造不复现生产符号——PROD 自身在 smoke 上是 **+0.9740**，故 smoke 上的 `CROSSSTACK_ABSENT` 标签是**空洞的**，"翻正"只是因为基准本来就是正的；smoke 只用来读 Δd_OP 与活键）：
 
