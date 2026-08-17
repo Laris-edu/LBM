@@ -1730,19 +1730,17 @@ def main() -> int:
                              "regression": "PRODUCTION_REGRESSION_FAILED",
                              }[st]
                     summary.setdefault("labels", []).append(label)
+                    # design section 5: a failed layer leaves LATER results
+                    # archived (interpretation authority = the stamp/green
+                    # flags), it never aborts the chain; admission failures
+                    # additionally just gate the G0 branch (sections 3/6).
+                    # Hard deaths abort earlier (settle wave / worker guards).
                     if st in ("admission", "admission_ac"):
-                        # gates ONLY the G0 branch (design sections 3/6);
-                        # the CONST_G control chain continues either mode
                         log(f"stage {st} FAILED ({label}) — G0 branch not "
                             "admitted; CONST_G control chain continues")
-                    elif mode == "auth":
-                        mode_verdict = "LEGALITY_FAILED"
-                        log(f"stage {st} FAILED ({label}) — aborting preflight")
-                        aborted = True
-                        break
                     else:
-                        log(f"stage {st} FAILED ({label}) — smoke mode records "
-                            "and continues (no design gates at smoke caliber)")
+                        log(f"stage {st} FAILED ({label}) — recorded; chain "
+                            "continues (archived semantics, design section 5)")
             g0_admitted = bool(
                 stage_results.get("admission", {}).get("pass")
                 and stage_results.get("admission_ac", {}).get("pass"))
