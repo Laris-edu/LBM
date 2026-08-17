@@ -2,7 +2,7 @@
 
 **阶段**：Phase_5 — 热声薄膜有限温升非线性换能（Nonlinear Entry and Production Contract）
 **合同**：`docs/Phase_5/Phase5_instruct_v1.2.md`（v1.2，2026-07-20 经 WP0 冻结为唯一规范性入口；评审基线 `b86459c`）
-**最后更新**：2026-08-17（D1 候选 B 面通量壁实现+实测闭合：`WALLFIX_NULL`，边界能量交换语义排除为载体）
+**最后更新**：2026-08-17（D1 strict-B 冻结设计已按用户要求压缩为 88 行实验执行清单；尚未实施，D1 科学判决保持开放）
 
 **本文职责**：状态标签 + Gate 现值 + 执行流水（做了什么 / 为什么 / 结果）+ WP4 生产数据。
 **本文不写**：技术细节、推导、诊断链——一律在对应报告，本文只给结论与指针。
@@ -12,7 +12,7 @@
 
 ## 1. 当前状态
 
-**WP0–WP4 授权范围全部完成**（2026-08-04），2026-08-06 起进入**毕业导向论文写作轨**，投稿前不新增生产模拟。2026-08-08 起执行用户指令的**机理诊断单元序列**（JAB → JAB2 → NSF 仲裁 → wallfix 反证 → ghost 扫描 → 跨栈 1a → D1 候选 B，见 §2）——全部为算子层归因与参照计算，**不改变任何 Gate、不改变 `FINAL_PRODUCTION_NOT_CLAIMED`**。
+**WP0–WP4 授权范围全部完成**（2026-08-04），2026-08-06 起进入**毕业导向论文写作轨**。2026-08-08 起执行用户指令的**机理诊断单元序列**（JAB → JAB2 → NSF 仲裁 → wallfix 反证 → ghost 扫描 → 跨栈 1a → D1-B buffer 代理，见 §2）。2026-08-17 用户授权 strict-B 设计并确认主文档采用短版实验执行清单，但未授权实施或运行。上述工作均不改变任何 Gate 与 `FINAL_PRODUCTION_NOT_CLAIMED`；D1 科学判决保持开放。
 
 状态标签（定义随合同 §0.3 冻结；**本表是唯一现值追踪处**）：
 
@@ -36,7 +36,13 @@ DYNAMIC_NONLINEAR_RESIDUAL_IDENTIFIED（核心科学发现：静态重求值族�
 LEVELC_COUPLED_ROW_PASSED
 WP3_SCOPED_GO_BY_USER
 WP4_SUBMATRIX_COMPLETE
-ROUTE_LBM_BOUNDARY（机理路由；JAB2 冻结，NSF 仲裁 + wallfix + ghost 扫描三重强化）
+ROUTE_LBM_BOUNDARY（生产算子 JAB2 簿记路线；不是 strict-B 因果判决，D1 科学 gate 开放）
+D1_ALGEBRA_CLOSED
+D1_B_BUFFER_DIAGNOSTIC_NULL
+D1_BUDGET_PARTIAL
+STRICT_B_DESIGN_CONDITIONAL
+STRICT_B_IMPLEMENTATION_NOT_STARTED
+D1_SCIENTIFIC_GATE_OPEN
 FINITE_WIDTH_2D_DEFERRED_JASA_SCOPE
 FINAL_PRODUCTION_NOT_CLAIMED
 ```
@@ -64,12 +70,13 @@ FINAL_PRODUCTION_NOT_CLAIMED
 
 | 日期 | 单元 | 目的 | 结果 | 详情 |
 |---|---|---|---|---|
-| 2026-08-17 | **D1 候选 B：面温—面通量壁实现与实测** | wallfix 修复入口经纸面推导（D1_v1.1+审校）判 GO——移除 A2-5 储能通道后 d_OP 是否翻向连续参照 | **三层判决**：①通道移除双重确认（合同测试断言驱动增益=G_f 密度无关；冷态 −2.446% 正中预算带 [−4.78,−2.42]%）；②**`WALLFIX_NULL`**——faceflux d_OP=−2.8078/−5.2788 对生产 −2.8345/−5.3171 仅移动 NSF 缺口 0.67%/0.50%，§13.2 自然预测证伪；③两种能量交换语义 d_OP 差 ≤0.04 pp ⇒ **边界能量交换语义整族排除为载体**（预注册「改进边界复测」完成、不升级），机制窗口收窄至{形状重置/u=0}∪{体相}（杠杆排序:ghost≫DEVMEAS≫能量语义≈0）。faceflux 的 G_f 在比值中相消=纯气侧响应仪器（独有价值，保留；不作生产候选） | `faceflux_wall_report.md`；A 机 `20260817T090753Z_full`（归档 `M5_runs/faceflux_20260817_A/`）；预注册 `5a87363`；测试 8 项绿、全量 159 绿 |
+| 2026-08-17 | **D1 strict-B 实验执行清单** | 把 D1 §9.1 的零体积 ghost/删除 band 要求落实为可实现、可证伪的最短实验合同 | **`STRICT_B_DESIGN_CONDITIONAL / IMPLEMENTATION_NOT_STARTED / D1_SCIENTIFIC_GATE_OPEN`**：冻结设计按用户要求由 624 行压缩为 88 行；保留镜像半域、首气体单元 incoming-`g`、闭柱等质量、`CONST_G→G0 admission`、局部守恒、冷锚、三档 JVP、热两点分类和停止条件 | `strict_faceflux_candidate_b_design_v1.0.md`；仅文档，无代码、配置、测试或 run |
+| 2026-08-17 | **D1-B buffer 面通量代理实测** | 检查共享 buffer 骨架内移除显式 `c_vρ̄δθ_w` 零阶储能源是否足以移动 d_OP | **`D1_B_BUFFER_DIAGNOSTIC_NULL / D1_BUDGET_PARTIAL`**：d_OP=−2.8078/−5.2788，对生产仅 +0.0268/+0.0383 pp；冷复比幅值 −2.446% 命中预算、相位 −3.959° 未命中。实现保留有限体积共享 band，且只跑单 h，故不能裁决严格 B、§13.2、纯气侧响应或能量语义 family | `faceflux_wall_report.md` REPORT_v1.1；A 机 `20260817T090753Z_full`；归档 `M5_runs/faceflux_20260817_A/` |
 | 2026-08-14 | **跨栈单元 1a（碰撞算子结构轴）** | 补投稿最大缺口："只在自己一套栈上测过"——换碰撞算子复测伪迹是否仍在 | **两轴均闭合。① BGK 轴**：自写诊断 BGK（(τ_f,τ_g) 由冻结 mapping 导出，ν/α 与生产逐位相同）在**无壁周期箱**上谱半径 1.46–2.02（生产 1.000000）——**保 α 的整个可行区间无一稳定**，判决网格三个工作点 settle 全死 → 计划书 §3 回退路径 1 触发。**② CFG 轴 `CROSSSTACK_FAMILY_ROBUST`**：唯一有实质杠杆的存活开关 `DEVMEAS`（剪切 ν_eff ×4）只把 d_OP 推动连续参照缺口的 **10.5%**（−2.8345→−2.4121 / −5.3171→−4.5194 pp），符号不变；PROD 锚点复现 TAN **1.3e-05/2.5e-05 pp** | `crossstack_collision_report.md`（REPORT_v1.0）；`crossstack_1a_plan_v1.0.md`；B 机权威 `20260814T090824Z_full`（归档 `M5_runs/crossstack_1a_20260814_B/`）+ A 机 `20260814T090438Z_preflight` / `20260814T092631Z_smoke` |
 | 2026-08-13/14 | **ghost 自由弛豫参数扫描** | 回答文献核查暴露的审稿线："离散效应传统的标准补救=调 ghost 自由弛豫参数，你们试过吗" | **双向失败**：τ>1 使伪迹加重且 τ≥1.08 失稳；τ<1 方向正确但仅 τ≥0.99 合法、外推穿越点 τ≈0.967 落在崩溃区且需 −28% 冷态导纳代价。锚点复现 TAN 0.005/0.009 pp | `ghost_relax_scan_report.md`；B 机 `20260813T100957Z` / `20260813T194351Z` |
 | 2026-08-11/14 | **投稿前文献核查（第一轮）** | 核实"边界家族被广泛使用"与 novelty 关口 | 家族普遍性**坐实**（Guo 2002 被引 733、JCP 2012 被引 204）；novelty 未被证伪（含 1184 篇施引文献追踪）；**LBM×thermophone 空白**；定位升级为"标准补救可证明失效的首例" | `literature_check_wallfix_novelty_v1.md` |
 | 2026-08-11 | **A2-5 修复性反证（wallfix）** | 检验能否用有原则的边界修正消除 A2-5 异常，同时不破坏既有认证 | **`WALLFIX_FAMILY_NULL`**：四不变量内合法壁族全体位移 ≤1.1e-6 pp（对照非法消融 +8.82 pp，差 7 个量级）→ 异常是**湿节点逐步重钉扎范式的结构性质**，范式内不可修 | `wallfix_a2a5_counterproof_report.md`；`20260811T085347Z_auth` |
-| 2026-08-11 | **NSF 热基态切线仲裁** | 判定负工作点趋势属连续热声物理还是 LBM 热壁边界效应 | LBM-equivalent 介质**情况 A/D 为正**（+1.18/+2.34%）；两个基态梯度动态耦合项仅 −0.26/−0.51 pp（≈残差 5%）→ **连续 NSF 造不出该负号**，`ROUTE_LBM_BOUNDARY` 强化 | `NSF_hot_basestate_tangent_arbitration_report.md`；`20260811T055850Z` |
+| 2026-08-11 | **NSF 热基态切线仲裁** | 判定负工作点趋势属连续热声物理还是 LBM 热壁边界效应 | LBM-equivalent 介质**情况 A/D 为正**（+1.18/+2.34%）；两个基态梯度动态耦合项仅 −0.26/−0.51 pp（≈残差 5%）→ 连续 NSF 造不出该负号；维持生产算子 `ROUTE_LBM_BOUNDARY` 簿记路线，**不是 strict-B 因果闭合** | `NSF_hot_basestate_tangent_arbitration_report.md`；`20260811T055850Z` |
 | 2026-08-10 | **JAB2 第二轮细粒度定位** | 把 JAB 定位的 A2/A3 两块拆解到子项 | **A2 整块=单项 A2-5**（壁面内能目标与 g 重钉扎的基态密度敏感度，σ=1.000 两点）；A3=两族抵消束 `A3_DISTRIBUTED`；冻结路由 **`ROUTE_LBM_BOUNDARY`** | `wp4_jacobian_ablation_report.md` §7；云端 96 核 `20260810T144425Z` |
 | 2026-08-09/10 | **WP4-JAB 热基态 Jacobian 消融** | 定位负趋势的 LBM 内部来源（算子块级） | **`JAB_COUPLED_CANDIDATE_A2_A3`**：v1.1 带重构 × 宏观/平衡两块近可加承载全部工作点响应；应力/热流/streaming/滤波/声学族排除 | 同上；`20260809T195359Z` |
 | 2026-08-06/08 | 数据层与文档层重整 | 数据不该住在文档层；入口文档瘦身 | `M5_runs`/`M2_runs` 迁入 `archive/`；`PROJECT_CONTEXT` 361→199 行；四层数据边界确立 | `archive/README.md`；历史日志 |
@@ -141,6 +148,7 @@ FINAL_PRODUCTION_NOT_CLAIMED
 
 | ID | 日期 | 决策 | 决策方 |
 |---|---|---|---|
+| D5-7 | 2026-08-17 | 先完成 strict-B 设计，并确认权威主文档采用短版实验执行清单；实施、代码与 run 均待后续明确批准 | 用户 |
 | D5-6 | 2026-08-03 | WP3 判定 **`SCOPED_GO`**，启动 WP4；授权范围=A2a/A1/A5 认证子矩阵（A3/A2b/H3/F1 不在授权内） | 用户 |
 | D5-5 | 2026-08-02 | 启动 WP3 首轮八信息单元 | 用户 |
 | D5-4 | 2026-07-29/30 | G1b 批准第四耦合设计 → 预注册回退条款触发并执行（耦合顺延 G4a） | 用户 |
@@ -157,31 +165,29 @@ FINAL_PRODUCTION_NOT_CLAIMED
 ## 5. 生效中的风险与边界
 
 - **继承硬约束**：单频 10 kHz、dx2p6 mapping，不换 dx/dt/tau/热流导出因子/Grad 壁重构（M3 决策 §3；触发即走停放项重启流程）。
-- **热壁边界**：生产壁=v1.1 对称质量中性壁（已认证）；旧壁 `pressure_preserving` 为 `DIAGNOSTIC_ONLY`。**其有限温升下的工作点切线趋势已被证明为范式结构性质**（§2 wallfix + ghost 扫描），修复入口=放宽行钉扎语义，属 G1-W 级重认证新单元，**未立项**。
+- **热壁边界**：生产壁=v1.1 对称质量中性壁（已认证）；旧壁 `pressure_preserving` 为 `DIAGNOSTIC_ONLY`。A2-5 已证明是**四不变量湿节点整格胞重钉扎范式内**的结构性质；buffer 代理没有离开共享有限体积行，不能把该结论外推到 strict-B。strict-B 仅完成设计、未实施；即使未来翻正，生产化仍须另过 G1-W 级重认证。
 - **算子消融纪律**：禁止按结果挑"更好看"的算子栈；诊断用的 `fourth_order`/τ≠1 各行**无生产有效性声明**。
 - **规划非承诺**：合同附录 E 工期为非规范性估计；禁用"N 算例 M 周"式高置信承诺。
-- **`results/phase5/` 不入库**；权威 run 精选摘要归档见 `Phase5_Output_Files_Guide.md`（当前 `archive/M5_runs/` 28 项）。
+- **`results/phase5/` 不入库**；权威 run 精选摘要归档见 `Phase5_Output_Files_Guide.md`（当前 `archive/M5_runs/` 30 项）。
 - 已闭合/已解除的风险行原文见 `x/phase5_execution_history.md` §B。
 
 ---
 
 ## 6. 下一步（论文写作轨；生产证据冻结）
 
-**当前缺口不是数据，是写作与文献核查。** 2026-08-14 起机理链已闭合（JAB2 定位 A2-5 → NSF 排除连续机制 → wallfix 证范式内不可修 → ghost 扫描证标准补救双向失效），Results I 的中心叙事因此从"观察到反向趋势、机制开放"升级为完整链条，稿件需相应改写。
+**当前首要决策点是是否授权 strict-B 实施。** 短版实验执行清单已经确认，但 buffer 代理仍不能完成严格面通量复测；因此机理链保持开放，论文不得写成“严格 B 已失败”或“边界能量语义整族已排除”。生产证据继续冻结。
 
 | # | 任务 | 说明 | 依赖 |
 |---|---|---|---|
-| 1 | **改写 Results I 机理段** | 从"发现异常"改为完整链条：已诊断 → 已定位到 A2-5（壁面内能重钉扎）→ 连续参照排除 → 范式内不可修 → 标准补救实测失效 → 修复入口已指明。**这是本周新证据带来的唯一实质性稿件改动。** | 无（数据已齐） |
-| 2 | **新增 related work 段** | 把工作放进 PRE 2007 / EPL 2008 开创的"LBM 边界离散效应"传统，并与 Zhang–Chai–Shi 2016（数值滑移**可由**自由弛豫参数消除）明确区分——本工作是**第一个标准补救可证明失效的实例**；引 Guo 2002（733 引）+ JCP 2012（204 引）锚定边界家族普遍性。 | 文献核查 §2/§4b |
-| 3 | **声明范围收紧** | 结论限定在**湿节点 / 逐步重钉扎家族**；明写链式（反弹类）家族在该趋势伪迹上**未测试**；"首次"类表述一律带"据我们所知 / 第一轮检索范围内"限定。 | 同上 |
-| 4 | 完成 Fig. 3 与两项配套结果 | Fig. 3=LBM/QS/1D 趋势 + `R_dyn` + `U_gov` + TAN 切线同图；Results II 只报 A1/H2 弱非线性控制，Results III 只报膜热容传递背景。 | 无 |
-| 5 | 补充材料重构 | 完整 Gate 史 + 诊断单元链（TAN / QS-1k / JAB / JAB2 / NSF / wallfix / ghost 扫描）的判读线与 run 溯源移入 SI；正文只留中心主张的保护性内容。 | 1–4 |
-| 6 | **文献核查第二轮（首投前硬关口）** | 全文级检索（Scopus / WoS / Google Scholar，**需机构权限**）跑 `literature_check_wallfix_novelty_v1.md` §5 清单；重点读 PRE 2007 正文确认其形式主义可否迁移。**这是决定 novelty 声明强度的唯一未闭合项。** | 机构权限 |
-| 7 | 行政核验后首投 | 学院 SCI/EI 认定、APC 可接受性、时限。 | 6 |
+| 1 | **用户决定是否授权 strict-B 实施** | 权威短版清单已完成；当前仍无代码、测试或 run 授权 | `strict_faceflux_candidate_b_design_v1.0.md` |
+| 2 | **获授权后先做实现预注册** | 冻结剩余机器细节，依次过局部合同、基态、G0 admission、冷锚和完整 JVP；预注册先于热点 | 用户批准 |
+| 3 | **收紧 Results I 机理段** | 保留 JAB2/NSF/wallfix/ghost 的已证范围；把 faceflux 写成 buffer 代理 null，并明写 strict-B 与科学 gate 尚开放 | 1；无需新增数据 |
+| 4 | 完成 Fig. 3 与两项配套结果 | Fig. 3=LBM/QS/1D 趋势 + `R_dyn` + `U_gov` + TAN；Results II/III 维持一主两辅边界 | 3 |
+| 5 | 补充材料与 related work | 诊断链溯源入 SI；“首次/普遍性”措辞继续受第二轮全文文献核查约束 | 机构权限 |
 
 **可选、未立项**（是否投算力由用户决定，均不影响首投）：
 
-- **面 / 通量一致钉扎壁单元**——把结论从"病因"升级为"病因 + 疗法"（代价：改冷态标定，须 G1-W 级重认证）。
+- **strict-B 实施**——仅在用户批准设计与后续实施计划后启动；先过 code/cold/JVP 门，再决定是否发热点 auth。
 - **反弹类家族趋势对照**——检验伪迹是否为湿节点family 特有（须先解决"非质量中性 vs 质量中性"的混淆变量，并验证误差因子的基态无关性，不能假设在比值中抵消）。
 
 **不做**：A3/A2b/H3/30 kHz/频扫/有限宽/路线 A（投稿前不新增生产模拟的默认不变）。
