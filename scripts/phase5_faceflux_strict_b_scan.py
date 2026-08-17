@@ -1351,16 +1351,21 @@ def run_settle_wave(gas_cfg, proto, workers, ckpt, log,
 
 
 def settle_legality(settles, proto, log) -> dict[str, Any]:
+    """Distinguish HARD death (non-finite / worker exception -> abort) from
+    SOFT gate misses (finite, ensemble-labelled -> STRICT_B_BASESTATE_MISMATCH
+    recorded, chain continues archived per design section 5)."""
+
     thetas = [float(t) for t in proto["theta_points"]]
-    rows, ok = {}, True
+    rows, ok, hard_dead = {}, True, False
     for br in BRANCHES:
         for th in [0.0] + thetas:
             lbl = f"{br}_th{th:g}"
             run = settles.get(lbl, {})
             if "worker_exception" in run or not run.get("finite"):
-                rows[lbl] = {"pass": False,
+                rows[lbl] = {"pass": False, "hard_dead": True,
                              "reason": run.get("worker_exception", "dead")}
                 ok = False
+                hard_dead = True
                 continue
             row = {
                 "stationarity": run["stationarity_per_period"],
@@ -1377,8 +1382,12 @@ def settle_legality(settles, proto, log) -> dict[str, Any]:
             rows[lbl] = row
             ok = ok and row["pass"]
     rows["pass"] = bool(ok)
+    rows["hard_dead"] = bool(hard_dead)
     if not ok:
-        log("settle legality: FAILED rows present")
+        log("settle legality: FAILED rows present"
+            + (" (HARD death)" if hard_dead else
+               " (soft gate miss — STRICT_B_BASESTATE_MISMATCH recorded, "
+               "chain continues archived)"))
     return rows
 
 
@@ -1396,10 +1405,12 @@ def stage_hot(gas_cfg, proto, workers, ckpt, log, mode: str,
                               branches=branches)
     leg = settle_legality(settles, proto, log)
     out["settle_legality"] = {k: v for k, v in leg.items() if k != "pass"}
-    if not leg["pass"]:
+    if leg.get("hard_dead"):
         out["stage_verdict"] = "LEGALITY_FAILED"
-        out["label"] = "STRICT_B_BASESTATE_MISMATCH"
+        out["label"] = "STRICT_B_SETTLE_DEAD"
         return out
+    if not leg["pass"]:
+        out.setdefault("labels", []).append("STRICT_B_BASESTATE_MISMATCH")
 
     # PROD anchor payloads (wallfix workers + authoritative checkpoints)
     wallfix_mode = "auth" if mode == "auth" else "smoke"
@@ -1646,16 +1657,20 @@ def main() -> int:
             summary["settle_legality"] = {k: v for k, v in leg.items()
                                           if k != "pass"}
             _dump()
-            if not leg["pass"]:
-                if mode == "auth":
+            settle_green = bool(leg["pass"])
+            if not settle_green:
+                if leg.get("hard_dead"):
                     summary["verdict"] = "LEGALITY_FAILED"
-                    summary["label"] = "STRICT_B_BASESTATE_MISMATCH"
+                    summary["label"] = "STRICT_B_SETTLE_DEAD"
                     _dump()
-                    log("settle legality FAILED — aborting mode")
+                    log("settle HARD death — aborting mode")
                     verdict = "LEGALITY_FAILED"
                     continue
-                log("settle legality FAILED — smoke mode records and "
-                    "continues (no design gates at smoke caliber)")
+                summary.setdefault("labels", []).append(
+                    "STRICT_B_BASESTATE_MISMATCH")
+                log("settle soft gate miss — STRICT_B_BASESTATE_MISMATCH "
+                    "recorded; chain continues (archived semantics, design "
+                    "section 5)")
 
             # cold tangent needed for the layer-4 anchor
             log("---- cold tangent (CONST_G) ----")
@@ -1736,7 +1751,7 @@ def main() -> int:
             # stage itself) needs every OTHER layer green.
             core_stages = [st for st in PREFLIGHT_STAGES
                            if st not in ("admission", "admission_ac")]
-            preflight_green = (not aborted) and all(
+            preflight_green = (settle_green and not aborted) and all(
                 stage_results.get(st, {}).get("pass") for st in core_stages)
             if only:
                 # machine-split partial pass: never write the shared state
@@ -1747,6 +1762,7 @@ def main() -> int:
                 state = {"run_id": run_id, "mode": mode,
                          "git_commit": _git_commit(),
                          "preflight_green": bool(preflight_green),
+                         "settle_green": bool(settle_green),
                          "g0_admitted": g0_admitted,
                          "stages": {st: bool(stage_results.get(st, {}).get("pass"))
                                     for st in PREFLIGHT_STAGES}}
