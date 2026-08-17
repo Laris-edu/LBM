@@ -31,6 +31,8 @@ results/
 *.hdf5
 *.npy
 *.npz
+# 例外：合同测试的金样 fixture（小、有意入库、同机位级基线）
+!verification/nonlinear/fixtures/*.npz
 
 # ===== 图片输出（可选，如果图很多）=====
 *.png
