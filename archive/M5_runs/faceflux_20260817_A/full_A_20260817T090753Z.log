@@ -1,0 +1,54 @@
+[D1-FACEFLUX] run 20260817T090753Z mode=full h=5e-05 workers=12 G_f=0.04469309 (frozen cold nominal, d_f=0.5)
+[D1-FACEFLUX] judgement frozen (module docstring): step contract 1e-10 abs LU / PROD anchor 0.2pp vs TAN / cold diag |Y0 ratio-1|<=10% (budget band [-6%,-1%] archived) / face-T DC row 1e-2 soft / JAB legality / wallfix classify verbatim (RESOLVED band 1.0pp vs NSF g0, move 0.25)
+[D1-FACEFLUX] ---- stage smoke ----
+[D1-FACEFLUX] parallel scheduling: 4 independent cases on 12 workers
+[D1-FACEFLUX] case done: PROD_th0.05 (1/4)
+[D1-FACEFLUX] case done: PROD_th0 (2/4)
+[D1-FACEFLUX] case done: FACEFLUX_th0.05 (3/4)
+[D1-FACEFLUX] case done: FACEFLUX_th0 (4/4)
+[D1-FACEFLUX] variant PROD settles: all PASS
+[D1-FACEFLUX] variant FACEFLUX settles: all PASS
+[D1-FACEFLUX] settle PROD_th0: {'stationarity_per_period': 1.2191491515247505e-14, 'dc_closure_rel': 2.009129530868661, 'theta_dc_measured': -1.1474344955527065e-15, 'mass_drift_settle': 5.735634189818484e-12, 'pass': True}
+[D1-FACEFLUX] settle PROD_th0.05: {'stationarity_per_period': 1.6781229497458333e-14, 'dc_closure_rel': 1.8878580048965297e-11, 'theta_dc_measured': 0.04998915939834501, 'mass_drift_settle': 4.614753024156926e-12, 'pass': True}
+[D1-FACEFLUX] settle FACEFLUX_th0: {'stationarity_per_period': 1.850238124078739e-14, 'dc_closure_rel': 1.9964214064956893, 'theta_dc_measured': 2.868586238881766e-16, 'mass_drift_settle': 5.302647210214673e-12, 'pass': True, 'step_contract_abs_worst': 4.5066446471226245e-15, 'face_temp_dev_rel': 2.868586238881766e-16}
+[D1-FACEFLUX] settle FACEFLUX_th0.05: {'stationarity_per_period': 4.3602510831002847e-14, 'dc_closure_rel': 2.9383145215360356e-11, 'theta_dc_measured': 0.05000878192657959, 'mass_drift_settle': 4.533484698754364e-12, 'pass': True, 'step_contract_abs_worst': 4.218996571374312e-15, 'face_temp_dev_rel': 0.0001756385315911932}
+[D1-FACEFLUX] parallel scheduling: 4 independent cases on 12 workers
+[D1-FACEFLUX] case done: PROD_th0.05_h5e-05_hot (1/4)
+[D1-FACEFLUX] case done: PROD_h5e-05_cold (2/4)
+[D1-FACEFLUX] case done: FACEFLUX_h5e-05_cold (3/4)
+[D1-FACEFLUX] case done: FACEFLUX_th0.05_h5e-05_hot (4/4)
+[D1-FACEFLUX] variant PROD: {'Y0_abs': 0.00134175, '0.05': 0.974}
+[D1-FACEFLUX] variant FACEFLUX: {'Y0_abs': 0.00108369, '0.05': 0.6422}
+[D1-FACEFLUX] cold diagnostic anchor[smoke]: ratio-1=-0.19233 -> FAIL (budget band (-0.06, -0.01), in_band=False)
+[D1-FACEFLUX] smoke soft anchor: {'d_op_pct': 0.9740162538345754, 'jab1_smoke_ref_pct': 0.974, 'dev_pp': 1.625383457537488e-05, 'soft_anchor': True}
+[D1-FACEFLUX] smoke screening: FACEFLUX d_OP=+0.6422 vs PROD +0.9740 (steep rig, NOT a verdict)
+[D1-FACEFLUX] ---- stage auth ----
+[D1-FACEFLUX] parallel scheduling: 6 independent cases on 12 workers
+[D1-FACEFLUX] case done: PROD_th0 (1/6)
+[D1-FACEFLUX] case done: PROD_th0.05 (2/6)
+[D1-FACEFLUX] case done: PROD_th0.1 (3/6)
+[D1-FACEFLUX] case done: FACEFLUX_th0.1 (4/6)
+[D1-FACEFLUX] case done: FACEFLUX_th0.05 (5/6)
+[D1-FACEFLUX] case done: FACEFLUX_th0 (6/6)
+[D1-FACEFLUX] variant PROD settles: all PASS
+[D1-FACEFLUX] variant FACEFLUX settles: all PASS
+[D1-FACEFLUX] settle PROD_th0: {'stationarity_per_period': 7.028036285260327e-14, 'dc_closure_rel': 2.0853403141361255, 'theta_dc_measured': -8.605758716645299e-16, 'mass_drift_settle': 1.4834800055041342e-12, 'pass': True}
+[D1-FACEFLUX] settle PROD_th0.05: {'stationarity_per_period': 1.3499445182000907e-06, 'dc_closure_rel': 4.816001796004962e-05, 'theta_dc_measured': 0.04999797410466012, 'mass_drift_settle': 1.1821654766208667e-12, 'pass': True}
+[D1-FACEFLUX] settle PROD_th0.1: {'stationarity_per_period': 2.70907579025475e-06, 'dc_closure_rel': 4.7007701818024606e-05, 'theta_dc_measured': 0.09999573998562758, 'mass_drift_settle': 1.2714274078007293e-12, 'pass': True}
+[D1-FACEFLUX] settle FACEFLUX_th0: {'stationarity_per_period': 1.4816247923824322e-13, 'dc_closure_rel': 1.9238363892806771, 'theta_dc_measured': -2.868586238881766e-16, 'mass_drift_settle': 1.4448442442471787e-12, 'pass': True, 'step_contract_abs_worst': 2.7967692870708432e-14, 'face_temp_dev_rel': 2.868586238881766e-16}
+[D1-FACEFLUX] settle FACEFLUX_th0.05: {'stationarity_per_period': 1.239142273207841e-06, 'dc_closure_rel': 4.78697632662585e-05, 'theta_dc_measured': 0.05000142911826434, 'mass_drift_settle': 1.1382006448457105e-12, 'pass': True, 'step_contract_abs_worst': 3.0418023785547255e-14, 'face_temp_dev_rel': 2.8582365286115045e-05}
+[D1-FACEFLUX] settle FACEFLUX_th0.1: {'stationarity_per_period': 2.6405245341654037e-06, 'dc_closure_rel': 4.968095395661901e-05, 'theta_dc_measured': 0.10000299738817112, 'mass_drift_settle': 1.233901869568399e-12, 'pass': True, 'step_contract_abs_worst': 3.130186539655744e-14, 'face_temp_dev_rel': 2.997388171050284e-05}
+[D1-FACEFLUX] parallel scheduling: 6 independent cases on 12 workers
+[D1-FACEFLUX] case done: PROD_h5e-05_cold (1/6)
+[D1-FACEFLUX] case done: PROD_th0.05_h5e-05_hot (2/6)
+[D1-FACEFLUX] case done: PROD_th0.1_h5e-05_hot (3/6)
+[D1-FACEFLUX] case done: FACEFLUX_th0.05_h5e-05_hot (4/6)
+[D1-FACEFLUX] case done: FACEFLUX_h5e-05_cold (5/6)
+[D1-FACEFLUX] case done: FACEFLUX_th0.1_h5e-05_hot (6/6)
+[D1-FACEFLUX] variant PROD: {'Y0_abs': 0.00108204, '0.05': -2.8345, '0.1': -5.3171}
+[D1-FACEFLUX] variant FACEFLUX: {'Y0_abs': 0.00105557, '0.05': -2.8078, '0.1': -5.2788}
+[D1-FACEFLUX] cold diagnostic anchor[auth]: ratio-1=-0.02446 -> PASS (budget band (-0.06, -0.01), in_band=True)
+[D1-FACEFLUX] anchor PROD th=0.05: dev=0.00001pp -> PASS
+[D1-FACEFLUX] anchor PROD th=0.1: dev=0.00002pp -> PASS
+[D1-FACEFLUX] classification[auth]: {'label': 'WALLFIX_NULL', 'd_op_pct': [-2.8077543811989347, -5.2787971440162345], 'move_frac': [0.006665500826928481, 0.004997116505586821], 'nsf_ref_pct': [1.1816679235497007, 2.344498614853485]}
+[D1-FACEFLUX] verdict=COMPLETED  outputs -> E:\Code\LBM\results\phase5\faceflux_wall\20260817T090753Z_full

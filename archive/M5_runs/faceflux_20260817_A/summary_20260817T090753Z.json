@@ -1,0 +1,272 @@
+{
+ "unit": "D1-FACEFLUX",
+ "run_id": "20260817T090753Z",
+ "mode": "full",
+ "derivation": "Manuscript/Paper1_D1_FaceFlux_Pinning_Derivation.md (D1_v1.1; not in repo \u2014 judgement transcribed in this module docstring)",
+ "protocol": {
+  "gas_config": "configs/gas_air_10k_d2q37_levelc_dx2p6.yaml",
+  "frequency_Hz": 10000.0,
+  "h_jvp": 5e-05,
+  "g_face_lu": 0.04469308872273284,
+  "face_distance_lu": 0.5,
+  "geometry": {
+   "smoke": {
+    "PROD": 12,
+    "FACEFLUX": 13
+   },
+   "auth": {
+    "PROD": 48,
+    "FACEFLUX": 49
+   }
+  },
+  "lines": {
+   "step_contract_abs_lu": 1e-10,
+   "prod_anchor_pp": 0.2,
+   "cold_diag_rel": 0.1,
+   "cold_budget_band_rel": [
+    -0.06,
+    -0.01
+   ],
+   "face_temp_dc_rel_soft": 0.01
+  },
+  "legality_gates": {
+   "stationarity": 0.001,
+   "dc_closure": 0.001,
+   "r_f": 1e-05,
+   "v5_mass": 1e-07,
+   "v5_energy": 1e-05
+  }
+ },
+ "external_references": {
+  "tan_dop_pct": {
+   "0.05": -2.8345129628396526,
+   "0.1": -5.317059432017945
+  },
+  "nsf_g0_dop_pct": {
+   "0.05": 1.1816679235497007,
+   "0.1": 2.344498614853485
+  },
+  "provenance": "TAN=archive/M5_runs/wp4_tan_20260805T092726Z_B; NSF=archive/M5_runs/nsf_arb_20260811T055850Z"
+ },
+ "machine": {
+  "node": "Laris-jixie",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.14.2",
+  "numpy": "2.4.4",
+  "git_commit": "5a87363",
+  "workers": 12
+ },
+ "stage_smoke": {
+  "stage_verdict": "COMPLETED",
+  "legality": {
+   "PROD_th0": {
+    "stationarity_per_period": 1.2191491515247505e-14,
+    "dc_closure_rel": 2.009129530868661,
+    "theta_dc_measured": -1.1474344955527065e-15,
+    "mass_drift_settle": 5.735634189818484e-12,
+    "pass": true
+   },
+   "PROD_th0.05": {
+    "stationarity_per_period": 1.6781229497458333e-14,
+    "dc_closure_rel": 1.8878580048965297e-11,
+    "theta_dc_measured": 0.04998915939834501,
+    "mass_drift_settle": 4.614753024156926e-12,
+    "pass": true
+   },
+   "FACEFLUX_th0": {
+    "stationarity_per_period": 1.850238124078739e-14,
+    "dc_closure_rel": 1.9964214064956893,
+    "theta_dc_measured": 2.868586238881766e-16,
+    "mass_drift_settle": 5.302647210214673e-12,
+    "pass": true,
+    "step_contract_abs_worst": 4.5066446471226245e-15,
+    "face_temp_dev_rel": 2.868586238881766e-16
+   },
+   "FACEFLUX_th0.05": {
+    "stationarity_per_period": 4.3602510831002847e-14,
+    "dc_closure_rel": 2.9383145215360356e-11,
+    "theta_dc_measured": 0.05000878192657959,
+    "mass_drift_settle": 4.533484698754364e-12,
+    "pass": true,
+    "step_contract_abs_worst": 4.218996571374312e-15,
+    "face_temp_dev_rel": 0.0001756385315911932
+   }
+  },
+  "variant_status": {
+   "PROD": {
+    "ok": true,
+    "reason": "all PASS"
+   },
+   "FACEFLUX": {
+    "ok": true,
+    "reason": "all PASS"
+   }
+  },
+  "tangent_failed": {},
+  "rows": {
+   "PROD": {
+    "Y0_abs": 0.0013417454919494572,
+    "0.05": {
+     "d_op_pct": 0.9740162538345754,
+     "phase_deg": -1.5712495087742964
+    }
+   },
+   "FACEFLUX": {
+    "Y0_abs": 0.001083687093453461,
+    "0.05": {
+     "d_op_pct": 0.6421785125888535,
+     "phase_deg": -1.706373331914643
+    }
+   }
+  },
+  "thetas": [
+   "0.05"
+  ]
+ },
+ "cold_anchor_smoke": {
+  "y0_ratio_minus_1": -0.19233036372721957,
+  "pass": false,
+  "budget_band_rel": [
+   -0.06,
+   -0.01
+  ],
+  "in_budget_band": false
+ },
+ "smoke_soft_anchor": {
+  "d_op_pct": 0.9740162538345754,
+  "jab1_smoke_ref_pct": 0.974,
+  "dev_pp": 1.625383457537488e-05,
+  "soft_anchor": true
+ },
+ "stage_auth": {
+  "stage_verdict": "COMPLETED",
+  "legality": {
+   "PROD_th0": {
+    "stationarity_per_period": 7.028036285260327e-14,
+    "dc_closure_rel": 2.0853403141361255,
+    "theta_dc_measured": -8.605758716645299e-16,
+    "mass_drift_settle": 1.4834800055041342e-12,
+    "pass": true
+   },
+   "PROD_th0.05": {
+    "stationarity_per_period": 1.3499445182000907e-06,
+    "dc_closure_rel": 4.816001796004962e-05,
+    "theta_dc_measured": 0.04999797410466012,
+    "mass_drift_settle": 1.1821654766208667e-12,
+    "pass": true
+   },
+   "PROD_th0.1": {
+    "stationarity_per_period": 2.70907579025475e-06,
+    "dc_closure_rel": 4.7007701818024606e-05,
+    "theta_dc_measured": 0.09999573998562758,
+    "mass_drift_settle": 1.2714274078007293e-12,
+    "pass": true
+   },
+   "FACEFLUX_th0": {
+    "stationarity_per_period": 1.4816247923824322e-13,
+    "dc_closure_rel": 1.9238363892806771,
+    "theta_dc_measured": -2.868586238881766e-16,
+    "mass_drift_settle": 1.4448442442471787e-12,
+    "pass": true,
+    "step_contract_abs_worst": 2.7967692870708432e-14,
+    "face_temp_dev_rel": 2.868586238881766e-16
+   },
+   "FACEFLUX_th0.05": {
+    "stationarity_per_period": 1.239142273207841e-06,
+    "dc_closure_rel": 4.78697632662585e-05,
+    "theta_dc_measured": 0.05000142911826434,
+    "mass_drift_settle": 1.1382006448457105e-12,
+    "pass": true,
+    "step_contract_abs_worst": 3.0418023785547255e-14,
+    "face_temp_dev_rel": 2.8582365286115045e-05
+   },
+   "FACEFLUX_th0.1": {
+    "stationarity_per_period": 2.6405245341654037e-06,
+    "dc_closure_rel": 4.968095395661901e-05,
+    "theta_dc_measured": 0.10000299738817112,
+    "mass_drift_settle": 1.233901869568399e-12,
+    "pass": true,
+    "step_contract_abs_worst": 3.130186539655744e-14,
+    "face_temp_dev_rel": 2.997388171050284e-05
+   }
+  },
+  "variant_status": {
+   "PROD": {
+    "ok": true,
+    "reason": "all PASS"
+   },
+   "FACEFLUX": {
+    "ok": true,
+    "reason": "all PASS"
+   }
+  },
+  "tangent_failed": {},
+  "rows": {
+   "PROD": {
+    "Y0_abs": 0.001082036103443154,
+    "0.05": {
+     "d_op_pct": -2.834524313878617,
+     "phase_deg": -1.383923969840351
+    },
+    "0.1": {
+     "d_op_pct": -5.317082959761644,
+     "phase_deg": -2.620826387221709
+    }
+   },
+   "FACEFLUX": {
+    "Y0_abs": 0.0010555665579968002,
+    "0.05": {
+     "d_op_pct": -2.8077543811989347,
+     "phase_deg": -1.1200886169795834
+    },
+    "0.1": {
+     "d_op_pct": -5.2787971440162345,
+     "phase_deg": -2.12467554695359
+    }
+   }
+  },
+  "thetas": [
+   "0.05",
+   "0.1"
+  ]
+ },
+ "cold_anchor_auth": {
+  "y0_ratio_minus_1": -0.02446271927722643,
+  "pass": true,
+  "budget_band_rel": [
+   -0.06,
+   -0.01
+  ],
+  "in_budget_band": true
+ },
+ "anchor_auth": {
+  "0.05": {
+   "d_op_pct": -2.834524313878617,
+   "tan_ref_pct": -2.8345129628396526,
+   "dev_pp": 1.1351038964324545e-05,
+   "pass": true
+  },
+  "0.1": {
+   "d_op_pct": -5.317082959761644,
+   "tan_ref_pct": -5.317059432017945,
+   "dev_pp": 2.352774369818178e-05,
+   "pass": true
+  }
+ },
+ "classification_auth": {
+  "label": "WALLFIX_NULL",
+  "d_op_pct": [
+   -2.8077543811989347,
+   -5.2787971440162345
+  ],
+  "move_frac": [
+   0.006665500826928481,
+   0.004997116505586821
+  ],
+  "nsf_ref_pct": [
+   1.1816679235497007,
+   2.344498614853485
+  ]
+ },
+ "verdict": "COMPLETED"
+}

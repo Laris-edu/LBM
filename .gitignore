@@ -48,7 +48,7 @@ results/
 # ===== Claude Code（仅忽略个人本地配置，共享的 settings.json 可入库）=====
 .claude/settings.local.json
 CLAUDE.md
-
+AGENTS.md
 # ===== Python 工具缓存 =====
 .pytest_cache/
 .ruff_cache/
@@ -68,6 +68,8 @@ File/Paper/
 
 # ===== 论文手稿（不入库）=====
 Manuscript/
+.claude/
+.agents/
 
 # ===== 杂项文件夹 =====
 X/
