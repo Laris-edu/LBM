@@ -1,0 +1,18 @@
+{
+ "run_id": "20260818T194358Z",
+ "mode": "auth",
+ "git_commit": "18aa0ef",
+ "preflight_green": false,
+ "settle_green": false,
+ "g0_admitted": false,
+ "stages": {
+  "structural": true,
+  "slab": false,
+  "soak": false,
+  "cold": true,
+  "admission": false,
+  "admission_ac": false,
+  "jvp": true,
+  "regression": true
+ }
+}

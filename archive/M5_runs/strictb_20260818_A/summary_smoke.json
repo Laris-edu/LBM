@@ -1,0 +1,455 @@
+{
+ "unit": "D1-STRICT-B",
+ "run_id": "20260817T162521Z",
+ "mode": "smoke",
+ "stage_arg": "preflight",
+ "design": "docs/Phase_5/strict_faceflux_candidate_b_design_v1.0.md",
+ "protocol": {
+  "gas_config": "configs/gas_air_10k_d2q37_levelc_dx2p6.yaml",
+  "frequency_Hz": 10000.0,
+  "h_jvp": 5e-05,
+  "h_ladder_jvp": [
+   0.0001,
+   5e-05,
+   2.5e-05
+  ],
+  "eps_g_ladder": [
+   0.0001,
+   5e-05,
+   2.5e-05
+  ],
+  "proto": {
+   "n_phys": 12,
+   "nx": 4,
+   "samples_per_period": 32,
+   "theta_points": [
+    0.05
+   ],
+   "settle_periods": 2.0,
+   "drive_periods": 2.0,
+   "fit_skip_periods": 1.0,
+   "slab_n_ladder": [
+    8,
+    12
+   ],
+   "soak_periods": 4.0,
+   "hotdc_periods": 4.0,
+   "adm_n_ladder": [
+    12
+   ],
+   "adm_theta_points": [
+    0.0,
+    0.05
+   ],
+   "jvp_h_ladder": [
+    0.0001,
+    5e-05
+   ]
+  },
+  "lines": {
+   "topology": 1e-12,
+   "wallpos_finest": 0.001,
+   "soak": {
+    "periods": 64.0,
+    "pert_amp": 1e-08,
+    "envelope": 1.05,
+    "drift": 1e-12
+   },
+   "hotdc": {
+    "periods": 16.0,
+    "stationarity": 0.001,
+    "closure": 0.001,
+    "a_late": [
+     1e-10,
+     1.5
+    ]
+   },
+   "cold_anchor": {
+    "amp": 0.1,
+    "phase_deg": 5.0,
+    "y0_prod_frozen": [
+     0.0004998499198013624,
+     0.0009596625379939636
+    ]
+   },
+   "admission": {
+    "steady": 0.05,
+    "y_amp": 0.1,
+    "y_phase_deg": 5.0,
+    "n_ladder": [
+     16,
+     32,
+     64
+    ]
+   },
+   "jvp": {
+    "odd": 1e-06,
+    "even": [
+     3.0,
+     5.0
+    ],
+    "even_guard": 1e-12,
+    "identity": 1e-05
+   },
+   "ensemble": {
+    "cold_mass": 1e-12,
+    "hot_mass": 1e-10,
+    "theta_dc": 0.01,
+    "pressure": 0.01
+   },
+   "prod_anchor_pp": 0.2,
+   "class": {
+    "nsf_band_pp": 1.0,
+    "move_frac": 0.25
+   }
+  }
+ },
+ "external_references": {
+  "tan_dop_pct": {
+   "0.05": -2.8345129628396526,
+   "0.1": -5.317059432017945
+  },
+  "nsf_g0_dop_pct": {
+   "0.05": 1.1816679235497007,
+   "0.1": 2.344498614853485
+  },
+  "prod_cold_anchor_provenance": "wallfix auth checkpoint tangent_PROD_h5e-05_cold.json (run 20260811T085347Z_auth, machine A)"
+ },
+ "machine": {
+  "node": "Laris-jixie",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.14.2",
+  "numpy": "2.4.4",
+  "git_commit": "27f2ca1",
+  "workers": 12
+ },
+ "settle_legality": {
+  "CONST_G_th0": {
+   "stationarity": 2.45264123424391e-14,
+   "dc_closure": 0.0056026854792586706,
+   "column_replication": 0.0,
+   "ensemble_pass": true,
+   "pass": true
+  },
+  "CONST_G_th0.05": {
+   "stationarity": 1.8789239864675568e-14,
+   "dc_closure": 1.2759777159330922e-10,
+   "column_replication": 0.0,
+   "ensemble_pass": false,
+   "pass": false
+  },
+  "G0_th0": {
+   "stationarity": 2.45264123424391e-14,
+   "dc_closure": 0.0056026854792586706,
+   "column_replication": 0.0,
+   "ensemble_pass": true,
+   "pass": true
+  },
+  "G0_th0.05": {
+   "stationarity": 2.6534422709656336e-14,
+   "dc_closure": 1.3220304144407539e-10,
+   "column_replication": 0.0,
+   "ensemble_pass": false,
+   "pass": false
+  }
+ },
+ "stage_structural": {
+  "judgement": {
+   "ny_ext": 24,
+   "nx": 4,
+   "crossing_coverage": [
+    15,
+    8,
+    3
+   ],
+   "acoustic_diagonal_low_mode_count": 0,
+   "acoustic_high_mode_identity": true
+  },
+  "minimal": {
+   "ny_ext": 10,
+   "nx": 2,
+   "crossing_coverage": [
+    15,
+    8,
+    3
+   ],
+   "acoustic_diagonal_low_mode_count": 0,
+   "acoustic_high_mode_identity": true
+  },
+  "pass": true
+ },
+ "stage_slab": {
+  "N8": {
+   "wallpos_hot_rel": 0.18501561195956676,
+   "wallpos_cold_rel": 0.18604779789849657,
+   "profile_err_rel": 0.13353702609876028,
+   "q_rel_err": 2.1916059409644557,
+   "column_replication_rel": 0.0,
+   "steps_done": 4000
+  },
+  "N12": {
+   "wallpos_hot_rel": 0.07738462110005193,
+   "wallpos_cold_rel": 0.07793279134936315,
+   "profile_err_rel": 0.04894577458352595,
+   "q_rel_err": 1.0286326382793551,
+   "column_replication_rel": 0.0,
+   "steps_done": 6500
+  },
+  "monotone": true,
+  "finest_wallpos": 0.07793279134936315,
+  "pass": false
+ },
+ "label": "STRICT_B_G0_ADMISSION_FAILED",
+ "stage_soak": {
+  "soak_uniform": {
+   "ident": {
+    "kind": "uniform",
+    "branch": "CONST_G",
+    "n_phys": 12,
+    "nx": 4,
+    "periods": 4.0,
+    "theta_dc": 0.0
+   },
+   "finite": true,
+   "mass_drift_rel": 5.327960295176126e-13,
+   "energy_drift_rel": 5.128120150743598e-13,
+   "pass": true
+  },
+  "soak_perturbed": {
+   "ident": {
+    "kind": "perturbed",
+    "branch": "CONST_G",
+    "n_phys": 12,
+    "nx": 4,
+    "periods": 4.0,
+    "theta_dc": 0.0
+   },
+   "finite": true,
+   "norm0": 2.721740497580771e-09,
+   "mass_drift_rel": 5.700995231450179e-13,
+   "energy_drift_rel": 5.515587986337778e-13,
+   "envelope_last4_over_norm0": 0.0027154124608648163,
+   "pass": true
+  },
+  "soak_hotdc_th0.05": {
+   "ident": {
+    "kind": "hotdc",
+    "branch": "CONST_G",
+    "n_phys": 12,
+    "nx": 4,
+    "periods": 4.0,
+    "theta_dc": 0.05
+   },
+   "finite": true,
+   "stationarity_per_period": 3.530509218307998e-14,
+   "face_closure_rel": 6.420135739977544e-11,
+   "A_late": 1.765254609153999e-14,
+   "A_early": 8.881784197001252e-15,
+   "A_late_bound": 1e-10,
+   "q_hot_dc": 3.655231390261381e-05,
+   "q_cold_dc": -3.655231389792039e-05,
+   "pass": true
+  },
+  "pass": true
+ },
+ "stage_cold": {
+  "Y0_strict": {
+   "re": 0.0010764460012389274,
+   "im": 0.0004202770609540218
+  },
+  "Y0_prod_frozen": {
+   "re": 0.0004998499198013624,
+   "im": 0.0009596625379939636
+  },
+  "amp_rel": 0.06796952723599503,
+  "phase_deg": -41.15961470885399,
+  "pass": false
+ },
+ "stage_admission": {
+  "ramp": {
+   "th0.05_pos": {
+    "profile_err_by_N": [
+     0.05323440856134112
+    ],
+    "monotone": true,
+    "pass": false
+   },
+   "th0.05_neg": {
+    "profile_err_by_N": [
+     0.05373973102462271
+    ],
+    "monotone": true,
+    "pass": false
+   },
+   "th0.1_pos": {
+    "profile_err_by_N": [
+     0.06037518158672348
+    ],
+    "monotone": true,
+    "pass": false
+   },
+   "th0.1_neg": {
+    "profile_err_by_N": [
+     0.062273111671150294
+    ],
+    "monotone": true,
+    "pass": false
+   }
+  },
+  "conductance": {
+   "N12_c1_slope_spread": 1.908681694900095e-08,
+   "N12_c1.05_slope_spread": 3.9483164667057835e-09,
+   "c1": {
+    "G_meas": 0.0037053948833595317,
+    "G_ref": 0.0018622120301138682,
+    "rel_err": 0.989781412341622,
+    "pass": false
+   },
+   "c1.05": {
+    "G_meas": 0.0038853450133108547,
+    "G_ref": 0.001959142378216492,
+    "rel_err": 0.9831866517266008,
+    "pass": false
+   },
+   "dG_dtheta": {
+    "meas": 0.07439261553958648,
+    "ref": 0.0400718220157583,
+    "rel_err": 0.8564819815363396,
+    "pass": false
+   }
+  },
+  "k0_lu": 0.02234654436136642,
+  "pass": false
+ },
+ "stage_admission_ac": {
+  "N12_th0": {
+   "Y_lbm": {
+    "re": 0.0010764460004126129,
+    "im": 0.000420277060456816
+   },
+   "Y_ref": {
+    "re": 0.0005803659269295635,
+    "im": 0.0003766236937121745
+   },
+   "amp_rel": 0.6702539230094913,
+   "phase_deg": -11.654046869965553,
+   "pass": false
+  },
+  "N12_th0.05": {
+   "Y_lbm": {
+    "re": 0.0011251306076273233,
+    "im": 0.00040980266683031267
+   },
+   "Y_ref": {
+    "re": 0.0006068851382952264,
+    "im": 0.0003772664607422609
+   },
+   "amp_rel": 0.6756978454220834,
+   "phase_deg": -11.853922451527042,
+   "pass": false
+  },
+  "pass": false
+ },
+ "stage_jvp": {
+  "jvp_hot": {
+   "rows": [
+    {
+     "h": 0.0001,
+     "odd_norm": 0.10903769471098691,
+     "even_norm": 5.789926857614084e-11,
+     "dq_hot_odd": 0.00035844647816680796,
+     "chain_vs_singleshot_rel": 5.42171080155832e-11
+    },
+    {
+     "h": 5e-05,
+     "odd_norm": 0.10903769471021212,
+     "even_norm": 1.4474871998918326e-11,
+     "dq_hot_odd": 0.0003584464780629617,
+     "chain_vs_singleshot_rel": 1.0224500898529163e-10
+    }
+   ],
+   "odd_pairwise_rel": [
+    1.1620248326309026e-10
+   ],
+   "even_ratios": [
+    3.99998484134903
+   ],
+   "even_judged": true,
+   "pass": true,
+   "ident": {
+    "kind": "jvp",
+    "branch": "CONST_G",
+    "n_phys": 12,
+    "nx": 4,
+    "h_ladder": [
+     0.0001,
+     5e-05
+    ],
+    "theta_dc": 0.05
+   },
+   "finite": true
+  },
+  "jvp_cold": {
+   "rows": [
+    {
+     "h": 0.0001,
+     "odd_norm": 0.1110590021055445,
+     "even_norm": 5.969470790932774e-11,
+     "dq_hot_odd": 0.0003651974482436819,
+     "chain_vs_singleshot_rel": 4.5929353118489795e-11
+    },
+    {
+     "h": 5e-05,
+     "odd_norm": 0.11105900210636788,
+     "even_norm": 1.49235230796018e-11,
+     "dq_hot_odd": 0.000365197448164601,
+     "chain_vs_singleshot_rel": 9.65981284083776e-11
+    }
+   ],
+   "odd_pairwise_rel": [
+    1.1585125826600129e-10
+   ],
+   "even_ratios": [
+    4.000041249704728
+   ],
+   "even_judged": true,
+   "pass": true,
+   "ident": {
+    "kind": "jvp",
+    "branch": "CONST_G",
+    "n_phys": 12,
+    "nx": 4,
+    "h_ladder": [
+     0.0001,
+     5e-05
+    ],
+    "theta_dc": 0.0
+   },
+   "finite": true
+  },
+  "pass": true
+ },
+ "stage_regression": {
+  "exit_code": 0,
+  "tail": "============================== warnings summary ===============================\nverification/test_phase4_d3_acoustic_collision.py::test_reflection_stability_is_the_filter_not_the_heatflux\n  E:\\Code\\LBM\\core\\macroscopic.py:91: RuntimeWarning: invalid value encountered in sqrt\n    c_s = np.sqrt(gamma * theta)\n\nverification/test_phase4_d3_acoustic_collision.py::test_reflection_stability_is_the_filter_not_the_heatflux\n  E:\\Code\\LBM\\core\\collision_smrt.py:611: RuntimeWarning: invalid value encountered in add\n    corrected = f_post + (rho_before - rho_after)[..., None] * lattice.w\n\nverification/test_phase4_d3_acoustic_collision.py::test_reflection_stability_is_the_filter_not_the_heatflux\n  E:\\Code\\LBM\\core\\equilibrium.py:44: RuntimeWarning: overflow encountered in multiply\n    targets.append(rho_like * mx * my)\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n333 passed, 3 warnings in 1995.03s (0:33:15)",
+  "pass": true
+ },
+ "preflight_state": {
+  "run_id": "20260817T162521Z",
+  "mode": "smoke",
+  "git_commit": "d036e74",
+  "preflight_green": false,
+  "g0_admitted": false,
+  "stages": {
+   "structural": true,
+   "slab": false,
+   "soak": true,
+   "cold": false,
+   "admission": false,
+   "admission_ac": false,
+   "jvp": true,
+   "regression": true
+  }
+ },
+ "verdict": "COMPLETED"
+}

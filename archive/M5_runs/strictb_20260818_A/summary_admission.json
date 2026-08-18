@@ -1,0 +1,291 @@
+{
+ "unit": "D1-STRICT-B",
+ "run_id": "20260818T042126Z",
+ "mode": "auth",
+ "stage_arg": "preflight",
+ "design": "docs/Phase_5/strict_faceflux_candidate_b_design_v1.0.md",
+ "protocol": {
+  "gas_config": "configs/gas_air_10k_d2q37_levelc_dx2p6.yaml",
+  "frequency_Hz": 10000.0,
+  "h_jvp": 5e-05,
+  "h_ladder_jvp": [
+   0.0001,
+   5e-05,
+   2.5e-05
+  ],
+  "eps_g_ladder": [
+   0.0001,
+   5e-05,
+   2.5e-05
+  ],
+  "proto": {
+   "n_phys": 48,
+   "nx": 8,
+   "samples_per_period": 64,
+   "theta_points": [
+    0.05,
+    0.1
+   ],
+   "settle_periods": 5.0,
+   "drive_periods": 4.0,
+   "fit_skip_periods": 2.0,
+   "slab_n_ladder": [
+    16,
+    32,
+    64
+   ],
+   "soak_periods": 64.0,
+   "hotdc_periods": 16.0,
+   "adm_n_ladder": [
+    16,
+    32,
+    64
+   ],
+   "adm_theta_points": [
+    0.0,
+    0.05,
+    0.1
+   ],
+   "jvp_h_ladder": [
+    0.0001,
+    5e-05,
+    2.5e-05
+   ]
+  },
+  "lines": {
+   "topology": 1e-12,
+   "wallpos_finest": 0.001,
+   "soak": {
+    "periods": 64.0,
+    "pert_amp": 1e-08,
+    "envelope": 1.05,
+    "drift": 1e-12
+   },
+   "hotdc": {
+    "periods": 16.0,
+    "stationarity": 0.001,
+    "closure": 0.001,
+    "a_late": [
+     1e-10,
+     1.5
+    ]
+   },
+   "cold_anchor": {
+    "amp": 0.1,
+    "phase_deg": 5.0,
+    "y0_prod_frozen": [
+     0.0004998499198013624,
+     0.0009596625379939636
+    ]
+   },
+   "admission": {
+    "steady": 0.05,
+    "y_amp": 0.1,
+    "y_phase_deg": 5.0,
+    "n_ladder": [
+     16,
+     32,
+     64
+    ]
+   },
+   "jvp": {
+    "odd": 1e-06,
+    "even": [
+     3.0,
+     5.0
+    ],
+    "even_guard": 1e-12,
+    "identity": 1e-05
+   },
+   "ensemble": {
+    "cold_mass": 1e-12,
+    "hot_mass": 1e-10,
+    "theta_dc": 0.01,
+    "pressure": 0.01
+   },
+   "prod_anchor_pp": 0.2,
+   "class": {
+    "nsf_band_pp": 1.0,
+    "move_frac": 0.25
+   }
+  }
+ },
+ "external_references": {
+  "tan_dop_pct": {
+   "0.05": -2.8345129628396526,
+   "0.1": -5.317059432017945
+  },
+  "nsf_g0_dop_pct": {
+   "0.05": 1.1816679235497007,
+   "0.1": 2.344498614853485
+  },
+  "prod_cold_anchor_provenance": "wallfix auth checkpoint tangent_PROD_h5e-05_cold.json (run 20260811T085347Z_auth, machine A)"
+ },
+ "machine": {
+  "node": "Laris-jixie",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.14.2",
+  "numpy": "2.4.4",
+  "git_commit": "18aa0ef",
+  "workers": 10
+ },
+ "settle_legality": {
+  "CONST_G_th0": {
+   "stationarity": 6.153117482401388e-14,
+   "dc_closure": 0.007067778849286054,
+   "column_replication": 0.0,
+   "ensemble_pass": true,
+   "pass": true
+  },
+  "CONST_G_th0.05": {
+   "stationarity": 1.4528152298138163e-06,
+   "dc_closure": 5.4292555619376396e-05,
+   "column_replication": 0.0,
+   "ensemble_pass": false,
+   "pass": false
+  },
+  "CONST_G_th0.1": {
+   "stationarity": 2.998772003586345e-06,
+   "dc_closure": 5.464600667108762e-05,
+   "column_replication": 0.0,
+   "ensemble_pass": false,
+   "pass": false
+  },
+  "G0_th0": {
+   "stationarity": 6.153117482401388e-14,
+   "dc_closure": 0.007067778849286054,
+   "column_replication": 0.0,
+   "ensemble_pass": true,
+   "pass": true
+  },
+  "G0_th0.05": {
+   "stationarity": 1.4938075569411945e-06,
+   "dc_closure": 5.575576531424381e-05,
+   "column_replication": 0.0,
+   "ensemble_pass": false,
+   "pass": false
+  },
+  "G0_th0.1": {
+   "stationarity": 3.082482234808992e-06,
+   "dc_closure": 5.603422694019352e-05,
+   "column_replication": 0.0,
+   "ensemble_pass": false,
+   "pass": false
+  },
+  "hard_dead": false
+ },
+ "labels": [
+  "STRICT_B_BASESTATE_MISMATCH",
+  "STRICT_B_G0_ADMISSION_FAILED"
+ ],
+ "stage_admission": {
+  "ramp": {
+   "th0.05_pos": {
+    "profile_err_by_N": [
+     0.06308414979351275,
+     0.062499905508411974,
+     0.10155900210037162
+    ],
+    "monotone": false,
+    "pass": false
+   },
+   "th0.05_neg": {
+    "profile_err_by_N": [
+     0.06452925800226825,
+     0.06542624801661596,
+     0.1398660616911143
+    ],
+    "monotone": false,
+    "pass": false
+   },
+   "th0.1_pos": {
+    "profile_err_by_N": [
+     0.06920935326552488,
+     0.06502484953624438,
+     0.09086434126590225
+    ],
+    "monotone": false,
+    "pass": false
+   },
+   "th0.1_neg": {
+    "profile_err_by_N": [
+     0.07311301342734429,
+     0.07158545551481423,
+     0.17191204391084472
+    ],
+    "monotone": false,
+    "pass": false
+   }
+  },
+  "conductance": {
+   "N16_c1_slope_spread": 1.369181920491485e-08,
+   "N16_c1.05_slope_spread": 1.9169602729015133e-08,
+   "N16_c1.1_slope_spread": 1.6596496906143177e-09,
+   "N32_c1_slope_spread": 1.9365439133801513e-08,
+   "N32_c1.05_slope_spread": 4.66853280806243e-08,
+   "N32_c1.1_slope_spread": 6.437592611556246e-08,
+   "N64_c1_slope_spread": 1.5322003482434282e-07,
+   "N64_c1.05_slope_spread": 7.321426774212455e-08,
+   "N64_c1.1_slope_spread": 4.3121522437750333e-08,
+   "c1_archived": {
+    "G_meas": 0.0004332254204767063,
+    "G_ref_nominal": 0.0003491647556463503,
+    "rel_dev_vs_nominal": 0.2407478517548216,
+    "note": "medium low-k dispersion, G0-B fence; archived"
+   },
+   "c1.05_archived": {
+    "G_meas": 0.00048299614370345714,
+    "G_ref_nominal": 0.0003673391959155923,
+    "rel_dev_vs_nominal": 0.31485054977482085,
+    "note": "medium low-k dispersion, G0-B fence; archived"
+   },
+   "c1.1_archived": {
+    "G_meas": 0.0005259335621004478,
+    "G_ref_nominal": 0.0003855483000141418,
+    "rel_dev_vs_nominal": 0.36411848290125204,
+    "note": "medium low-k dispersion, G0-B fence; archived"
+   },
+   "powerlaw_exponent": {
+    "meas": 2.036164983452026,
+    "ref": 1.04,
+    "rel_err": 0.957850945626948,
+    "pass": false
+   }
+  },
+  "face_consistency_worst_finest": {
+   "value": 0.020301552169774806,
+   "cases": 22,
+   "pass": true
+  },
+  "k0_lu": 0.02234654436136642,
+  "k_eff_bulk_over_nom_archived": {
+   "adm_ramp_N64_th0.05_pos": 1.339534387902533,
+   "adm_ramp_N64_th0.1_pos": 1.4126862493941885,
+   "adm_ramp_N64_th0.1_neg": 1.0658100445823335,
+   "adm_ramp_N64_th0.05_neg": 1.1694901264991089,
+   "adm_eps_N64_c1_e0.0001_p": 1.2593437518577972,
+   "adm_eps_N64_c1_e5e-05_p": 1.259321322332421,
+   "adm_eps_N64_c1_e5e-05_m": 1.2593054051672399,
+   "adm_eps_N64_c1_e2.5e-05_m": 1.259323714851956,
+   "adm_eps_N64_c1_e0.0001_m": 1.259282705942227,
+   "adm_eps_N64_c1_e2.5e-05_p": 1.259302657372724,
+   "adm_eps_N64_c1.05_e0.0001_p": 1.3819753567585007,
+   "adm_eps_N64_c1.05_e0.0001_m": 1.3819177327537666,
+   "adm_eps_N64_c1.05_e5e-05_p": 1.381954415570045,
+   "adm_eps_N64_c1.05_e5e-05_m": 1.3819388477769876,
+   "adm_eps_N64_c1.05_e2.5e-05_p": 1.3819367756254597,
+   "adm_eps_N64_c1.05_e2.5e-05_m": 1.3819564237301805,
+   "adm_eps_N64_c1.1_e0.0001_p": 1.4905243123897567,
+   "adm_eps_N64_c1.1_e0.0001_m": 1.4904699656000429,
+   "adm_eps_N64_c1.1_e5e-05_p": 1.4905042653064389,
+   "adm_eps_N64_c1.1_e5e-05_m": 1.4904899938956195,
+   "adm_eps_N64_c1.1_e2.5e-05_p": 1.490488058345484,
+   "adm_eps_N64_c1.1_e2.5e-05_m": 1.4905060669544283
+  },
+  "pass": false
+ },
+ "partial_stages": [
+  "admission"
+ ],
+ "verdict": "COMPLETED"
+}
