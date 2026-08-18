@@ -1350,14 +1350,18 @@ def run_settle_wave(gas_cfg, proto, workers, ckpt, log,
     return settles
 
 
-def settle_legality(settles, proto, log) -> dict[str, Any]:
+def settle_legality(settles, proto, log,
+                    branches=BRANCHES) -> dict[str, Any]:
     """Distinguish HARD death (non-finite / worker exception -> abort) from
     SOFT gate misses (finite, ensemble-labelled -> STRICT_B_BASESTATE_MISMATCH
-    recorded, chain continues archived per design section 5)."""
+    recorded, chain continues archived per design section 5).  ``branches``
+    must be the set actually launched (the hot stage runs CONST_G only when
+    G0 is not admitted — checking absent branches would misread them as
+    dead)."""
 
     thetas = [float(t) for t in proto["theta_points"]]
     rows, ok, hard_dead = {}, True, False
-    for br in BRANCHES:
+    for br in branches:
         for th in [0.0] + thetas:
             lbl = f"{br}_th{th:g}"
             run = settles.get(lbl, {})
@@ -1403,7 +1407,7 @@ def stage_hot(gas_cfg, proto, workers, ckpt, log, mode: str,
     out["branches_run"] = branches
     settles = run_settle_wave(gas_cfg, proto, workers, ckpt, log,
                               branches=branches)
-    leg = settle_legality(settles, proto, log)
+    leg = settle_legality(settles, proto, log, branches=branches)
     out["settle_legality"] = {k: v for k, v in leg.items() if k != "pass"}
     if leg.get("hard_dead"):
         out["stage_verdict"] = "LEGALITY_FAILED"
