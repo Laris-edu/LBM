@@ -1,6 +1,6 @@
 # LBM 项目上下文入口
 
-**最后更新**：2026-08-19（D5-9 冻结 `A2a-STRICT_B` 原协议复测方案后，**用户同日授权实施与运行**：仪器预注册落盘（strict-face Robin QS-0/1/1k + runner + refpack 生成器）、wet reference pack 五重放位级一致入库、**权威 run 于 B 机进行中**；判决权与 G0 围栏语义保留用户（runner 只出 `*_CANDIDATE`）。既有 strict-B 科学资格、分类、Gate、生产壁与冻结标定不变。方案唯一家=`docs/Phase_5/a2a_strict_b_experiment_plan_v1.0.md`，执行流水=`Phase5_STATUS.md` §2。）
+**最后更新**：2026-08-20（`A2a-STRICT_B` 原协议复测**判决 run 已完成**（B 机 `20260819T155402Z`，合法性 11/11 全绿、冷锚 PASS）：单一边界替换下四点 d_OP 仍负、一致上移 +0.13→+0.57 pp、动力学残差闭合 C_R≈0.48 恰低于冻结 0.5 线，机械候选=`NOT_RESOLVED_CANDIDATE`；**正式四级判决与 G0 围栏语义待用户**。数据唯一家=`docs/Phase_5/a2a_strict_b_report.md`。既有 strict-B 科学资格、分类、Gate、生产壁与冻结标定不变。）
 **用途**：新会话第一份必读文档，用于快速恢复项目阶段、读取路线、不可误判规则和下一步优先级。
 **定位**：全项目生命周期唯一上下文入口，不是某个阶段的专属文档。
 **维护原则**：只保留压缩摘要和入口索引；阶段流水、run 细节、完整数值和推导证据由对应 `PhaseN_STATUS.md`、M 报告和专项诊断报告维护，本文不复制。
@@ -30,7 +30,7 @@ docs/Phase_5/Phase5_STATUS.md（Gate 现值 + §3 WP4 生产数据）。
 
 ## 2. 当前阶段与状态
 
-**当前阶段（2026-08-19）：Phase_5 WP4 认证子矩阵已完成，Paper 1 处于通用计算方法学写作轨**。WP2 入口 Gate 序列、WP3 与 D5-6 授权的 WP4 子矩阵均保持既有终态；`WP4_SUBMATRIX_COMPLETE`、`FINAL_PRODUCTION_NOT_CLAIMED`。主路线仍为 `ROUTE_B_MAIN + 1D_REAL_AIR_BOUNDING`。Paper 1 的中心为**有限热偏置下湿节点 thermal-LBM 边界的一致性诊断、范式内反证与零体积面通量候选**；thermophone 只作问题来源/诊断 benchmark/应用意义，A1/H2 与 A5 不进入本稿正文或补充数据包。strict-B 执行链已登记，但科学资格戳未授予、分类不激活；A2a-STRICT_B 复测已获授权实施，权威 run 进行中（判决待用户）。题目、摘要、Section 5 与 Fig. 6 只读取 `Phase5_STATUS.md` 的正式状态。状态与 Gate 现值只看 `docs/Phase_5/Phase5_STATUS.md`，论文架构与图表接口看 `Manuscript/Paper1_Manuscript_Architecture.md`。
+**当前阶段（2026-08-19）：Phase_5 WP4 认证子矩阵已完成，Paper 1 处于通用计算方法学写作轨**。WP2 入口 Gate 序列、WP3 与 D5-6 授权的 WP4 子矩阵均保持既有终态；`WP4_SUBMATRIX_COMPLETE`、`FINAL_PRODUCTION_NOT_CLAIMED`。主路线仍为 `ROUTE_B_MAIN + 1D_REAL_AIR_BOUNDING`。Paper 1 的中心为**有限热偏置下湿节点 thermal-LBM 边界的一致性诊断、范式内反证与零体积面通量候选**；thermophone 只作问题来源/诊断 benchmark/应用意义，A1/H2 与 A5 不进入本稿正文或补充数据包。strict-B 执行链已登记，但科学资格戳未授予、分类不激活；A2a-STRICT_B 复测判决 run 已完成（机械候选=NOT_RESOLVED_CANDIDATE，正式判决与 G0 围栏待用户，数据家=`a2a_strict_b_report.md`）。题目、摘要、Section 5 与 Fig. 6 只读取 `Phase5_STATUS.md` 的正式状态。状态与 Gate 现值只看 `docs/Phase_5/Phase5_STATUS.md`，论文架构与图表接口看 `Manuscript/Paper1_Manuscript_Architecture.md`。
 
 ### 继承基线速览（现值指针,不复制流水）
 
@@ -148,9 +148,9 @@ docs/Phase_5/Phase5_STATUS.md（Gate 现值 + §3 WP4 生产数据）。
 - **历史阶段决策一览（全文在各权威家,此处仅指针）**：M4 收尾 (b) scoped 风险清偿 + E2 审查修订(digest `d69bf24d881e`)、K0 kernel 约定钉死、声速介质标定、D3-4 源侧落地/三 rig 判定、D3-3 双向判死→单向过门(用户)、D3-2 反射门、D3 立项(用户)、P4-1 终态 FAILED→D1/D3 判决 → `Phase4_STATUS.md` §4 + `M4_Verification_Report.md` + `P4_D3_Multidomain_Acoustic_Project.md`;M3 收尾方案 (a)(用户 APPROVED)、P3-0…P3-6 → `Phase3_STATUS.md` + `M3_Closure_Decision.md`;`BOUNDED_PRODUCTION_GO`(2026-06-22,用户) → `M2_Critical_Decision.md`。
 - **冻结技术不变量**：默认 baseline=D2Q37/RR 闭合(`configs/gas_air_10k_d2q37_physical_timestep.yaml`,RR `chi*=1.1052362846829455`);Level C QoI 主结论必用 `configs/gas_air_10k_d2q37_levelc_dx2p6.yaml` 或其派生;Level C 耦合首版=Heun/predictor-corrector+一次 Picard;`core/unit_mapping.py` 是 `nu_lu/alpha_lu/nu_b_lu/tau21/tau22/tau32` 唯一入口;对外热流一律 conductive `q_lu`(raw central energy flux 仅 collision 内部);array layout 冻结(`c=(Q,D)`、`w=(Q,)`、`f/g=(...,Q)`,pull streaming,速度轴最后);D2Q21 保留 `second_order` 低模态 baseline(`fourth_order` 仅 diagnostic)。
 
-## 5. 下一步优先级（Paper 1 方法学写作轨；A2a-STRICT_B 权威 run 进行中，2026-08-19）
+## 5. 下一步优先级（Paper 1 方法学写作轨；A2a-STRICT_B 数据已登记待判，2026-08-20）
 
-1. **等待 A2a-STRICT_B 权威 run 完成并由用户裁决**：数据+候选标签交付后，用户决定 G0 围栏 scoped 放行与方案 §4 四级判决，登记于 `Phase5_STATUS.md`。
+1. **用户裁决 A2a-STRICT_B 结果**：数据+候选标签已交付（`a2a_strict_b_report.md` §6）；用户决定 G0 围栏 scoped 放行与方案 §4 四级判决，登记于 `Phase5_STATUS.md` 后 Paper 1 Section 5 方可读取。
 2. **完成不依赖新 run 的 C1–C4 初稿**：按新 Section 2–4 写观察量、现象、TAN、JAB/JAB2、NSF、wallfix/ghost/collision 与面通量修复要求。
 3. **既有四项 SCOPED 裁决仍独立待决**：不得用 A2a-STRICT_B 方案冻结替代对 strict-B 报告资格冲突的裁决。
 4. **正式结论只认 `Phase5_STATUS.md` 登记**：未来 A2a-STRICT_B 结果也不自动改变 strict-B 科学资格、Gate 或生产壁。
@@ -164,7 +164,7 @@ docs/Phase_5/Phase5_STATUS.md（Gate 现值 + §3 WP4 生产数据）。
 - Phase_5 文档目录索引：`docs/Phase_5/README.md`
 - Phase_5 输出导览（跨目录落位 + 归档约定）：`docs/Phase_5/Phase5_Output_Files_Guide.md`
 - D1 严格候选 B：设计=`docs/Phase_5/strict_faceflux_candidate_b_design_v1.0.md`；实施与判决唯一家=`docs/Phase_5/strict_b_report.md`（REPORT_v1.0；科学分类的正式登记仍只认 `Phase5_STATUS.md`）；归档=`archive/M5_runs/strictb_20260818_A/`
-- A2a-STRICT_B 原协议复测：方案=`docs/Phase_5/a2a_strict_b_experiment_plan_v1.0.md`；runner=`scripts/phase5_a2a_strict_b.py`（判读线冻结在常数区）；QS 参照=`reference/strict_face_robin_qs.py`；wet reference pack=`archive/a2a_strict_b/`（位级重放+SHA-256）；权威 run 进行中，判决待用户
+- A2a-STRICT_B 原协议复测：方案=`docs/Phase_5/a2a_strict_b_experiment_plan_v1.0.md`；**结果唯一家=`docs/Phase_5/a2a_strict_b_report.md`（REPORT_v1.0，判决待用户）**；runner=`scripts/phase5_a2a_strict_b.py`；QS 参照=`reference/strict_face_robin_qs.py`；wet reference pack=`archive/a2a_strict_b/`；归档=`archive/M5_runs/a2asb_20260819_B/`
 - WP3 首轮预注册与 Go/No-Go 材料（§7=D5-6 决策全文）：`docs/Phase_5/x/wp3_go_nogo_decision.md`
 - 论文架构（v1.0 条件方法学核心；不入库）：`Manuscript/Paper1_Manuscript_Architecture.md`；v0.3 逐字节历史归档=`Manuscript/Paper1_Manuscript_Architecture_v0.3_OBSOLETE.md`
 - 论文结果素材层：`results/Phase5_Result/`（整套 R0–R3/Fig. 3–5 为 `LEGACY_v0.3`，不是现行写作入口）

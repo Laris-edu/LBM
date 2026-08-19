@@ -2,7 +2,7 @@
 
 **阶段**：Phase_5 — 热声薄膜有限温升非线性换能（Nonlinear Entry and Production Contract）
 **合同**：`docs/Phase_5/Phase5_instruct_v1.2.md`（v1.2，2026-07-20 经 WP0 冻结为唯一规范性入口；评审基线 `b86459c`）
-**最后更新**：2026-08-19（同日两节点：① 用户冻结 `A2a-STRICT_B` 原协议复测短版方案（方案唯一家=`a2a_strict_b_experiment_plan_v1.0.md`）；② 用户随后授权实施与运行（**判决权与 G0 围栏语义保留用户**，runner 只出 `*_CANDIDATE`）——仪器预注册落盘（`237e810`，含判读线可测性两处修正 `596bcdb`/`d498eed`：能量合同合成地板、冷点闭合绝对失衡门，步进零改动）、wet reference pack 五重放**位级一致**入库（`1117736`）、smoke 机制演练完成、**权威 run 于 B 机进行中**（两机同 commit，逐 case+逐周期 checkpoint）。既有 strict-B 科学资格未授予、分类不激活、`D1_SCIENTIFIC_GATE_OPEN`、Gate、生产壁与 `FINAL_PRODUCTION_NOT_CLAIMED` 均不变。）
+**最后更新**：2026-08-20（`A2a-STRICT_B` 判决 run **已完成**：B 机 `20260819T155402Z`，合法性 11/11 全绿、冷锚 PASS；四点 d_OP 仍负（−1.05/−2.52/−3.66/−4.74%）、一致上移 +0.13→+0.57 pp、R_dyn 闭合 C_R≈0.48 恰低于冻结 0.5 线，机械候选=`NOT_RESOLVED_CANDIDATE`。**正式四级判决与 G0 围栏语义待用户**（`DATA_REGISTERED_JUDGEMENT_PENDING`）。数据唯一家=`a2a_strict_b_report.md` REPORT_v1.0。既有 strict-B 科学资格未授予、分类不激活、`D1_SCIENTIFIC_GATE_OPEN`、Gate、生产壁与 `FINAL_PRODUCTION_NOT_CLAIMED` 均不变。）
 
 **本文职责**：状态标签 + Gate 现值 + 执行流水（做了什么 / 为什么 / 结果）+ WP4 生产数据。
 **本文不写**：技术细节、推导、诊断链——一律在对应报告，本文只给结论与指针。
@@ -12,7 +12,7 @@
 
 ## 1. 当前状态
 
-**WP0–WP4 授权范围全部完成**（2026-08-04）。2026-08-08 起的机理诊断序列已形成 G4a→TAN→JAB/JAB2→NSF→wallfix→ghost→跨栈 1a→D1-B buffer→strict-B 的证据链。strict-B 权威执行链与 `strict_b_report.md` `REPORT_v1.0` 已登记，但科学资格戳未授予、热点分类不激活。2026-08-18 用户以 D5-8 将 Paper 1 改为**有限热偏置 thermal-LBM 边界方法学条件架构**；2026-08-19 D5-9 冻结 A2a-STRICT_B 原协议复测方案，**同日用户授权实施与运行：仪器已预注册落盘、wet reference pack 位级重放入库、权威 run 于 B 机进行中（判决权与 G0 围栏语义保留用户，脚本只出 `*_CANDIDATE`）**。上述变化不改变任何 Gate 与 `FINAL_PRODUCTION_NOT_CLAIMED`。
+**WP0–WP4 授权范围全部完成**（2026-08-04）。2026-08-08 起的机理诊断序列已形成 G4a→TAN→JAB/JAB2→NSF→wallfix→ghost→跨栈 1a→D1-B buffer→strict-B 的证据链。strict-B 权威执行链与 `strict_b_report.md` `REPORT_v1.0` 已登记，但科学资格戳未授予、热点分类不激活。2026-08-18 用户以 D5-8 将 Paper 1 改为**有限热偏置 thermal-LBM 边界方法学条件架构**；2026-08-19 D5-9 冻结 A2a-STRICT_B 原协议复测方案，同日用户授权实施与运行，**判决 run 已完成（B 机 `20260819T155402Z`，合法性全绿）：机械候选=`NOT_RESOLVED_CANDIDATE`，正式四级判决与 G0 围栏语义待用户（数据唯一家=`a2a_strict_b_report.md`）**。上述变化不改变任何 Gate 与 `FINAL_PRODUCTION_NOT_CLAIMED`。
 
 状态标签（定义随合同 §0.3 冻结；**本表是唯一现值追踪处**）：
 
@@ -45,7 +45,7 @@ STRICT_B_IMPLEMENTED（六资产+16 项合同+权威执行链，2026-08-19）
 STRICT_B_VALIDATION_STAMP_NOT_GRANTED（前八层未全绿：壁位/系综 Θ_DC/uniform 漂移/G0 admission 四行 FAIL，均有独立归因，见 strict_b_report §4.4/§4.5）
 STRICT_B_HOT_ARCHIVED_PARTIAL_CONTROL_DIRECTION_EVIDENCE（热点分类不激活；CONST_G m=0.581/0.589 与 G0 archived m=0.653/0.662 双行方向证据）
 D1_SCIENTIFIC_GATE_OPEN
-A2A_STRICT_B_IMPLEMENTED_AUTH_RUN_IN_PROGRESS（B 机；判决与 G0 围栏语义=用户专属，runner 仅出 *_CANDIDATE + g0_scope=G0_FENCE_PENDING_USER）
+A2A_STRICT_B_DATA_REGISTERED_JUDGEMENT_PENDING（判决 run `20260819T155402Z` 合法性全绿；机械候选=NOT_RESOLVED_CANDIDATE；四级判决与 G0 围栏语义=用户专属）
 FINITE_WIDTH_2D_DEFERRED_JASA_SCOPE
 FINAL_PRODUCTION_NOT_CLAIMED
 ```
@@ -73,7 +73,7 @@ FINAL_PRODUCTION_NOT_CLAIMED
 
 | 日期 | 单元 | 目的 | 结果 | 详情 |
 |---|---|---|---|---|
-| 2026-08-19 | **A2a-STRICT_B 实施 + 权威 run 发射（用户当日授权；判决权保留用户）** | 执行 D5-9 方案：单一边界替换下重跑 A2a 时域增量响应 | 仪器预注册 `237e810`（runner+strict-face Robin QS-0/1/1k+refpack 生成器+12 合同测试）；判读线可测性修正 `596bcdb`/`d498eed`（能量合同合成设计 §5 地板、冷点 DC 闭合改绝对失衡门——smoke 实测冷双面通量 ±2.3e-14=地板尘埃级；**步进物理零改动**）；wet reference pack `1117736`：五重放位级一致、d_OP 锚差 ≤0.005pp、R_dyn^wet 舍入=冻结值、跨 run 冷例位级同、21 源文件 SHA-256；smoke 机制演练两轮（物理数字逐位复现；SMOKE_UNINTERPRETABLE 仅因 N=12 几何 vs N=48 冷锚=预期）；**权威 run B 机进行中**（commit `1117736` 两机一致、10 worker、逐 case+逐周期 checkpoint、occ 实测 ~99%/worker）。runner 只出 `*_CANDIDATE`（g0_scope=G0_FENCE_PENDING_USER），正式判决与围栏语义待用户 | 方案=`a2a_strict_b_experiment_plan_v1.0.md`；runner=`scripts/phase5_a2a_strict_b.py`；pack=`archive/a2a_strict_b/` |
+| 2026-08-19/20 | **A2a-STRICT_B 实施 + 判决 run 闭合（用户当日授权；判决权保留用户）** | 执行 D5-9 方案：单一边界替换下重跑 A2a 时域增量响应，回答"负工作点趋势是否随湿节点边界替换消失" | 仪器预注册 `237e810` + 判读线可测性修正 `596bcdb`/`d498eed`（步进零改动）；wet reference pack `1117736`（五重放位级一致、R_dyn^wet 舍入=冻结值、21 源文件 SHA-256）；smoke 两轮逐位复现；**判决 run B 机 `20260819T155402Z`（105 min，14 算例零死亡，合法性 11/11 全绿，冷锚 3.87%/3.87° PASS 且与切线冷锚 ~1e-5 相对吻合）**。结果：四点 d_OP 仍负 **−1.0469/−2.5208/−3.6632/−4.7396%**（保留 wet 幅值 ~89%）、上移一致 **+0.126/+0.305/+0.442/+0.570 pp**（全过 0.1 pp 门）、R_dyn=−1.11/−2.68/−3.91/−5.07 pp、**C_R⁻=0.460/0.476/0.482/0.487 恰低于冻结 0.5 线**、strict QS-1k 仍正号（+2.4→+12.5%）；机械候选=`NOT_RESOLVED_CANDIDATE`。**正式四级判决与 G0 围栏语义待用户**；框架对照守卫（切线等质量框架数字不可转写到本原协议框架）=报告 §5.4 | 数据唯一家=`a2a_strict_b_report.md` REPORT_v1.0；归档=`archive/M5_runs/a2asb_20260819_B/`+镜像 `results/mirror_from_B/a2a_strict_b/`；pack=`archive/a2a_strict_b/` |
 | 2026-08-19 | **A2a-STRICT_B 原协议复测方案冻结（D5-9）** | 在非均匀 DC 基态上重跑 A2a 时域增量响应，以单一边界替换检验 strict-B 是否消除负趋势 | `PLAN_v1.0` 已冻结；工况=`Θ_DC {0,0.02,0.05,0.075,0.10} × ε_AC {0.005,0.02}`，重新计算 QS-0/QS-1/QS-1k 与动态残差。**方案交付本身不含授权；实施/运行授权与判决保留见上行** | `a2a_strict_b_experiment_plan_v1.0.md` |
 | 2026-08-19 | **strict-B 权威执行链落盘（正式登记行）** | 完成设计九层验证矩阵与热点判决，回答"删除 band 行+严格面通量后负趋势是否仍在" | **机器精度级 PASS**：拓扑（P+S≡显式 BB 位级、覆盖 15/8/3）、守恒（Bq 恒等 ~1e-16）、冷锚（−3.87%/−3.87° vs 冻结 PROD 复锚）、micro/full JVP（odd 1.2e-10、even 比 4.0000、identity 1e-10 三档判决几何）、回归（333×3 轮+金样位级）。**FAIL（各有独立归因，留档语义）**：壁位 0.928%@N64（近壁 3 格动理学层 c/N，门 1e-3 需 N≈600）、系综 Θ_DC 1.33-1.48%（外推口径极限）、uniform 漂移 1.23e-11（3.27M 步浮点底噪，与 perturbed 逐位同幅=非物理）、G0 admission（面一致性 2.03% PASS，但幂律指数 2.04 vs 1.04 与 AC N64 +15-19%/+11-14° 被冻结介质低 k 色散挡住——G0-B 围栏原文）。**热点（archived，分类不激活）**：PROD 锚复验偏差 1.1e-5/2.4e-5 pp；CONST_G −0.5012/−0.8038 pp（m=0.581/0.589）；G0 −0.2132/−0.2467 pp（m=0.653/0.662）——**负趋势 ~58-66% 随 band 删除消失、残余仍负**；`STRICT_B_SCIENTIFICALLY_VALIDATED` 未授予，是否 scoped 采纳方向证据待用户 | `strict_b_report.md` REPORT_v1.0；判决 run `20260818T201520Z_auth`（A 机；hotdc soak=B 机 checkpoint 转移，D5-3）；归档 `archive/M5_runs/strictb_20260818_A/`；预注册 `d036e74`→语义修正 `929884a`/`18aa0ef`/`8556649` |
 | 2026-08-18 | **Paper 1 方法学架构重建（D5-8）** | 将论文中心从 thermophone 模型差异与器件背景转为有限热偏置 thermal-LBM 边界的诊断、反证和条件面通量修复 | canonical=`ARCHITECTURE_v1.0_METHODS_CONDITIONAL`；固定 7 节、C1–C6、strict-B 三层门、6 图/1 表及成功/回退模板；thermophone 降为 benchmark，A1/A5 退出本稿。v0.3 逐字节归档；不新增模拟、不改 Gate/生产状态 | `Manuscript/Paper1_Manuscript_Architecture.md`；历史归档 `Paper1_Manuscript_Architecture_v0.3_OBSOLETE.md` |
@@ -185,11 +185,11 @@ FINAL_PRODUCTION_NOT_CLAIMED
 
 ## 6. 下一步（Paper 1 方法学写作轨；生产证据冻结）
 
-**A2a-STRICT_B 已获用户授权实施并运行（2026-08-19），权威 run 于 B 机进行中。** 判决权与 G0 围栏语义保留用户：runner 只交付数据 + `*_CANDIDATE` 机械评估，正式四级判决（EFFECTIVE_RESOLUTION/EFFECTIVE_MITIGATION/NOT_RESOLVED/UNINTERPRETABLE）由用户按方案 §4 裁决后登记于本文件。既有 strict-B 四项 SCOPED 裁决仍待用户，未被本单元静默清偿；生产证据继续冻结。
+**A2a-STRICT_B 判决 run 已完成（2026-08-19/20，数据登记于 `a2a_strict_b_report.md`）。** 判决权与 G0 围栏语义保留用户：机械候选=`NOT_RESOLVED_CANDIDATE`（合法性全绿、上移四点全过、C_R⁻ 0.476/0.487<0.5），正式四级判决由用户按方案 §4 裁决后登记于本文件。既有 strict-B 四项 SCOPED 裁决仍待用户，未被本单元静默清偿；生产证据继续冻结。
 
 | # | 任务 | 说明 | 依赖 |
 |---|---|---|---|
-| 1 | **用户裁决 A2a-STRICT_B 结果**（run 完成后） | 数据+候选标签交付后，用户决定 G0 围栏 scoped 放行与四级判决；结果登记本文件 | B 机权威 run；`a2a_strict_b_experiment_plan_v1.0.md` §4 |
+| 1 | **用户裁决 A2a-STRICT_B 结果** | 决定 G0 围栏 scoped 放行与四级判决（照判 NOT_RESOLVED / 另行 scoped 裁决均属用户）；登记本文件后 Paper 1 Section 5 方可读取 | `a2a_strict_b_report.md` §6；方案 §4 |
 | 2 | **完成 C1–C4 与 Section 2–4 初稿** | 现象→TAN→JAB/JAB2→NSF→wallfix/ghost/collision→面通量修复要求；不依赖新 run | 新架构 v1.0 |
 | 3 | **用户四项 SCOPED 裁决** | 既有 strict-B 报告的四项冲突清单仍独立待决；任何升级只能由用户批准并留档 | `strict_b_report.md` REPORT_v1.0 |
 | 4 | **按正式证据激活 Section 5/Fig. 6** | 合并本 STATUS 正式 strict-B 状态与未来 A2a-STRICT_B 判决；当前仍不得升级论文主张 | 1、3 |

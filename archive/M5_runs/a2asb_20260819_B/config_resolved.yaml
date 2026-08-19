@@ -1,0 +1,61 @@
+inheritance:
+  gas_config: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+  plan: docs/Phase_5/a2a_strict_b_experiment_plan_v1.0.md
+  strict_b_design: docs/Phase_5/strict_faceflux_candidate_b_design_v1.0.md
+  wet_reference_runs:
+  - archive/M5_runs/wp4_a2a_dc002_20260803T185241Z
+  - archive/M5_runs/g4a_20260801T081856Z
+  - archive/M5_runs/wp4_a2a_dc0075_20260803T185101Z
+  - archive/M5_runs/wp3_pdc2_20260802T104619Z
+a2a_strict_b:
+  frequency_Hz: 1.0e4
+  n_phys: 48
+  nx: 8
+  samples_per_period: 64
+  theta_dc_grid:
+  - 0.0
+  - 0.02
+  - 0.05
+  - 0.075
+  - 0.1
+  eps_ac_cold: 0.005
+  eps_ac_hot:
+  - 0.005
+  - 0.02
+  settle_periods: 5.0
+  drive_periods: 4.0
+  fit_window_main:
+  - 2.0
+  - 4.0
+  fit_window_alt:
+  - 1.5
+  - 3.5
+  n_ref_ladder:
+  - 192
+  - 384
+  - 768
+  reference_pack: archive/a2a_strict_b/wet_reference_pack.json
+a2a_strict_b_smoke:
+  frequency_Hz: 1.0e4
+  n_phys: 12
+  nx: 4
+  samples_per_period: 32
+  theta_dc_grid:
+  - 0.0
+  - 0.05
+  eps_ac_cold: 0.005
+  eps_ac_hot:
+  - 0.005
+  - 0.02
+  settle_periods: 2.0
+  drive_periods: 2.0
+  fit_window_main:
+  - 1.0
+  - 2.0
+  fit_window_alt:
+  - 0.5
+  - 1.5
+  n_ref_ladder:
+  - 96
+  - 192
+  reference_pack: archive/a2a_strict_b/wet_reference_pack.json
