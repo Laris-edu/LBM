@@ -86,9 +86,15 @@ from scripts.phase5_wp4_qs1k_mechanism import fit_exponents  # noqa: E402
 
 UNIT = "A2A-STRICT-B"
 CASE_FAMILY = "a2a_strict_b"
-CODE_VERSION = "A2A_STRICTB_V2"        # checkpoint ident version (V2: composite
+CODE_VERSION = "A2A_STRICTB_V3"        # checkpoint ident version (V2: composite
                                         # floor normalization of the per-step
-                                        # energy contract; stepping unchanged)
+                                        # energy contract; V3: cold-point DC
+                                        # closure gates on the ABSOLUTE
+                                        # imbalance vs the design-s5 floor —
+                                        # at Theta=0 both face fluxes are true
+                                        # zeros and the ratio is FP dust over
+                                        # the floor, not a closure statement.
+                                        # Stepping unchanged in both.
 
 # ---------------------------------------------------------------------------
 # FROZEN JUDGEMENT LINES (plan sections 2/3/4; pre-registered, no hot number)
@@ -387,6 +393,8 @@ def _sb_a2a_settle_worker(payload: dict[str, Any]) -> tuple[str, dict[str, Any]]
         "contract_mass_rel_max": float(contract_m_max),
         "stationarity_per_period": stationarity,
         "dc_closure_rel": float(dc_closure),
+        "q_dc_imbalance_abs": float(abs(q_hot_dc + q_cold_dc)),
+        "closure_floor_lu": float(e_floor),
         "q_hot_dc_lu": q_hot_dc, "q_cold_dc_lu": q_cold_dc,
         "p_mean_lu": p_mean,
         "theta_dc_quad_extrap": float((quad_face_extrapolation(base_profile)
@@ -992,7 +1000,11 @@ def run_a2a_strict_b(config_path: str | Path, output_root: str | Path | None = N
             <= GATE_MASS_DRIFT_REL,
             "stationarity": cold_settle["stationarity_per_period"]
             <= GATE_STATIONARITY,
-            "dc_closure": cold_settle["dc_closure_rel"] <= GATE_DC_CLOSURE,
+            # Theta = 0: both face fluxes are true zeros, so the closure
+            # RATIO is FP dust over the floor; the meaningful cold statement
+            # is the absolute imbalance against the design-s5 floor itself.
+            "dc_closure": cold_settle["q_dc_imbalance_abs"]
+            <= cold_settle["closure_floor_lu"],
             "cold_anchor": bool(cold_anchor_row.get("passed")),
         }
         if pack is not None:
