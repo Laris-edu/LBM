@@ -86,7 +86,9 @@ from scripts.phase5_wp4_qs1k_mechanism import fit_exponents  # noqa: E402
 
 UNIT = "A2A-STRICT-B"
 CASE_FAMILY = "a2a_strict_b"
-CODE_VERSION = "A2A_STRICTB_V1"        # checkpoint ident version
+CODE_VERSION = "A2A_STRICTB_V2"        # checkpoint ident version (V2: composite
+                                        # floor normalization of the per-step
+                                        # energy contract; stepping unchanged)
 
 # ---------------------------------------------------------------------------
 # FROZEN JUDGEMENT LINES (plan sections 2/3/4; pre-registered, no hot number)
@@ -298,7 +300,14 @@ def _sb_a2a_settle_worker(payload: dict[str, Any]) -> tuple[str, dict[str, Any]]
     e_cell_ref = 0.5 * (d_int + s_int) * rho0 * th0
     e_floor = 64.0 * _EPS * e_cell_ref * hd.nx           # design section 5 floor
     e0_total = _fg_energy(f, g, c2)
-    e_step_floor = 64.0 * _EPS * abs(e0_total)
+    # per-step energy contract: PASS iff |dE_gas - dE_h - dE_c| <=
+    # max(1e-12 * |dE_faces|, 64 eps E_total) — the relative gate composes
+    # with the design-section-5 absolute floor (the whole-grid energy sums
+    # carry ~eps*E_total evaluation noise, so a bare relative-to-flux gate
+    # would gate on summation conditioning, not on the operator identity).
+    # The stored metric divides by max(|dE_faces|, floor/GATE) so that
+    # metric <= GATE_CONTRACT_REL is exactly that composite statement.
+    e_floor_div = 64.0 * _EPS * abs(e0_total) / GATE_CONTRACT_REL
 
     prog = ck_dir / f"settle_{label}.progress.npz"
     start = 0
@@ -327,7 +336,7 @@ def _sb_a2a_settle_worker(payload: dict[str, Any]) -> tuple[str, dict[str, Any]]
         m_after = float(np.sum(f))
         contract_e_max = max(contract_e_max,
                              abs(e_after - e_before - de_h - de_c)
-                             / max(abs(de_h) + abs(de_c), e_step_floor))
+                             / max(abs(de_h) + abs(de_c), e_floor_div))
         contract_m_max = max(contract_m_max,
                              abs(m_after - m_before) / mass_target)
         mass_min = min(mass_min, m_after)
@@ -460,7 +469,8 @@ def _sb_a2a_drive_worker(payload: dict[str, Any]) -> tuple[str, dict[str, Any]]:
     state = {"theta_w": theta_hot_mean}
     wall = make_wall(hd, lambda: state["theta_w"])
     e0_total = _fg_energy(f, g, c2)
-    e_step_floor = 64.0 * _EPS * abs(e0_total)
+    # composite contract normalization — see the settle worker's comment
+    e_floor_div = 64.0 * _EPS * abs(e0_total) / GATE_CONTRACT_REL
 
     prog = ck_dir / f"drive_{label}.progress.npz"
     start = 0
@@ -496,7 +506,7 @@ def _sb_a2a_drive_worker(payload: dict[str, Any]) -> tuple[str, dict[str, Any]]:
         m_after = float(np.sum(f))
         contract_e_max = max(contract_e_max,
                              abs(e_after - e_before - de_h - de_c)
-                             / max(abs(de_h) + abs(de_c), e_step_floor))
+                             / max(abs(de_h) + abs(de_c), e_floor_div))
         contract_m_max = max(contract_m_max,
                              abs(m_after - m_before) / mass_target)
         mass_min = min(mass_min, m_after)
