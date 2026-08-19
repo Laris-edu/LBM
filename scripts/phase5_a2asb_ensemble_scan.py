@@ -414,12 +414,17 @@ def run_ensemble_scan(config_path: str | Path,
             f"d_op={d_op:+.4f}% qs1={qs['d_qs1_pct']:+.4f}% legal={legal}")
 
     # ---- classification + report-only rows ----
-    if all_legal and all(len(v) >= 3 for v in points_by_theta.values()):
-        cls = classify_ensemble(points_by_theta)
-        label = cls["label"]
-    else:
-        cls = {"label": "UNINTERPRETABLE_ENSEMBLE_SCAN"}
-        label = cls["label"]
+    # the fit/gate detail is always computed when the grids are populated
+    # (failure diagnostics keep the slopes visible); the LABEL is gated on
+    # legality per the frozen order.
+    counts_ok = (points_by_theta
+                 and all(len(v) >= 3 for v in points_by_theta.values()))
+    cls = (classify_ensemble(points_by_theta) if counts_ok
+           else {"label": "ENSEMBLE_AXIS_NOT_CONFIRMED",
+                 "note": "insufficient grid points"})
+    label = cls["label"] if (all_legal and counts_ok) \
+        else "UNINTERPRETABLE_ENSEMBLE_SCAN"
+    cls = {**cls, "label_after_legality": label}
     if smoke:
         label = "SMOKE_" + label
     sign_reversal = [r for r in rows
