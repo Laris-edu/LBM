@@ -1,0 +1,50 @@
+# A2a-STRICT_B 原协议复测权威配置（D5-9 方案 PLAN_v1.0 的唯一执行配置）
+# 方案唯一家: docs/Phase_5/a2a_strict_b_experiment_plan_v1.0.md
+# 角色: 保持 A2a 工况/读出不变, 只把湿节点边界替换为 strict-B 面温/面热流联合边界
+#      (STRICT_B_HALF_DOMAIN_MIRROR_V1 + G0 面导, k_f = k0 (θw/θ0)^1.04),
+#      在 wet reference pack 质量匹配的非均匀 DC 基态上重跑时域增量响应,
+#      对照新建 strict-face Robin QS-0/QS-1/QS-1k 静态族。
+# 判决纪律: runner 只产出 *_CANDIDATE 机械评估; 正式四级判决与 G0 围栏语义属用户
+#      (2026-08-19 用户决策); g0_scope 全部行 = G0_FENCE_PENDING_USER。
+# 冻结判读线(窗口/门限/锚)在 scripts/phase5_a2a_strict_b.py 模块常量;
+# auth 段的窗口与 N_ref 阶梯必须与冻结常量一致(runner 硬断言)。
+
+inheritance:
+  gas_config: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+  plan: docs/Phase_5/a2a_strict_b_experiment_plan_v1.0.md
+  strict_b_design: docs/Phase_5/strict_faceflux_candidate_b_design_v1.0.md
+  wet_reference_runs:
+    - archive/M5_runs/wp4_a2a_dc002_20260803T185241Z    # Θ=0.02
+    - archive/M5_runs/g4a_20260801T081856Z              # Θ=0.05
+    - archive/M5_runs/wp4_a2a_dc0075_20260803T185101Z   # Θ=0.075
+    - archive/M5_runs/wp3_pdc2_20260802T104619Z         # Θ=0.10
+
+a2a_strict_b:                     # 权威协议(方案 §2 逐字)
+  frequency_Hz: 1.0e4
+  n_phys: 48                      # 半域 N(face-to-face H_s=48 LU)
+  nx: 8
+  samples_per_period: 64
+  theta_dc_grid: [0.0, 0.02, 0.05, 0.075, 0.10]   # 0.075 仍是加密点
+  eps_ac_cold: 0.005              # 冷锚
+  eps_ac_hot: [0.005, 0.02]       # 判决=0.02/冷 0.005; 0.005 只作线性审计
+  settle_periods: 5.0
+  drive_periods: 4.0
+  fit_window_main: [2.0, 4.0]     # 必须等于冻结常量(runner 断言)
+  fit_window_alt: [1.5, 3.5]
+  n_ref_ladder: [192, 384, 768]   # strict 静态参照; U_QS = 384→768 差
+  reference_pack: archive/a2a_strict_b/wet_reference_pack.json
+
+a2a_strict_b_smoke:               # 机制演练: 门只记录不判决; 等质量回退目标
+  frequency_Hz: 1.0e4
+  n_phys: 12
+  nx: 4
+  samples_per_period: 32
+  theta_dc_grid: [0.0, 0.05]
+  eps_ac_cold: 0.005
+  eps_ac_hot: [0.005, 0.02]
+  settle_periods: 2.0
+  drive_periods: 2.0
+  fit_window_main: [1.0, 2.0]
+  fit_window_alt: [0.5, 1.5]
+  n_ref_ladder: [96, 192]
+  reference_pack: archive/a2a_strict_b/wet_reference_pack.json
