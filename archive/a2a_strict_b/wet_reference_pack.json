@@ -1,0 +1,328 @@
+{
+ "points": {
+  "0": {
+   "m_wet_per_area": 48.00000000036083,
+   "p_mean_wet_lu": 0.048378492582222155,
+   "theta_dc": 0.0,
+   "run_id": "20260802T104619Z",
+   "replay_label": "replay_cold",
+   "source_case": "inc_cold"
+  },
+  "0.02": {
+   "theta_dc": 0.02,
+   "run_id": "20260803T185241Z",
+   "m_wet_per_area": 47.52630685942357,
+   "p_mean_wet_lu": 0.04838145096597105,
+   "d_op_pct": -1.1732735227905966,
+   "d_op_phase_deg": -0.56958673628051,
+   "d_op_alt_pct": -1.171140799231829,
+   "d_op_lo_pct": -1.1834555436900596,
+   "u_d_wet_pp": 0.010182020899462962,
+   "replay_dev_pp": 0.0,
+   "qs1_pct_archived": 0.9480313732350032,
+   "r_dyn_wet_pp": -2.1213048960256,
+   "D_OP_measured_archived": {
+    "re": 0.988218431558173,
+    "im": -0.009824365059414,
+    "abs": 0.988267264772094,
+    "phase_deg": -0.56958673628051
+   },
+   "D_OP_QS1_pred_archived": {
+    "re": 1.0094800905289805,
+    "im": 0.0006712963319604097,
+    "abs": 1.00948031373235,
+    "phase_deg": 0.03810123777105898
+   },
+   "source_cases": {
+    "base": "base_dc002",
+    "cold": "inc_cold",
+    "hot_0.005": "inc_dc002_eps0.005",
+    "hot_0.02": "inc_dc002_eps0.02"
+   }
+  },
+  "0.05": {
+   "theta_dc": 0.05,
+   "run_id": "20260801T081856Z",
+   "m_wet_per_area": 46.838565673290596,
+   "p_mean_wet_lu": 0.04839498304434366,
+   "d_op_pct": -2.825636197543502,
+   "d_op_phase_deg": -1.3812553939366252,
+   "d_op_alt_pct": -2.826250839367539,
+   "d_op_lo_pct": -2.834570350037824,
+   "u_d_wet_pp": 0.008934152494322056,
+   "replay_dev_pp": 0.0,
+   "qs1_pct_archived": 2.3503622251387357,
+   "r_dyn_wet_pp": -5.1759984226822375,
+   "D_OP_measured_archived": {
+    "re": 0.9714612778861066,
+    "im": -0.02342399643761957,
+    "abs": 0.971743638024565,
+    "phase_deg": -1.3812553939366252
+   },
+   "D_OP_QS1_pred_archived": {
+    "re": 1.0235022480268976,
+    "im": 0.0016772136409889831,
+    "abs": 1.0235036222513874,
+    "phase_deg": 0.09389053823566448
+   },
+   "source_cases": {
+    "base": "base_100",
+    "cold": "inc_cold_eps0.005",
+    "hot_0.005": "inc_100_eps0.005",
+    "hot_0.02": "inc_100_eps0.02"
+   }
+  },
+  "0.075": {
+   "theta_dc": 0.075,
+   "run_id": "20260803T185101Z",
+   "m_wet_per_area": 46.28524094605422,
+   "p_mean_wet_lu": 0.04841232085027547,
+   "d_op_pct": -4.105400011402516,
+   "d_op_phase_deg": -2.017056509125378,
+   "d_op_alt_pct": -4.107783627026452,
+   "d_op_lo_pct": -4.113417287110321,
+   "u_d_wet_pp": 0.008017275707805638,
+   "replay_dev_pp": 0.0,
+   "qs1_pct_archived": 3.5014434787406623,
+   "r_dyn_wet_pp": -7.606843490143178,
+   "D_OP_measured_archived": {
+    "re": 0.9583518306407648,
+    "im": -0.033752028158422265,
+    "abs": 0.9589459998859748,
+    "phase_deg": -2.017056509125378
+   },
+   "D_OP_QS1_pred_archived": {
+    "re": 1.0350113737856779,
+    "im": 0.0025172112701836195,
+    "abs": 1.0350144347874066,
+    "phase_deg": 0.13934658228605462
+   },
+   "source_cases": {
+    "base": "base_dc0075",
+    "cold": "inc_cold",
+    "hot_0.005": "inc_dc0075_eps0.005",
+    "hot_0.02": "inc_dc0075_eps0.02"
+   }
+  },
+  "0.1": {
+   "theta_dc": 0.1,
+   "run_id": "20260802T104619Z",
+   "m_wet_per_area": 45.748916437200414,
+   "p_mean_wet_lu": 0.048433464279677735,
+   "d_op_pct": -5.309995965249048,
+   "d_op_phase_deg": -2.618367772751536,
+   "d_op_alt_pct": -5.3137163138258785,
+   "d_op_lo_pct": -5.317195137426367,
+   "u_d_wet_pp": 0.007199172177319468,
+   "replay_dev_pp": 0.0,
+   "qs1_pct_archived": 4.6371040977178035,
+   "r_dyn_wet_pp": -9.94710006296685,
+   "D_OP_measured_archived": {
+    "re": 0.9459114540533273,
+    "im": -0.0432574560143698,
+    "abs": 0.9469000403475095,
+    "phase_deg": -2.618367772751536
+   },
+   "D_OP_QS1_pred_archived": {
+    "re": 1.0463656439928921,
+    "im": 0.0033607241783971723,
+    "abs": 1.046371040977178,
+    "phase_deg": 0.1840223353326347
+   },
+   "source_cases": {
+    "base": "base_dc010",
+    "cold": "inc_cold",
+    "hot_0.005": "inc_dc010_eps0.005",
+    "hot_0.02": "inc_dc010_eps0.02"
+   }
+  }
+ },
+ "provenance": {
+  "0.02": {
+   "results_dir": "results/phase5/a2a_operating_point/20260803T185241Z",
+   "archive_dir": "archive/M5_runs/wp4_a2a_dc002_20260803T185241Z",
+   "proto": {
+    "frequency_Hz": 10000.0,
+    "nx": 8,
+    "samples_per_period": 64,
+    "theta_dc": 0.02,
+    "hs_rows": 48,
+    "settle_periods": 5.0,
+    "drive_periods": 4.0,
+    "fit_skip_periods": 2.0,
+    "gas_config": "configs/gas_air_10k_d2q37_levelc_dx2p6.yaml"
+   },
+   "archived_provenance": {
+    "run_id": "20260803T185241Z",
+    "family": "a2a_operating_point",
+    "argv": [
+     "scripts/phase5_a2a_operating_point.py",
+     "--config",
+     "configs/phase5/a2a_operating_point/a2a_wp4_dc002_10k_dx2p6.yaml",
+     "--workers",
+     "6"
+    ],
+    "machine": "LARIS-JIXIE",
+    "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+    "workers": 6,
+    "started_utc": "2026-08-03T14:26:38.826204+00:00",
+    "finished_utc": "2026-08-03T18:52:41.087823+00:00"
+   }
+  },
+  "0.05": {
+   "results_dir": "results/phase5/g4a_dc_base/20260801T081856Z",
+   "archive_dir": "archive/M5_runs/g4a_20260801T081856Z",
+   "proto": {
+    "frequency_Hz": 10000.0,
+    "nx": 8,
+    "samples_per_period": 64,
+    "theta_dc": 0.05,
+    "hs_rows": 48,
+    "settle_periods": 5.0,
+    "drive_periods": 4.0,
+    "fit_skip_periods": 2.0,
+    "gas_config": "configs/gas_air_10k_d2q37_levelc_dx2p6.yaml"
+   },
+   "archived_provenance": {
+    "run_id": "20260801T081856Z",
+    "gate": "G4a",
+    "smoke": false,
+    "argv": [
+     "E:\\Code\\LBM\\scripts\\phase5_g4a_dc_basestate.py"
+    ],
+    "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+    "machine": "LARIS-JIXIE",
+    "workers": 14,
+    "started_utc": "2026-07-31T11:01:59.144024+00:00",
+    "finished_utc": "2026-08-01T08:18:56.810785+00:00"
+   }
+  },
+  "0.075": {
+   "results_dir": "results/phase5/a2a_operating_point/20260803T185101Z",
+   "archive_dir": "archive/M5_runs/wp4_a2a_dc0075_20260803T185101Z",
+   "proto": {
+    "frequency_Hz": 10000.0,
+    "nx": 8,
+    "samples_per_period": 64,
+    "theta_dc": 0.075,
+    "hs_rows": 48,
+    "settle_periods": 5.0,
+    "drive_periods": 4.0,
+    "fit_skip_periods": 2.0,
+    "gas_config": "configs/gas_air_10k_d2q37_levelc_dx2p6.yaml"
+   },
+   "archived_provenance": {
+    "run_id": "20260803T185101Z",
+    "family": "a2a_operating_point",
+    "argv": [
+     "scripts/phase5_a2a_operating_point.py",
+     "--config",
+     "configs/phase5/a2a_operating_point/a2a_wp4_dc0075_10k_dx2p6.yaml",
+     "--workers",
+     "6"
+    ],
+    "machine": "LARIS-JIXIE",
+    "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+    "workers": 6,
+    "started_utc": "2026-08-03T14:27:43.935896+00:00",
+    "finished_utc": "2026-08-03T18:51:01.298022+00:00"
+   }
+  },
+  "0.1": {
+   "results_dir": "results/phase5/a2a_operating_point/20260802T104619Z",
+   "archive_dir": "archive/M5_runs/wp3_pdc2_20260802T104619Z",
+   "proto": {
+    "frequency_Hz": 10000.0,
+    "nx": 8,
+    "samples_per_period": 64,
+    "theta_dc": 0.1,
+    "hs_rows": 48,
+    "settle_periods": 5.0,
+    "drive_periods": 4.0,
+    "fit_skip_periods": 2.0,
+    "gas_config": "configs/gas_air_10k_d2q37_levelc_dx2p6.yaml"
+   },
+   "archived_provenance": {
+    "run_id": "20260802T104619Z",
+    "family": "a2a_operating_point",
+    "argv": [
+     "E:\\Code\\LBM\\scripts\\phase5_a2a_operating_point.py"
+    ],
+    "machine": "LARIS-JIXIE",
+    "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+    "workers": 14,
+    "started_utc": "2026-08-02T06:37:27.854564+00:00",
+    "finished_utc": "2026-08-02T10:46:19.745771+00:00"
+   }
+  }
+ },
+ "sha256": {
+  "20260803T185241Z/signals.h5": "4e30c4f6589688f06bc7aacfdb4a13ddc80774331531297f6331ba8e2586ac0d",
+  "20260803T185241Z/summary.json": "cf308c1e73e57ed3e3995fda83a560df6d0812148e2f52a7df0a6eabf52c61d4",
+  "20260803T185241Z/harmonic_fit.json": "ce261d174e8d40cc071acdd1e6ffeb7a8b6a74806c48b3519d1a550ec01ddd5b",
+  "20260803T185241Z/config_resolved.yaml": "ec8e480d55432bbcd12fafb59240b2f6be529fda793d2a0c456e3ee6971685c6",
+  "20260803T185241Z/provenance.json": "0967f553fd95004a583034c9bb34eb7b4781f76f6d6ac9ee17f61b5784c76acb",
+  "20260801T081856Z/signals.h5": "20ad394764bb1bc86991cb1f18248af760966b30e35afad341366847ac3f0352",
+  "20260801T081856Z/summary.json": "0c15fa91876fb201a8d11252b0a368f04e3c7463b19dc7240629cb30d77d705a",
+  "20260801T081856Z/harmonic_fit.json": "9f2c8addfd52f5414a23ab312885809c53abf110dc8eba792de64e18216e6471",
+  "20260801T081856Z/config_resolved.yaml": "ad0a907fb2659039ef1d6b18c0a1fc136612535e6b807a799bc1d5cde8049fc5",
+  "20260801T081856Z/provenance.json": "ace4668531b8483a4ae42ac2b11862c5298e93cca097c08b0ea66bb98a39cdb8",
+  "20260803T185101Z/signals.h5": "10f2790acdea0d64d70a5aba4bd419156ac1765c76a3f18b4958f6a6497a782c",
+  "20260803T185101Z/summary.json": "747ffc5ff8691aa7524b01b1e50cca827eb743aa35501d5941f574a29d5fd5c4",
+  "20260803T185101Z/harmonic_fit.json": "d13652faec8667b3a7424785e7c6e4f475a2e2fe1f3c7c51662173cb3bd40e23",
+  "20260803T185101Z/config_resolved.yaml": "7632a5a70b217ecb69604272375dbc62753c152672f87fcac4dfb4313c26093c",
+  "20260803T185101Z/provenance.json": "801d025272f5160778ff117db9f3dd96dc60fef02bf8ba47afe83895f28cd002",
+  "20260802T104619Z/signals.h5": "d8998367ee29424e7a093dececd02291e6cdf83c9c711b1ac0a3e7111e05013a",
+  "20260802T104619Z/summary.json": "b4cfc0ccce9d7d3879b806e20dc088e7496ad1def0a867841def2d87e081ded5",
+  "20260802T104619Z/harmonic_fit.json": "a1aa0fbc41c192819122efd17fc6df9713321958c5f63f404e738e03ecb5a5fb",
+  "20260802T104619Z/config_resolved.yaml": "c612a38a1b2884a0d875b9b35790e0de28ee5efe2c7d1bfe5231f4646d452b7b",
+  "20260802T104619Z/provenance.json": "192b2d0fb9ecd962be9b896d2c9e3d5423e077c38146b18d3c119f9b4942a190",
+  "series_npz": "a2a6aba593fb15aee3612956bb094c33ead03a81c8caf6756da6a5a306ad4cbd"
+ },
+ "replay_fidelity": {
+  "cold_base_profile": "bitwise",
+  "cold_cross_run": {
+   "0.02": "bitwise",
+   "0.05": "bitwise",
+   "0.075": "bitwise",
+   "0.1": "bitwise"
+  },
+  "base_profile_0.02": "bitwise",
+  "base_profile_0.05": "bitwise",
+  "base_profile_0.075": "bitwise",
+  "base_profile_0.1": "bitwise"
+ },
+ "frozen": {
+  "replay_dop_guard_pp": 0.2,
+  "fp_equal_rel": 1e-12,
+  "r_dyn_wet_frozen_pp": {
+   "0.02": -2.12,
+   "0.05": -5.18,
+   "0.075": -7.61,
+   "0.1": -9.95
+  },
+  "d_op_anchors_pct": {
+   "0.02": -1.17,
+   "0.05": -2.83,
+   "0.075": -4.11,
+   "0.1": -5.31
+  },
+  "fit_window_main": [
+   2.0,
+   4.0
+  ],
+  "fit_window_alt": [
+   1.5,
+   3.5
+  ]
+ },
+ "built_utc": "2026-08-19T12:48:08.944972+00:00",
+ "machine": "LARIS-JIXIE",
+ "builder_argv": [
+  "scripts\\phase5_a2a_strictb_refpack.py",
+  "--workers",
+  "5"
+ ],
+ "code_commit": "d498eed",
+ "series_npz": "wet_reference_pack_series.npz"
+}
