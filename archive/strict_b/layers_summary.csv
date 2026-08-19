@@ -1,0 +1,14 @@
+layer,key_value,result,note
+1_topology,contract tests (16),PASS,r_P<=1e-12; P+S==explicit BB bitwise; coverage 15/8/3
+2_conservation,contract tests,PASS,per-stage<=1e-12; Bq identity ~1e-16
+3_wallpos,0.009282862309004417,FAIL_archived,gate 1e-3; c/N kinetic layer
+3_soak_uniform,,FAIL_archived,drift 1.234e-11 vs 1e-12; float floor (== perturbed drift)
+3_soak_perturbed,,PASS,envelope 0.01745 vs 1.05
+3_soak_hotdc,,PASS,A_late 3-4e-14 vs 1e-10 floor; machine B checkpoints
+4_cold_anchor,-0.03870024865135724,PASS,phase -3.870 deg; gates 10%/5deg
+5_admission_steady,0.020301552169774806,FAIL_G0_not_admitted,face consistency PASSES; powerlaw 2.036 vs 1.04 FAIL (medium)
+5_admission_ac,,FAIL_G0_not_admitted,"N64 amp +15..19%, phase +11..14 deg vs 10%/5deg"
+6_micro_jvp,contract tests,PASS,channels<=1e-8; Bshape=0; Bref bitwise
+7_full_jvp,,PASS,odd 1.2-2.3e-10; even ratio 4.0000; identity ~1e-10
+8_regression,333,PASS,333 passed x3; golden fixture bitwise
+9_hot,,COMPLETED_ARCHIVED,stamp STRICT_B_HOT_ARCHIVED_PREFLIGHT_INCOMPLETE

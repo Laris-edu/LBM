@@ -1,0 +1,6 @@
+row,measured,reference_or_gate,pass
+face_consistency_worst_finest,0.020301552169774806,0.05,True
+powerlaw_exponent_meas_vs_1.04,2.036164983452026,1.04,False
+G_series_c1_archived,0.0004332254204767063,0.0003491647556463503,archived
+G_series_c1.05_archived,0.00048299614370345714,0.0003673391959155923,archived
+G_series_c1.1_archived,0.0005259335621004478,0.0003855483000141418,archived

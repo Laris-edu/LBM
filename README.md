@@ -3,6 +3,8 @@
 基于格子 Boltzmann 方法（LBM）配合谱多弛豫时间（SMRT）碰撞模型，
 对 CNT/石墨烯薄膜热声换能器进行时域数值模拟。
 
+当前阶段、Gate 与 Paper 1 写作入口统一从 `docs/PROJECT_CONTEXT.md` 读取；本 README 只保留项目级概览。
+
 ## 项目目标
 
 刻画电热驱动下 CNT 薄膜的热声效应：
@@ -36,7 +38,7 @@
 | `data/` | 输入数据（不纳入版本控制） |
 | `results/` | 模拟结果（不纳入版本控制） |
 | `notebooks/` | Jupyter 探索性分析 |
-| `docs/` | 研究计划书、推导笔记、文献笔记；按阶段组织（`Phase_0/1/2/3/4`，Phase_2 内分 `closure/acoustic/robustness/M2`，Phase_3 含 M3 报告/收尾决策，Phase_4 已建立 P4-0 合同/状态/输出导览） |
+| `docs/` | 研究计划书、推导笔记、文献笔记；按 `Phase_0`–`Phase_5` 组织，当前入口为 `docs/PROJECT_CONTEXT.md` 与 `docs/Phase_5/Phase5_STATUS.md` |
 | `tests/` | 单元测试 |
 
 ## 环境
@@ -55,7 +57,7 @@ pip install -r requirements.txt
 - [x] Phase 2：气体侧热 LBM 核心 + 验证（M2 收尾：紧致空气目标 BOUNDED_PRODUCTION_GO）
 - [x] Phase 3：固-流界面耦合（M3 收尾：相位三级 PASS、幅值边界 SCOPED_ACCEPTED；维护态，见 `docs/Phase_3/M3/M3_Closure_Decision.md`）
 - [x] Phase 4：开边界与远场外推（P4-1 单网格路线历史 `FAILED` 后由 D3 多域架构绕行；D3-0→D3-4 已闭合，M4=`PASSED_WITH_SCOPED_RISK`，2026-07-11 审查复验 E2 1.62%/R2 2.63%，非 final production、不自动授权 Phase 5）
-- [ ] Phase 5：物理结果生产
-- [ ] Phase 6：论文撰写
+- [ ] Phase 5：非线性入口、方法学诊断与 Paper 1 写作轨（WP0–WP4 授权范围已完成；仍为 `FINAL_PRODUCTION_NOT_CLAIMED`）
+- [ ] Phase 6：最终稿件/投稿阶段（尚未独立启动；当前 Paper 1 通用方法学核心在 Phase 5 冻结）
 
-详见 `docs/` 中的研究计划书。
+详见 `docs/PROJECT_CONTEXT.md`。

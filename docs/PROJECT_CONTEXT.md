@@ -1,6 +1,6 @@
 # LBM 项目上下文入口
 
-**最后更新**：2026-08-17（本次：D1 **严格候选 B** 冻结设计已无损压缩为 88 行实验执行清单 `strict_faceflux_candidate_b_design_v1.0.md`，状态仍为 `STRICT_B_DESIGN_CONDITIONAL / IMPLEMENTATION_NOT_STARTED / D1_SCIENTIFIC_GATE_OPEN`；既有 run 仍是 `D1_B_BUFFER_DIAGNOSTIC_NULL`，不能外推为严格 B 或能量语义整族结论。仅重构文档，未改代码、未发 run、未改 Gate/生产壁。）
+**最后更新**：2026-08-19（D5-9 冻结论文导向的 `A2a-STRICT_B` 原协议复测短版方案：保持 A2a 工况/读出，只替换 strict-B 面边界，重跑非均匀 DC 基态增量响应并对照 QS 静态族；状态=`PLAN_FROZEN / IMPLEMENTATION_NOT_STARTED / RUN_NOT_AUTHORIZED`。既有 strict-B 科学资格、分类、Gate、生产壁与冻结标定不变。方案唯一家=`docs/Phase_5/a2a_strict_b_experiment_plan_v1.0.md`。）
 **用途**：新会话第一份必读文档，用于快速恢复项目阶段、读取路线、不可误判规则和下一步优先级。
 **定位**：全项目生命周期唯一上下文入口，不是某个阶段的专属文档。
 **维护原则**：只保留压缩摘要和入口索引；阶段流水、run 细节、完整数值和推导证据由对应 `PhaseN_STATUS.md`、M 报告和专项诊断报告维护，本文不复制。
@@ -23,14 +23,14 @@
 ```text
 请先阅读 docs/PROJECT_CONTEXT.md（§2 当前状态、§3 不可误判规则）和
 docs/Phase_5/Phase5_STATUS.md（Gate 现值 + §3 WP4 生产数据）。
-当前:Phase_5 WP4 认证子矩阵已完成,毕业导向论文写作轨
-（架构 Manuscript/Paper1_Manuscript_Architecture.md v0.3,一主两辅;投稿前不新增模拟）。
+当前:Phase_5 WP4 认证子矩阵已完成,Paper 1 方法学写作轨
+（架构 `Manuscript/Paper1_Manuscript_Architecture.md` v1.0；strict-B 已正式登记为资格戳未授予/分类不激活；D5-9 方案冻结不等于 run 授权。）
 多 run 编排沿用 execute_cases 进程池 + D5-3 双机口径。回答和文档使用中文。
 ```
 
 ## 2. 当前阶段与状态
 
-**当前阶段（2026-08-06）：Phase_5 WP4 认证子矩阵已完成，进入毕业导向论文写作轨**。WP2 入口 Gate 序列已完成：G0-B（scoped）、G3、G1-W、G1a、G2-T/A/O（L2-2F 生效）、G4a `PASSED`；G1b `FAILED` 闭卷，其顺延耦合问题已由 G4a canonical 有沉几何单点闭合。WP3 八单元全部完成（2026-08-02）；**WP4 三支子矩阵（A2a 全地图/A1 全阶梯/A5 χ 地图）+ 1D DC 臂于 2026-08-04 全部权威闭合**（数据唯一家=`Phase5_STATUS.md` §3）。A3/A2b/H3/F1 不在授权内、未执行且不再作为投稿前缺口；`WP4_SUBMATRIX_COMPLETE`、`FINAL_PRODUCTION_NOT_CLAIMED`。主路线=`ROUTE_B_MAIN + 1D_REAL_AIR_BOUNDING`。稿件采用“一主两辅”：Results I 为完整时域 LBM 与准静态/1D 的工作点趋势差异；Results II 是 A1/H2 独立弱非线性控制，Results III 是膜热容过滤的器件传递背景，二者均不裁决或界定主差异。APC 可接受时评估 *AIP Advances*，否则评估 JAFM，最终以学院当年 SCI/EI 认定为准。状态与 Gate 现值只看 `docs/Phase_5/Phase5_STATUS.md`，论文叙事与图表接口看 `Manuscript/Paper1_Manuscript_Architecture.md`。
+**当前阶段（2026-08-19）：Phase_5 WP4 认证子矩阵已完成，Paper 1 处于通用计算方法学写作轨**。WP2 入口 Gate 序列、WP3 与 D5-6 授权的 WP4 子矩阵均保持既有终态；`WP4_SUBMATRIX_COMPLETE`、`FINAL_PRODUCTION_NOT_CLAIMED`。主路线仍为 `ROUTE_B_MAIN + 1D_REAL_AIR_BOUNDING`。Paper 1 的中心为**有限热偏置下湿节点 thermal-LBM 边界的一致性诊断、范式内反证与零体积面通量候选**；thermophone 只作问题来源/诊断 benchmark/应用意义，A1/H2 与 A5 不进入本稿正文或补充数据包。strict-B 执行链已登记，但科学资格戳未授予、分类不激活；D5-9 仅冻结 A2a-STRICT_B 原协议复测方案。题目、摘要、Section 5 与 Fig. 6 只读取 `Phase5_STATUS.md` 的正式状态。状态与 Gate 现值只看 `docs/Phase_5/Phase5_STATUS.md`，论文架构与图表接口看 `Manuscript/Paper1_Manuscript_Architecture.md`。
 
 ### 继承基线速览（现值指针,不复制流水）
 
@@ -55,7 +55,9 @@ docs/Phase_5/Phase5_STATUS.md（Gate 现值 + §3 WP4 生产数据）。
 - 不把 G4a 帐篷双带 rig 写成"新热沉模型"或 Robin 替代：沉带=v1.1 认证壁钉 θ_amb,是 canonical `T(H_s)=T_ambient` 的直接实现;双柱=同一 canonical 问题的并行实现（重复对照行）。也不把 WP1-3「等温盖判死」读作"两条回调行判死"——判死变量=缝上一阶场跳变×闭腔（wrap 相邻 wall|lid 对的全 Θ 跳变）;帐篷场处处连续,不在该族。反对称双温单行变体已探针否弃（行内碰撞抹平双温结构），不得复活。
 - 耦合回路中带簿记热流必须做 **cv 重钉扎精确扣除**（定密度行能量 E=cv·ρθ、cv=(D+S)/2,无 pdV;用 cp 过扣制造伪负导数项）:原始簿记直馈 ODE 含超 Nyquist 导数项（增益=cv·Σρ_row/(nx·C_A),跨 1 即步进振荡自激——G4a 主 run 失稳@180 步与 smoke 稳定的二分性被该增益 1.244/0.965 精确解释）。修正后气侧瞬时导 G_inst≈0=回路本征稳定（膜极点）;机制映射夹具在合同测试固化。
 - 不把 G4a 的 `DYNAMIC_NONLINEAR_RESIDUAL_IDENTIFIED` 读作 gate 失败或测量可疑：它是 §11.5 预注册判读的正式产出（D_OP 实测 −2.83% vs QS0/QS1 +2.4%，信号远高于 `U_gov`）——静态工作点重求值族失效是合同核心问题句的实测答案。QS-1k 进一步表明波数分辨静态重求值仍不能恢复负号；WP4-TAN R1 表明生产 D_OP 与完整时域 LBM 的数值方向切线一致（偏差 ≤0.007 pp），排除了有限幅值解释。TAN R2 只表明未发现随工作点增强的高波数局域异常（高波数分数低于冷底板），因此结果**与低波数或全局响应一致**。【2026-08-10 后：WP4-JAB 切线消融（`JAB_COUPLED_CANDIDATE_A2_A3`）把该负号差异的 **LBM 内部来源**定位为 v1.1 带重构与宏观恢复/平衡分布两个导数块的近可加耦合；**JAB2 第二轮进一步定位：A2 块=单一子项 A2-5（壁面内能目标与 g 重钉扎的基态密度敏感度，σ=1.000 两点、Y 与整块 7 位一致），A3 补偿=ρ 交叉族×平衡构造族近抵消束（无单一主项，`A3_DISTRIBUTED`）；冻结分类路由 `ROUTE_LBM_BOUNDARY`（A2-5∈离散边界操作）**——这些是**算子内部导数块归因，不是真实物理机制声明**；不得写成质量中性壁普遍错误（其认证的质量中性/钉扎/小幅值行为不受影响）、不得写成 thermophone 新物理已发现；「离散边界项主导」若要升级为方法学结论需在改进边界方案上复测（报告 §5/§7.3）】
-- 不把 2026-08-17 的 `D1_B_BUFFER_DIAGNOSTIC_NULL`（历史数值分类别名 `WALLFIX_NULL`）读作「严格 B 已验证/失败」「D1 §13.2 已完整证伪」「纯气侧响应」或「边界能量交换语义整族排除」：现实现保留有热容共享 band。其稳健结论限于：在共享 buffer、相同行形状重置/band-row `u=0` 和常数 `G_f` 下，移除显式 `c_vρ̄δθ_w` 零阶储能源只移动 d_OP `+0.0268/+0.0383 pp`；冷态复比幅值 `−2.446%` 命中 D1 幅值预算，相位 `−3.959°` 未命中。严格 B 已完成设计但未实现，唯一设计家=`docs/Phase_5/strict_faceflux_candidate_b_design_v1.0.md`，buffer 数值唯一家=`faceflux_wall_report.md`。
+- 不把 2026-08-17 的 `D1_B_BUFFER_DIAGNOSTIC_NULL`（历史数值分类别名 `WALLFIX_NULL`）读作「严格 B 已验证/失败」「D1 §13.2 已完整证伪」「纯气侧响应」或「边界能量交换语义整族排除」：该实现保留有热容共享 band，其稳健结论限于共享 buffer 下移除显式 `c_vρ̄δθ_w` 只移动 d_OP `+0.0268/+0.0383 pp`。buffer 数值唯一家=`faceflux_wall_report.md`。
+- **不把 2026-08-19 strict-B 执行结果读作 §13.2 已裁决或"strict-B 失败"**：科学资格戳未授予（壁位/系综 Θ_DC/uniform 漂移/G0 admission 四行 FAIL——归因分别是近壁 3 格动理学层 c/N 极限、外推口径极限、3.27M 步浮点求和底噪[与 perturbed 逐位同幅=非物理]、冻结介质低 k 色散[G0-B 围栏；面一致性行 2.03% 独立 PASS]——**无一指向拓扑/守恒/切线仪器缺陷**，那些层机器精度级）；热点分类不激活，archived 方向证据=CONST_G m=0.581/0.589、G0 m=0.653/0.662（删 band 后负趋势 ~58-66% 消失、残余 −0.21~−0.80 pp 仍负、载体未识别）。CONST_G 是控制分支无裁决权；G0 数值无分类权；`STRICT_B_PARTIAL_CONTROL` 不得写成"A2-5 解释 60% 且残余=新物理"。四项 SCOPED 裁决属用户（STATUS §6）。唯一家=`strict_b_report.md` REPORT_v1.0。
+- 不从 `strict_b_report.md` 等报告草稿、运行目录或局部热点数字激活 Paper 1 的 strict-B 分支：只有 `Phase5_STATUS.md` 正式登记 `STRICT_B_SCIENTIFICALLY_VALIDATED` 后才读取 `RESOLVED/SIGN_FLIPPED/PARTIAL/NULL/MIXED`。前置合法性失败时热点无解释权；合法 `NULL` 也只约束该 micro-closure，不能排除面通量边界家族。该纪律不改变 strict-B 的现有 Gate 或执行状态。
 - 不把跨栈单元 1a(2026-08-14)配置轴的 `CROSSSTACK_FAMILY_ROBUST` 读作「跨代码/跨格子普遍性已证」:判决网格上三个"活"变体里**只有 `DEVMEAS` 有判别力**(剪切 ν_eff ×4、冷 |Y₀| −4.9%,把 d_OP 推动连续参照缺口的 10.5%、符号不变、幅值留 ~89.5%),另两个(`TRZERO`/`CTRL4TH`)只以 2×/5× 勉强越过活键线、d_OP 移动 <0.01 pp=近惰性对照;BGK 轴给不出正面证据;点阵轴(1a-LAT)与独立实现轴(1b/1c)未做。**措辞上限=「在本栈可及的碰撞结构自由度内稳健」,不是「普遍」**。唯一家=`docs/Phase_5/crossstack_collision_report.md` §5。
 - 不把跨栈单元 1a(2026-08-14)的 BGK 失稳读作「LBM 不可用」「BGK 是错的算子」,**更不得读作跨栈普遍性的正面证据**:它证明的是**本栈工作点上没有任何能复现生产 α 的 (τ_f,τ_g) 是线性稳定的**——保 α 的整个可行区间 τ_f∈(0.5,0.7310) 谱半径 1.46–2.02(生产 1.000000),测量在**无壁周期箱**上做,故不可归因于壁/几何/幅值/基态梯度;BGK 只有在保留因子 1−1/τ 趋零(退化为生产闭合早就在做的完全正则化投影)时才稳定,而那里 α 已是生产的 3.4 倍=不同的物理问题。正面含义=正则化闭合在 θ/θ_q≈0.069 冷工况(dx 落到标定 k≈0.098 所强制)下是**唯一可跑的东西**、不是额外复杂度;负面含义=跨栈普遍性的正面证据只能来自配置轴与后续 1b/1c。唯一家=`docs/Phase_5/crossstack_collision_report.md`。
 - 不把自由弛豫参数扫描(2026-08-13/14)的 τ≠1 各行读作生产可用设置或标定建议:它们是 `fourth_order` 分支上的**诊断行**(生产 (tau,k) 标定按合同 §0.4 冻结,本单元从不提议重调);双向判决=τ>1 加重伪迹且 τ≥1.08 失稳、τ<1 方向正确但仅 τ≥0.99 合法且外推穿越点 τ≈0.967 落在崩溃区并需 −28% 冷态导纳代价——**标准补救(调 ghost 自由弛豫参数)双向失败**。也不得把 smoke 网格上 τ≤0.98 "看似穿越到正值"的行当结果:生产网格严格合法性门下全部判失稳。唯一家=`docs/Phase_5/ghost_relax_scan_report.md`。
@@ -127,15 +129,18 @@ docs/Phase_5/Phase5_STATUS.md（Gate 现值 + §3 WP4 生产数据）。
 
 ## 4. 当前关键决策
 
-- **D1 strict-B 执行清单（2026-08-17，用户确认短版；未授权实施）**：主拓扑=`STRICT_B_HALF_DOMAIN_MIRROR_V1`——删除物理 band，以单侧有体积半域 + 每 stage 即时零体积 opposite-direction 镜像扩展关闭 D2Q37 深链接和全局谱算子；热/沉通量只写各自第一气体控制体的 `|c·n|=1` incoming `g`。比较系综为闭柱等质量；`STRICT_B_CONST_G` 先过拓扑/语义门，`STRICT_B_G0` 只有独立 face-conductance admission 通过后才裁决 §13.2。状态链=`STRICT_B_DESIGN_CONDITIONAL / IMPLEMENTATION_NOT_STARTED / D1_SCIENTIFIC_GATE_OPEN`；权威执行清单=`strict_faceflux_candidate_b_design_v1.0.md`。既有 run 仅为 `D1_B_BUFFER_DIAGNOSTIC_NULL`。
+- **D5-9 A2a-STRICT_B 原协议复测方案（2026-08-19，用户确认）**：只替换湿节点为 strict-B 面温/面热流联合边界，在各自非均匀 DC 基态上重跑 A2a 时域增量响应，并重新计算 QS-0/QS-1/QS-1k；当前仅冻结方案，未授权实现或运行，不改变既有 strict-B/Gate/生产状态。
+- **strict-B 权威执行链（2026-08-18 用户授权实施 → 08-19 落盘登记）**：六资产+16 项合同+两步纪律（预注册 `d036e74` 先于一切 strict 热点数值；运行语义修正 `929884a`/`18aa0ef`/`8556649` 不改判读线）；双机执行（A 机主链+B 机 hotdc checkpoint 转移，D5-3；B 机对小时级单进程 case 三次被系统外力终止→长跑角色退役，memory 在案）。判决 run `20260818T201520Z_auth`：PROD 锚复验 1.1e-5/2.4e-5 pp；资格戳未授予、分类不激活、`D1_SCIENTIFIC_GATE_OPEN`+双行方向证据。唯一家=`strict_b_report.md`。
+- **D5-8 Paper 1 方法学架构重建（2026-08-18，用户确认采用）**：canonical 架构升为 `ARCHITECTURE_v1.0_METHODS_CONDITIONAL`，主线从“thermophone 模型差异 + A1/A5 背景”改为“有限热偏置 thermal-LBM 边界问题的现象—诊断—定位—范式内反证—条件面通量修复”。thermophone 只作诊断 benchmark；A1/H2、A5、远场声学和效率退出本稿正文/SI。成功/回退只由 strict-B 正式资格与分类激活；不新增模拟、不改 Gate/生产状态。v0.3 原文逐字节归档为 `Manuscript/Paper1_Manuscript_Architecture_v0.3_OBSOLETE.md`。
+- **D1 strict-B 现值（设计 2026-08-17；权威执行 2026-08-19 登记）**：主拓扑=`STRICT_B_HALF_DOMAIN_MIRROR_V1`——删除物理 band，以单侧有体积半域 + 每 stage 即时零体积 opposite-direction 镜像扩展关闭 D2Q37 深链接和全局谱算子；热/沉通量只写各自第一气体控制体的 `|c·n|=1` incoming `g`。现值=`STRICT_B_VALIDATION_STAMP_NOT_GRANTED / STRICT_B_HOT_ARCHIVED_PARTIAL_CONTROL_DIRECTION_EVIDENCE / D1_SCIENTIFIC_GATE_OPEN`；设计家=`strict_faceflux_candidate_b_design_v1.0.md`，判决家=`strict_b_report.md` `REPORT_v1.0`，正式状态只认 `Phase5_STATUS.md`。
 - **跨栈普遍性单元 1a 执行（2026-08-14 用户下达计划书当日启动；D0-7 诊断）**：回答投稿最大接受风险"只在自己一套栈上测过"的碰撞轴。新增诊断算子 `core/collision_bgk.py`（生产 `collision_smrt.py` 一字不改）+ 链路接入 `core/tangent_bgk.py` + runner `phase5_crossstack_collision_scan.py` + 20 项合同测试。**两轴当日闭合**：BGK 轴=生产工作点上无条件线性失稳（计划书 §3 回退路径 1 触发；生产侧冻结量一个未动）；配置轴=**`CROSSSTACK_FAMILY_ROBUST`**（伪迹在能保住同一物理问题的碰撞配置自由度内稳健，`DEVMEAS` 仅移动连续参照缺口的 10.5%）。唯一家=`crossstack_collision_report.md`（REPORT_v1.0）+ STATUS §2。
 - **自由弛豫参数双向扫描（2026-08-13/14 用户指令；B 机双向权威 run）**：回答文献核查暴露的审稿线（离散效应传统的标准补救=调 ghost 自由弛豫参数）。判决=**双向失败**（τ>1 加重、τ<1 在修好前先失稳且代价为冷态标定崩溃）——`WALLFIX_FAMILY_NULL` 适用面由"壁修改"扩展到"壁修改 + ghost 弛豫补救"。唯一家=`ghost_relax_scan_report.md` + STATUS §2。
-- **A2-5 修复性反证执行（2026-08-11 用户指令当日闭合）**：判决=`WALLFIX_FAMILY_NULL`——严格四不变量（质量中性/u=0/θ 精确钉扎/簿记闭合）内不存在能改变热基态切线响应的壁修改；A2-5 异常=湿节点逐步重钉扎**范式**的结构性质。放宽行钉扎语义的 strict-B 已完成设计但未实施，不能据 buffer 代理扩展此结论。唯一家=`wallfix_a2a5_counterproof_report.md`+STATUS §6.1。
+- **A2-5 修复性反证执行（2026-08-11 用户指令当日闭合）**：判决=`WALLFIX_FAMILY_NULL`——严格四不变量（质量中性/u=0/θ 精确钉扎/簿记闭合）内不存在能改变热基态切线响应的壁修改；A2-5 异常=湿节点逐步重钉扎**范式**的结构性质。放宽行钉扎语义的 strict-B 已进入实施/preflight，但未获正式科学资格；不能据 buffer 代理或报告草稿扩展此结论。唯一家=`wallfix_a2a5_counterproof_report.md`+STATUS §2/§5。
 - **NSF 热基态切线仲裁执行（2026-08-11 用户计划书当日下达当日闭合）**：写作轨内用户指令诊断单元（JAB 先例；零新 LBM 算力、A 机单机分钟级）。判决=连续 NSF 热基态动力学（含全部梯度耦合项）不能产生 LBM 负工作点趋势与相位签名；LBM-equivalent 介质情况 A/D 为正——**`ROUTE_LBM_BOUNDARY` 维持强化，thermophone finite-bias physics 不重开**。唯一家=`NSF_hot_basestate_tangent_arbitration_report.md`+STATUS §6.1。不改变「投稿前不新增模拟」默认与任何 Gate。
 - **WP4-JAB 切线消融执行（2026-08-08 用户授权 → 08-10 闭合）**：写作轨内用户指令诊断单元（TAN 先例）；两步 commit 预注册纪律；结果=`JAB_COUPLED_CANDIDATE_A2_A3`（唯一家=`wp4_jacobian_ablation_report.md` + STATUS §6.1）。不改变「投稿前不新增模拟」默认与任何 Gate；第二轮（细粒度/趋势复核）为新算力、须用户另行授权。
-- **论文架构收缩与投稿目标切换（2026-08-06，用户决定）**：`Manuscript/Paper1_Manuscript_Architecture.md` 升为 `ARCHITECTURE_v0.3`，以尽快满足毕业录用条件为目标，采用“一主两辅、5 节、5 图”。Results I 是完整时域 LBM 与准静态/1D 工作点趋势差异的唯一中心；Results II 是 A1/H2 独立弱非线性控制，Results III 是膜热容传递背景，均不裁决或界定主差异。投稿前不再补 A3/A2b/H3/30 kHz/频扫/有限宽/路线 A；机理口径由“箱尺度/全局效应”校准为“无随工作点增强的高波数局域特征，唯一机制开放”。
+- **历史：论文架构 v0.3（2026-08-06）**：当时采用“一主两辅、5 节、5 图”；已由 D5-8 废止，原文只在 `Paper1_Manuscript_Architecture_v0.3_OBSOLETE.md` 与历史日志保留，不得作现行写作口径。
 - **D5-6 `SCOPED_GO` + WP4 完成（2026-08-03 批准 → 08-04 闭合;机理判别至 08-05）**：认证子矩阵 A2a/A1-H2/A5 全部权威闭合;QS-1k 判别 `MECHANISM_NOT_CLOSED`(静态族三级失效)、WP4-TAN `TANGENT_CONFIRMED`+`GLOBAL_OR_LOWK_LOCALIZED`。数据=STATUS §6.1,决策全文=`x/wp3_go_nogo_decision.md` §7。
-- **D5-5 WP3 启动（2026-08-02;历史节点）**：八信息单元单日闭合(双机分跑首例);§14.1 对照支持 `SCOPED_GO`;当时建立的 `ARCHITECTURE_v0.1` 已由 v0.3 取代。
+- **D5-5 WP3 启动（2026-08-02;历史节点）**：八信息单元单日闭合(双机分跑首例);§14.1 对照支持 `SCOPED_GO`;当时建立的 `ARCHITECTURE_v0.1` 后经 v0.3 演化，现均由 D5-8 v1.0 取代。
 - **WP2 Gate 认证链（2026-07-22→08-01,脚本判定+两项用户 scoped 决策）**：G0-B `SCOPED_PASSED_BY_USER`(D5-2,围栏=剪切 ν 不认证+有限-k 表格口径)→ G3(1D 参考仪器+分支正式定义冻结)→ G1-W(**生产壁=v1.1 对称质量中性壁**,矩通道重标定 3.055@+17.5°)→ G1a(+`G1A_PASSED_TO_0P05`,生产矩阵解锁至 0.075;进程池并行首创)→ G1b `FAILED` 闭卷(D5-4,耦合顺延 G4a)→ G2-T/A/O(双频,L2-2F 生效)→ G4a(帐篷双带+QS 判读+耦合行闭合)。各 gate 权威 run/数值/报告=STATUS §1 表与对应报告。
 - **D5-3 跨机口径（2026-07-29,用户）**："每机逐位、跨机容差";权威 run 记机器指纹;详录 `scripts/README.md`。
 - **D5-1 路线决策（2026-07-22,用户）**：维持 `ROUTE_B_MAIN + 1D_REAL_AIR_BOUNDING`(双物性消融触发评审后不启动路线 A;升级条件预注册,备忘录 §7)。
@@ -143,11 +148,12 @@ docs/Phase_5/Phase5_STATUS.md（Gate 现值 + §3 WP4 生产数据）。
 - **历史阶段决策一览（全文在各权威家,此处仅指针）**：M4 收尾 (b) scoped 风险清偿 + E2 审查修订(digest `d69bf24d881e`)、K0 kernel 约定钉死、声速介质标定、D3-4 源侧落地/三 rig 判定、D3-3 双向判死→单向过门(用户)、D3-2 反射门、D3 立项(用户)、P4-1 终态 FAILED→D1/D3 判决 → `Phase4_STATUS.md` §4 + `M4_Verification_Report.md` + `P4_D3_Multidomain_Acoustic_Project.md`;M3 收尾方案 (a)(用户 APPROVED)、P3-0…P3-6 → `Phase3_STATUS.md` + `M3_Closure_Decision.md`;`BOUNDED_PRODUCTION_GO`(2026-06-22,用户) → `M2_Critical_Decision.md`。
 - **冻结技术不变量**：默认 baseline=D2Q37/RR 闭合(`configs/gas_air_10k_d2q37_physical_timestep.yaml`,RR `chi*=1.1052362846829455`);Level C QoI 主结论必用 `configs/gas_air_10k_d2q37_levelc_dx2p6.yaml` 或其派生;Level C 耦合首版=Heun/predictor-corrector+一次 Picard;`core/unit_mapping.py` 是 `nu_lu/alpha_lu/nu_b_lu/tau21/tau22/tau32` 唯一入口;对外热流一律 conductive `q_lu`(raw central energy flux 仅 collision 内部);array layout 冻结(`c=(Q,D)`、`w=(Q,)`、`f/g=(...,Q)`,pull streaming,速度轴最后);D2Q21 保留 `second_order` 低模态 baseline(`fourth_order` 仅 diagnostic)。
 
-## 5. 下一步优先级（论文写作轨，2026-08-06）
+## 5. 下一步优先级（Paper 1 方法学写作轨；A2a-STRICT_B 方案已冻结，2026-08-19）
 
-1. **用户决定是否授权严格 B 实施**：短版实验清单已确认，当前没有代码、测试或 run 授权。
-2. **若获授权，先做 code/cold/JVP 门**：实施预注册必须先于热点数值；只有 G0 admission 和全部合法性门通过后才发热点。
-3. **生产证据继续冻结**：即使未来严格 B 诊断翻正，也须另立 G1-W 级重认证，不能自动替换生产壁。
+1. **决定是否授权实施/运行 A2a-STRICT_B**：方案已冻结，但本次文档交付不含代码或 run 授权。
+2. **完成不依赖新 run 的 C1–C4 初稿**：按新 Section 2–4 写观察量、现象、TAN、JAB/JAB2、NSF、wallfix/ghost/collision 与面通量修复要求。
+3. **既有四项 SCOPED 裁决仍独立待决**：不得用 A2a-STRICT_B 方案冻结替代对 strict-B 报告资格冲突的裁决。
+4. **正式结论只认 `Phase5_STATUS.md` 登记**：未来 A2a-STRICT_B 结果也不自动改变 strict-B 科学资格、Gate 或生产壁。
 
 ## 6. 详细事实入口
 
@@ -157,10 +163,11 @@ docs/Phase_5/Phase5_STATUS.md（Gate 现值 + §3 WP4 生产数据）。
 - Phase_5 当前状态（状态标签 + Gate 现值唯一追踪处;WP4 生产数据=§3）：`docs/Phase_5/Phase5_STATUS.md`
 - Phase_5 文档目录索引：`docs/Phase_5/README.md`
 - Phase_5 输出导览（跨目录落位 + 归档约定）：`docs/Phase_5/Phase5_Output_Files_Guide.md`
-- D1 严格候选 B 权威实验执行清单（条件设计；未实现）：`docs/Phase_5/strict_faceflux_candidate_b_design_v1.0.md`
+- D1 严格候选 B：设计=`docs/Phase_5/strict_faceflux_candidate_b_design_v1.0.md`；实施与判决唯一家=`docs/Phase_5/strict_b_report.md`（REPORT_v1.0；科学分类的正式登记仍只认 `Phase5_STATUS.md`）；归档=`archive/M5_runs/strictb_20260818_A/`
+- A2a-STRICT_B 原协议复测方案：`docs/Phase_5/a2a_strict_b_experiment_plan_v1.0.md`（仅方案冻结；未授权实现或运行）
 - WP3 首轮预注册与 Go/No-Go 材料（§7=D5-6 决策全文）：`docs/Phase_5/x/wp3_go_nogo_decision.md`
-- 论文架构（v0.3,一主两辅;不入库）：`Manuscript/Paper1_Manuscript_Architecture.md`
-- 论文结果素材层（整理自 docs/Phase_5;不入库）：`results/Phase5_Result/`
+- 论文架构（v1.0 条件方法学核心；不入库）：`Manuscript/Paper1_Manuscript_Architecture.md`；v0.3 逐字节历史归档=`Manuscript/Paper1_Manuscript_Architecture_v0.3_OBSOLETE.md`
+- 论文结果素材层：`results/Phase5_Result/`（整套 R0–R3/Fig. 3–5 为 `LEGACY_v0.3`，不是现行写作入口）
 - Gate 报告族：`x/nonlinear_model_freeze.md`(G0)、`x/nonlinear_1d_reference_report.md`(G3)、`x/wall_nonlinearity_neutrality_report.md`(G1-W)、`x/nonlinear_entry_gate_report.md`(G1a §A/G1b §B)、`x/harmonic_transfer_report.md`(G2-T/A)、`x/harmonic_operator_ablation_report.md`(G2-O)、`x/dc_protocol_report.md`(G4a)、`wp4_jacobian_ablation_report.md`(WP4-JAB 诊断单元)——均在 `docs/Phase_5/x/`
 - 权威 run 摘要归档：`archive/M5_runs/`（30 项；原始 signals.h5 双机镜像于两机 `results/mirror_from_*`）
 - Gate schema（机器可读，合同 §4/§16 转录）：`verification/nonlinear/phase5_gate_schema.json`
