@@ -1,0 +1,61 @@
+inheritance:
+  gas_config: configs/gas_air_10k_d2q37_levelc_dx2p6.yaml
+  plan: docs/Phase_5/a2asb_ensemble_scan_plan_v1.0.md
+  judgement_run: archive/M5_runs/a2asb_20260819_B
+  tangent_anchors: archive/strict_b/hot_judgement.csv
+ensemble_scan:
+  frequency_Hz: 1.0e4
+  n_phys: 48
+  nx: 8
+  samples_per_period: 64
+  settle_periods: 5.0
+  drive_periods: 4.0
+  eps_ac_hot: 0.02
+  eps_ac_cold: 0.005
+  fit_window_main:
+  - 2.0
+  - 4.0
+  fit_window_alt:
+  - 1.5
+  - 3.5
+  n_ref_ladder:
+  - 192
+  - 384
+  - 768
+  points:
+  - theta_dc: 0.05
+    grid: five_point
+  - theta_dc: 0.1
+    grid: three_point
+  reference_pack: archive/a2a_strict_b/wet_reference_pack.json
+  ckpt_dir: results/phase5/a2a_strict_b/checkpoints_auth_1117736
+ensemble_scan_smoke:
+  frequency_Hz: 1.0e4
+  n_phys: 12
+  nx: 4
+  samples_per_period: 32
+  settle_periods: 2.0
+  drive_periods: 2.0
+  eps_ac_hot: 0.02
+  eps_ac_cold: 0.005
+  fit_window_main:
+  - 1.0
+  - 2.0
+  fit_window_alt:
+  - 0.5
+  - 1.5
+  n_ref_ladder:
+  - 96
+  - 192
+  points:
+  - theta_dc: 0.05
+    mass_rel:
+    - 0.976
+    - 1.0
+    - 1.024
+  - theta_dc: 0.1
+    mass_rel:
+    - 0.976
+    - 1.0
+    - 1.024
+  ckpt_dir: results/phase5/a2asb_ensemble_scan/checkpoints_smoke
