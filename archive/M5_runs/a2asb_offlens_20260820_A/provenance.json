@@ -1,0 +1,12 @@
+{
+ "run_id": "20260820T073200Z",
+ "family": "a2asb_offset_lenses",
+ "argv": [
+  "scripts/phase5_a2asb_offset_lenses.py"
+ ],
+ "machine": "LARIS-JIXIE",
+ "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+ "code_commit": "6290cab",
+ "started_utc": "2026-08-20T07:31:54.010500+00:00",
+ "finished_utc": "2026-08-20T07:32:00.410221+00:00"
+}

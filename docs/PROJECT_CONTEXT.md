@@ -1,6 +1,6 @@
 # LBM 项目上下文入口
 
-**最后更新**：2026-08-20（两单元闭合：① `A2a-STRICT_B` 复测判决 run——四点 d_OP 仍负、上移 +0.13→+0.57 pp、C_R≈0.48，候选=`NOT_RESOLVED_CANDIDATE`，四级判决与 G0 围栏待用户（家=`docs/Phase_5/a2a_strict_b_report.md`）；② **系综轴扫描**=`ENSEMBLE_AXIS_PARTIAL`——质量系综是原框架负趋势主承载（斜率 ~0.956 pp/%、盈余质量符号翻正、等质量点与切线锚 0.006–0.007 pp 和解），异常改述为"密度超额响应 1.80×连续 + 随 Θ 偏置 + 次要边界项 ~11%"（家=`docs/Phase_5/a2asb_ensemble_scan_report.md`）。既有 strict-B 科学资格、分类、Gate、生产壁与冻结标定不变。）
+**最后更新**：2026-08-20（三单元闭合——**偏置判别=`OFFSET_BEYOND_CONTINUUM`**：等质量 Θ 偏置（wet 负趋势最大单项 ~58%）经四静态透镜+完整 NSF 格子本构动力学判为**超连续动理学残差**（格子透镜下质量平坦 −2.6~−3.0/−5.0~−5.9 pp、Θ 线性；换 τ(ρ) 本构无机制消除；方向线索=近壁动理学层；家=`docs/Phase_5/a2asb_offset_lenses_report.md`）；另两单元：① `A2a-STRICT_B` 复测判决 run——四点 d_OP 仍负、上移 +0.13→+0.57 pp、C_R≈0.48，候选=`NOT_RESOLVED_CANDIDATE`，四级判决与 G0 围栏待用户（家=`docs/Phase_5/a2a_strict_b_report.md`）；② **系综轴扫描**=`ENSEMBLE_AXIS_PARTIAL`——质量系综是原框架负趋势主承载（斜率 ~0.956 pp/%、盈余质量符号翻正、等质量点与切线锚 0.006–0.007 pp 和解），异常改述为"密度超额响应 1.80×连续 + 随 Θ 偏置 + 次要边界项 ~11%"（家=`docs/Phase_5/a2asb_ensemble_scan_report.md`）。既有 strict-B 科学资格、分类、Gate、生产壁与冻结标定不变。）
 **用途**：新会话第一份必读文档，用于快速恢复项目阶段、读取路线、不可误判规则和下一步优先级。
 **定位**：全项目生命周期唯一上下文入口，不是某个阶段的专属文档。
 **维护原则**：只保留压缩摘要和入口索引；阶段流水、run 细节、完整数值和推导证据由对应 `PhaseN_STATUS.md`、M 报告和专项诊断报告维护，本文不复制。
@@ -166,6 +166,7 @@ docs/Phase_5/Phase5_STATUS.md（Gate 现值 + §3 WP4 生产数据）。
 - D1 严格候选 B：设计=`docs/Phase_5/strict_faceflux_candidate_b_design_v1.0.md`；实施与判决唯一家=`docs/Phase_5/strict_b_report.md`（REPORT_v1.0；科学分类的正式登记仍只认 `Phase5_STATUS.md`）；归档=`archive/M5_runs/strictb_20260818_A/`
 - A2a-STRICT_B 原协议复测：方案=`docs/Phase_5/a2a_strict_b_experiment_plan_v1.0.md`；**结果唯一家=`docs/Phase_5/a2a_strict_b_report.md`（REPORT_v1.0，判决待用户）**；runner=`scripts/phase5_a2a_strict_b.py`；QS 参照=`reference/strict_face_robin_qs.py`；wet reference pack=`archive/a2a_strict_b/`；归档=`archive/M5_runs/a2asb_20260819_B/`
 - 系综轴扫描（后续机理单元）：计划=`docs/Phase_5/a2asb_ensemble_scan_plan_v1.0.md`；**结果唯一家=`docs/Phase_5/a2asb_ensemble_scan_report.md`（REPORT_v1.0，`ENSEMBLE_AXIS_PARTIAL`）**；runner=`scripts/phase5_a2asb_ensemble_scan.py`；归档=`archive/M5_runs/a2asb_ensscan_20260820_B/`
+- 偏置判别单元（offset lenses）：计划=`docs/Phase_5/a2asb_offset_lenses_plan_v1.0.md`；**结果唯一家=`docs/Phase_5/a2asb_offset_lenses_report.md`（REPORT_v1.0，`OFFSET_BEYOND_CONTINUUM`；三层最终分账在其 §3）**；runner=`scripts/phase5_a2asb_offset_lenses.py`；归档=`archive/M5_runs/a2asb_offlens_20260820_A/`
 - WP3 首轮预注册与 Go/No-Go 材料（§7=D5-6 决策全文）：`docs/Phase_5/x/wp3_go_nogo_decision.md`
 - 论文架构（v1.0 条件方法学核心；不入库）：`Manuscript/Paper1_Manuscript_Architecture.md`；v0.3 逐字节历史归档=`Manuscript/Paper1_Manuscript_Architecture_v0.3_OBSOLETE.md`
 - 论文结果素材层：`results/Phase5_Result/`（整套 R0–R3/Fig. 3–5 为 `LEGACY_v0.3`，不是现行写作入口）
