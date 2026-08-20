@@ -140,17 +140,24 @@ def robin_qs_matrix_bvp(*, n_ref: int, h_lu: float, omega_lu: float,
                         k0: float, theta0: float, beta: float,
                         c_p: float, theta_w: float, theta_amb: float,
                         theta_base: np.ndarray, rho_base: np.ndarray,
-                        bulk_mode: str) -> dict[str, Any]:
+                        bulk_mode: str, bulk_beta: float | None = None,
+                        adv_beta: float | None = None,
+                        rho_ref_lu: float | None = None) -> dict[str, Any]:
     """Sealed stratified column, strict-face Robin closure on both faces.
 
     bulk_mode:
-      "uniform_at_tw"  : k_b(y) == k0 (theta_w/theta0)^beta, no bulk advective
-                         channel (QS-0).
-      "powerlaw_local" : k_b = k0 (theta_b/theta0)^beta with the constitutive
-                         advective channel a = (dk/dtheta)_b dtheta_b/dy from
-                         the mapped base gradients (QS-1).
+      "uniform_at_tw"  : k_b(y) == k0 (theta_w/theta0)^bulk_beta, no bulk
+                         advective channel (QS-0).
+      "powerlaw_local" : k_b = k0 (theta_b/theta0)^bulk_beta with the
+                         constitutive advective channel
+                         a = adv_beta k_b/theta_b dtheta_b/dy (QS-1).
+      "lattice_local"  : the frozen lattice constitutive
+                         k_b = k0 (rho_b/rho_ref_lu) (theta_b/theta0)^bulk_beta
+                         (offset-lens L1; a = adv_beta k_b/theta_b grad, the
+                         fixed-density derivative by default).
 
-    The face links always use the strict wall's own law: hot
+    bulk_beta/adv_beta default to ``beta`` (bit-identical legacy behavior);
+    the FACE links always use the strict wall's own law: hot
     k_f = k0 (theta_w/theta0)^beta, cold k_f = k0 (theta_amb/theta0)^beta,
     G_f = 2 k_f / dy.  Returns Y in ENERGY-flux units per unit dT_w plus the
     profile and base arrays.
@@ -164,14 +171,23 @@ def robin_qs_matrix_bvp(*, n_ref: int, h_lu: float, omega_lu: float,
     rho_b = np.asarray(rho_base, dtype=float)
     if th_b.shape[0] != n or rho_b.shape[0] != n:
         raise ValueError("base arrays must live on the reference grid")
+    b_bulk = float(beta if bulk_beta is None else bulk_beta)
+    b_adv = float(b_bulk if adv_beta is None else adv_beta)
 
     if bulk_mode == "uniform_at_tw":
-        k_b = np.full(n, float(k0) * (float(theta_w) / float(theta0)) ** beta)
+        k_b = np.full(n, float(k0) * (float(theta_w) / float(theta0)) ** b_bulk)
         a_cell = np.zeros(n)
     elif bulk_mode == "powerlaw_local":
-        k_b = float(k0) * (th_b / float(theta0)) ** beta
+        k_b = float(k0) * (th_b / float(theta0)) ** b_bulk
         grad = np.gradient(th_b, dy)
-        a_cell = beta * k_b / th_b * grad          # (dk/dth) dtheta_b/dy
+        a_cell = b_adv * k_b / th_b * grad         # (dk/dth) dtheta_b/dy
+    elif bulk_mode == "lattice_local":
+        if rho_ref_lu is None or rho_ref_lu <= 0.0:
+            raise ValueError("lattice_local needs rho_ref_lu")
+        k_b = (float(k0) * (rho_b / float(rho_ref_lu))
+               * (th_b / float(theta0)) ** b_bulk)
+        grad = np.gradient(th_b, dy)
+        a_cell = b_adv * k_b / th_b * grad
     else:
         raise ValueError(f"unknown bulk_mode: {bulk_mode!r}")
 

@@ -308,6 +308,7 @@ def _assemble(
     omega: float,
     model: str,
     T_w_hat: complex,
+    lattice_pressure_channel: bool = False,
 ):
     if model not in _MODELS:
         raise ValueError(f"unknown model {model!r}; expected one of {_MODELS}")
@@ -413,6 +414,20 @@ def _assemble(
                 add(r, iT(j + 1), -kT_p * inv2dy)
                 add(r, iT(j), -(kT_p - kT_m) * inv2dy)
                 add(r, iT(j - 1), kT_m * inv2dy)
+            if lattice_pressure_channel:
+                # frozen lattice constitutive (a2asb_offset_lenses plan §1B):
+                # delta_k|lattice = 1.04 (k/T) T_hat + (k/p_bar) p_hat — the
+                # T_hat part IS the power-law dk/dT channel above (the base
+                # k(y) = alpha(T) rho_bar c_p is a T^1.04 power law on the
+                # isobaric base); the ONLY extra physics is the conservative
+                # flux -((k/p_bar) T_bar' p_hat)' with the local EOS
+                # p_hat = R (T_bar rho_hat + rho_bar T_hat).  Exactly zero
+                # when T_bar' = 0 (cold column) and OFF by default.
+                cP = k_mid[j] / base.p_bar * base.dT_bar_dy_mid[j]
+                cM = k_mid[j - 1] / base.p_bar * base.dT_bar_dy_mid[j - 1]
+                for m, w in ((j + 1, -cP), (j, -cP), (j, cM), (j - 1, cM)):
+                    add(r, ir(m), w * R * T_b[m] * inv2dy)
+                    add(r, iT(m), w * R * rho_b[m] * inv2dy)
 
     A = coo_matrix(
         (np.asarray(vals, dtype=np.complex128), (rows, cols)),
@@ -429,12 +444,14 @@ def solve_linear_response(
     frequency_hz: float,
     model: str = "full",
     T_w_hat: complex = 1.0 + 0.0j,
+    lattice_pressure_channel: bool = False,
 ) -> LinearResponse:
     """Solve the linearized hot-base BVP and read out Y_g = q_hat_w / T_w_hat."""
 
     omega = omega_from_frequency(frequency_hz)
     A, b, dy, cv, R = _assemble(
-        base, params, transport, omega=omega, model=model, T_w_hat=T_w_hat
+        base, params, transport, omega=omega, model=model, T_w_hat=T_w_hat,
+        lattice_pressure_channel=lattice_pressure_channel,
     )
     x = spsolve(A, b)
     n = base.y.size
@@ -464,6 +481,14 @@ def solve_linear_response(
     q_wall = -(k_w * dT_w2 + kT_w * T_hat[0])
     q_wall3 = -(k_w * dT_w3 + kT_w * T_hat[0])
     q_lid = -(k_l * dT_l2 + kT_l * T_hat[-1])
+    if lattice_pressure_channel:
+        # same delta_k p_hat channel in the flux readout (wall AND lid, so the
+        # physical energy-integral audit stays consistent with the PDE)
+        c_w = k_w / base.p_bar * base.dT_bar_dy[0]
+        c_l = k_l / base.p_bar * base.dT_bar_dy[-1]
+        q_wall = q_wall - c_w * p_hat[0]
+        q_wall3 = q_wall3 - c_w * p_hat[0]
+        q_lid = q_lid - c_l * p_hat[-1]
 
     p_box = complex(np.trapezoid(p_hat, base.y) / base.height_m)
     T_p_hat = p_box / (params.rho0 * params.cp)
