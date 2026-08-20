@@ -157,6 +157,8 @@ docs/Phase_5/Phase5_STATUS.md（Gate 现值 + §3 WP4 生产数据）。
 
 ## 6. 详细事实入口
 
+- **术语对照表（行话→大白话，标注领域标准 vs 项目外号；论文用词一致性检查清单）**：`docs/Glossary.md`
+
 ### Phase_5
 
 - Phase_5 冻结合同（v1.2 权威）：`docs/Phase_5/Phase5_instruct_v1.2.md`
