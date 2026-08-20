@@ -166,6 +166,7 @@ docs/Phase_5/Phase5_STATUS.md（Gate 现值 + §3 WP4 生产数据）。
 - D1 严格候选 B：设计=`docs/Phase_5/strict_faceflux_candidate_b_design_v1.0.md`；实施与判决唯一家=`docs/Phase_5/strict_b_report.md`（REPORT_v1.0；科学分类的正式登记仍只认 `Phase5_STATUS.md`）；归档=`archive/M5_runs/strictb_20260818_A/`
 - A2a-STRICT_B 原协议复测：方案=`docs/Phase_5/a2a_strict_b_experiment_plan_v1.0.md`；**结果唯一家=`docs/Phase_5/a2a_strict_b_report.md`（REPORT_v1.0，判决待用户）**；runner=`scripts/phase5_a2a_strict_b.py`；QS 参照=`reference/strict_face_robin_qs.py`；wet reference pack=`archive/a2a_strict_b/`；归档=`archive/M5_runs/a2asb_20260819_B/`
 - 系综轴扫描（后续机理单元）：计划=`docs/Phase_5/a2asb_ensemble_scan_plan_v1.0.md`；**结果唯一家=`docs/Phase_5/a2asb_ensemble_scan_report.md`（REPORT_v1.0，`ENSEMBLE_AXIS_PARTIAL`）**；runner=`scripts/phase5_a2asb_ensemble_scan.py`；归档=`archive/M5_runs/a2asb_ensscan_20260820_B/`
+- 投稿前文献核查第三轮（本构框架）：`docs/Phase_5/literature_check_constitutive_v1.md`（CHECK_v1）——**k∝ρ 表达式在 D2Q37 直系源头论文（Scagliarini 2010）已白纸黑字，不可作发现声明**；符号级/传递函数级刻画与热声应用侧输运归因 NOT_FOUND（检索范围限定语强制）；定位=量级→符号级推进 + 观测量/应用侧空白
 - 偏置判别单元（offset lenses）：计划=`docs/Phase_5/a2asb_offset_lenses_plan_v1.0.md`；**结果唯一家=`docs/Phase_5/a2asb_offset_lenses_report.md`（REPORT_v1.0，`OFFSET_BEYOND_CONTINUUM`；三层最终分账在其 §3）**；runner=`scripts/phase5_a2asb_offset_lenses.py`；归档=`archive/M5_runs/a2asb_offlens_20260820_A/`
 - WP3 首轮预注册与 Go/No-Go 材料（§7=D5-6 决策全文）：`docs/Phase_5/x/wp3_go_nogo_decision.md`
 - 论文架构（v1.0 条件方法学核心；不入库）：`Manuscript/Paper1_Manuscript_Architecture.md`；v0.3 逐字节历史归档=`Manuscript/Paper1_Manuscript_Architecture_v0.3_OBSOLETE.md`
